@@ -1,16 +1,16 @@
 [package]
-authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']
+authors = ['Ares protocol']
 build = 'build.rs'
-description = 'A fresh FRAME-based Substrate node, ready for hacking.'
+description = 'Generic Ares node implementation in Rust.'
 edition = '2018'
-homepage = 'https://substrate.dev'
-license = 'Unlicense'
-name = 'node-template'
-repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'
+homepage = 'https://aresprotocol.com/'
+license = 'GPL 3.0'
+name = 'ares'
+repository = 'https://github.com/aresprotocols/ares'
 version = '2.0.0'
 
 [[bin]]
-name = 'node-template'
+name = 'ares'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
