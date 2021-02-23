@@ -30,7 +30,8 @@ pallet-contracts-rpc-runtime-api = { version = '0.8.0', default-features = false
 
 
 # local dependencies
-pallet-template = { path = '../pallets/template', default-features = false, version = '2.0.0' }
+pallet-ares = { path = '../pallets/pallet-ares', default-features = false, version = '2.0.0' }
+pallet-ocw = { path = '../pallets/pallet-ocw', default-features = false, version = '2.0.0' }
 
 # Substrate dependencies
 frame-benchmarking = { default-features = false, optional = true, version = '2.0.0' }
@@ -84,7 +85,8 @@ std = [
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
     'pallet-sudo/std',
-    'pallet-template/std',
+    'pallet-ares/std',
+    'pallet-ocw/std',
     'pallet-timestamp/std',
     'pallet-transaction-payment/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
