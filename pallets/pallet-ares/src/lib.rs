@@ -21,9 +21,9 @@ mod mock;
 mod tests;
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
-pub trait Trait: frame_system::Trait {
+pub trait Config: frame_system::Config {
     /// Because this pallet emits events, it depends on the runtime's definition of an event.
-    type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
+    type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
 
     /// Period during which a request is valid
     type ValidityPeriod: Get<Self::BlockNumber>;
@@ -78,7 +78,7 @@ pub struct AggregateResult<BlockNumber> {
 decl_storage! {
 	// A unique name is used to ensure that the pallet's storage items are isolated.
 	// This name may be updated, but each pallet in the runtime must use a unique name.
-	trait Store for Module<T: Trait> as AresModule {
+	trait Store for Module<T: Config> as AresModule {
 		// A set of all registered Aggregator
 		pub Aggregators get(fn aggregator): map hasher(blake2_128_concat) T::AccountId => Aggregator<T::AccountId, T::BlockNumber>;
 
@@ -99,7 +99,7 @@ decl_storage! {
 // Pallets use events to inform users when important changes are made.
 // https://substrate.dev/docs/en/knowledgebase/runtime/events
 decl_event!(
-	pub enum Event<T> where AccountId = <T as frame_system::Trait>::AccountId {
+	pub enum Event<T> where AccountId = <T as frame_system::Config>::AccountId {
 		// A request has been accepted.
 		OracleRequest(AccountId, TokenSpec, u64, AccountId, Vec<u8>, Vec<u8>),
 
@@ -122,7 +122,7 @@ decl_event!(
 
 // Errors inform users that something went wrong.
 decl_error! {
-	pub enum Error for Module<T: Trait> {
+	pub enum Error for Module<T: Config> {
 	    // Manipulating an unknown aggregator
 		UnknownAggregator,
 		// Manipulating an unknown request
@@ -138,7 +138,7 @@ decl_error! {
 // These functions materialize as "extrinsics", which are often compared to transactions.
 // Dispatchable functions must be annotated with a weight and must return a DispatchResult.
 decl_module! {
-	pub struct Module<T: Trait> for enum Call where origin: T::Origin {
+	pub struct Module<T: Config> for enum Call where origin: T::Origin {
 		// Errors must be initialized if they are used by the pallet.
 		type Error = Error<T>;
 
@@ -149,7 +149,7 @@ decl_module! {
 		// Fails with `AggregatorAlreadyRegistered` if this Aggregator (identified by `origin`) has already been registered.
 		#[weight = 10_000]
 		pub fn register_aggregator(origin, source: Vec<u8>, alias: Vec<u8>, url: Vec<u8>) -> dispatch::DispatchResult {
-			let who : <T as frame_system::Trait>::AccountId = ensure_signed(origin)?;
+			let who : <T as frame_system::Config>::AccountId = ensure_signed(origin)?;
 
 			ensure!(!<Aggregators<T>>::contains_key(who.clone()), Error::<T>::AggregatorAlreadyRegistered);
 
@@ -171,7 +171,7 @@ decl_module! {
 		// Unregisters an existing Aggregator
 		#[weight = 10_000]
 		pub fn unregister_aggregator(origin) -> dispatch::DispatchResult {
-			let who : <T as frame_system::Trait>::AccountId = ensure_signed(origin)?;
+			let who : <T as frame_system::Config>::AccountId = ensure_signed(origin)?;
 
 			ensure!(<Aggregators<T>>::contains_key(who.clone()), Error::<T>::UnknownAggregator);
 
@@ -189,7 +189,7 @@ decl_module! {
 		// spec_index mark btc or eth price
 		#[weight = 10_000]
 		pub fn initiate_request(origin, aggregator: T::AccountId, token: TokenSpec, data: Vec<u8>) -> dispatch::DispatchResult {
-			let who : <T as frame_system::Trait>::AccountId = ensure_signed(origin.clone())?;
+			let who : <T as frame_system::Config>::AccountId = ensure_signed(origin.clone())?;
 
 			ensure!(<Aggregators<T>>::contains_key(aggregator.clone()), Error::<T>::UnknownAggregator);
 
@@ -218,7 +218,7 @@ decl_module! {
 		#[weight = 10_000]
         fn feed_result(origin, request_id: u64, result: u64) -> dispatch::DispatchResult {
 			//let _who = ensure_signed(origin)?;
-			let who : <T as frame_system::Trait>::AccountId = ensure_signed(origin.clone())?;
+			let who : <T as frame_system::Config>::AccountId = ensure_signed(origin.clone())?;
 
 			ensure!(<Requests<T>>::contains_key(&request_id), Error::<T>::UnknownRequest);
 			let aggregator = Self::requests(&request_id);
