@@ -48,9 +48,7 @@ pub use pallet_ares;
 pub use pallet_ocw;
 
 /// Import the template pallet.
-pub use pallet_template;
-pub use pallet_poe;
-pub use pallet_kitties;
+
 // pub use pallet_dotprices;
 
 /// An index to a block.
@@ -357,30 +355,6 @@ impl pallet_contracts::Config for Runtime {
 	type MaxCodeSize = MaxCodeSize;
 }
 
-/// Configure the template pallet in pallets/template.
-impl pallet_template::Config for Runtime {
-	type Event = Event;
-}
-
-parameter_types! {
-	pub const MaxClaimLength: u32 = 6;
-}
-impl pallet_poe::Config for Runtime {
-	type Event = Event;
-	type MaxClaimLength = MaxClaimLength;
-}
-
-parameter_types! {
-	pub const NewKittyReserve: u64 = 5_000;
-}
-
-impl pallet_kitties::Config for Runtime {
-	type Event = Event;
-	type Randomness = RandomnessCollectiveFlip;
-	type NewKittyReserve = NewKittyReserve;
-	type KittyIndex = u32;
-	type Currency = Balances;
-}
 
 // impl pallet_dotprices::Trait for Runtime {
 // 	type AuthorityId = pallet_dotprices::crypto::AuthId;
@@ -466,9 +440,7 @@ construct_runtime!(
 		// Contracts
 		Contracts: pallet_contracts::{Module, Call, Config<T>, Storage, Event<T>},
 		// Include the custom logic from the template pallet in the runtime.
-		TemplateModule: pallet_template::{Module, Call, Storage, Event<T>},
-		PoeModule: pallet_poe::{Module, Call, Storage, Event<T>},
-		KittiesModule: pallet_kitties::{Module, Call, Storage, Event<T>},
+
 		// DotpricesModule: pallet_dotprices::{Module, Call, Storage, Event<T>},
 		AresModule: pallet_ares::{Module, Call, Storage, Event<T>},
 		OCWModule: pallet_ocw::{Module, Call, Storage, Event<T>},
@@ -676,7 +648,6 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
 			add_benchmark!(params, batches, pallet_balances, Balances);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
-			add_benchmark!(params, batches, pallet_kitties, KittiesModule);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)

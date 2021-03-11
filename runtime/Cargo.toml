@@ -25,9 +25,6 @@ hex-literal = { optional = true, version = '0.3.1' }
 serde = { features = ['derive'], optional = true, version = '1.0.119' }
 
 # local dependencies
-pallet-template = { path = '../pallets/template', default-features = false, version = '3.0.0' }
-pallet-poe = { path = '../pallets/poe', default-features = false, version = '3.0.0' }
-pallet-kitties = { path = '../pallets/kitties', default-features = false, version = '3.0.0' }
 pallet-ares = { path = '../pallets/pallet-ares', default-features = false, version = '3.0.0' }
 pallet-ocw = { path = '../pallets/pallet-ocw', default-features = false, version = '3.0.0' }
 
@@ -88,7 +85,6 @@ std = [
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
     'pallet-sudo/std',
-    'pallet-template/std',
     'pallet-timestamp/std',
     'pallet-transaction-payment/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
@@ -108,8 +104,6 @@ std = [
     "pallet-contracts-primitives/std",
     "pallet-contracts-rpc-runtime-api/std",
     "pallet-randomness-collective-flip/std",
-    'pallet-poe/std',
-    'pallet-kitties/std',
     'pallet-ares/std',
     'pallet-ocw/std',
 ]
