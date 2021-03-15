@@ -269,12 +269,12 @@ decl_module! {
 
 						if n > request.block_number + T::AggregateInterval::get() {
 							// update
-							 price = average_price(price_vec);
+							 price = Self::average_price(price_vec);
 							 find = true;
 						}
 					}
 				} else {
-					price = average_price(price_vec);
+					price = Self::average_price(price_vec);
 					find = true;
 				}
 
@@ -288,22 +288,36 @@ decl_module! {
 				}
 
 			}
+
 		}
-	}
+
+	 }
 }
 
+impl<T: Config> Module<T> {
+    pub fn get_aggrage_price(_token_identifier:Vec<u8>) -> u64 {
+        let mut price: u64 = 0;
+        if <AggregatorResults<T>>::contains_key(&_token_identifier) {
+            let aggragate = Self::aggregator_results(_token_identifier);
+            // let price=aggragate::price;
+            return aggragate.price;
+        } else {
+            0
+        }
 
-fn average_price(prices: Vec<u64>) -> u64 {
-    if prices.len() <= 2 {
-        prices.iter().fold(0_u64, |a, b| a.saturating_add(*b)) / prices.len() as u64
-    } else {
-        let mut prices_ap: Vec<u64> = prices.into_iter().clone().collect();
+    }
+    fn average_price(prices: Vec<u64>) -> u64 {
+        if prices.len() <= 2 {
+            prices.iter().fold(0_u64, |a, b| a.saturating_add(*b)) / prices.len() as u64
+        } else {
+            let mut prices_ap: Vec<u64> = prices.into_iter().clone().collect();
 
 
-        prices_ap.sort();
-        prices_ap.truncate(prices_ap.len() - 1);
-        let rest: Vec<u64> = prices_ap.drain(1..).collect();
+            prices_ap.sort();
+            prices_ap.truncate(prices_ap.len() - 1);
+            let rest: Vec<u64> = prices_ap.drain(1..).collect();
 
-        rest.iter().fold(0_u64, |a, b| a.saturating_add(*b)) / rest.len() as u64
+            rest.iter().fold(0_u64, |a, b| a.saturating_add(*b)) / rest.len() as u64
+        }
     }
 }

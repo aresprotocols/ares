@@ -47,6 +47,8 @@ sp-api = { default-features = false, version = '3.0.0' }
 sp-block-builder = { default-features = false, version = '3.0.0' }
 sp-consensus-aura = { default-features = false, version = '0.9.0' }
 sp-core = { default-features = false, version = '3.0.0' }
+sp-io = { default-features = false, version = '3.0.0' }
+
 sp-inherents = { default-features = false, version = '3.0.0' }
 sp-offchain = { default-features = false, version = '3.0.0' }
 sp-runtime = { default-features = false, version = '3.0.0' }
@@ -106,4 +108,6 @@ std = [
     "pallet-randomness-collective-flip/std",
     'pallet-ares/std',
     'pallet-ocw/std',
+    'sp-io/std',
+
 ]

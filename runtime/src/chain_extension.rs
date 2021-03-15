@@ -6,7 +6,9 @@ use pallet_contracts::chain_extension::{
 };
 use sp_runtime::DispatchError;
 use pallet_contracts::Config;
-
+use pallet_ares;
+use sp_std::vec::Vec;
+// use sp_io::hashing::blake2_128;
 /// contract extension for `FetchRandom`
 pub struct FetchRandomExtension;
 
@@ -28,6 +30,22 @@ impl<C: Config> ChainExtension<C> for FetchRandomExtension {
                 );
                 env.write(&random_slice, false, None)
                     .map_err(|_| DispatchError::Other("ChainExtension failed to call random"))?;
+            }
+
+            1102 => {
+                let mut env = env.buf_in_buf_out();
+                let random_slice: Vec<u8> = env.read_as()?; // 直接读取合约传过来的参数
+
+
+                let result=super::AresModule::get_aggrage_price(random_slice);
+                let resultu8=result.encode();
+                native::trace!(
+                    target: "runtime",
+                    "[ChainExtension]|call|func_id:{:}",
+                    func_id
+                );
+                env.write(&resultu8, false, None)
+                    .map_err(|_| DispatchError::Other("ChainExtension failed to call price"))?;
             }
 
             _ => {
