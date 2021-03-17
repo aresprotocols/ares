@@ -6,7 +6,6 @@ use pallet_contracts::chain_extension::{
 };
 use sp_runtime::DispatchError;
 use pallet_contracts::Config;
-use pallet_ares;
 use sp_std::vec::Vec;
 // use sp_io::hashing::blake2_128;
 /// contract extension for `FetchRandom`
@@ -46,6 +45,16 @@ impl<C: Config> ChainExtension<C> for FetchRandomExtension {
                 );
                 env.write(&resultu8, false, None)
                     .map_err(|_| DispatchError::Other("ChainExtension failed to call price"))?;
+            }
+
+            1103 => {
+                let mut env = env.buf_in_buf_out();
+                let token_identifier: Vec<u8> = env.read_as()?;
+
+                let price:u64 = super::AresModule::aggregator_results( &token_identifier ).price;
+
+                env.write(&price.encode(), false, None)
+                    .map_err(|_| DispatchError::Other("Get price fail"))?;
             }
 
             _ => {

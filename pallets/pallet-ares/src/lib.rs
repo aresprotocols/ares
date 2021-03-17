@@ -244,6 +244,18 @@ decl_module! {
 			Ok(())
 		}
 
+		// For contract test
+		#[weight = 10_000]
+		fn price_set(_origin, token_identifier: Vec<u8>, price: u64) -> dispatch::DispatchResult {
+			let n = frame_system::Module::<T>::block_number();
+			<AggregatorResults::<T>>::insert(&token_identifier, AggregateResult {
+				block_number: n,
+				price,
+			});
+
+			Ok(())
+		}
+
 		/// Identify requests that are considered dead and remove them
 		/// on chain aggregator result
 		fn on_finalize(n: T::BlockNumber) {
@@ -286,9 +298,7 @@ decl_module! {
 
 						Self::deposit_event(RawEvent::AggregatorResult(price));
 				}
-
 			}
-
 		}
 
 	 }
@@ -296,7 +306,7 @@ decl_module! {
 
 impl<T: Config> Module<T> {
     pub fn get_aggrage_price(_token_identifier:Vec<u8>) -> u64 {
-        let mut price: u64 = 0;
+        // let mut price: u64 = 0;
         if <AggregatorResults<T>>::contains_key(&_token_identifier) {
             let aggragate = Self::aggregator_results(_token_identifier);
             // let price=aggragate::price;

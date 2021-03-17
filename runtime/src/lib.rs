@@ -238,7 +238,6 @@ impl pallet_timestamp::Config for Runtime {
 	type WeightInfo = ();
 }
 
-/// Configure the template pallet in pallets/template.
 parameter_types! {
 	pub const ValidityPeriod: u32 = 50;
 	pub const AggregateQueueNum: u32 = 10;
