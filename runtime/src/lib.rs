@@ -46,6 +46,7 @@ use pallet_contracts::weights::WeightInfo;
 /// Import the pallet.
 pub use pallet_ares;
 pub use pallet_ocw;
+pub use account_filter;
 
 /// Import the template pallet.
 
@@ -266,6 +267,9 @@ parameter_types! {
 	pub const ExistentialDeposit: u128 = 500;
 	pub const MaxLocks: u32 = 50;
 }
+impl account_filter::Config for Runtime {
+    type Event = Event;
+}
 
 impl pallet_balances::Config for Runtime {
 	type MaxLocks = MaxLocks;
@@ -392,6 +396,7 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 			frame_system::CheckNonce::<Runtime>::from(nonce),
 			frame_system::CheckWeight::<Runtime>::new(),
 			pallet_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
+			account_filter::AllowAccount::<Runtime>::new(),
 		);
 		let raw_payload = SignedPayload::new(call, extra)
 			.map_err(|e| {
@@ -444,6 +449,7 @@ construct_runtime!(
 		// DotpricesModule: pallet_dotprices::{Module, Call, Storage, Event<T>},
 		AresModule: pallet_ares::{Module, Call, Storage, Event<T>},
 		OCWModule: pallet_ocw::{Module, Call, Storage, Event<T>},
+		AccountFilter: account_filter::{Module, Call, Storage, Event<T>, Config<T>},
 	}
 );
 
@@ -465,7 +471,8 @@ pub type SignedExtra = (
 	frame_system::CheckEra<Runtime>,
 	frame_system::CheckNonce<Runtime>,
 	frame_system::CheckWeight<Runtime>,
-	pallet_transaction_payment::ChargeTransactionPayment<Runtime>
+	pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+	account_filter::AllowAccount<Runtime>
 );
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;

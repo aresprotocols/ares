@@ -1,7 +1,7 @@
 use sp_core::{Pair, Public, sr25519};
 use node_template_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig,
-	SudoConfig, SystemConfig, WASM_BINARY, Signature
+	SudoConfig, SystemConfig, WASM_BINARY, Signature, AccountFilterConfig
 };
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
@@ -159,6 +159,11 @@ fn testnet_genesis(
 				enable_println,
 				..Default::default()
 			},
+		}),
+		account_filter: Some(AccountFilterConfig {
+			allowed_accounts: vec![
+			(get_account_id_from_seed::<sr25519::Public>("Alice"), ()),
+			(get_account_id_from_seed::<sr25519::Public>("Bob"), ())],
 		}),
 	}
 }
