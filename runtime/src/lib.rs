@@ -238,16 +238,36 @@ impl pallet_timestamp::Config for Runtime {
 	type WeightInfo = ();
 }
 
+type OracleCollective = collective::Instance1;
+impl collective::Trait<OracleCollective> for Runtime {
+	type Origin = Origin;
+	type Proposal = Call;
+	type Event = Event;
+}
+
 parameter_types! {
 	pub const ValidityPeriod: u32 = 50;
 	pub const AggregateQueueNum: u32 = 10;
 	pub const AggregateInterval: BlockNumber = 15;
+
+    pub const MinStaking: Balance = 1000 * DOLLARS;
+    pub const Count: u16 = 3;
+    pub const LockedDuration: BlockNumber = 1000;
 }
 impl pallet_ares::Config for Runtime {
 	type Event = Event;
 	type ValidityPeriod = ValidityPeriod;
 	type AggregateQueueNum = AggregateQueueNum;
 	type AggregateInterval = AggregateInterval;
+
+	type Currency = Balances;
+	type MinStaking = MinStaking;
+
+	type MaliciousSlashOrigin =
+	collective::EnsureProportionMoreThan<_1, _2, AccountId, OracleCollective>;
+	type Count = Count;
+	type LockedDuration = LockedDuration;
+	type ChangeMembers = OracleMembers;
 }
 parameter_types! {
 	pub const GracePeriod: BlockNumber = 5;
@@ -444,6 +464,7 @@ construct_runtime!(
 		// DotpricesModule: pallet_dotprices::{Module, Call, Storage, Event<T>},
 		AresModule: pallet_ares::{Module, Call, Storage, Event<T>},
 		OCWModule: pallet_ocw::{Module, Call, Storage, Event<T>},
+		OracleMembers: collective::<Instance1>::{Module, Call, Storage, Origin<T>, Event<T>},
 	}
 );
 

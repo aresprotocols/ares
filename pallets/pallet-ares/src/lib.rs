@@ -5,7 +5,7 @@ use codec::{Decode, Encode};
 /// Learn more about FRAME and the core library of Substrate FRAME pallets:
 /// https://substrate.dev/docs/en/knowledgebase/runtime/frame
 
-use frame_support::{debug, decl_error, decl_event, decl_module, decl_storage, dispatch, ensure, traits::Get};
+use frame_support::{debug, decl_error, decl_event, decl_module, decl_storage, dispatch, ensure};
 use frame_system::ensure_signed;
 use sp_runtime::RuntimeDebug;
 use sp_runtime::traits::Hash;
@@ -13,12 +13,19 @@ use sp_std::{
     collections::vec_deque::VecDeque,
     prelude::*,
 };
+use frame_support::traits::{
+    ChangeMembers, Currency, Get, LockIdentifier, LockableCurrency, ReservableCurrency,
+    WithdrawReasons, EnsureOrigin,
+};
 
 #[cfg(test)]
 mod mock;
 
 #[cfg(test)]
 mod tests;
+
+type BalanceOf<T> = <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+const LockedId: LockIdentifier = *b"ares    ";
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
 pub trait Config: frame_system::Config {
@@ -33,14 +40,35 @@ pub trait Config: frame_system::Config {
 
     /// The duration in which oracles should on chain aggregate result.
     type AggregateInterval: Get<Self::BlockNumber>;
+
+    /// The minimum amount to stake for an oracle candidate.
+    type MinStaking: Get<BalanceOf<Self>>;
+    /// Currency type
+    type Currency: LockableCurrency<Self::AccountId, Moment = Self::BlockNumber>
+    + ReservableCurrency<Self::AccountId>;
+    /// The actual oracle membership management type. (Usually the `srml_collective::Trait`)
+    type ChangeMembers: ChangeMembers<Self::AccountId>;
+    /// The maxium count of working oracles.
+    type Count: Get<u16>;
+    /// The origin that's responsible for slashing malicious oracles.
+    type MaliciousSlashOrigin: EnsureOrigin<Self::Origin>;
+    /// The locked time of staked amount.
+    type LockedDuration: Get<Self::BlockNumber>;
 }
 
 // Uniquely identify a request's specification understood by an Aggregator
 pub type TokenSpec = Vec<u8>;
 
+/// Unbind record for when an oracle is unbinding.
+#[derive(PartialEq, Eq, Clone, Encode, Decode, RuntimeDebug)]
+pub struct UnStaking<Balance, BlockNumber> {
+    amount: Balance,
+    height: BlockNumber,
+}
+
 /// Aggregator which is desc info.
 #[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug, Default)]
-pub struct Aggregator<AccountId, BlockNumber> {
+pub struct Aggregator<AccountId, BlockNumber, Balance> {
     pub account_id: AccountId,
     /// Block number at the time register is created..
     pub block_number: BlockNumber,
@@ -50,6 +78,8 @@ pub struct Aggregator<AccountId, BlockNumber> {
     pub alias: Vec<u8>,
     /// api url.
     pub url: Vec<u8>,
+    pub active: Balance,
+    pub redeems: Vec<UnStaking<Balance, BlockNumber>>,
 }
 
 /// Requests which is quest info.
@@ -80,7 +110,7 @@ decl_storage! {
 	// This name may be updated, but each pallet in the runtime must use a unique name.
 	trait Store for Module<T: Config> as AresModule {
 		// A set of all registered Aggregator
-		pub Aggregators get(fn aggregator): map hasher(blake2_128_concat) T::AccountId => Aggregator<T::AccountId, T::BlockNumber>;
+		pub Aggregators get(fn aggregators): map hasher(blake2_128_concat) T::AccountId => Aggregator<T::AccountId, T::BlockNumber, BalanceOf<T>>;
 
 		// A running counter used internally to identify the next request
 		pub NextRequestId get(fn request_id): u64;
@@ -99,7 +129,8 @@ decl_storage! {
 // Pallets use events to inform users when important changes are made.
 // https://substrate.dev/docs/en/knowledgebase/runtime/events
 decl_event!(
-	pub enum Event<T> where AccountId = <T as frame_system::Config>::AccountId {
+	pub enum Event<T> where AccountId = <T as frame_system::Config>::AccountId,
+	         Balance = BalanceOf<T>, {
 		// A request has been accepted.
 		OracleRequest(AccountId, TokenSpec, u64, AccountId, Vec<u8>, Vec<u8>),
 
@@ -117,6 +148,9 @@ decl_event!(
 
 		// A request didn't receive any result in time
 		RemoveRequest(u64),
+
+		/// Amount slashed to one oracle.
+        OracleSlashed(AccountId, Balance),
 	}
 );
 
@@ -131,6 +165,8 @@ decl_error! {
 		WrongAggregator,
 		// An aggregator is already registered.
 		AggregatorAlreadyRegistered,
+		// An aggregator insufficient funds.
+		AggregatorInsufficientFund,
 	}
 }
 
@@ -145,6 +181,10 @@ decl_module! {
 		// Events must be initialized if they are used by the pallet.
 		fn deposit_event() = default;
 
+        const MinStaking: BalanceOf<T> = T::MinStaking::get();
+        const Count: u16 = T::Count::get();
+        const LockedDuration: T::BlockNumber = T::LockedDuration::get();
+
 		// Register a new Aggregator.
 		// Fails with `AggregatorAlreadyRegistered` if this Aggregator (identified by `origin`) has already been registered.
 		#[weight = 10_000]
@@ -152,6 +192,8 @@ decl_module! {
 			let who : <T as frame_system::Config>::AccountId = ensure_signed(origin)?;
 
 			ensure!(!<Aggregators<T>>::contains_key(who.clone()), Error::<T>::AggregatorAlreadyRegistered);
+
+			ensure!(T::Currency::free_balance(&who) > T::MinStaking::get(), Error::<T>::AggregatorInsufficientFund);
 
 			let now = frame_system::Module::<T>::block_number();
 
@@ -162,6 +204,14 @@ decl_module! {
           		  alias,
           		  url,
        		 });
+
+            T::Currency::set_lock(
+                LockedId,
+                &who,
+                T::MinStaking::get(),
+                T::BlockNumber::max_value(),
+                WithdrawReasons::all(),
+            );
 
 			Self::deposit_event(RawEvent::AggregatorRegistered(who));
 
@@ -184,6 +234,18 @@ decl_module! {
 				Err(Error::<T>::UnknownAggregator.into())
 			}
 		}
+
+        // slash oracle by government.
+        pub fn slash_by_gov(origin, who: T::AccountId, amount: BalanceOf<T>) -> dispatch::DispatchResult {
+            T::MaliciousSlashOrigin::try_origin(origin)
+                .map(|_| ())
+                .or_else(ensure_root)
+                .map_err(|_| "bad origin")?;
+            T::Currency::slash(&who, amount);
+            Self::deposit_event(RawEvent::OracleSlashed(who, amount));
+            Ok(())
+        }
+
 
 		// Identify oracle request from outside
 		// spec_index mark btc or eth price
