@@ -1,126 +1,116 @@
+use crate::{self as pallet_ocw, *};
+use frame_support::{construct_runtime, parameter_types};
+use frame_system::{limits, mocking};
+// use parity_scale_codec::alloc::sync::Arc;
 use codec::{alloc::sync::Arc};
-use frame_support::{impl_outer_event, impl_outer_origin, parameter_types, weights::Weight};
-use frame_system::offchain;
 use parking_lot::RwLock;
+// use std::sync::RwLock;
 use sp_core::{
-    H256,
     offchain::{
-        OffchainExt,
-        testing::{self, OffchainState, PoolState}, TransactionPoolExt,
+        testing::{self, OffchainState, PoolState},
+        OffchainExt, TransactionPoolExt,
     },
     sr25519::{self, Signature},
-    testing::KeyStore,
-    traits::KeystoreExt,
+    H256,
 };
 use sp_io::TestExternalities;
+use sp_keystore::{testing::KeyStore, KeystoreExt, SyncCryptoStore};
 use sp_runtime::{
-    Perbill,
     testing::{Header, TestXt},
-    traits::{BlakeTwo256, IdentityLookup, Verify},
+    traits::{BlakeTwo256, Extrinsic as ExtrinsicT, IdentifyAccount, IdentityLookup, Verify},
 };
 
-use crate::*;
-use crate as pallet_ocw;
+type Extrinsic = TestXt<Call, ()>;
+type UncheckedExtrinsic = mocking::MockUncheckedExtrinsic<TestRuntime>;
+type Block = mocking::MockBlock<TestRuntime>;
+type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
 
-impl_outer_origin! {
-	pub enum Origin for Test {}
-}
-
-impl_outer_event! {
-	pub enum TestEvent for Test {
-		frame_system<T>,
-		pallet_ocw<T>,
+// For testing the module, we construct a mock runtime.
+construct_runtime!(
+	pub enum TestRuntime where
+		Block = Block,
+		NodeBlock = Block,
+		UncheckedExtrinsic = UncheckedExtrinsic,
+	{
+		System: frame_system::{Module, Call, Config, Storage, Event<T>},
+		OCWModule: pallet_ocw::{Module, Call, Storage, Event<T>},
 	}
-}
+);
 
-// Configure a mock runtime to test the pallet.
-
-#[derive(Clone, Eq, PartialEq)]
-pub struct Test;
 parameter_types! {
 	pub const BlockHashCount: u64 = 250;
-	pub const MaximumBlockWeight: Weight = 1024;
-	pub const MaximumBlockLength: u32 = 2 * 1024;
-	pub const AvailableBlockRatio: Perbill = Perbill::from_percent(75);
+	pub BlockWeights: limits::BlockWeights = limits::BlockWeights::simple_max(1024);
 }
-
-impl frame_system::Trait for Test {
+impl frame_system::Config for TestRuntime {
     type BaseCallFilter = ();
+    type BlockWeights = ();
+    type BlockLength = ();
+    type DbWeight = ();
     type Origin = Origin;
+    type Call = Call;
     type Index = u64;
-    type Call = ();
     type BlockNumber = u64;
     type Hash = H256;
     type Hashing = BlakeTwo256;
     type AccountId = sr25519::Public;
     type Lookup = IdentityLookup<Self::AccountId>;
     type Header = Header;
-    type Event = TestEvent;
+    type Event = Event;
     type BlockHashCount = BlockHashCount;
-    type MaximumBlockWeight = MaximumBlockWeight;
-    type DbWeight = ();
-    type BlockExecutionWeight = ();
-    type ExtrinsicBaseWeight = ();
-    type MaximumExtrinsicWeight = MaximumBlockWeight;
-    type MaximumBlockLength = MaximumBlockLength;
-    type AvailableBlockRatio = AvailableBlockRatio;
     type Version = ();
-    type PalletInfo = ();
+    type PalletInfo = PalletInfo;
     type AccountData = ();
     type OnNewAccount = ();
     type OnKilledAccount = ();
     type SystemWeightInfo = ();
+    type SS58Prefix = ();
 }
 
-type TestExtrinsic = TestXt<Call<Test>, ()>;
+// Build genesis storage according to the mock runtime.
+// pub fn new_test_ext() -> sp_io::TestExternalities {
+//     system::GenesisConfig::default().build_storage::<Test>().unwrap().into()
+// }
+
+parameter_types! {
+	pub const UnsignedPriority: u64 = 100;
+}
 
 parameter_types! {
 	pub const GracePeriod: u64 = 5;
 }
 
-impl Trait for Test {
-    type Event = TestEvent;
+impl Config for TestRuntime {
     type AuthorityId = crypto::TestAuthId;
-    type Call = Call<Test>;
-    type GracePeriod = GracePeriod;
+    type Call = Call;
+    type Event = Event;
+    type GracePeriod = ();
 }
 
-pub type System = frame_system::Module<Test>;
-pub type OCWModule = Module<Test>;
-
-// Build genesis storage according to the mock runtime.
-pub fn new_test_ext() -> sp_io::TestExternalities {
-    frame_system::GenesisConfig::default().build_storage::<Test>().unwrap().into()
-}
-
-impl<LocalCall> offchain::CreateSignedTransaction<LocalCall> for Test
-    where
-        Call<Test>: From<LocalCall>,
-{
-    fn create_transaction<C: offchain::AppCrypto<Self::Public, Self::Signature>>(
-        call: Call<Test>,
-        _public: <Signature as Verify>::Signer,
-        _account: <Test as frame_system::Trait>::AccountId,
-        index: <Test as frame_system::Trait>::Index,
-    ) -> Option<(
-        Call<Test>,
-        <TestExtrinsic as sp_runtime::traits::Extrinsic>::SignaturePayload,
-    )> {
-        Some((call, (index, ())))
-    }
-}
-
-impl offchain::SigningTypes for Test {
+impl frame_system::offchain::SigningTypes for TestRuntime {
     type Public = <Signature as Verify>::Signer;
     type Signature = Signature;
 }
 
-impl<C> offchain::SendTransactionTypes<C> for Test
+impl<C> frame_system::offchain::SendTransactionTypes<C> for TestRuntime
     where
-        Call<Test>: From<C>,
+        Call: From<C>,
 {
-    type OverarchingCall = Call<Test>;
-    type Extrinsic = TestExtrinsic;
+    type OverarchingCall = Call;
+    type Extrinsic = Extrinsic;
+}
+
+impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for TestRuntime
+    where
+        Call: From<LocalCall>,
+{
+    fn create_transaction<C: frame_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
+        call: Call,
+        _public: <Signature as Verify>::Signer,
+        _account: AccountId,
+        nonce: u64,
+    ) -> Option<(Call, <Extrinsic as ExtrinsicT>::SignaturePayload)> {
+        Some((call, (nonce, ())))
+    }
 }
 
 pub struct ExternalityBuilder;
@@ -138,18 +128,17 @@ impl ExternalityBuilder {
         let (pool, pool_state) = testing::TestTransactionPoolExt::new();
         let keystore = KeyStore::new();
         keystore
-            .write()
             .sr25519_generate_new(KEY_TYPE, Some(&format!("{}/hunter1", PHRASE)))
             .unwrap();
 
         let storage = frame_system::GenesisConfig::default()
-            .build_storage::<Test>()
+            .build_storage::<TestRuntime>()
             .unwrap();
 
         let mut t = TestExternalities::from(storage);
         t.register_extension(OffchainExt::new(offchain));
         t.register_extension(TransactionPoolExt::new(pool));
-        t.register_extension(KeystoreExt(keystore));
+        t.register_extension(KeystoreExt(Arc::new(keystore)));
         t.execute_with(|| System::set_block_number(1));
         (t, pool_state, offchain_state)
     }

@@ -4913,6 +4913,7 @@ dependencies = [
  "frame-system 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "pallet-balances 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "parity-scale-codec",
+ "serde",
  "sp-core 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sp-io 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sp-runtime 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -5391,9 +5392,11 @@ dependencies = [
  "frame-system 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lite-json",
  "parity-scale-codec",
- "parking_lot 0.10.2",
+ "parking_lot 0.11.1",
+ "serde",
  "sp-core 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sp-io 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sp-keystore 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sp-runtime 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sp-std 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -9984,6 +9987,7 @@ dependencies = [
  "parity-scale-codec",
  "parking_lot 0.11.1",
  "schnorrkel",
+ "serde",
  "sp-core 3.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sp-externalities 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]

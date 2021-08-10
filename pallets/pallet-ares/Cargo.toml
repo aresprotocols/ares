@@ -29,6 +29,7 @@ pallet-balances = { default-features = false, version = '3.0.0' }
 sp-core = { default-features = false, version = '3.0.0' }
 sp-io = { default-features = false, version = '3.0.0' }
 sp-runtime = { default-features = false, version = '3.0.0' }
+serde = { version = "1.0.119" }
 
 [features]
 default = ['std']
