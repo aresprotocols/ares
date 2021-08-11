@@ -28,6 +28,39 @@ mod mock;
 #[cfg(test)]
 mod tests;
 
+/// Configure the pallet by specifying the parameters and types on which it depends.
+pub trait Config: frame_system::Config + CreateSignedTransaction<Call<Self>> {
+    /// Because this pallet emits events, it depends on the runtime's definition of an event.
+    type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
+
+    type Call: From<Call<Self>>;
+    /// The identifier type for an offchain worker.
+    type AuthorityId: AppCrypto<Self::Public, Self::Signature>;
+
+    /// A grace period after we send transaction.
+    ///
+    /// To avoid sending too many transactions, we only attempt to send one
+    /// every `GRACE_PERIOD` blocks. We use Local Storage to coordinate
+    /// sending between distinct runs of this offchain worker.
+    type GracePeriod: Get<Self::BlockNumber>;
+}
+
+/// Payload used by this example crate to hold price
+/// data required to submit a transaction.
+#[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug)]
+pub struct PricePayload<Public, BlockNumber> {
+    block_number: BlockNumber,
+    price: u32,
+    public: Public,
+}
+
+impl<T: SigningTypes> SignedPayload<T> for PricePayload<T::Public, T::BlockNumber> {
+    fn public(&self) -> T::Public {
+        self.public.clone()
+    }
+}
+
+// The key type ID can be any 4-character string
 pub const KEY_TYPE: KeyTypeId = KeyTypeId(*b"btc!");
 pub const NUM_VEC_LEN: usize = 20;
 
@@ -61,188 +94,160 @@ pub mod crypto {
         type GenericPublic = sp_core::sr25519::Public;
     }
 }
-
-/// Include other pallet function
-pub use pallet::*;
-
-
-#[frame_support::pallet]
-pub mod pallet {
-    use frame_support::pallet_prelude::*;
-    use frame_system::pallet_prelude::*;
-    use super::*;
-    // use std::intrinsics::log2f32;
-
-    /// This pallet's configuration trait
-    #[pallet::config]
-    pub trait Config: CreateSignedTransaction<Call<Self>> + frame_system::Config {
-        /// Because this pallet emits events, it depends on the runtime's definition of an event.
-        type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
-
-        type Call: From<Call<Self>>;
-
-        /// The identifier type for an offchain worker.
-        type AuthorityId: AppCrypto<Self::Public, Self::Signature>;
-
-        /// A grace period after we send transaction.
-        /// To avoid sending too many transactions, we only attempt to send one
-        /// every `GRACE_PERIOD` blocks. We use Local Storage to coordinate
-        /// sending between distinct runs of this offchain worker.
-        #[pallet::constant]
-        type GracePeriod: Get<Self::BlockNumber>;
-    }
-
-    #[pallet::pallet]
-    #[pallet::generate_store(pub (super) trait Store)]
-    pub struct Pallet<T>(_);
-
-    #[pallet::hooks]
-    impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
-        /// Offchain Worker entry point.
-        fn offchain_worker(block_number: T::BlockNumber) {
-            let start_type = block_number % 5u32.into();
-            if start_type == T::BlockNumber::from(1u32) {
-
-                // debug::native::info!("Ares offchain workers! {} ",block_number);
-                debug::native::info!("Ares offchain workers! {} ",block_number);
-
-                // Since off-chain workers are just part of the runtime code, they have direct access
-                // to the storage and other included pallets.
-                // let parent_hash = <frame_system::Module<T>>::block_hash(block_number - 1u32.into());
-                let parent_hash = <frame_system::Pallet<T>>::block_hash(block_number - 1u32.into());
-                debug::native::debug!("Current block: {:?} (parent hash: {:?})", block_number, parent_hash);
-
-                // It's a good practice to keep `fn offchain_worker()` function minimal, and move most
-                // of the code to separate `impl` block.
-                // Here we call a helper function to calculate current average price.
-                // This function reads storage entries of the current state.
-                let average: Option<u32> = Self::average_price();
-                debug::native::debug!("Current price: {:?}", average);
-
-                // For this example we are going to send both signed and unsigned transactions
-                // depending on the block number.
-                // Usually it's enough to choose one or the other.
-                let should_send = Self::choose_transaction_type(block_number);
-                let res = match should_send {
-                    TransactionType::Signed => Self::fetch_price_and_send_signed(),
-                    TransactionType::None => Ok(()),
-                };
-                if let Err(e) = res {
-                    debug::error!("Error: {}", e);
-                }
-            }
-        }
-    }
-
-    /// A public part of the pallet.
-    #[pallet::call]
-    impl<T: Config> Pallet<T> {
-
-        #[pallet::weight(10_000)]
-        pub fn submit_price(origin: OriginFor<T>, price: u32) -> DispatchResultWithPostInfo {
-            // Retrieve sender of the transaction.
-            let who = ensure_signed(origin)?;
-            // Add the price to the on-chain list.
-            Self::add_price(who, price);
-            Ok(().into())
-        }
-
-
-        #[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
-        pub fn do_something(origin: OriginFor<T>, something: u32) -> DispatchResultWithPostInfo {
-            // Check that the extrinsic was signed and get the signer.
-            // This function will return an error if the extrinsic is not signed.
-            // https://substrate.dev/docs/en/knowledgebase/runtime/origin
-            let who = ensure_signed(origin)?;
-
-            // Update storage.
-            <Something<T>>::put(something);
-
-            // Emit an event.
-            Self::deposit_event(Event::SomethingStored(something, who));
-            // Return a successful DispatchResultWithPostInfo
-            Ok(().into())
-        }
-
-        #[pallet::weight(10_000 + T::DbWeight::get().reads_writes(1,1))]
-        pub fn cause_error(origin: OriginFor<T>) -> DispatchResultWithPostInfo {
-            let _who = ensure_signed(origin)?;
-            // Read a value from storage.
-            match <Something<T>>::get() {
-                // Return an error if the value has not been set.
-                None => Err(Error::<T>::NoneValue)?,
-                Some(old) => {
-                    // Increment the value read from storage; will error in the event of overflow.
-                    let new = old.checked_add(1).ok_or(Error::<T>::StorageOverflow)?;
-                    // Update the value in storage with the incremented result.
-                    <Something<T>>::put(new);
-                    Ok(().into())
-                }
-            }
-        }
-
-    }
-
-    /// 定义 Pallet 中的事件，会生成 deposit_event ，旧的方法是 fn deposit_event() = default; 这样搞得。
-    #[pallet::event]
-    #[pallet::generate_deposit(pub(super) fn deposit_event)]
-    pub enum Event<T: Config> {
-        /// Event generated when new price is accepted to contribute to the average.
-        /// \[price, who\]
-        SomethingStored(u32, T::AccountId),
-        NewPrice(u32, T::AccountId),
-    }
-
-    // #[pallet::validate_unsigned] 不需要不具名的签名方法。
-
-    //定义存储结构。
-
-    #[pallet::storage]
-    #[pallet::getter(fn prices)]
-    pub(super) type Prices<T: Config> = StorageValue<_, VecDeque<u32>, ValueQuery>;
-
-    #[pallet::storage]
-    #[pallet::getter(fn next_unsigned_at)]
-    pub(super) type NextUnsignedAt<T: Config> = StorageValue<_, T::BlockNumber, ValueQuery>;
-
-    // 添加 ValueQuery 就会变成定值而不是 Some 了 ，否则通过 Option 返回
-    #[pallet::storage]
-    #[pallet::getter(fn something)]
-    pub(super) type Something<T: Config> =  StorageValue<_, u32>;
-
-    #[pallet::error]
-    pub enum Error<T> {
-        /// Error names should be descriptive.
-        NoneValue,
-        /// Errors should have helpful documentation associated with them.
-        StorageOverflow,
-    }
-
+// The pallet's runtime storage items.
+// https://substrate.dev/docs/en/knowledgebase/runtime/storage
+decl_storage! {
+	// A unique name is used to ensure that the pallet's storage items are isolated.
+	// This name may be updated, but each pallet in the runtime must use a unique name.
+	// ---------------------------------vvvvvvvvvvvvvv
+	trait Store for Module<T: Config> as TemplateModule {
+		// Learn more about declaring storage items:
+		// https://substrate.dev/docs/en/knowledgebase/runtime/storage#declaring-storage-items
+		Something get(fn something): Option<u32>;
+		/// A vector of recently submitted prices. Bounded by NUM_VEC_LEN
+		///
+		/// This is used to calculate average price, should have bounded size.
+		Prices get(fn prices): VecDeque<u32>;
+		/// Defines the block when next unsigned transaction will be accepted.
+		///
+		/// To prevent spam of unsigned (and unpayed!) transactions on the network,
+		/// we only allow one transaction every `T::UnsignedInterval` blocks.
+		/// This storage entry defines when new transaction is going to be accepted.
+		NextUnsignedAt get(fn next_unsigned_at): T::BlockNumber;
+	}
 }
 
-/// Payload used by this example crate to hold price
-/// data required to submit a transaction.
-#[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug)]
-pub struct PricePayload<Public, BlockNumber> {
-    block_number: BlockNumber,
-    price: u32,
-    public: Public,
+// Pallets use events to inform users when important changes are made.
+// https://substrate.dev/docs/en/knowledgebase/runtime/events
+decl_event!(
+	pub enum Event<T> where AccountId = <T as frame_system::Config>::AccountId {
+		/// Event documentation should end with an array that provides descriptive names for event
+		/// parameters. [something, who]
+		SomethingStored(u32, AccountId),
+		NewPrice(u32, AccountId),
+	}
+);
+
+// Errors inform users that something went wrong.
+decl_error! {
+	pub enum Error for Module<T: Config> {
+		/// Error names should be descriptive.
+		NoneValue,
+		/// Errors should have helpful documentation associated with them.
+		StorageOverflow,
+	}
 }
 
-impl<T: SigningTypes> SignedPayload<T> for PricePayload<T::Public, T::BlockNumber> {
-    fn public(&self) -> T::Public {
-        self.public.clone()
+// Dispatchable functions allows users to interact with the pallet and invoke state changes.
+// These functions materialize as "extrinsics", which are often compared to transactions.
+// Dispatchable functions must be annotated with a weight and must return a DispatchResult.
+decl_module! {
+	pub struct Module<T: Config> for enum Call where origin: T::Origin {
+		// Errors must be initialized if they are used by the pallet.
+		type Error = Error<T>;
+
+		// Events must be initialized if they are used by the pallet.
+		fn deposit_event() = default;
+
+		/// An example dispatchable that takes a singles value as a parameter, writes the value to
+		/// storage and emits an event. This function must be dispatched by a signed extrinsic.
+		#[weight = 10_000]
+		pub fn do_something(origin, something: u32) -> dispatch::DispatchResult {
+			// Check that the extrinsic was signed and get the signer.
+			// This function will return an error if the extrinsic is not signed.
+			// https://substrate.dev/docs/en/knowledgebase/runtime/origin
+			let who = ensure_signed(origin)?;
+
+			// Update storage.
+			Something::put(something);
+
+			// TODO:: RawEvent 要替换成 Event
+			Self::deposit_event(Event::SomethingStored(something, who));
+			// Return a successful DispatchResult
+			Ok(())
+		}
+
+		/// An example dispatchable that may throw a custom error.
+		#[weight = 10_000]
+		pub fn cause_error(origin) -> dispatch::DispatchResult {
+			let _who = ensure_signed(origin)?;
+
+			// Read a value from storage.
+			match Something::get() {
+				// Return an error if the value has not been set.
+				None => Err(Error::<T>::NoneValue)?,
+				Some(old) => {
+					// Increment the value read from storage; will error in the event of overflow.
+					let new = old.checked_add(1).ok_or(Error::<T>::StorageOverflow)?;
+					// Update the value in storage with the incremented result.
+					Something::put(new);
+					Ok(())
+				},
+			}
+		}
+
+		#[weight = 10_000]
+		pub fn submit_price(origin, price: u32) -> dispatch::DispatchResult {
+			// Retrieve sender of the transaction.
+			let who = ensure_signed(origin)?;
+			// Add the price to the on-chain list.
+			Self::add_price(who, price);
+			Ok(())
+		}
+
+    fn offchain_worker(block_number: T::BlockNumber) {
+    	let start_type = block_number % 5u32.into();
+		if start_type == T::BlockNumber::from(1u32) {
+			// It's a good idea to add logs to your offchain workers.
+			// Using the `frame_support::debug` module you have access to the same API exposed by
+			// the `log` crate.
+			// Note that having logs compiled to WASM may cause the size of the blob to increase
+			// significantly. You can use `RuntimeDebug` custom derive to hide details of the types
+			// in WASM or use `debug::native` namespace to produce logs only when the worker is
+			// running natively.
+			debug::native::info!("Ares offchain workers! {} ",block_number);
+
+			// Since off-chain workers are just part of the runtime code, they have direct access
+			// to the storage and other included pallets.
+			//
+			// We can easily import `frame_system` and retrieve a block hash of the parent block.
+			let parent_hash = <frame_system::Module<T>>::block_hash(block_number - 1u32.into());
+			debug::debug!("Current block: {:?} (parent hash: {:?})", block_number, parent_hash);
+
+			// It's a good practice to keep `fn offchain_worker()` function minimal, and move most
+			// of the code to separate `impl` block.
+			// Here we call a helper function to calculate current average price.
+			// This function reads storage entries of the current state.
+			let average: Option<u32> = Self::average_price();
+			debug::debug!("Current price: {:?}", average);
+
+			// For this example we are going to send both signed and unsigned transactions
+			// depending on the block number.
+			// Usually it's enough to choose one or the other.
+			let should_send = Self::choose_transaction_type(block_number);
+			let res = match should_send {
+				TransactionType::Signed => Self::fetch_price_and_send_signed(),
+				TransactionType::None => Ok(()),
+			};
+			if let Err(e) = res {
+				debug::error!("Error: {}", e);
+			}
+		}
     }
+	}
 }
+
 
 enum TransactionType {
     Signed,
     None,
 }
 
-// TOOD:: Pallet 的实现在外面还有一个
-impl<T: Config> Pallet<T> {
-
+/// Most of the functions are moved outside of the `decl_module!` macro.
+///
+/// This greatly helps with error messages, as the ones inside the macro
+/// can sometimes be hard to debug.
+impl<T: Config> Module<T> {
     /// Chooses which transaction type to send.
     ///
     /// This function serves mostly to showcase `StorageValue` helper
@@ -446,7 +451,7 @@ impl<T: Config> Pallet<T> {
     /// Add new price to the list.
     fn add_price(who: T::AccountId, price: u32) {
         debug::info!("Adding to the average: {}", price);
-        <Prices<T>>::mutate(|prices| {
+        Prices::mutate(|prices| {
             if prices.len() == NUM_VEC_LEN {
                 let _ = prices.pop_front();
             }
@@ -461,11 +466,10 @@ impl<T: Config> Pallet<T> {
         Self::deposit_event(Event::NewPrice(price, who));
     }
 
-
     /// Calculate current average price.
     /// sort price and remove start , end value
     fn average_price() -> Option<u32> {
-        let prices = <Prices<T>>::get();
+        let prices = Prices::get();
         if prices.is_empty() {
             None
         } else if prices.len() <= 2 {

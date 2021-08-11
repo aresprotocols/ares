@@ -77,6 +77,7 @@ pub mod pallet {
 
 			// Update storage.
 			<Something<T>>::put(something);
+			// println!("-- A -- {:?}", <Something<T>>::get());
 
 			// Emit an event.
 			Self::deposit_event(Event::SomethingStored(something, who));
@@ -88,7 +89,7 @@ pub mod pallet {
 		#[pallet::weight(10_000 + T::DbWeight::get().reads_writes(1,1))]
 		pub fn cause_error(origin: OriginFor<T>) -> DispatchResultWithPostInfo {
 			let _who = ensure_signed(origin)?;
-
+			// println!("-- B -- {:?}", <Something<T>>::get());
 			// Read a value from storage.
 			match <Something<T>>::get() {
 				// Return an error if the value has not been set.
