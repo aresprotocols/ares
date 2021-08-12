@@ -193,10 +193,6 @@ pub mod pallet {
         NewPrice(u32, T::AccountId),
     }
 
-    // #[pallet::validate_unsigned] 不需要不具名的签名方法。
-
-    //定义存储结构。
-
     #[pallet::storage]
     #[pallet::getter(fn prices)]
     pub(super) type Prices<T: Config> = StorageValue<_, VecDeque<u32>, ValueQuery>;
@@ -205,7 +201,6 @@ pub mod pallet {
     #[pallet::getter(fn next_unsigned_at)]
     pub(super) type NextUnsignedAt<T: Config> = StorageValue<_, T::BlockNumber, ValueQuery>;
 
-    // 添加 ValueQuery 就会变成定值而不是 Some 了 ，否则通过 Option 返回
     #[pallet::storage]
     #[pallet::getter(fn something)]
     pub(super) type Something<T: Config> =  StorageValue<_, u32>;
