@@ -40,6 +40,9 @@ use pallet_transaction_payment::CurrencyAdapter;
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
+pub mod part_member_extend;
+pub mod part_ocw;
+
 /// Import the template pallet.
 pub use pallet_template;
 
@@ -61,6 +64,10 @@ pub type Index = u32;
 
 /// A hash of some data used by the chain.
 pub type Hash = sp_core::H256;
+
+pub const MILLICENTS: Balance = 1_000_000_000;
+pub const CENTS: Balance = 1_000 * MILLICENTS; // assume this is worth about a cent.
+pub const DOLLARS: Balance = 100 * CENTS;
 
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know
 /// the specifics of the runtime. They can then be made to be agnostic over specific formats
@@ -193,12 +200,29 @@ impl frame_system::Config for Runtime {
 	type OnSetCode = ();
 }
 
+parameter_types! {
+	pub const IndexDeposit: Balance = 1 * DOLLARS;
+}
+
+// impl pallet_indices::Config for Runtime {
+// 	type AccountIndex = AccountIndex;
+// 	type Currency = Balances;
+// 	type Deposit = IndexDeposit;
+// 	type Event = Event;
+// 	type WeightInfo = pallet_indices::weights::SubstrateWeight<Runtime>;
+// }
+
 impl pallet_randomness_collective_flip::Config for Runtime {}
 
 impl pallet_aura::Config for Runtime {
 	type AuthorityId = AuraId;
 	type DisabledValidators = ();
 }
+
+// impl pallet_aura::Config for Runtime {
+// 	type AuthorityId = AccountId;
+// 	type DisabledValidators = ();
+// }
 
 impl pallet_grandpa::Config for Runtime {
 	type Event = Event;
@@ -282,16 +306,25 @@ construct_runtime!(
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
 		Aura: pallet_aura::{Pallet, Config<T>},
+		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
+		//
+		MemberExtend: member_extend::{Pallet},
+		//
+		OCWModule: pallet_ocw::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>}
 	}
 );
 
+/// The type for looking up accounts. We don't expect more than 4 billion of them.
+// pub type AccountIndex = u32;
+
 /// The address format for describing accounts.
+// pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
 pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
 /// Block header type as expected by this runtime.
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;

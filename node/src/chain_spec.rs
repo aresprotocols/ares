@@ -1,5 +1,6 @@
 use node_template_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SudoConfig,
+	OCWModuleConfig,
 	SystemConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
@@ -149,6 +150,18 @@ fn testnet_genesis(
 		sudo: SudoConfig {
 			// Assign network admin rights.
 			key: root_key,
+		},
+		ocw_module: OCWModuleConfig {
+			_phantom: Default::default(),
+			request_base: Vec::new(),
+			price_pool_depth: 3u32,
+			price_allowable_offset: 10u8,
+			price_requests: vec![
+				// price_key, request_uri, parse_version, fraction_num, request interval
+				("btc_price".as_bytes().to_vec(), "btcusdt".as_bytes().to_vec(), 2u32, 4, 2),
+				("eth_price".as_bytes().to_vec(), "ethusdt".as_bytes().to_vec(), 2u32, 4, 2),
+				// ("eth_price,dot_price".as_bytes().to_vec(), "/api/getPartyPrice/ethusdt,dotusdt".as_bytes().to_vec(), 2u32, 4),
+			]
 		},
 	}
 }

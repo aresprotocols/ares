@@ -11,6 +11,10 @@ use sc_telemetry::{Telemetry, TelemetryWorker};
 use sp_consensus::SlotData;
 use sp_consensus_aura::sr25519::AuthorityPair as AuraPair;
 use std::{sync::Arc, time::Duration};
+// use sp_runtime::sp_std;
+use frame_support::pallet_prelude::Encode;
+use frame_support::sp_std;
+// use frame_support::{dispatch::DispatchResult, pallet_prelude::*};
 
 // Our native executor instance.
 pub struct ExecutorDispatch;
@@ -152,7 +156,7 @@ fn remote_keystore(_url: &String) -> Result<Arc<LocalKeystore>, &'static str> {
 }
 
 /// Builds a new service for a full client.
-pub fn new_full(mut config: Configuration) -> Result<TaskManager, ServiceError> {
+pub fn new_full(mut config: Configuration, request_base: Vec<u8>) -> Result<TaskManager, ServiceError> {
 	let sc_service::PartialComponents {
 		client,
 		backend,
@@ -235,6 +239,20 @@ pub fn new_full(mut config: Configuration) -> Result<TaskManager, ServiceError> 
 		config,
 		telemetry: telemetry.as_mut(),
 	})?;
+
+	let request_base_str = sp_std::str::from_utf8(&request_base).unwrap();
+	// println!("debug_str ======= {:?}", request_base_str );
+	let store_request_u8 = request_base_str.encode();
+	let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
+
+	let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
+
+	println!(" OFFCHAIN request base : = {:?}", &body);
+
+	_rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
+
+	// ---------
+
 
 	if role.is_authority() {
 		let proposer_factory = sc_basic_authorship::ProposerFactory::new(

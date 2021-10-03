@@ -3235,7 +3235,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.0"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#c38c8497347b4220b893d52c9fe58e8ea8314c81"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#8502432672abe8df9ea05a65e64aff3ed26e1ca3"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3557,6 +3557,7 @@ version = "3.0.0-monthly-2021-09+1"
 dependencies = [
  "frame-benchmarking",
  "frame-benchmarking-cli",
+ "frame-support",
  "jsonrpc-core",
  "node-template-runtime",
  "pallet-transaction-payment-rpc",
@@ -3599,10 +3600,12 @@ dependencies = [
  "frame-system-benchmarking",
  "frame-system-rpc-runtime-api",
  "hex-literal",
+ "log",
  "member-extend",
  "pallet-aura",
  "pallet-balances",
  "pallet-grandpa",
+ "pallet-indices",
  "pallet-ocw",
  "pallet-randomness-collective-flip",
  "pallet-sudo",
@@ -3852,9 +3855,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-indices"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-keyring",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "pallet-ocw"
-version = "3.0.0"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#c38c8497347b4220b893d52c9fe58e8ea8314c81"
+version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#8502432672abe8df9ea05a65e64aff3ed26e1ca3"
 dependencies = [
  "frame-support",
  "frame-system",

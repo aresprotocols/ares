@@ -130,7 +130,17 @@ pub fn run() -> sc_cli::Result<()> {
 			runner.run_node_until_exit(|config| async move {
 				match config.role {
 					Role::Light => service::new_light(config),
-					_ => service::new_full(config),
+					_ => {
+						let request_base = match cli.request_base {
+							None => {
+								panic!("Need --request-base ");
+							}
+							Some(request_rul) => {
+								request_rul.as_str().as_bytes().to_vec()
+							}
+						};
+						service::new_full(config, request_base)
+					}
 				}
 				.map_err(sc_cli::Error::Service)
 			})

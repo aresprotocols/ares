@@ -8,6 +8,9 @@ pub struct Cli {
 
 	#[structopt(flatten)]
 	pub run: RunCmd,
+
+	#[structopt(long = "request-base")]
+	pub request_base: Option<String>,
 }
 
 #[derive(Debug, StructOpt)]
