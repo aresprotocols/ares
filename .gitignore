@@ -16,3 +16,8 @@
 .direnv
 
 **/.idea
+
+**/*.will_del
+**/*.curl
+**/*.private.md
+**/*.private.bak
