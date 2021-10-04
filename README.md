@@ -26,3 +26,71 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
     ]
 }
 ```
+
+### Testing
+
+* Export the local chain spec to json
+```text
+./target/release/node-template build-spec --disable-default-bootnode --chain local > chain-data-ares-aura.json
+```
+
+* Start one
+```text
+
+./target/release/node-template purge-chain --base-path /tmp/aura/one --chain local -y
+./target/release/node-template \
+  --base-path /tmp/aura/one \
+  --name ocw_one \
+  --chain ./chain-data-ares-aura.json \
+  --port 30333 \
+  --ws-port 9945 \
+  --rpc-port 9933 \
+  --ws-external \
+  --rpc-external \
+  --rpc-cors=all \
+  --rpc-methods=Unsafe \
+  --node-key 0000000000000000000000000000000000000000000000000000000000000001 \
+  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+  --request-base http://141.164.58.241:5566 \
+  --validator
+  
+```
+
+* Start two
+```text
+./target/release/node-template purge-chain --base-path /tmp/aura/two --chain local -y
+./target/release/node-template \
+  --base-path /tmp/aura/two \
+  --name ocw_two \
+  --chain ./chain-data-ares-aura.json \
+  --port 30334 \
+  --ws-port 9946 \
+  --rpc-port 9934 \
+  --ws-external \
+  --rpc-external \
+  --rpc-cors=all \
+  --rpc-methods=Unsafe \
+  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+  --request-base http://141.164.58.241:5566 \
+  --validator \
+  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+  
+```
+
+* Add Aura keys
+```text
+curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-01.curl"
+curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-02.curl"
+```
+
+* Add GRANDPA key
+```text
+curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@gran1.curl"
+curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@gran2.curl"
+```
+
+* Add ARES key
+```text
+curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-01.curl"
+curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-02.curl"
+```

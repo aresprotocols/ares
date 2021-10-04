@@ -5,9 +5,13 @@ use node_template_runtime::{
 };
 use sc_service::ChainType;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use sp_core::{sr25519, Pair, Public};
+use sp_core::{sr25519, Pair, Public, H256};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::traits::{IdentifyAccount, Verify};
+use hex_literal::hex;
+use sp_runtime::app_crypto::sp_core::crypto::UncheckedFrom;
+
+// use proc_macro::TokenStream;
 
 // The URL for the telemetry server.
 // const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
@@ -30,6 +34,19 @@ where
 	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
 {
 	AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
+
+}
+
+pub fn gac(acc_raw: [u8; 32]) -> AccountId {
+	AccountPublic::unchecked_from(acc_raw).into_account()
+}
+
+pub fn gau(aura_raw: [u8; 32], grand_raw: [u8; 32]) -> (AuraId, GrandpaId)  {
+	// Public::from_slice(format_str);
+	// let public_struct = TPublic::from_slice(&format_str);
+	// public_struct.
+	// TPublic::Pair::
+	(AuraId::from_slice(&aura_raw), GrandpaId::from_slice(&grand_raw))
 }
 
 /// Generate an Aura authority key.
@@ -47,6 +64,21 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		"dev",
 		ChainType::Development,
 		move || {
+			// testnet_genesis(
+			// 	wasm_binary,
+			// 	// Initial PoA authorities
+			// 	vec![authority_keys_from_seed("Alice")],
+			// 	// Sudo account
+			// 	get_account_id_from_seed::<sr25519::Public>("Alice"),
+			// 	// Pre-funded accounts
+			// 	vec![
+			// 		get_account_id_from_seed::<sr25519::Public>("Alice"),
+			// 		get_account_id_from_seed::<sr25519::Public>("Bob"),
+			// 		get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
+			// 		get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
+			// 	],
+			// 	true,
+			// )
 			testnet_genesis(
 				wasm_binary,
 				// Initial PoA authorities
@@ -76,6 +108,8 @@ pub fn development_config() -> Result<ChainSpec, String> {
 	))
 }
 
+
+
 pub fn local_testnet_config() -> Result<ChainSpec, String> {
 	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
 
@@ -89,23 +123,24 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 			testnet_genesis(
 				wasm_binary,
 				// Initial PoA authorities
-				vec![authority_keys_from_seed("Alice"), authority_keys_from_seed("Bob")],
+				vec![
+					// (gau(hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"]).into(),gau(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]).into()),
+					// (gau(hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"]).into(),gau(hex!["74a173a22757ddc9790ed388953a1ed8a5933a421858533411b36ebd41d74165"]).into()),
+					gau(hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"],hex!["3b7345bd36fb53c50be544a7c2847b9673984fa587af0c27108d3d464183e94f"]),
+					gau(hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"],hex!["a16c71b78c13cbd73e09cc348be1e8521ec2ce4c2615d4f2cf0e8148ba454a05"]),
+				],
 				// Sudo account
-				get_account_id_from_seed::<sr25519::Public>("Alice"),
+				gac(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]),
 				// Pre-funded accounts
 				vec![
-					get_account_id_from_seed::<sr25519::Public>("Alice"),
-					get_account_id_from_seed::<sr25519::Public>("Bob"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie"),
-					get_account_id_from_seed::<sr25519::Public>("Dave"),
-					get_account_id_from_seed::<sr25519::Public>("Eve"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie"),
-					get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+					gac(hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"]),
+					gac(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]),
+					gac(hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"]),
+					gac(hex!["74a173a22757ddc9790ed388953a1ed8a5933a421858533411b36ebd41d74165"]),
+					gac(hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"]),
+					gac(hex!["9e55f821f7b3484f15942af308001c32f113f31444f420a77422702907510669"]),
+					gac(hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"]),
+					gac(hex!["587bae319ecaee13ce2dbdedfc6d66eb189e5af427666b21b4d4a08c7af0671c"]),
 				],
 				true,
 			)
@@ -163,5 +198,19 @@ fn testnet_genesis(
 				// ("eth_price,dot_price".as_bytes().to_vec(), "/api/getPartyPrice/ethusdt,dotusdt".as_bytes().to_vec(), 2u32, 4),
 			]
 		},
+	}
+}
+
+
+#[cfg(test)]
+pub(crate) mod tests {
+	use super::*;
+	use crate::service::{new_full_base, new_light_base, NewFullBase};
+	use sc_service_test;
+	use sp_runtime::BuildStorage;
+
+	#[test]
+	fn test_staging_test_net_chain_spec() {
+		assert!(true);
 	}
 }
