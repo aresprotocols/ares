@@ -77,20 +77,45 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   
 ```
 
+* Start tri
+```text
+./target/release/node-template purge-chain --base-path /tmp/aura/tri --chain local -y
+./target/release/node-template \
+  --base-path /tmp/aura/tri \
+  --name ocw_tri \
+  --chain ./chain-data-ares-aura.json \
+  --port 30335 \
+  --ws-port 9947 \
+  --rpc-port 9935 \
+  --ws-external \
+  --rpc-external \
+  --rpc-cors=all \
+  --rpc-methods=Unsafe \
+  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+  --request-base http://141.164.58.241:5566 \
+  --validator \
+  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+  
+```
+
 * Add Aura keys
 ```text
 curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-01.curl"
 curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-02.curl"
+curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-03.curl"
 ```
 
 * Add GRANDPA key
 ```text
 curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@gran1.curl"
 curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@gran2.curl"
+curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@gran3.curl"
+
 ```
 
 * Add ARES key
 ```text
 curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-01.curl"
 curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-02.curl"
+curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-03.curl"
 ```
