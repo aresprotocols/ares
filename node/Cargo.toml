@@ -173,6 +173,10 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '4.0.0-dev'
 
+[dependencies.seed-reader]
+path = '../seed-reader'
+version = '1.0.1'
+
 [dependencies.hex-literal]
 version = "0.3.1"
 

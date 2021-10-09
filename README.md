@@ -52,6 +52,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --node-key 0000000000000000000000000000000000000000000000000000000000000001 \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
   --request-base http://141.164.58.241:5566 \
+  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_01.curl \
   --validator
   
 ```
@@ -72,6 +73,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --rpc-methods=Unsafe \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
   --request-base http://141.164.58.241:5566 \
+  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_02.curl \
   --validator \
   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
   
@@ -93,6 +95,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --rpc-methods=Unsafe \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
   --request-base http://141.164.58.241:5566 \
+  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_03.curl \
   --validator \
   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
   

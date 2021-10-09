@@ -11,6 +11,9 @@ pub struct Cli {
 
 	#[structopt(long = "request-base")]
 	pub request_base: Option<String>,
+
+	#[structopt(long = "ares-keys-file")]
+	pub ares_keys_file: Option<String>,
 }
 
 #[derive(Debug, StructOpt)]

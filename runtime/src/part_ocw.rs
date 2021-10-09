@@ -87,7 +87,6 @@ for OcwFindAccountFromAuthorIndex<T, Inner>
 
         Some(authro_account_id)
         // Default::default()
-
         // let validators = <Module<T>>::validators();
         // validators.get(i as usize).map(|k| k.clone())
     }

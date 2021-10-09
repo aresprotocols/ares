@@ -14,6 +14,8 @@ use std::{sync::Arc, time::Duration};
 // use sp_runtime::sp_std;
 use frame_support::pallet_prelude::Encode;
 use frame_support::sp_std;
+use seed_reader::*;
+use std::io::Read;
 // use frame_support::{dispatch::DispatchResult, pallet_prelude::*};
 
 // Our native executor instance.
@@ -156,7 +158,7 @@ fn remote_keystore(_url: &String) -> Result<Arc<LocalKeystore>, &'static str> {
 }
 
 /// Builds a new service for a full client.
-pub fn new_full(mut config: Configuration, request_base: Vec<u8>) -> Result<TaskManager, ServiceError> {
+pub fn new_full(mut config: Configuration, ares_params: Vec<(&str, Option<Vec<u8>>)>) -> Result<TaskManager, ServiceError> {
 	let sc_service::PartialComponents {
 		client,
 		backend,
@@ -240,17 +242,57 @@ pub fn new_full(mut config: Configuration, request_base: Vec<u8>) -> Result<Task
 		telemetry: telemetry.as_mut(),
 	})?;
 
-	let request_base_str = sp_std::str::from_utf8(&request_base).unwrap();
-	// println!("debug_str ======= {:?}", request_base_str );
-	let store_request_u8 = request_base_str.encode();
-	let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
+	let result: Vec<(&str, bool)> = ares_params.iter().map(|(order, x)|{
 
-	let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
+		match order {
+			&"request-base" => {
+				match x {
+					None => { (*order, false) }
+					Some(exe_vecu8) => {
+						let request_base_str = sp_std::str::from_utf8(exe_vecu8).unwrap();
+						// println!("debug_str ======= {:?}", request_base_str );
+						let store_request_u8 = request_base_str.encode();
+						let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
+						let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
+						println!(" OFFCHAIN request base : = {:?}", &body);
+						_rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
+						(*order, true)
+					}
+				}
+			},
+			&"ares-keys-file" => {
 
-	println!(" OFFCHAIN request base : = {:?}", &body);
+				match x {
+					None => { (*order, false) },
+					Some(exe_vecu8) => {
+						let key_file_path = sp_std::str::from_utf8(exe_vecu8).unwrap();
+						let mut file = std::fs::File::open(key_file_path).unwrap();
+						let mut contents = String::new();
+						file.read_to_string(&mut contents).unwrap();
+						let rawkey_list = extract_content(contents.as_str());
+						let insert_key_list: Vec<(&str, &str, String)> = rawkey_list.iter().map(|x| {
+							make_author_insert_key_params(*x)
+						}).collect() ;
+						let rpc_list: Vec<Option<String>> = insert_key_list.iter().map(|x|{
+							make_rpc_request("author_insertKey", (x.0, x.1, x.2.as_str()))
+						}).collect();
+						rpc_list.iter().any(|x|{
+							if let Some(rpc_str) = x {
+								// send rpc request.
+								_rpc_handlers.io_handler().handle_request_sync(rpc_str, sc_rpc::Metadata::default());
+							}
+							false
+						});
 
-	_rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
+						(*order, true)
+					}
+				}
+			}
+			&_ => {("NONE", false) }
+		}
+	}).collect();
 
+	println!(" OFFCHAIN param exec result : = {:?}", &result);
 	// ---------
 
 

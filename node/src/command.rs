@@ -131,15 +131,28 @@ pub fn run() -> sc_cli::Result<()> {
 				match config.role {
 					Role::Light => service::new_light(config),
 					_ => {
+						// ares params
+						let mut ares_params: Vec<(&str,Option<Vec<u8>>)> = Vec::new();
+
 						let request_base = match cli.request_base {
 							None => {
 								panic!("Need --request-base ");
+
 							}
 							Some(request_rul) => {
 								request_rul.as_str().as_bytes().to_vec()
 							}
 						};
-						service::new_full(config, request_base)
+						ares_params.push(("request-base", Some(request_base)) );
+
+						match cli.ares_keys_file {
+							None => {}
+							Some(keys_file_path) => {
+								ares_params.push(("ares-keys-file", Some(keys_file_path.as_bytes().to_vec())) );
+							}
+						}
+
+						service::new_full(config, ares_params)
 					}
 				}
 				.map_err(sc_cli::Error::Service)

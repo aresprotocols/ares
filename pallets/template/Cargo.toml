@@ -56,6 +56,9 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '4.0.0-dev'
 
+[dev-dependencies]
+seed-reader = { path = '../../seed-reader', version = '1.0.1'}
+
 [features]
 default = ['std']
 runtime-benchmarks = ['frame-benchmarking']
@@ -65,4 +68,6 @@ std = [
     'frame-system/std',
     'frame-benchmarking/std',
 ]
+
+
 try-runtime = ['frame-support/try-runtime']

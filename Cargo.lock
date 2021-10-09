@@ -3576,6 +3576,7 @@ dependencies = [
  "sc-telemetry",
  "sc-transaction-pool",
  "sc-transaction-pool-api",
+ "seed-reader",
  "sp-api",
  "sp-block-builder",
  "sp-blockchain",
@@ -3947,6 +3948,7 @@ dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
+ "seed-reader",
  "sp-core",
  "sp-io",
  "sp-runtime",
@@ -5957,6 +5959,19 @@ checksum = "a9dd14d83160b528b7bfd66439110573efcfbe281b17fc2ca9f39f550d619c7e"
 dependencies = [
  "core-foundation-sys",
  "libc",
+]
+
+[[package]]
+name = "seed-reader"
+version = "1.0.1"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "sp-application-crypto",
+ "sp-core",
+ "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]

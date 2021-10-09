@@ -1,0 +1,30 @@
+[package]
+name = "seed-reader"
+version = "1.0.1"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+codec = { package = 'parity-scale-codec', default-features = false, version = '2.0.0', features = ['derive']}
+sp-core = {default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-09+1', version = '4.0.0-dev'}
+#sp-io = {default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-09+1', version = '4.0.0-dev'}
+sp-runtime = {default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-09+1', version = '4.0.0-dev'}
+frame-support = {default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-09+1', version = '4.0.0-dev'}
+frame-system = {default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-09+1', version = '4.0.0-dev'}
+sp-application-crypto =  {default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-09+1', version = '4.0.0-dev'}
+sp-std =  {default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-09+1', version = '4.0.0-dev'}
+
+[features]
+default = ['std']
+std = [
+    'codec/std',
+    'sp-core/std',
+    'frame-support/std',
+    'sp-runtime/std',
+    'frame-system/std',
+    'sp-application-crypto/std',
+    'sp-std/std',
+]
+#try-runtime = ['frame-support/try-runtime']
+
