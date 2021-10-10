@@ -101,6 +101,28 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   
 ```
 
+* Start four
+```text
+./target/release/node-template purge-chain --base-path /tmp/aura/tri --chain local -y
+./target/release/node-template \
+  --base-path /tmp/aura/tri \
+  --name ocw_tri \
+  --chain ./chain-data-ares-aura.json \
+  --port 30335 \
+  --ws-port 9947 \
+  --rpc-port 9935 \
+  --ws-external \
+  --rpc-external \
+  --rpc-cors=all \
+  --rpc-methods=Unsafe \
+  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+  --request-base http://141.164.58.241:5566 \
+  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_04.curl \
+  --validator \
+  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+  
+```
+
 * Add Aura keys
 ```text
 curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-01.curl"

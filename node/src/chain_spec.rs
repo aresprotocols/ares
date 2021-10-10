@@ -127,6 +127,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 					gau(hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"],hex!["3b7345bd36fb53c50be544a7c2847b9673984fa587af0c27108d3d464183e94f"]),
 					gau(hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"],hex!["a16c71b78c13cbd73e09cc348be1e8521ec2ce4c2615d4f2cf0e8148ba454a05"]),
 					gau(hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"],hex!["2ce72e098beb0bc8ed6c812099bed8c7c60ae8208c94abf4212d7fdeaf11bab3"]),
+					gau(hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"],hex!["b200d0328d26f7cbb67223c179ab14a2152d7afb6689f07b618fda33695d5fd4"]),
 				],
 				// Sudo account
 				gac(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]),
