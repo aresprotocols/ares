@@ -103,14 +103,14 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start four
 ```text
-./target/release/node-template purge-chain --base-path /tmp/aura/tri --chain local -y
+./target/release/node-template purge-chain --base-path /tmp/aura/four --chain local -y
 ./target/release/node-template \
-  --base-path /tmp/aura/tri \
-  --name ocw_tri \
+  --base-path /tmp/aura/four \
+  --name ocw_four \
   --chain ./chain-data-ares-aura.json \
-  --port 30335 \
-  --ws-port 9947 \
-  --rpc-port 9935 \
+  --port 30336 \
+  --ws-port 9948 \
+  --rpc-port 9936 \
   --ws-external \
   --rpc-external \
   --rpc-cors=all \
