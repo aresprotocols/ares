@@ -31,7 +31,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Export the local chain spec to json
 ```text
-./target/release/node-template build-spec --disable-default-bootnode --chain local > chain-data-ares-aura.json
+./target/release/node-template build-spec --disable-default-bootnode --chain live > chain-data-ares-aura.json
 ```
 
 * Start one
