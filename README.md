@@ -37,7 +37,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 * Start one
 ```text
 
-./target/release/node-template purge-chain --base-path /tmp/aura/one --chain local -y
+./target/release/node-template purge-chain --base-path /tmp/aura/one --chain live -y
 ./target/release/node-template \
   --base-path /tmp/aura/one \
   --name ocw_one \
