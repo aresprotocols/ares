@@ -1,4 +1,4 @@
-use node_template_runtime::{
+use runtime_gladios_node::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SudoConfig,
 	OCWModuleConfig,
 	SystemConfig, WASM_BINARY,
