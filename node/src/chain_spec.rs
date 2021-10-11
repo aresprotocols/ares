@@ -113,9 +113,9 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 
 	Ok(ChainSpec::from_genesis(
 		// Name
-		"Local Testnet",
+		"Ares-Chain",
 		// ID
-		"local_testnet",
+		"ares_chain",
 		ChainType::Live,
 		move || {
 			testnet_genesis(

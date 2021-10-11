@@ -3275,7 +3275,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.2"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#c13e0cf7406c887164b2b3b247dc69c073312aea"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#aa925c39e027b901a48edecbce328d6feb820ef1"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3873,8 +3873,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ocw"
-version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#c13e0cf7406c887164b2b3b247dc69c073312aea"
+version = "3.0.5"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#aa925c39e027b901a48edecbce328d6feb820ef1"
 dependencies = [
  "frame-support",
  "frame-system",

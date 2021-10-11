@@ -31,14 +31,14 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Export the local chain spec to json
 ```text
-./target/release/node-template build-spec --disable-default-bootnode --chain live > chain-data-ares-aura.json
+./target/release/ares-chain build-spec --disable-default-bootnode --chain live > chain-data-ares-aura.json
 ```
 
 * Start one
 ```text
 
-./target/release/node-template purge-chain --base-path /tmp/aura/one --chain live -y
-./target/release/node-template \
+./target/release/ares-chain purge-chain --base-path /tmp/aura/one --chain live -y
+./target/release/ares-chain \
   --base-path /tmp/aura/one \
   --name ocw_one \
   --chain ./chain-data-ares-aura.json \
@@ -59,8 +59,8 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start two
 ```text
-./target/release/node-template purge-chain --base-path /tmp/aura/two --chain local -y
-./target/release/node-template \
+./target/release/ares-chain purge-chain --base-path /tmp/aura/two --chain local -y
+./target/release/ares-chain \
   --base-path /tmp/aura/two \
   --name ocw_two \
   --chain ./chain-data-ares-aura.json \
@@ -81,8 +81,8 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start tri
 ```text
-./target/release/node-template purge-chain --base-path /tmp/aura/tri --chain local -y
-./target/release/node-template \
+./target/release/ares-chain purge-chain --base-path /tmp/aura/tri --chain local -y
+./target/release/ares-chain \
   --base-path /tmp/aura/tri \
   --name ocw_tri \
   --chain ./chain-data-ares-aura.json \
@@ -103,8 +103,8 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start four
 ```text
-./target/release/node-template purge-chain --base-path /tmp/aura/four --chain local -y
-./target/release/node-template \
+./target/release/ares-chain purge-chain --base-path /tmp/aura/four --chain local -y
+./target/release/ares-chain \
   --base-path /tmp/aura/four \
   --name ocw_four \
   --chain ./chain-data-ares-aura.json \
