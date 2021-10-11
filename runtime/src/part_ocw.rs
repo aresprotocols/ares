@@ -28,8 +28,8 @@ parameter_types! {
 impl pallet_ocw::Config for Runtime {
     type Event = Event;
     type Call = Call;
-    type AuthorityId = pallet_ocw::crypto::OcwAuthId ;
-    type AuthorityAres = pallet_ocw::sr25519::AuthorityId;
+    type AuthorityId = pallet_ocw::crypto::OcwAuthId<Self> ;
+    type AuthorityAres = pallet_ocw::crypto::AuthorityId;
     // type UnsignedInterval = UnsignedInterval;
     type UnsignedPriority = UnsignedPriority;
 
