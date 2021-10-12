@@ -12,4 +12,12 @@
 # The cache for chain data in container
 .local
 
-.idea
+# direnv cache
+.direnv
+
+**/.idea
+
+**/*.will_del
+**/*.curl
+**/*.private.md
+**/*.private.bak

@@ -4,6 +4,28 @@ panic = 'unwind'
 [workspace]
 members = [
     'node',
-    'pallets/*',
+    'pallets/template',
+    'seed-reader',
     'runtime',
 ]
+
+#[patch.crates-io]
+#
+#hex = { version = "0.4", default-features = false, optional = true }
+#codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false }
+#frame-support = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#frame-system = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#sp-core = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#sp-keystore = { version = "0.10.0-dev", git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1", optional = true }
+#sp-io = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#sp-runtime = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#sp-std = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#lite-json = { version = "0.1", default-features = false }
+#log = { version = "0.4.14", default-features = false }
+#pallet-authorship = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#pallet-session = { version = "4.0.0-dev", features = ["historical"], default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#sp-application-crypto = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+#serde = { version = '1.0.130', default-features = false, features = ['derive'] }
+#serde_json = { version = '1.0.67', default-features = false, features = ['alloc'] }
+#sp-staking = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+

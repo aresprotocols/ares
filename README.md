@@ -1,39 +1,146 @@
-# Completely Decentralized Oracle Protocol
+## Ares cow 
 
-[![GitHub license](https://img.shields.io/badge/license-GPL3%2FApache2-blue)](LICENSE) [![GitLab Status](https://gitlab.parity.io/parity/substrate/badges/master/pipeline.svg)](https://gitlab.parity.io/parity/substrate/pipelines) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](docs/CONTRIBUTING.adoc)
+### Start 
 
-Ares is a predictive machine project based on Substrate, with the objective of providing safe and credible under chain real data use a decentralized approach for smart contracts, parallel chains or other projects in the ecosystem of the Polkadot.
-
-It is a decentralized oracle network that consists of Ares oracle Module, it makes full use of the off-chain worker, sources aggregator committee random mine block and reputation council.
-
-## Note
-
-Now we are mainly testing the functions of block generation, transfer, staking, etc. We will open more codes later when we are ready.
-
-## Running from Source
-
-### Building
-Install all the required dependencies with a single command (be patient, this can take up to 30 minutes).
-
-```bash
-curl https://getsubstrate.io -sSf | bash -s -- --fast
+* With --request-base
+```text
+./target/release/node-template --tmp --dev --request-base http://141.164.58.241:5566
 ```
 
-Once the development environment is set up, build the node.
-
-```bash
-git clone https://github.com/aresprotocols/ares.git
-cd ares
-make init
-make build
+* Set ares author key by RPC request
+```text
+curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-01.curl"
 ```
 
-### Embedded Docs
-
-Once the project has been built, the following command can be used to explore all parameters and
-subcommands:
-
-```sh
-./target/release/ares -h
+* PRC data file is similar as below
+```text
+// ocw-ares-01.curl file content:
+{
+    "jsonrpc":"2.0",
+    "id":1,
+    "method":"author_insertKey",
+    "params": [
+        "ares",
+        "XXXXX words ",
+        "0xPublicKey of Hex"
+    ]
+}
 ```
 
+### Testing
+
+* Export the local chain spec to json
+```text
+./target/release/ares-chain build-spec --disable-default-bootnode --chain live > chain-data-ares-aura.json
+```
+
+* Start one
+```text
+
+./target/release/ares-chain purge-chain --base-path /tmp/aura/one --chain live -y
+./target/release/ares-chain \
+  --base-path /tmp/aura/one \
+  --name ocw_one \
+  --chain ./chain-data-ares-aura.json \
+  --port 30333 \
+  --ws-port 9945 \
+  --rpc-port 9933 \
+  --ws-external \
+  --rpc-external \
+  --rpc-cors=all \
+  --rpc-methods=Unsafe \
+  --node-key 0000000000000000000000000000000000000000000000000000000000000001 \
+  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+  --request-base http://141.164.58.241:5566 \
+  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_01.curl \
+  --validator
+  
+```
+
+* Start two
+```text
+./target/release/ares-chain purge-chain --base-path /tmp/aura/two --chain local -y
+./target/release/ares-chain \
+  --base-path /tmp/aura/two \
+  --name ocw_two \
+  --chain ./chain-data-ares-aura.json \
+  --port 30334 \
+  --ws-port 9946 \
+  --rpc-port 9934 \
+  --ws-external \
+  --rpc-external \
+  --rpc-cors=all \
+  --rpc-methods=Unsafe \
+  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+  --request-base http://141.164.58.241:5566 \
+  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_02.curl \
+  --validator \
+  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+  
+```
+
+* Start tri
+```text
+./target/release/ares-chain purge-chain --base-path /tmp/aura/tri --chain local -y
+./target/release/ares-chain \
+  --base-path /tmp/aura/tri \
+  --name ocw_tri \
+  --chain ./chain-data-ares-aura.json \
+  --port 30335 \
+  --ws-port 9947 \
+  --rpc-port 9935 \
+  --ws-external \
+  --rpc-external \
+  --rpc-cors=all \
+  --rpc-methods=Unsafe \
+  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+  --request-base http://141.164.58.241:5566 \
+  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_03.curl \
+  --validator \
+  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+  
+```
+
+* Start four
+```text
+./target/release/ares-chain purge-chain --base-path /tmp/aura/four --chain local -y
+./target/release/ares-chain \
+  --base-path /tmp/aura/four \
+  --name ocw_four \
+  --chain ./chain-data-ares-aura.json \
+  --port 30336 \
+  --ws-port 9948 \
+  --rpc-port 9936 \
+  --ws-external \
+  --rpc-external \
+  --rpc-cors=all \
+  --rpc-methods=Unsafe \
+  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
+  --request-base http://141.164.58.241:5566 \
+  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_04.curl \
+  --validator \
+  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+  
+```
+
+* Add Aura keys
+```text
+curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-01.curl"
+curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-02.curl"
+curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-03.curl"
+```
+
+* Add GRANDPA key
+```text
+curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@gran1.curl"
+curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@gran2.curl"
+curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@gran3.curl"
+
+```
+
+* Add ARES key
+```text
+curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-01.curl"
+curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-02.curl"
+curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-03.curl"
+```
