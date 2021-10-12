@@ -30,6 +30,7 @@ impl pallet_ocw::Config for Runtime {
     type Call = Call;
     type AuthorityId = pallet_ocw::crypto::OcwAuthId<Self> ;
     type AuthorityAres = pallet_ocw::crypto::AuthorityId;
+    type CheckDeposit = ();
     // type UnsignedInterval = UnsignedInterval;
     type UnsignedPriority = UnsignedPriority;
 
