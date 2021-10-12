@@ -1471,7 +1471,7 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-runtime-interface",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-storage",
 ]
 
@@ -1512,7 +1512,7 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-tracing",
 ]
 
@@ -1524,7 +1524,7 @@ dependencies = [
  "parity-scale-codec",
  "serde",
  "sp-core",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -1549,7 +1549,7 @@ dependencies = [
  "sp-runtime",
  "sp-staking",
  "sp-state-machine",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-tracing",
 ]
 
@@ -1599,7 +1599,7 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-version",
 ]
 
@@ -1614,7 +1614,7 @@ dependencies = [
  "parity-scale-codec",
  "sp-core",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3275,7 +3275,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.2"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#702fbbe549d072533bc13696164b723c83401ef6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#c9d31bed25b94c64706606bfc13478986ab10a7d"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3292,7 +3292,7 @@ dependencies = [
  "sp-io",
  "sp-keystore",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3753,6 +3753,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-ares-challenge"
+version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#c9d31bed25b94c64706606bfc13478986ab10a7d"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "pallet-aura",
+ "parity-scale-codec",
+ "sp-consensus-aura",
+ "sp-consensus-babe",
+ "sp-consensus-slots",
+ "sp-core",
+ "sp-runtime",
+ "sp-std 3.0.0",
+]
+
+[[package]]
+name = "pallet-ares-collective"
+version = "4.0.0-dev"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#c9d31bed25b94c64706606bfc13478986ab10a7d"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "log",
+ "pallet-ares-challenge",
+ "parity-scale-codec",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
 name = "pallet-aura"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
@@ -3764,7 +3799,7 @@ dependencies = [
  "sp-application-crypto",
  "sp-consensus-aura",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3778,7 +3813,7 @@ dependencies = [
  "parity-scale-codec",
  "sp-authorship",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3792,7 +3827,7 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3814,7 +3849,7 @@ dependencies = [
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3829,30 +3864,32 @@ dependencies = [
  "sp-io",
  "sp-keyring",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
 name = "pallet-ocw"
 version = "3.0.6"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#702fbbe549d072533bc13696164b723c83401ef6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#c9d31bed25b94c64706606bfc13478986ab10a7d"
 dependencies = [
  "frame-support",
  "frame-system",
  "hex",
  "lite-json",
  "log",
+ "pallet-ares-challenge",
  "pallet-authorship",
  "pallet-session",
  "parity-scale-codec",
  "serde",
  "serde_json",
  "sp-application-crypto",
+ "sp-consensus-aura",
  "sp-core",
  "sp-io",
  "sp-keystore",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3865,7 +3902,7 @@ dependencies = [
  "parity-scale-codec",
  "safe-mix",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3884,7 +3921,7 @@ dependencies = [
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-trie",
 ]
 
@@ -3898,7 +3935,7 @@ dependencies = [
  "parity-scale-codec",
  "sp-io",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -3928,7 +3965,7 @@ dependencies = [
  "sp-inherents",
  "sp-io",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-timestamp",
 ]
 
@@ -3945,7 +3982,7 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -4934,6 +4971,8 @@ dependencies = [
  "hex-literal",
  "log",
  "member-extend",
+ "pallet-ares-challenge",
+ "pallet-ares-collective",
  "pallet-aura",
  "pallet-balances",
  "pallet-grandpa",
@@ -4954,7 +4993,7 @@ dependencies = [
  "sp-offchain",
  "sp-runtime",
  "sp-session",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-transaction-pool",
  "sp-version",
  "substrate-wasm-builder",
@@ -5971,7 +6010,7 @@ dependencies = [
  "sp-application-crypto",
  "sp-core",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6256,7 +6295,7 @@ dependencies = [
  "sp-core",
  "sp-runtime",
  "sp-state-machine",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-version",
  "thiserror",
 ]
@@ -6282,7 +6321,7 @@ dependencies = [
  "serde",
  "sp-core",
  "sp-io",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6295,7 +6334,7 @@ dependencies = [
  "parity-scale-codec",
  "serde",
  "sp-debug-derive",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "static_assertions",
 ]
 
@@ -6308,7 +6347,7 @@ dependencies = [
  "parity-scale-codec",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6320,7 +6359,7 @@ dependencies = [
  "sp-api",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6355,7 +6394,7 @@ dependencies = [
  "sp-inherents",
  "sp-runtime",
  "sp-state-machine",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-version",
  "thiserror",
 ]
@@ -6373,7 +6412,29 @@ dependencies = [
  "sp-consensus-slots",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
+ "sp-timestamp",
+]
+
+[[package]]
+name = "sp-consensus-babe"
+version = "0.10.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "async-trait",
+ "merlin",
+ "parity-scale-codec",
+ "serde",
+ "sp-api",
+ "sp-application-crypto",
+ "sp-consensus",
+ "sp-consensus-slots",
+ "sp-consensus-vrf",
+ "sp-core",
+ "sp-inherents",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
  "sp-timestamp",
 ]
 
@@ -6385,6 +6446,18 @@ dependencies = [
  "parity-scale-codec",
  "sp-arithmetic",
  "sp-runtime",
+]
+
+[[package]]
+name = "sp-consensus-vrf"
+version = "0.10.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "parity-scale-codec",
+ "schnorrkel",
+ "sp-core",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6420,7 +6493,7 @@ dependencies = [
  "sp-debug-derive",
  "sp-externalities",
  "sp-runtime-interface",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-storage",
  "substrate-bip39",
  "thiserror",
@@ -6457,7 +6530,7 @@ source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#
 dependencies = [
  "environmental",
  "parity-scale-codec",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-storage",
 ]
 
@@ -6475,7 +6548,7 @@ dependencies = [
  "sp-core",
  "sp-keystore",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6488,7 +6561,7 @@ dependencies = [
  "parity-scale-codec",
  "sp-core",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "thiserror",
 ]
 
@@ -6509,7 +6582,7 @@ dependencies = [
  "sp-maybe-compressed-blob",
  "sp-runtime-interface",
  "sp-state-machine",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-tracing",
  "sp-trie",
  "sp-wasm-interface",
@@ -6600,7 +6673,7 @@ dependencies = [
  "sp-arithmetic",
  "sp-core",
  "sp-io",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6613,7 +6686,7 @@ dependencies = [
  "primitive-types",
  "sp-externalities",
  "sp-runtime-interface-proc-macro",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-storage",
  "sp-tracing",
  "sp-wasm-interface",
@@ -6651,7 +6724,7 @@ dependencies = [
  "sp-core",
  "sp-runtime",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6661,7 +6734,7 @@ source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#
 dependencies = [
  "parity-scale-codec",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6679,13 +6752,19 @@ dependencies = [
  "sp-core",
  "sp-externalities",
  "sp-panic-handler",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-trie",
  "thiserror",
  "tracing",
  "trie-db",
  "trie-root",
 ]
+
+[[package]]
+name = "sp-std"
+version = "3.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "35391ea974fa5ee869cb094d5b437688fbf3d8127d64d1b9fed5822a1ed39b12"
 
 [[package]]
 name = "sp-std"
@@ -6702,7 +6781,7 @@ dependencies = [
  "ref-cast",
  "serde",
  "sp-debug-derive",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6715,7 +6794,7 @@ dependencies = [
  "sp-externalities",
  "sp-io",
  "sp-runtime-interface",
- "sp-std",
+ "sp-std 4.0.0-dev",
 ]
 
 [[package]]
@@ -6730,7 +6809,7 @@ dependencies = [
  "sp-api",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "thiserror",
 ]
 
@@ -6746,7 +6825,7 @@ dependencies = [
  "serde",
  "serde_json",
  "slog",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "tracing",
  "tracing-core",
  "tracing-subscriber",
@@ -6772,7 +6851,7 @@ dependencies = [
  "sp-core",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-trie",
 ]
 
@@ -6785,7 +6864,7 @@ dependencies = [
  "memory-db",
  "parity-scale-codec",
  "sp-core",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "trie-db",
  "trie-root",
 ]
@@ -6811,7 +6890,7 @@ dependencies = [
  "parity-wasm 0.42.2",
  "serde",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "sp-version-proc-macro",
  "thiserror",
 ]
@@ -6834,7 +6913,7 @@ source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#
 dependencies = [
  "impl-trait-for-tuples",
  "parity-scale-codec",
- "sp-std",
+ "sp-std 4.0.0-dev",
  "wasmi",
 ]
 
