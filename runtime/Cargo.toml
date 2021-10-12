@@ -189,7 +189,12 @@ log = { version = "0.4.14", default-features = false }
 
 pallet-ocw = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.6'}
 member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.0'}
-
+pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
+pallet-ares-collective = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev'}
+#pallet-ocw = {default-features = false, path = '../../ocw-suit/pallets/pallet-ocw', version = '3.0.1'}
+#member-extend = {default-features = false, path = '../../ocw-suit/pallets/member-extend',  version = '3.0.0'}
+#pallet-ares-challenge = {default-features = false, path = '../../ocw-suit/pallets/challenge', version='3.0.1'}
+#pallet-ares-collective = {default-features = false, path = '../../ocw-suit/pallets/collective',  version = '4.0.0-dev'}
 
 [features]
 default = ['std']
@@ -231,6 +236,8 @@ std = [
     'sp-transaction-pool/std',
     'sp-version/std',
     'pallet-ocw/std',
+    'pallet-ares-challenge/std',
+    'pallet-ares-collective/std',
     "member-extend/std",
     "log/std",
     "pallet-indices/std",
