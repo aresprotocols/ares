@@ -30,7 +30,7 @@ impl pallet_ocw::Config for Runtime {
     type Call = Call;
     type AuthorityId = pallet_ocw::crypto::OcwAuthId<Self> ;
     type AuthorityAres = pallet_ocw::crypto::AuthorityId;
-    type CheckDeposit = AresChallenge;
+    // type CheckDeposit = AresChallenge;
     // type UnsignedInterval = UnsignedInterval;
     type UnsignedPriority = UnsignedPriority;
 
@@ -83,7 +83,7 @@ where
 		// extract AccountId32 from store keys
 		let owner_account_id32 = sp_runtime::AccountId32::new(a);
 		let authro_account_id = owner_account_id32.clone().into();
-		log::info!(" === =find_auraid = {:?} == {:?} ", &find_auraid, &owner_account_id32);
+		log::info!(" ==== find_auraid = {:?} == {:?} ", &find_auraid, &owner_account_id32);
 
 		// let find_account:sp_runtime::AccountId32 = find_auraid.into();
 
