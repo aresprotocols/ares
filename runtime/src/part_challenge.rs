@@ -1,5 +1,5 @@
 use super::*;
-use part_collective;
+use governance;
 pub use pallet_ares_challenge;
 pub use pallet_ares_collective;
 
@@ -14,7 +14,7 @@ impl pallet_ares_challenge::Config for Runtime {
     type Event = Event;
     type MinimumDeposit = MinimumDeposit;
     type PalletId = DemoPalletId;
-    type CouncilMajorityOrigin = pallet_ares_collective::EnsureProportionAtLeast<_3, _4, AccountId, part_collective::CouncilCollective>;
+    type CouncilMajorityOrigin = pallet_ares_collective::EnsureProportionAtLeast<_3, _4, AccountId, governance::part_council::CouncilCollective>;
     type Currency = Balances;
     type SlashProposer = AresChallenge;
     type BidderMinimumDeposit = BidderMinimumDeposit;

@@ -33,6 +33,8 @@ impl pallet_ocw::Config for Runtime {
 	// type UnsignedInterval = UnsignedInterval;
 	type UnsignedPriority = UnsignedPriority;
 
+	// type UnixTime = Timestamp;
+
 	type CheckDeposit = AresChallenge;
 	// TODO:: will be remove
 	// type ValidatorSet = Historical;
