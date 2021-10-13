@@ -9,6 +9,7 @@ use sp_core::{sr25519, Pair, Public, H256};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::app_crypto::sp_core::crypto::UncheckedFrom;
 use sp_runtime::traits::{IdentifyAccount, Verify};
+use sc_telemetry::serde_json;
 
 // use proc_macro::TokenStream;
 
@@ -108,7 +109,11 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		// Protocol ID
 		None,
 		// Properties
-		None,
+		Some(
+			serde_json::from_str(
+				"{\"tokenDecimals\": 12, \"tokenSymbol\": \"ARES\", \"SS58Prefix\": 34}",
+			).expect("Provided valid json map"),
+		),
 		// Extensions
 		None,
 	))

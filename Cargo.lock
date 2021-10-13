@@ -3273,7 +3273,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.2"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#5a688ee0456e9a87bd06f4e763d70661ad55e561"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#50d479270cb6f817b3f8a12e1fb6cc3e14149429"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3788,7 +3788,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#5a688ee0456e9a87bd06f4e763d70661ad55e561"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#50d479270cb6f817b3f8a12e1fb6cc3e14149429"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3807,7 +3807,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#5a688ee0456e9a87bd06f4e763d70661ad55e561"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#50d479270cb6f817b3f8a12e1fb6cc3e14149429"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3926,7 +3926,7 @@ dependencies = [
 [[package]]
 name = "pallet-ocw"
 version = "3.0.8"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#5a688ee0456e9a87bd06f4e763d70661ad55e561"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#50d479270cb6f817b3f8a12e1fb6cc3e14149429"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5015,7 +5015,7 @@ dependencies = [
 
 [[package]]
 name = "runtime-gladios-node"
-version = "3.0.0-monthly-2021-09+1"
+version = "3.0.0"
 dependencies = [
  "frame-benchmarking",
  "frame-executive",
