@@ -35,7 +35,7 @@ impl pallet_ocw::Config for Runtime {
 
 	// type UnixTime = Timestamp;
 
-	type CheckDeposit = AresChallenge;
+	// type CheckDeposit = AresChallenge;
 	// TODO:: will be remove
 	// type ValidatorSet = Historical;
 

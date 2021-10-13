@@ -41,14 +41,13 @@ impl InstanceFilter<Call> for ProxyType {
 				| Call::Timestamp(..)
 				| Call::Council(..)
 				| Call::TechnicalCommittee(..)
-				//| Call::Democracy(..)
+				| Call::Democracy(..)
 				//| Call::Utility(..)
 				| Call::Proxy(..)
 			),
 			ProxyType::Governance => matches!(
 				c,
-				Call::Council(..) | Call::TechnicalCommittee(..) // | Call::Democracy(..)
-				                                                 // | Call::Utility(..)
+				Call::Council(..) | Call::TechnicalCommittee(..) | Call::Democracy(..) // | Call::Utility(..)
 			),
 			// ProxyType::Staking => matches!(
 			// 	c,
