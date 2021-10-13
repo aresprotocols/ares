@@ -4,7 +4,6 @@ panic = 'unwind'
 [workspace]
 members = [
     'node',
-    'pallets/template',
     'seed-reader',
     'ocw-aura',
     'runtime',

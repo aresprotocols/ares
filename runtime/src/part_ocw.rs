@@ -26,38 +26,38 @@ parameter_types! {
 }
 
 impl pallet_ocw::Config for Runtime {
-    type Event = Event;
-    type Call = Call;
-    type AuthorityId = pallet_ocw::crypto::OcwAuthId<Self> ;
-    type AuthorityAres = pallet_ocw::crypto::AuthorityId;
-    // type CheckDeposit = AresChallenge;
-    // type UnsignedInterval = UnsignedInterval;
-    type UnsignedPriority = UnsignedPriority;
+	type Event = Event;
+	type Call = Call;
+	type AuthorityId = pallet_ocw::crypto::OcwAuthId<Self>;
+	type AuthorityAres = pallet_ocw::crypto::AuthorityId;
+	// type CheckDeposit = AresChallenge;
+	// type UnsignedInterval = UnsignedInterval;
+	type UnsignedPriority = UnsignedPriority;
 
-    // TODO:: will be remove
-    // type ValidatorSet = Historical;
+	// TODO:: will be remove
+	// type ValidatorSet = Historical;
 
-    // type FindAuthor = staking_extend::OcwFindAuthor<Babe, Self> ; // OcwFindAuthor<Babe>;// Babe;
-    // type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self,Babe>;
-    type FindAuthor = OcwFindAccountFromAuthorIndex<Self, pallet_aura::FindAccountFromAuthorIndex<Self, Aura>>;
-    // type FindAuthor = OcwFindAccountFromAuthorIndex<Self, Aura>;
+	// type FindAuthor = staking_extend::OcwFindAuthor<Babe, Self> ; // OcwFindAuthor<Babe>;// Babe;
+	// type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self,Babe>;
+	type FindAuthor =
+		OcwFindAccountFromAuthorIndex<Self, pallet_aura::FindAccountFromAuthorIndex<Self, Aura>>;
+	// type FindAuthor = OcwFindAccountFromAuthorIndex<Self, Aura>;
 
-    // type PriceVecMaxSize = PriceVecMaxSize;
-    // type MaxCountOfPerRequest = MaxCountOfPerRequest;
-    type NeedVerifierCheck = NeedVerifierCheck;
-    // type UseOnChainPriceRequest = UseOnChainPriceRequest;
-    type FractionLengthNum = FractionLengthNum;
-    type CalculationKind = CalculationKind;
-    // type RequestOrigin = pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective> ; // frame_system::EnsureRoot<AccountId>;
-    type RequestOrigin = frame_system::EnsureRoot<AccountId>;
+	// type PriceVecMaxSize = PriceVecMaxSize;
+	// type MaxCountOfPerRequest = MaxCountOfPerRequest;
+	type NeedVerifierCheck = NeedVerifierCheck;
+	// type UseOnChainPriceRequest = UseOnChainPriceRequest;
+	type FractionLengthNum = FractionLengthNum;
+	type CalculationKind = CalculationKind;
+	// type RequestOrigin = pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective> ; // frame_system::EnsureRoot<AccountId>;
+	type RequestOrigin = frame_system::EnsureRoot<AccountId>;
 
-    // type MemberAuthority = sp_consensus_babe::AuthorityId ;
-    // type Member = Babe;
+	// type MemberAuthority = sp_consensus_babe::AuthorityId ;
+	// type Member = Babe;
 
-    type ValidatorAuthority = <Self as frame_system::Config>::AccountId;
-    // type VMember = StakingExtend;
-    type VMember = MemberExtend;
-
+	type ValidatorAuthority = <Self as frame_system::Config>::AccountId;
+	// type VMember = StakingExtend;
+	type VMember = MemberExtend;
 }
 
 /// Wraps the author-scraping logic for consensus engines that can recover

@@ -1,7 +1,9 @@
 use hex_literal::hex;
 use runtime_gladios_node::{
-	AccountId, AuraConfig, BalancesConfig, CouncilConfig, GenesisConfig, GrandpaConfig,
-	OCWModuleConfig, Signature, SudoConfig, SystemConfig, WASM_BINARY,
+	constants::currency::{Balance, DOLLARS},
+	AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
+	GenesisConfig, GrandpaConfig, OCWModuleConfig, Signature, SudoConfig, SystemConfig,
+	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -166,12 +168,14 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 					gac(hex!["587bae319ecaee13ce2dbdedfc6d66eb189e5af427666b21b4d4a08c7af0671c"]),
 				],
 				vec![
-					get_account_id_from_seed::<sr25519::Public>("Alice"),
-					get_account_id_from_seed::<sr25519::Public>("Bob"),
-					get_account_id_from_seed::<sr25519::Public>("Charlie"),
-					get_account_id_from_seed::<sr25519::Public>("Dave"),
-					get_account_id_from_seed::<sr25519::Public>("Eve"),
-					get_account_id_from_seed::<sr25519::Public>("Ferdie"),
+					gac(hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"]),
+					gac(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]),
+					gac(hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"]),
+					gac(hex!["74a173a22757ddc9790ed388953a1ed8a5933a421858533411b36ebd41d74165"]),
+					gac(hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"]),
+					gac(hex!["9e55f821f7b3484f15942af308001c32f113f31444f420a77422702907510669"]),
+					gac(hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"]),
+					gac(hex!["587bae319ecaee13ce2dbdedfc6d66eb189e5af427666b21b4d4a08c7af0671c"]),
 				],
 				true,
 			)
@@ -198,6 +202,9 @@ fn testnet_genesis(
 	council_members: Vec<AccountId>,
 	_enable_println: bool,
 ) -> GenesisConfig {
+	const ENDOWMENT: Balance = 10_000_000 * DOLLARS;
+	const ELECTIONS_STASH: Balance = ENDOWMENT / 1000;
+
 	GenesisConfig {
 		system: SystemConfig {
 			// Add Wasm runtime to storage.
@@ -206,7 +213,7 @@ fn testnet_genesis(
 		},
 		balances: BalancesConfig {
 			// Configure endowed accounts with initial balance of 1 << 60.
-			balances: endowed_accounts.iter().cloned().map(|k| (k, 1 << 60)).collect(),
+			balances: endowed_accounts.iter().cloned().map(|k| (k, ENDOWMENT)).collect(),
 		},
 		aura: AuraConfig {
 			authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
@@ -303,7 +310,23 @@ fn testnet_genesis(
 				("kava-usdt".as_bytes().to_vec(), "kavausdt".as_bytes().to_vec(), 2u32, 4, 2),
 			],
 		},
-		council: CouncilConfig { phantom: Default::default(), members: council_members },
+		// council: CouncilConfig { phantom: Default::default(), members: council_members.clone() },
+		council: CouncilConfig::default(),
+		// TODO fix members
+		technical_committee: TechnicalCommitteeConfig {
+			phantom: Default::default(),
+			members: council_members.clone(),
+		},
+		vesting: VestingConfig { vesting: vec![] },
+		treasury: Default::default(),
+		democracy: DemocracyConfig::default(),
+		elections: ElectionsConfig {
+			members: council_members
+				.clone()
+				.iter()
+				.map(|member| (member.clone(), ELECTIONS_STASH))
+				.collect(),
+		},
 	}
 }
 
