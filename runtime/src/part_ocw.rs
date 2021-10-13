@@ -10,6 +10,7 @@ use pallet_ocw;
 use pallet_ocw::Config;
 use sp_runtime::traits::StaticLookup;
 use sp_runtime::{MultiAddress, SaturatedConversion};
+use crate::governance::part_technical::TechnicalCollective;
 
 // An index to a block.
 pub type BlockNumber = u32;
@@ -49,8 +50,8 @@ impl pallet_ocw::Config for Runtime {
 	// type UseOnChainPriceRequest = UseOnChainPriceRequest;
 	type FractionLengthNum = FractionLengthNum;
 	type CalculationKind = CalculationKind;
-	// type RequestOrigin = pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective> ; // frame_system::EnsureRoot<AccountId>;
-	type RequestOrigin = frame_system::EnsureRoot<AccountId>;
+	type RequestOrigin = pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective> ; // frame_system::EnsureRoot<AccountId>;
+	// type RequestOrigin = frame_system::EnsureRoot<AccountId>;
 
 	// type MemberAuthority = sp_consensus_babe::AuthorityId ;
 	// type Member = Babe;

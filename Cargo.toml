@@ -5,7 +5,6 @@ panic = 'unwind'
 members = [
     'node',
     'seed-reader',
-    'ocw-aura',
     'runtime',
 ]
 
