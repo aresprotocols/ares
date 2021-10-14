@@ -1,6 +1,6 @@
 use hex_literal::hex;
 use runtime_gladios_node::{
-	constants::currency::{Balance, DOLLARS},
+	constants::currency::{Balance, CENTS},
 	AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
 	GenesisConfig, GrandpaConfig, OCWModuleConfig, Signature, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
@@ -206,7 +206,7 @@ fn testnet_genesis(
 	council_members: Vec<AccountId>,
 	_enable_println: bool,
 ) -> GenesisConfig {
-	const ENDOWMENT: Balance = 10_000_000_00 * DOLLARS;
+	const ENDOWMENT: Balance = 10_000_000_00 * CENTS;
 	const ELECTIONS_STASH: Balance = ENDOWMENT / 1000;
 
 	GenesisConfig {
@@ -236,13 +236,13 @@ fn testnet_genesis(
 			price_allowable_offset: 10u8,
 			price_requests: vec![
 				// price_key, request_uri, parse_version, fraction_num, request interval
+				// ("eth_price,dot_price".as_bytes().to_vec(), "/api/getPartyPrice/ethusdt,dotusdt".as_bytes().to_vec(), 2u32, 4),
 				("btc-usdt".as_bytes().to_vec(), "btcusdt".as_bytes().to_vec(), 2u32, 4, 2),
 				("eth-usdt".as_bytes().to_vec(), "ethusdt".as_bytes().to_vec(), 2u32, 4, 2),
-				// ("eth_price,dot_price".as_bytes().to_vec(), "/api/getPartyPrice/ethusdt,dotusdt".as_bytes().to_vec(), 2u32, 4),
 				("ada-usdt".as_bytes().to_vec(), "adausdt".as_bytes().to_vec(), 2u32, 4, 8),
 				("xrp-usdt".as_bytes().to_vec(), "xrpusdt".as_bytes().to_vec(), 2u32, 4, 8),
 				("sol-usdt".as_bytes().to_vec(), "solusdt".as_bytes().to_vec(), 2u32, 4, 8),
-				("dot-price".as_bytes().to_vec(), "dotusdt".as_bytes().to_vec(), 2u32, 4, 2),
+				("dot-usdt".as_bytes().to_vec(), "dotusdt".as_bytes().to_vec(), 2u32, 4, 2),
 				("doge-usdt".as_bytes().to_vec(), "dogeusdt".as_bytes().to_vec(), 2u32, 4, 8),
 				("avax-usdt".as_bytes().to_vec(), "avaxusdt".as_bytes().to_vec(), 2u32, 4, 5),
 				("luna-usdt".as_bytes().to_vec(), "lunausdt".as_bytes().to_vec(), 2u32, 4, 8),
