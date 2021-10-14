@@ -3935,6 +3935,7 @@ dependencies = [
 [[package]]
 name = "pallet-ocw"
 version = "3.0.10"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#b20a57f5e57ecc0032d4773136b928c748eadd55"
 dependencies = [
  "frame-support",
  "frame-system",
