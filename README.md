@@ -59,7 +59,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start two
 ```text
-./target/release/gladios-node purge-chain --base-path /tmp/aura/two --chain local -y
+./target/release/gladios-node purge-chain --base-path /tmp/aura/two --chain live -y
 ./target/release/gladios-node \
   --base-path /tmp/aura/two \
   --name ocw_two \
@@ -81,7 +81,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start tri
 ```text
-./target/release/gladios-node purge-chain --base-path /tmp/aura/tri --chain local -y
+./target/release/gladios-node purge-chain --base-path /tmp/aura/tri --chain live -y
 ./target/release/gladios-node \
   --base-path /tmp/aura/tri \
   --name ocw_tri \
@@ -103,7 +103,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start four
 ```text
-./target/release/gladios-node purge-chain --base-path /tmp/aura/four --chain local -y
+./target/release/gladios-node purge-chain --base-path /tmp/aura/four --chain live -y
 ./target/release/gladios-node \
   --base-path /tmp/aura/four \
   --name ocw_four \
