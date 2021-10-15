@@ -2,16 +2,16 @@ use hex_literal::hex;
 use runtime_gladios_node::{
 	constants::currency::{Balance, CENTS},
 	AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, OCWModuleConfig, Signature, SudoConfig, SystemConfig,
+	GenesisConfig, GrandpaConfig, OCWModuleConfig, SS58Prefix, Signature, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
+use sc_telemetry::serde_json;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::{sr25519, Pair, Public, H256};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::app_crypto::sp_core::crypto::UncheckedFrom;
 use sp_runtime::traits::{IdentifyAccount, Verify};
-use sc_telemetry::serde_json;
 
 // use proc_macro::TokenStream;
 
@@ -57,6 +57,11 @@ pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
 
 pub fn development_config() -> Result<ChainSpec, String> {
 	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	let mut properties = serde_json::map::Map::new();
+	properties.insert("tokenDecimals".into(), 12.into());
+	properties.insert("tokenSymbol".into(), "ARES".into());
+	properties.insert("SS58Prefix".into(), SS58Prefix::get().into());
+	// properties.insert("ss58Format".into(), SS58Prefix::get().into());
 
 	Ok(ChainSpec::from_genesis(
 		// Name
@@ -90,6 +95,10 @@ pub fn development_config() -> Result<ChainSpec, String> {
 				vec![
 					get_account_id_from_seed::<sr25519::Public>("Alice"),
 					get_account_id_from_seed::<sr25519::Public>("Bob"),
+					get_account_id_from_seed::<sr25519::Public>("Charlie"),
+					get_account_id_from_seed::<sr25519::Public>("Dave"),
+					get_account_id_from_seed::<sr25519::Public>("Eve"),
+					get_account_id_from_seed::<sr25519::Public>("Ferdie"),
 					get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
 					get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
 				],
@@ -111,11 +120,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		// Protocol ID
 		None,
 		// Properties
-		Some(
-			serde_json::from_str(
-				"{\"tokenDecimals\": 12, \"tokenSymbol\": \"ARES\", \"SS58Prefix\": 34}",
-			).expect("Provided valid json map"),
-		),
+		Some(properties),
 		// Extensions
 		None,
 	))
@@ -123,6 +128,10 @@ pub fn development_config() -> Result<ChainSpec, String> {
 
 pub fn local_testnet_config() -> Result<ChainSpec, String> {
 	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	let mut properties = serde_json::map::Map::new();
+	properties.insert("tokenDecimals".into(), 12.into());
+	properties.insert("tokenSymbol".into(), "ARES".into());
+	properties.insert("SS58Prefix".into(), SS58Prefix::get().into());
 
 	Ok(ChainSpec::from_genesis(
 		// Name
@@ -187,11 +196,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 		// Protocol ID
 		None,
 		// Properties
-		Some(
-			serde_json::from_str(
-				"{\"tokenDecimals\": 12, \"tokenSymbol\": \"ARES\", \"SS58Prefix\": 34}",
-			).expect("Provided valid json map"),
-		),
+		Some(properties),
 		// Extensions
 		None,
 	))
@@ -206,8 +211,9 @@ fn testnet_genesis(
 	council_members: Vec<AccountId>,
 	_enable_println: bool,
 ) -> GenesisConfig {
-	const ENDOWMENT: Balance = 10_000_000_00 * CENTS;
-	const ELECTIONS_STASH: Balance = ENDOWMENT / 1000;
+	const TOTAL_ISSUANCE: Balance = 10_0000_0000 * CENTS; // one billion
+	let endowment: Balance = TOTAL_ISSUANCE / endowed_accounts.len() as u128;
+	let elections_stash: Balance = endowment / 1000;
 
 	GenesisConfig {
 		system: SystemConfig {
@@ -217,7 +223,7 @@ fn testnet_genesis(
 		},
 		balances: BalancesConfig {
 			// Configure endowed accounts with initial balance of 1 << 60.
-			balances: endowed_accounts.iter().cloned().map(|k| (k, ENDOWMENT)).collect(),
+			balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),
 		},
 		aura: AuraConfig {
 			authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
@@ -328,7 +334,7 @@ fn testnet_genesis(
 			members: council_members
 				.clone()
 				.iter()
-				.map(|member| (member.clone(), ELECTIONS_STASH))
+				.map(|member| (member.clone(), elections_stash))
 				.collect(),
 		},
 	}
