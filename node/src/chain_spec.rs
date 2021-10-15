@@ -206,7 +206,7 @@ fn testnet_genesis(
 	council_members: Vec<AccountId>,
 	_enable_println: bool,
 ) -> GenesisConfig {
-	const ENDOWMENT: Balance = 10_000_000_00 * DOLLARS;
+	const ENDOWMENT: Balance = 1_000_000_000 * DOLLARS;
 	const ELECTIONS_STASH: Balance = ENDOWMENT / 1000;
 
 	GenesisConfig {
@@ -242,7 +242,7 @@ fn testnet_genesis(
 				("ada-usdt".as_bytes().to_vec(), "adausdt".as_bytes().to_vec(), 2u32, 4, 8),
 				("xrp-usdt".as_bytes().to_vec(), "xrpusdt".as_bytes().to_vec(), 2u32, 4, 8),
 				("sol-usdt".as_bytes().to_vec(), "solusdt".as_bytes().to_vec(), 2u32, 4, 8),
-				("dot-price".as_bytes().to_vec(), "dotusdt".as_bytes().to_vec(), 2u32, 4, 2),
+				("dot-usdt".as_bytes().to_vec(), "dotusdt".as_bytes().to_vec(), 2u32, 4, 2),
 				("doge-usdt".as_bytes().to_vec(), "dogeusdt".as_bytes().to_vec(), 2u32, 4, 8),
 				("avax-usdt".as_bytes().to_vec(), "avaxusdt".as_bytes().to_vec(), 2u32, 4, 5),
 				("luna-usdt".as_bytes().to_vec(), "lunausdt".as_bytes().to_vec(), 2u32, 4, 8),

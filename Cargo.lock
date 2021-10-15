@@ -1895,6 +1895,7 @@ dependencies = [
  "frame-support",
  "hex-literal",
  "jsonrpc-core",
+ "log",
  "pallet-transaction-payment-rpc",
  "runtime-gladios-node",
  "sc-basic-authorship",
@@ -3271,7 +3272,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.2"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#b20a57f5e57ecc0032d4773136b928c748eadd55"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#53992647ecaa3cf5ca13ab1699d51114477cff1f"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3748,7 +3749,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#b20a57f5e57ecc0032d4773136b928c748eadd55"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#53992647ecaa3cf5ca13ab1699d51114477cff1f"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3767,7 +3768,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#b20a57f5e57ecc0032d4773136b928c748eadd55"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#53992647ecaa3cf5ca13ab1699d51114477cff1f"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3934,8 +3935,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ocw"
-version = "3.0.10"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#b20a57f5e57ecc0032d4773136b928c748eadd55"
+version = "3.1.0"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#53992647ecaa3cf5ca13ab1699d51114477cff1f"
 dependencies = [
  "frame-support",
  "frame-system",

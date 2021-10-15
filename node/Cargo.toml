@@ -25,6 +25,7 @@ version = '3.0.0'
 jsonrpc-core = '18.0.0'
 structopt = '0.3.8'
 
+
 [dependencies.runtime-gladios-node]
 path = '../runtime'
 version = '3.0.0'
@@ -180,6 +181,10 @@ version = '4.0.0-dev'
 [dependencies.seed-reader]
 path = '../seed-reader'
 version = '1.0.1'
+
+[dependencies.log]
+version = "0.4.14"
+default-features = false
 
 [dependencies.hex-literal]
 version = "0.3.1"

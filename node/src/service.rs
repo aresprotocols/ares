@@ -17,6 +17,7 @@ use frame_support::pallet_prelude::Encode;
 use frame_support::sp_std;
 use seed_reader::*;
 use std::io::Read;
+use log;
 // use frame_support::{dispatch::DispatchResult, pallet_prelude::*};
 
 // Our native executor instance.
@@ -255,7 +256,8 @@ pub fn new_full(mut config: Configuration, ares_params: Vec<(&str, Option<Vec<u8
 						let store_request_u8 = request_base_str.encode();
 						let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
 						let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
-						println!(" OFFCHAIN request base : = {:?}", &body);
+						// println!(" OFFCHAIN request base : = {:?}", &body);
+						log::info!("OFFCHAIN request base : = {:?}", &body);
 						_rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
 						(*order, true)
 					}
