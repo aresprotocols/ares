@@ -182,14 +182,15 @@ pallet-proxy  = { version = "4.0.0-dev", default-features = false, git = "https:
 pallet-vesting = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-elections-phragmen = { version = "5.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
-pallet-ocw = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.0'}
-member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.0'}
-pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
-pallet-ares-collective = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev'}
-#pallet-ocw = {default-features = false, path = '../../ocw-suit/pallets/pallet-ocw', version = '3.0.10'}
-#member-extend = {default-features = false, path = '../../ocw-suit/pallets/member-extend',  version = '3.0.0'}
-#pallet-ares-challenge = {default-features = false, path = '../../ocw-suit/pallets/challenge', version='3.0.1'}
-#pallet-ares-collective = {default-features = false, path = '../../ocw-suit/pallets/collective',  version = '4.0.0-dev'}
+#pallet-ocw = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.0'}
+#member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.0'}
+#pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
+#pallet-ares-collective = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev'}
+
+pallet-ocw = {default-features = false, path = '../../ocw-suit/pallets/pallet-ocw', version = '3.1.0'}
+member-extend = {default-features = false, path = '../../ocw-suit/pallets/member-extend',  version = '3.0.0'}
+pallet-ares-challenge = {default-features = false, path = '../../ocw-suit/pallets/challenge', version='3.0.1'}
+pallet-ares-collective = {default-features = false, path = '../../ocw-suit/pallets/collective',  version = '4.0.0-dev'}
 
 
 

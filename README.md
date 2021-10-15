@@ -2,7 +2,7 @@
 
 ### Start 
 
-* With --request-base
+* With --request-base for --dev
 ```text
 ./target/release/gladios-node --tmp --dev --request-base http://141.164.58.241:5566
 ```
