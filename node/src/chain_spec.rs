@@ -144,8 +144,6 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 				wasm_binary,
 				// Initial PoA authorities
 				vec![
-					// TODO:: Will be del (gau(hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"]).into(),gau(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]).into()),
-					// TODO:: Will be del (gau(hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"]).into(),gau(hex!["74a173a22757ddc9790ed388953a1ed8a5933a421858533411b36ebd41d74165"]).into()),
 					gau(
 						hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"],
 						hex!["3b7345bd36fb53c50be544a7c2847b9673984fa587af0c27108d3d464183e94f"],

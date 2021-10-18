@@ -9,11 +9,17 @@ pub struct Cli {
 	#[structopt(flatten)]
 	pub run: RunCmd,
 
-	#[structopt(long = "request-base")]
-	pub request_base: Option<String>,
+	// #[structopt(long = "request-base")]
+	// pub request_base: Option<String>,
+	//
+	// #[structopt(long = "ares-keys-file")]
+	// pub ares_keys_file: Option<String>,
 
-	#[structopt(long = "ares-keys-file")]
-	pub ares_keys_file: Option<String>,
+	#[structopt(long = "warehouse")]
+	pub warehouse: Option<String>,
+
+	#[structopt(long = "ares-keys")]
+	pub ares_keys: Option<String>,
 }
 
 #[derive(Debug, StructOpt)]

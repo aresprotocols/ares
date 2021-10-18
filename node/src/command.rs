@@ -136,17 +136,17 @@ pub fn run() -> sc_cli::Result<()> {
 						let mut ares_params: Vec<(&str,Option<Vec<u8>>)> = Vec::new();
 
 						if cli.run.validator {
-							let request_base = match cli.request_base {
+							let request_base = match cli.warehouse {
 								None => {
-									panic!("Need --request-base ");
+									panic!("⛔ Start parameter `--request-base` is required!");
 								}
-								Some(request_rul) => {
-									request_rul.as_str().as_bytes().to_vec()
+								Some(request_url) => {
+									request_url.as_str().as_bytes().to_vec()
 								}
 							};
 							ares_params.push(("request-base", Some(request_base)));
 
-							match cli.ares_keys_file {
+							match cli.ares_keys {
 								None => {}
 								Some(keys_file_path) => {
 									ares_params.push(("ares-keys-file", Some(keys_file_path.as_bytes().to_vec())));

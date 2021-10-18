@@ -2,9 +2,9 @@
 
 ### Start 
 
-* With --request-base for --dev
+* With --warehouse for --dev
 ```text
-./target/release/gladios-node --tmp --dev --request-base http://141.164.58.241:5566
+./target/release/gladios-node --tmp --dev --warehouse http://141.164.58.241:5566
 ```
 
 * Set ares author key by RPC request
@@ -31,13 +31,13 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Export the local chain spec to json
 ```text
-./target/release/gladios-node build-spec --disable-default-bootnode --chain live > chain-data-ares-aura.json
+./target/release/gladios-node build-spec --disable-default-bootnode --chain gladios > chain-data-ares-aura.json
 ```
 
 * Start one
 ```text
 
-./target/release/gladios-node purge-chain --base-path /tmp/aura/one --chain live -y
+./target/release/gladios-node purge-chain --base-path /tmp/aura/one --chain gladios -y
 ./target/release/gladios-node \
   --base-path /tmp/aura/one \
   --name ocw_one \
@@ -51,15 +51,15 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --rpc-methods=Unsafe \
   --node-key 0000000000000000000000000000000000000000000000000000000000000001 \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
-  --request-base http://141.164.58.241:5566 \
-  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_01.curl \
+  --warehouse http://141.164.58.241:5566 \
+  --ares-keys /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_01.curl \
   --validator
   
 ```
 
 * Start two
 ```text
-./target/release/gladios-node purge-chain --base-path /tmp/aura/two --chain live -y
+./target/release/gladios-node purge-chain --base-path /tmp/aura/two --chain gladios -y
 ./target/release/gladios-node \
   --base-path /tmp/aura/two \
   --name ocw_two \
@@ -72,8 +72,8 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --rpc-cors=all \
   --rpc-methods=Unsafe \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
-  --request-base http://141.164.58.241:5566 \
-  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_02.curl \
+  --warehouse http://141.164.58.241:5566 \
+  --ares-keys /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_02.curl \
   --validator \
   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
   
@@ -81,7 +81,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start tri
 ```text
-./target/release/gladios-node purge-chain --base-path /tmp/aura/tri --chain live -y
+./target/release/gladios-node purge-chain --base-path /tmp/aura/tri --chain gladios -y
 ./target/release/gladios-node \
   --base-path /tmp/aura/tri \
   --name ocw_tri \
@@ -94,8 +94,8 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --rpc-cors=all \
   --rpc-methods=Unsafe \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
-  --request-base http://141.164.58.241:5566 \
-  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_03.curl \
+  --warehouse http://141.164.58.241:5566 \
+  --ares-keys /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_03.curl \
   --validator \
   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
   
@@ -103,7 +103,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 
 * Start four
 ```text
-./target/release/gladios-node purge-chain --base-path /tmp/aura/four --chain live -y
+./target/release/gladios-node purge-chain --base-path /tmp/aura/four --chain gladios -y
 ./target/release/gladios-node \
   --base-path /tmp/aura/four \
   --name ocw_four \
@@ -116,8 +116,8 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --rpc-cors=all \
   --rpc-methods=Unsafe \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
-  --request-base http://141.164.58.241:5566 \
-  --ares-keys-file /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_04.curl \
+  --warehouse http://141.164.58.241:5566 \
+  --ares-keys /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_04.curl \
   --validator \
   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
   

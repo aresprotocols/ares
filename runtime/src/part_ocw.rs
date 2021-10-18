@@ -34,10 +34,6 @@ impl pallet_ocw::Config for Runtime {
 	// type CheckDeposit = AresChallenge;
 	// type UnsignedInterval = UnsignedInterval;
 	type UnsignedPriority = UnsignedPriority;
-
-	// TODO:: will be remove
-	// type ValidatorSet = Historical;
-
 	// type FindAuthor = staking_extend::OcwFindAuthor<Babe, Self> ; // OcwFindAuthor<Babe>;// Babe;
 	// type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self,Babe>;
 	type FindAuthor =
@@ -84,14 +80,7 @@ where
 		// extract AccountId32 from store keys
 		let owner_account_id32 = sp_runtime::AccountId32::new(a);
 		let authro_account_id = owner_account_id32.clone().into();
-		log::info!(" ==== find_auraid = {:?} == {:?} ", &find_auraid, &owner_account_id32);
-
-		// let find_account:sp_runtime::AccountId32 = find_auraid.into();
-
 		Some(authro_account_id)
-		// Default::default()
-		// let validators = <Module<T>>::validators();
-		// validators.get(i as usize).map(|k| k.clone())
 	}
 }
 
