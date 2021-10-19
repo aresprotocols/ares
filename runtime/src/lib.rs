@@ -17,7 +17,7 @@ use sp_core::{
 	OpaqueMetadata,
 };
 use sp_runtime::{
-	create_runtime_str, generic, impl_opaque_keys,
+	create_runtime_str, generic,
 	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
 	transaction_validity::{TransactionSource, TransactionValidity},
 	ApplyExtrinsicResult, MultiSignature,
@@ -50,15 +50,13 @@ pub use sp_runtime::{Perbill, Permill};
 
 pub mod constants;
 mod governance;
+pub mod network;
 mod part_challenge;
 pub mod part_member_extend;
 pub mod part_ocw;
 
 pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
-use constants::time::{DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
-
-/// An index to a block.
-pub type BlockNumber = u32;
+use constants::time::{DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION, BlockNumber};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;
@@ -93,12 +91,6 @@ pub mod opaque {
 	/// Opaque block identifier type.
 	pub type BlockId = generic::BlockId<Block>;
 
-	impl_opaque_keys! {
-		pub struct SessionKeys {
-			pub aura: Aura,
-			pub grandpa: Grandpa,
-		}
-	}
 }
 
 // To learn more about runtime versioning and what each of the following value means:
@@ -246,10 +238,6 @@ parameter_types! {
 
 impl pallet_randomness_collective_flip::Config for Runtime {}
 
-impl pallet_aura::Config for Runtime {
-	type AuthorityId = AuraId;
-	type DisabledValidators = ();
-}
 
 // impl pallet_aura::Config for Runtime {
 // 	type AuthorityId = AccountId;
@@ -339,12 +327,18 @@ construct_runtime!(
 		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		Aura: pallet_aura::{Pallet, Config<T>},
+
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
+
+		// network
+		Aura: pallet_aura::{Pallet, Config<T>},
+		ElectionProviderMultiPhase: pallet_election_provider_multi_phase::{Pallet, Call, Storage, Event<T>, ValidateUnsigned},
+		Staking: pallet_staking::{Pallet, Call, Config<T>, Storage, Event<T>},
+		Session: pallet_session::{Pallet, Call, Storage, Event, Config<T>},
 
 		//
 		MemberExtend: member_extend::{Pallet},
@@ -468,13 +462,13 @@ impl_runtime_apis! {
 
 	impl sp_session::SessionKeys<Block> for Runtime {
 		fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
-			opaque::SessionKeys::generate(seed)
+			network::part_session::SessionKeys::generate(seed)
 		}
 
 		fn decode_session_keys(
 			encoded: Vec<u8>,
 		) -> Option<Vec<(Vec<u8>, KeyTypeId)>> {
-			opaque::SessionKeys::decode_into_raw_public_keys(&encoded)
+			network::part_session::SessionKeys::decode_into_raw_public_keys(&encoded)
 		}
 	}
 

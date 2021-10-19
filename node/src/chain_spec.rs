@@ -1,18 +1,23 @@
 use hex_literal::hex;
 use runtime_gladios_node::{
 	constants::currency::{Balance, CENTS},
+	network::{
+		part_elections::MAX_NOMINATIONS, part_session::SessionKeys, part_staking::StakerStatus,
+	},
 	AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, OCWModuleConfig, SS58Prefix, Signature, SudoConfig, SystemConfig,
-	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
+	GenesisConfig, GrandpaConfig, OCWModuleConfig, SS58Prefix, SessionConfig, Signature,
+	StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
 use sc_telemetry::serde_json;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use sp_core::{sr25519, Pair, Public, H256};
+use sp_core::{crypto::UncheckedInto, sr25519, Pair, Public, H256};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
-use sp_runtime::app_crypto::sp_core::crypto::UncheckedFrom;
-use sp_runtime::traits::{IdentifyAccount, Verify};
-
+use sp_runtime::{
+	app_crypto::sp_core::crypto::UncheckedFrom,
+	traits::{IdentifyAccount, Verify},
+	Perbill,
+};
 // use proc_macro::TokenStream;
 
 // The URL for the telemetry server.
@@ -51,8 +56,17 @@ pub fn gau(aura_raw: [u8; 32], grand_raw: [u8; 32]) -> (AuraId, GrandpaId) {
 }
 
 /// Generate an Aura authority key.
-pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
-	(get_from_seed::<AuraId>(s), get_from_seed::<GrandpaId>(s))
+pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, AuraId, GrandpaId) {
+	(
+		get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", seed)),
+		get_account_id_from_seed::<sr25519::Public>(seed),
+		get_from_seed::<AuraId>(seed),
+		get_from_seed::<GrandpaId>(seed),
+	)
+}
+
+fn session_keys(aura: AuraId, grandpa: GrandpaId) -> SessionKeys {
+	SessionKeys { aura, grandpa }
 }
 
 pub fn development_config() -> Result<ChainSpec, String> {
@@ -89,6 +103,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 				wasm_binary,
 				// Initial PoA authorities
 				vec![authority_keys_from_seed("Alice")],
+				vec![],
 				// Sudo account
 				get_account_id_from_seed::<sr25519::Public>("Alice"),
 				// Pre-funded accounts
@@ -101,6 +116,10 @@ pub fn development_config() -> Result<ChainSpec, String> {
 					get_account_id_from_seed::<sr25519::Public>("Ferdie"),
 					get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
 					get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
+					get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
 				],
 				vec![
 					get_account_id_from_seed::<sr25519::Public>("Alice"),
@@ -133,6 +152,18 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 	properties.insert("tokenSymbol".into(), "ARES".into());
 	properties.insert("SS58Prefix".into(), SS58Prefix::get().into());
 
+	// let initial_authorities: Vec<(
+	// 	AccountId, // stash
+	// 	AccountId, // controller
+	// 	AuraId,
+	// 	GrandpaId,
+	// )> = vec![(
+	// 	hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"].into(),
+	// 	hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"].into(),
+	// 	hex!["1e876fa1b4bbb82785ea5670b7ce0976beaf7536b6a0cc05deba7a54ab709421"].unchecked_into(),
+	// 	hex!["3b7345bd36fb53c50be544a7c2847b9673984fa587af0c27108d3d464183e94f"].unchecked_into(),
+	// )];
+
 	Ok(ChainSpec::from_genesis(
 		// Name
 		"Ares Gladios",
@@ -143,24 +174,13 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 			testnet_genesis(
 				wasm_binary,
 				// Initial PoA authorities
-				vec![
-					gau(
-						hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"],
-						hex!["3b7345bd36fb53c50be544a7c2847b9673984fa587af0c27108d3d464183e94f"],
-					),
-					gau(
-						hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"],
-						hex!["a16c71b78c13cbd73e09cc348be1e8521ec2ce4c2615d4f2cf0e8148ba454a05"],
-					),
-					gau(
-						hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"],
-						hex!["2ce72e098beb0bc8ed6c812099bed8c7c60ae8208c94abf4212d7fdeaf11bab3"],
-					),
-					gau(
-						hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"],
-						hex!["b200d0328d26f7cbb67223c179ab14a2152d7afb6689f07b618fda33695d5fd4"],
-					),
-				],
+				vec![(
+					hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"].into(),
+					hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"].into(),
+					hex!["08ecdc14e2dd427724c60c6879a1aeade21d9708c30c4477f679dde971cb1378"].unchecked_into(),
+					hex!["90fa967fe2c16212e951e770866abb82a3e370ed9025cc2bff45f1541611dc1d"].unchecked_into(),
+				)],
+				vec![],
 				// Sudo account
 				gac(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]),
 				// Pre-funded accounts
@@ -203,7 +223,8 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 /// Configure initial storage state for FRAME modules.
 fn testnet_genesis(
 	wasm_binary: &[u8],
-	initial_authorities: Vec<(AuraId, GrandpaId)>,
+	initial_authorities: Vec<(AccountId, AccountId, AuraId, GrandpaId)>,
+	initial_nominators: Vec<AccountId>,
 	root_key: AccountId,
 	endowed_accounts: Vec<AccountId>,
 	council_members: Vec<AccountId>,
@@ -212,6 +233,24 @@ fn testnet_genesis(
 	const TOTAL_ISSUANCE: Balance = 10_0000_0000 * CENTS; // one billion
 	let endowment: Balance = TOTAL_ISSUANCE / endowed_accounts.len() as u128;
 	let elections_stash: Balance = endowment / 1000;
+
+	let mut rng = rand::thread_rng();
+	let stakers = initial_authorities
+		.iter()
+		.map(|x| (x.0.clone(), x.1.clone(), elections_stash, StakerStatus::Validator))
+		.chain(initial_nominators.iter().map(|x| {
+			use rand::{seq::SliceRandom, Rng};
+			let limit = (MAX_NOMINATIONS as usize).min(initial_authorities.len());
+			let count = rng.gen::<usize>() % limit;
+			let nominations = initial_authorities
+				.as_slice()
+				.choose_multiple(&mut rng, count)
+				.into_iter()
+				.map(|choice| choice.0.clone())
+				.collect::<Vec<_>>();
+			(x.clone(), x.clone(), elections_stash, StakerStatus::Nominator(nominations))
+		}))
+		.collect::<Vec<_>>();
 
 	GenesisConfig {
 		system: SystemConfig {
@@ -223,11 +262,29 @@ fn testnet_genesis(
 			// Configure endowed accounts with initial balance of 1 << 60.
 			balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),
 		},
+		// network
 		aura: AuraConfig {
-			authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
+			// authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
+			authorities: vec![],
 		},
+		staking: StakingConfig {
+			validator_count: initial_authorities.len() as u32,
+			minimum_validator_count: initial_authorities.len() as u32,
+			invulnerables: initial_authorities.iter().map(|x| x.0.clone()).collect(),
+			slash_reward_fraction: Perbill::from_percent(10),
+			stakers,
+			..Default::default()
+		},
+		session: SessionConfig {
+			keys: initial_authorities
+				.iter()
+				.map(|x| (x.0.clone(), x.0.clone(), session_keys(x.2.clone(), x.3.clone())))
+				.collect::<Vec<_>>(),
+		},
+
 		grandpa: GrandpaConfig {
-			authorities: initial_authorities.iter().map(|x| (x.1.clone(), 1)).collect(),
+			// authorities: initial_authorities.iter().map(|x| (x.1.clone(), 1)).collect(),
+			authorities: vec![],
 		},
 		sudo: SudoConfig {
 			// Assign network admin rights.
