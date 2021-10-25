@@ -339,6 +339,8 @@ construct_runtime!(
 		ElectionProviderMultiPhase: pallet_election_provider_multi_phase::{Pallet, Call, Storage, Event<T>, ValidateUnsigned},
 		Staking: pallet_staking::{Pallet, Call, Config<T>, Storage, Event<T>},
 		Session: pallet_session::{Pallet, Call, Storage, Event, Config<T>},
+		Historical: pallet_session::historical::{Pallet},
+		Authorship: pallet_authorship::{Pallet, Call, Storage, Inherent},
 
 		//
 		MemberExtend: member_extend::{Pallet},

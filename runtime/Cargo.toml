@@ -182,6 +182,7 @@ pallet-session = { version = "4.0.0-dev", default-features = false, git = "https
 pallet-staking-reward-curve ={ version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-staking = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-election-provider-multi-phase = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-authorship = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
 # Goverence
 pallet-collective = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
@@ -262,4 +263,5 @@ std = [
     "pallet-session/std",
     "pallet-staking/std",
     "pallet-election-provider-multi-phase/std",
+    "pallet-authorship/std",
 ]
