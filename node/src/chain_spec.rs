@@ -313,7 +313,7 @@ fn testnet_genesis(
 				("lrc-usdt".as_bytes().to_vec(), "lrcusdt".as_bytes().to_vec(), 2u32, 4, 8),
 				("sand-usdt".as_bytes().to_vec(), "sandusdt".as_bytes().to_vec(), 2u32, 4, 8),
 				("srm-usdt".as_bytes().to_vec(), "srmusdt".as_bytes().to_vec(), 2u32, 4, 8),
-				("1INCH-usdt".as_bytes().to_vec(), "1INCHusdt".as_bytes().to_vec(), 2u32, 4, 4),
+				("1inch-usdt".as_bytes().to_vec(), "1inch-usdt".as_bytes().to_vec(), 2u32, 4, 4),
 				("kava-usdt".as_bytes().to_vec(), "kavausdt".as_bytes().to_vec(), 2u32, 4, 8),
 			],
 		},
