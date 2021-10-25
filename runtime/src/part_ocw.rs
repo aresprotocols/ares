@@ -15,15 +15,21 @@ use crate::governance::part_technical::TechnicalCollective;
 // An index to a block.
 pub type BlockNumber = u32;
 
+pub type EnsureRootOrHalfTechnicalCollective = EnsureOneOf<
+	AccountId,
+	EnsureRoot<AccountId>,
+	pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective>,
+>;
+
 parameter_types! {
-	// pub const PriceVecMaxSize: u32 = 50;
-	// pub const MaxCountOfPerRequest: u8 = 2;
-	// pub const UnsignedInterval: u32 = 10;
 	pub const UnsignedPriority: u64 = 1 << 20;
-	pub const NeedVerifierCheck: bool = true;
-	// pub const UseOnChainPriceRequest: bool = true;
+	// pub const NeedVerifierCheck: bool = true;
 	pub const FractionLengthNum: u32 = 2;
 	pub const CalculationKind: u8 = 1;
+}
+
+impl pallet_ocw::aura_handler::Config for Runtime {
+
 }
 
 impl pallet_ocw::Config for Runtime {
@@ -42,11 +48,12 @@ impl pallet_ocw::Config for Runtime {
 
 	// type PriceVecMaxSize = PriceVecMaxSize;
 	// type MaxCountOfPerRequest = MaxCountOfPerRequest;
-	type NeedVerifierCheck = NeedVerifierCheck;
+	// type NeedVerifierCheck = NeedVerifierCheck;
 	// type UseOnChainPriceRequest = UseOnChainPriceRequest;
 	type FractionLengthNum = FractionLengthNum;
 	type CalculationKind = CalculationKind;
-	type RequestOrigin = pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective> ; // frame_system::EnsureRoot<AccountId>;
+	// type RequestOrigin = pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective> ; // frame_system::EnsureRoot<AccountId>;
+	type RequestOrigin = EnsureRootOrHalfTechnicalCollective ;
 	// type RequestOrigin = frame_system::EnsureRoot<AccountId>;
 
 	// type MemberAuthority = sp_consensus_babe::AuthorityId ;
@@ -55,7 +62,11 @@ impl pallet_ocw::Config for Runtime {
 	type ValidatorAuthority = <Self as frame_system::Config>::AccountId;
 	// type VMember = StakingExtend;
 	type VMember = MemberExtend;
+
+	type AuthorityCount = pallet_ocw::aura_handler::Pallet<Runtime>;
 }
+
+
 
 /// Wraps the author-scraping logic for consensus engines that can recover
 /// the canonical index of an author. This then transforms it into the
