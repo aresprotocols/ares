@@ -152,17 +152,58 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 	properties.insert("tokenSymbol".into(), "ARES".into());
 	properties.insert("SS58Prefix".into(), SS58Prefix::get().into());
 
-	// let initial_authorities: Vec<(
-	// 	AccountId, // stash
-	// 	AccountId, // controller
-	// 	AuraId,
-	// 	GrandpaId,
-	// )> = vec![(
-	// 	hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"].into(),
-	// 	hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"].into(),
-	// 	hex!["1e876fa1b4bbb82785ea5670b7ce0976beaf7536b6a0cc05deba7a54ab709421"].unchecked_into(),
-	// 	hex!["3b7345bd36fb53c50be544a7c2847b9673984fa587af0c27108d3d464183e94f"].unchecked_into(),
-	// )];
+	let initial_authorities: Vec<(
+		AccountId, // stash
+		AccountId, // controller
+		AuraId,
+		GrandpaId,
+	)> = vec![
+		(
+			hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"].into(),
+			hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"].into(),
+			hex!["08ecdc14e2dd427724c60c6879a1aeade21d9708c30c4477f679dde971cb1378"]
+				.unchecked_into(),
+			hex!["3b7345bd36fb53c50be544a7c2847b9673984fa587af0c27108d3d464183e94f"]
+				.unchecked_into(),
+		),
+		(
+			hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"].into(),
+			hex!["74a173a22757ddc9790ed388953a1ed8a5933a421858533411b36ebd41d74165"].into(),
+			hex!["46bd24b721b0252e4c5b933b3c1b53b5179799511594695bf03f06d17b91154e"]
+				.unchecked_into(),
+			hex!["a16c71b78c13cbd73e09cc348be1e8521ec2ce4c2615d4f2cf0e8148ba454a05"]
+				.unchecked_into(),
+		),
+		(
+			hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"].into(),
+			hex!["9e55f821f7b3484f15942af308001c32f113f31444f420a77422702907510669"].into(),
+			hex!["763a6ddd64b5e2f0e0c08a2c6e5143ae47edc563155bd052a26d3f942b806a1f"]
+				.unchecked_into(),
+			hex!["2ce72e098beb0bc8ed6c812099bed8c7c60ae8208c94abf4212d7fdeaf11bab3"]
+				.unchecked_into(),
+		),
+		(
+			hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"].into(),
+			hex!["587bae319ecaee13ce2dbdedfc6d66eb189e5af427666b21b4d4a08c7af0671c"].into(),
+			hex!["a483a387dd54aa61d1619bfca66b41e0bbee9cd199306e4310f823526d6ebe6a"]
+				.unchecked_into(),
+			hex!["b200d0328d26f7cbb67223c179ab14a2152d7afb6689f07b618fda33695d5fd4"]
+				.unchecked_into(),
+		),
+	];
+
+	let endowed_accounts: Vec<AccountId> = vec![
+		hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"].into(),
+		hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"].into(),
+		hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"].into(),
+		hex!["74a173a22757ddc9790ed388953a1ed8a5933a421858533411b36ebd41d74165"].into(),
+		hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"].into(),
+		hex!["9e55f821f7b3484f15942af308001c32f113f31444f420a77422702907510669"].into(),
+		hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"].into(),
+		hex!["587bae319ecaee13ce2dbdedfc6d66eb189e5af427666b21b4d4a08c7af0671c"].into(),
+	];
+
+	let council_members = endowed_accounts.clone();
 
 	Ok(ChainSpec::from_genesis(
 		// Name
@@ -174,36 +215,13 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 			testnet_genesis(
 				wasm_binary,
 				// Initial PoA authorities
-				vec![(
-					hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"].into(),
-					hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"].into(),
-					hex!["08ecdc14e2dd427724c60c6879a1aeade21d9708c30c4477f679dde971cb1378"].unchecked_into(),
-					hex!["90fa967fe2c16212e951e770866abb82a3e370ed9025cc2bff45f1541611dc1d"].unchecked_into(),
-				)],
+				initial_authorities.clone(),
 				vec![],
 				// Sudo account
-				gac(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]),
+				hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"].into(),
 				// Pre-funded accounts
-				vec![
-					gac(hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"]),
-					gac(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]),
-					gac(hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"]),
-					gac(hex!["74a173a22757ddc9790ed388953a1ed8a5933a421858533411b36ebd41d74165"]),
-					gac(hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"]),
-					gac(hex!["9e55f821f7b3484f15942af308001c32f113f31444f420a77422702907510669"]),
-					gac(hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"]),
-					gac(hex!["587bae319ecaee13ce2dbdedfc6d66eb189e5af427666b21b4d4a08c7af0671c"]),
-				],
-				vec![
-					gac(hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"]),
-					gac(hex!["aaf0c45982a423036601dcacc67854b38b854690d8e15bf1543e9a00e660e019"]),
-					gac(hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"]),
-					gac(hex!["74a173a22757ddc9790ed388953a1ed8a5933a421858533411b36ebd41d74165"]),
-					gac(hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"]),
-					gac(hex!["9e55f821f7b3484f15942af308001c32f113f31444f420a77422702907510669"]),
-					gac(hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"]),
-					gac(hex!["587bae319ecaee13ce2dbdedfc6d66eb189e5af427666b21b4d4a08c7af0671c"]),
-				],
+				endowed_accounts.clone(),
+				council_members.clone(),
 				true,
 			)
 		},
@@ -238,18 +256,18 @@ fn testnet_genesis(
 	let stakers = initial_authorities
 		.iter()
 		.map(|x| (x.0.clone(), x.1.clone(), elections_stash, StakerStatus::Validator))
-		.chain(initial_nominators.iter().map(|x| {
-			use rand::{seq::SliceRandom, Rng};
-			let limit = (MAX_NOMINATIONS as usize).min(initial_authorities.len());
-			let count = rng.gen::<usize>() % limit;
-			let nominations = initial_authorities
-				.as_slice()
-				.choose_multiple(&mut rng, count)
-				.into_iter()
-				.map(|choice| choice.0.clone())
-				.collect::<Vec<_>>();
-			(x.clone(), x.clone(), elections_stash, StakerStatus::Nominator(nominations))
-		}))
+		// .chain(initial_nominators.iter().map(|x| {
+		// 	use rand::{seq::SliceRandom, Rng};
+		// 	let limit = (MAX_NOMINATIONS as usize).min(initial_authorities.len());
+		// 	let count = rng.gen::<usize>() % limit;
+		// 	let nominations = initial_authorities
+		// 		.as_slice()
+		// 		.choose_multiple(&mut rng, count)
+		// 		.into_iter()
+		// 		.map(|choice| choice.0.clone())
+		// 		.collect::<Vec<_>>();
+		// 	(x.clone(), x.clone(), elections_stash, StakerStatus::Nominator(nominations))
+		// }))
 		.collect::<Vec<_>>();
 
 	GenesisConfig {
