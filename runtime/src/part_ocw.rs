@@ -11,6 +11,7 @@ use pallet_ocw::Config;
 use sp_runtime::traits::StaticLookup;
 use sp_runtime::{MultiAddress, SaturatedConversion};
 use crate::governance::part_technical::TechnicalCollective;
+pub use pallet_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 
 // An index to a block.
 pub type BlockNumber = u32;

@@ -167,10 +167,23 @@ version = '4.0.0-dev'
 static_assertions = "1.1.0"
 log = { version = "0.4.14", default-features = false }
 
+# primitives
+sp-staking = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+sp-npos-elections = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+
 pallet-aura = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-balances = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-grandpa = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-indices = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+frame-election-provider-support = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+
+# network
+pallet-session = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-staking-reward-curve ={ version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-staking = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-election-provider-multi-phase = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-authorship = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+
 # Goverence
 pallet-collective = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-democracy = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
@@ -182,12 +195,12 @@ pallet-proxy  = { version = "4.0.0-dev", default-features = false, git = "https:
 pallet-vesting = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-elections-phragmen = { version = "5.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
-pallet-ocw = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.2.3'}
+pallet-ocw = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.2.4'}
 member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.3'}
 pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
 pallet-ares-collective = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev'}
 
-#pallet-ocw = {default-features = false, path = '../../ocw-suit/pallets/pallet-ocw', version = '3.2.3'}
+#pallet-ocw = {default-features = false, path = '../../ocw-suit/pallets/pallet-ocw', version = '3.2.4'}
 #member-extend = {default-features = false, path = '../../ocw-suit/pallets/member-extend',  version = '3.0.3'}
 #pallet-ares-challenge = {default-features = false, path = '../../ocw-suit/pallets/challenge', version='3.0.1'}
 #pallet-ares-collective = {default-features = false, path = '../../ocw-suit/pallets/collective',  version = '4.0.0-dev'}
@@ -210,6 +223,7 @@ std = [
     'frame-support/std',
     'frame-system-rpc-runtime-api/std',
     'frame-system/std',
+    'frame-election-provider-support/std',
     'pallet-aura/std',
     'pallet-balances/std',
     'pallet-grandpa/std',
@@ -229,6 +243,8 @@ std = [
     'sp-std/std',
     'sp-transaction-pool/std',
     'sp-version/std',
+    "sp-staking/std",
+    'sp-npos-elections/std',
     'pallet-ocw/std',
     'pallet-ares-challenge/std',
     'pallet-ares-collective/std',
@@ -244,4 +260,8 @@ std = [
     "member-extend/std",
     "log/std",
     "pallet-indices/std",
+    "pallet-session/std",
+    "pallet-staking/std",
+    "pallet-election-provider-multi-phase/std",
+    "pallet-authorship/std",
 ]

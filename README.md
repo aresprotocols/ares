@@ -41,6 +41,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 ./target/release/gladios-node \
   --base-path /tmp/aura/one \
   --name ocw_one \
+  --execution Native \
   --chain ./chain-data-ares-aura.json \
   --port 30333 \
   --ws-port 9945 \
@@ -63,6 +64,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 ./target/release/gladios-node \
   --base-path /tmp/aura/two \
   --name ocw_two \
+  --execution Native \
   --chain ./chain-data-ares-aura.json \
   --port 30334 \
   --ws-port 9946 \
@@ -85,6 +87,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
 ./target/release/gladios-node \
   --base-path /tmp/aura/tri \
   --name ocw_tri \
+  --execution Native \
   --chain ./chain-data-ares-aura.json \
   --port 30335 \
   --ws-port 9947 \
@@ -114,6 +117,7 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --ws-external \
   --rpc-external \
   --rpc-cors=all \
+  --execution Native \
   --rpc-methods=Unsafe \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
   --warehouse http://141.164.58.241:5566 \

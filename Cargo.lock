@@ -1502,6 +1502,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "frame-election-provider-support"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "sp-arithmetic",
+ "sp-npos-elections",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
 name = "frame-executive"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
@@ -1897,6 +1910,7 @@ dependencies = [
  "jsonrpc-core",
  "log",
  "pallet-transaction-payment-rpc",
+ "rand 0.8.4",
  "runtime-gladios-node",
  "sc-basic-authorship",
  "sc-cli",
@@ -1920,6 +1934,7 @@ dependencies = [
  "sp-consensus-aura",
  "sp-core",
  "sp-finality-grandpa",
+ "sp-offchain",
  "sp-runtime",
  "sp-timestamp",
  "structopt",
@@ -3272,7 +3287,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.3"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#7c114676965be16ae1f7cd1a319e5bd746db6921"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#ff84f556648fa283aaa22c2038658c3f510eafe8"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3749,7 +3764,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#7c114676965be16ae1f7cd1a319e5bd746db6921"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#ff84f556648fa283aaa22c2038658c3f510eafe8"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3768,7 +3783,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#7c114676965be16ae1f7cd1a319e5bd746db6921"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#ff84f556648fa283aaa22c2038658c3f510eafe8"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3868,6 +3883,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-election-provider-multi-phase"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "frame-election-provider-support",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "sp-arithmetic",
+ "sp-core",
+ "sp-io",
+ "sp-npos-elections",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+ "static_assertions",
+]
+
+[[package]]
 name = "pallet-elections-phragmen"
 version = "5.0.0-dev"
 source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
@@ -3935,8 +3969,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ocw"
-version = "3.2.3"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#7c114676965be16ae1f7cd1a319e5bd746db6921"
+version = "3.2.4"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#ff84f556648fa283aaa22c2038658c3f510eafe8"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4016,6 +4050,37 @@ dependencies = [
  "sp-staking",
  "sp-std 4.0.0-dev",
  "sp-trie",
+]
+
+[[package]]
+name = "pallet-staking"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "frame-election-provider-support",
+ "frame-support",
+ "frame-system",
+ "log",
+ "pallet-authorship",
+ "pallet-session",
+ "parity-scale-codec",
+ "serde",
+ "sp-application-crypto",
+ "sp-io",
+ "sp-runtime",
+ "sp-staking",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
+name = "pallet-staking-reward-curve"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "proc-macro-crate 1.1.0",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -5070,6 +5135,7 @@ name = "runtime-gladios-node"
 version = "3.0.0"
 dependencies = [
  "frame-benchmarking",
+ "frame-election-provider-support",
  "frame-executive",
  "frame-support",
  "frame-system",
@@ -5081,10 +5147,12 @@ dependencies = [
  "pallet-ares-challenge",
  "pallet-ares-collective",
  "pallet-aura",
+ "pallet-authorship",
  "pallet-balances",
  "pallet-bounties",
  "pallet-collective",
  "pallet-democracy",
+ "pallet-election-provider-multi-phase",
  "pallet-elections-phragmen",
  "pallet-grandpa",
  "pallet-indices",
@@ -5093,6 +5161,9 @@ dependencies = [
  "pallet-proxy",
  "pallet-randomness-collective-flip",
  "pallet-scheduler",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-staking-reward-curve",
  "pallet-sudo",
  "pallet-timestamp",
  "pallet-transaction-payment",
@@ -5105,9 +5176,11 @@ dependencies = [
  "sp-consensus-aura",
  "sp-core",
  "sp-inherents",
+ "sp-npos-elections",
  "sp-offchain",
  "sp-runtime",
  "sp-session",
+ "sp-staking",
  "sp-std 4.0.0-dev",
  "sp-transaction-pool",
  "sp-version",

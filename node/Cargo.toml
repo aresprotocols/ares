@@ -24,7 +24,8 @@ version = '3.0.0'
 [dependencies]
 jsonrpc-core = '18.0.0'
 structopt = '0.3.8'
-
+rand = "0.8.4"
+sp-offchain = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
 [dependencies.runtime-gladios-node]
 path = '../runtime'

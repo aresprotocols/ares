@@ -1,7 +1,7 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
-use runtime_gladios_node::{self, opaque::Block, RuntimeApi};
-use sc_client_api::{ExecutorProvider, RemoteBackend};
+use runtime_gladios_node::{self, opaque::Block, RuntimeApi, part_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN};
+use sc_client_api::{Backend, ExecutorProvider, RemoteBackend};
 // use ocw_sc_consensus_aura as sc_consensus_aura;
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 pub use sc_executor::NativeElseWasmExecutor;
@@ -15,9 +15,11 @@ use std::{sync::Arc, time::Duration};
 // use sp_runtime::sp_std;
 use frame_support::pallet_prelude::Encode;
 use frame_support::sp_std;
-use seed_reader::*;
-use std::io::Read;
 use log;
+use seed_reader::*;
+use sp_core::offchain::OffchainStorage;
+use sp_offchain::STORAGE_PREFIX;
+use std::io::Read;
 // use frame_support::{dispatch::DispatchResult, pallet_prelude::*};
 
 // Our native executor instance.
@@ -63,7 +65,7 @@ pub fn new_partial(
 	ServiceError,
 > {
 	if config.keystore_remote.is_some() {
-		return Err(ServiceError::Other(format!("Remote Keystores are not supported.")))
+		return Err(ServiceError::Other(format!("Remote Keystores are not supported.")));
 	}
 
 	let telemetry = config
@@ -160,7 +162,10 @@ fn remote_keystore(_url: &String) -> Result<Arc<LocalKeystore>, &'static str> {
 }
 
 /// Builds a new service for a full client.
-pub fn new_full(mut config: Configuration, ares_params: Vec<(&str, Option<Vec<u8>>)>) -> Result<TaskManager, ServiceError> {
+pub fn new_full(
+	mut config: Configuration,
+	ares_params: Vec<(&str, Option<Vec<u8>>)>,
+) -> Result<TaskManager, ServiceError> {
 	let sc_service::PartialComponents {
 		client,
 		backend,
@@ -175,11 +180,12 @@ pub fn new_full(mut config: Configuration, ares_params: Vec<(&str, Option<Vec<u8
 	if let Some(url) = &config.keystore_remote {
 		match remote_keystore(url) {
 			Ok(k) => keystore_container.set_remote_keystore(k),
-			Err(e) =>
+			Err(e) => {
 				return Err(ServiceError::Other(format!(
 					"Error hooking up remote keystore for {}: {}",
 					url, e
-				))),
+				)))
+			}
 		};
 	}
 
@@ -229,6 +235,7 @@ pub fn new_full(mut config: Configuration, ares_params: Vec<(&str, Option<Vec<u8
 		})
 	};
 
+	let backend_clone = backend.clone();
 	let _rpc_handlers = sc_service::spawn_tasks(sc_service::SpawnTasksParams {
 		network: network.clone(),
 		client: client.clone(),
@@ -252,13 +259,15 @@ pub fn new_full(mut config: Configuration, ares_params: Vec<(&str, Option<Vec<u8
 					None => { (*order, false) }
 					Some(exe_vecu8) => {
 						let request_base_str = sp_std::str::from_utf8(exe_vecu8).unwrap();
-						// println!("debug_str ======= {:?}", request_base_str );
 						let store_request_u8 = request_base_str.encode();
-						let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
-						let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
-						// println!(" OFFCHAIN request base : = {:?}", &body);
-						log::info!("OFFCHAIN request base : = {:?}", &body);
-						_rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
+						// let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
+						// let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
+						// // println!(" OFFCHAIN request base : = {:?}", &body);
+						// log::info!("OFFCHAIN request base : = {:?}", &body);
+						// _rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
+						if let Some(mut offchain_db) = backend_clone.offchain_storage() {
+							offchain_db.set(STORAGE_PREFIX, LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, store_request_u8.as_slice());
+						}
 						(*order, true)
 					}
 				}
