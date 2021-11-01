@@ -54,6 +54,7 @@ pub mod network;
 mod part_challenge;
 pub mod part_member_extend;
 pub mod part_ocw;
+pub mod part_ocw_finance;
 
 pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION, BlockNumber};
@@ -348,6 +349,7 @@ construct_runtime!(
 		AresChallenge: pallet_ares_challenge::{Pallet, Call, Storage, Event<T>},
 
 		OCWModule: pallet_ocw::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
+		OcwFinance: ocw_finance::{Pallet, Call, Storage, Event<T>},
 
 		// Governance
 		Scheduler: pallet_scheduler::{Pallet, Call, Storage, Event<T>},

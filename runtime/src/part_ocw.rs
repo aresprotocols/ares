@@ -13,6 +13,7 @@ use sp_runtime::{MultiAddress, SaturatedConversion};
 use crate::governance::part_technical::TechnicalCollective;
 pub use pallet_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 
+
 // An index to a block.
 pub type BlockNumber = u32;
 
@@ -65,6 +66,8 @@ impl pallet_ocw::Config for Runtime {
 	type VMember = MemberExtend;
 
 	type AuthorityCount = pallet_ocw::aura_handler::Pallet<Runtime>;
+
+	type OcwFinanceHandler = OcwFinance;
 }
 
 

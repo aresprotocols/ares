@@ -3287,7 +3287,6 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.3"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#ff84f556648fa283aaa22c2038658c3f510eafe8"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3729,6 +3728,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "ocw-finance"
+version = "3.0.1"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "hex",
+ "pallet-balances",
+ "parity-scale-codec",
+ "sp-application-crypto",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
 name = "once_cell"
 version = "1.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3764,7 +3780,6 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#ff84f556648fa283aaa22c2038658c3f510eafe8"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3783,7 +3798,6 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#ff84f556648fa283aaa22c2038658c3f510eafe8"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3969,15 +3983,16 @@ dependencies = [
 
 [[package]]
 name = "pallet-ocw"
-version = "3.2.4"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#ff84f556648fa283aaa22c2038658c3f510eafe8"
+version = "3.2.5"
 dependencies = [
  "frame-support",
  "frame-system",
  "hex",
  "lite-json",
  "log",
+ "ocw-finance",
  "pallet-aura",
+ "pallet-balances",
  "pallet-session",
  "parity-scale-codec",
  "serde",
@@ -5144,6 +5159,7 @@ dependencies = [
  "hex-literal",
  "log",
  "member-extend",
+ "ocw-finance",
  "pallet-ares-challenge",
  "pallet-ares-collective",
  "pallet-aura",
