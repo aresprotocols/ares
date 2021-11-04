@@ -4,7 +4,7 @@
 
 * With --warehouse for --dev
 ```text
-./target/release/gladios-node --tmp --dev --warehouse http://141.164.58.241:5566
+./target/release/gladios-node --tmp --dev --warehouse http://141.164.58.241:5566 --validator
 ```
 
 * Set ares author key by RPC request
