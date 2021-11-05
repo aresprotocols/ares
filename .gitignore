@@ -21,3 +21,4 @@
 **/*.curl
 **/*.private.md
 **/*.private.bak
+data/*

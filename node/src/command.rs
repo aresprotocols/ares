@@ -55,11 +55,11 @@ impl SubstrateCli for Cli {
 				log::info!("🚅 🚅 🚅 load spec with development_config().");
 				Box::new(chain_spec::development_config()?)
 			}
-			"gladios" => {
+			"local" => {
 				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
 				Box::new(chain_spec::local_testnet_config()?)
 			},
-			"" => {
+			"" | "gladios" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");
 				Box::new(chain_spec::ChainSpec::from_json_bytes(&include_bytes!("../../chain-data-ares-aura.json")[..])?)
 			},
