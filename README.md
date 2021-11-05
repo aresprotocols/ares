@@ -1,42 +1,26 @@
-## Ares cow 
+## Ares cow
 
-### Start 
+### Start with --dev
 
-* With --warehouse for --dev
 ```text
-./target/release/gladios-node --tmp --dev --warehouse http://141.164.58.241:5566 --validator
+./target/release/gladios-node --ws-port 9945 --tmp --dev --warehouse http://YourOracle:Port
 ```
 
-* Set ares author key by RPC request
+### Start with network
+
+#### Make ares key files
+* Create a set of files to store private keys, such as `ares_key_files_**.txt`
+* The content of the file is as follows, a
 ```text
-curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-01.curl"
+aura:${Your_Mnemonic}
+gran:${Your_Mnemonic}
 ```
+* Aura uses sr25519, Gran uses ed25519.
+* At least you need two sets of files. `ares_key_file_01.txt`, `ares_key_file_02.txt` are used in the example
 
-* PRC data file is similar as below
+### Start `bootnodes` validator
+
 ```text
-// ocw-ares-01.curl file content:
-{
-    "jsonrpc":"2.0",
-    "id":1,
-    "method":"author_insertKey",
-    "params": [
-        "ares",
-        "XXXXX words ",
-        "0xPublicKey of Hex"
-    ]
-}
-```
-
-### Testing
-
-* Export the local chain spec to json
-```text
-./target/release/gladios-node build-spec --disable-default-bootnode --chain gladios > chain-data-ares-aura.json
-```
-
-* Start one
-```text
-
 ./target/release/gladios-node purge-chain --base-path /tmp/aura/one --chain gladios -y
 ./target/release/gladios-node \
   --base-path /tmp/aura/one \
@@ -52,13 +36,14 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --rpc-methods=Unsafe \
   --node-key 0000000000000000000000000000000000000000000000000000000000000001 \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
-  --warehouse http://141.164.58.241:5566 \
-  --ares-keys /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_01.curl \
+  --warehouse http://YourOracle:Port \
+  --ares-keys ./ares_key_file_01.txt \
   --validator
   
 ```
 
-* Start two
+### Start `connection` validator
+* Assume that the bootnode network is ws://127.0.0.1:9945
 ```text
 ./target/release/gladios-node purge-chain --base-path /tmp/aura/two --chain gladios -y
 ./target/release/gladios-node \
@@ -74,77 +59,9 @@ curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d 
   --rpc-cors=all \
   --rpc-methods=Unsafe \
   --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
-  --warehouse http://141.164.58.241:5566 \
-  --ares-keys /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_02.curl \
+  --warehouse http://YourOracle:Port \
+  --ares-keys ./ares_key_file_02.txt \
   --validator \
   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
-  
 ```
 
-* Start tri
-```text
-./target/release/gladios-node purge-chain --base-path /tmp/aura/tri --chain gladios -y
-./target/release/gladios-node \
-  --base-path /tmp/aura/tri \
-  --name ocw_tri \
-  --execution Native \
-  --chain ./chain-data-ares-aura.json \
-  --port 30335 \
-  --ws-port 9947 \
-  --rpc-port 9935 \
-  --ws-external \
-  --rpc-external \
-  --rpc-cors=all \
-  --rpc-methods=Unsafe \
-  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
-  --warehouse http://141.164.58.241:5566 \
-  --ares-keys /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_03.curl \
-  --validator \
-  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
-  
-```
-
-* Start four
-```text
-./target/release/gladios-node purge-chain --base-path /tmp/aura/four --chain gladios -y
-./target/release/gladios-node \
-  --base-path /tmp/aura/four \
-  --name ocw_four \
-  --chain ./chain-data-ares-aura.json \
-  --port 30336 \
-  --ws-port 9948 \
-  --rpc-port 9936 \
-  --ws-external \
-  --rpc-external \
-  --rpc-cors=all \
-  --execution Native \
-  --rpc-methods=Unsafe \
-  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0' \
-  --warehouse http://141.164.58.241:5566 \
-  --ares-keys /Users/mac/work-files/coding/git-files/ke-fan/ares-chain/ares_key_file_04.curl \
-  --validator \
-  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
-  
-```
-
-* Add Aura keys
-```text
-curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-01.curl"
-curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-02.curl"
-curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-aura-03.curl"
-```
-
-* Add GRANDPA key
-```text
-curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@gran1.curl"
-curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@gran2.curl"
-curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@gran3.curl"
-
-```
-
-* Add ARES key
-```text
-curl http://localhost:9933  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-01.curl"
-curl http://localhost:9934  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-02.curl"
-curl http://localhost:9935  -H "Content-Type:application/json;charset=utf-8" -d "@ocw-ares-03.curl"
-```

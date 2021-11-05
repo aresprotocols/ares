@@ -5164,6 +5164,7 @@ dependencies = [
  "hex-literal",
  "log",
  "member-extend",
+ "ocw-finance",
  "pallet-ares-challenge",
  "pallet-ares-collective",
  "pallet-aura",
