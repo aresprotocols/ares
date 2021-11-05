@@ -26,7 +26,6 @@ gran:${Your_Mnemonic}
   --base-path /tmp/aura/one \
   --name ocw_one \
   --execution Native \
-  --chain ./chain-data-ares-aura.json \
   --port 30333 \
   --ws-port 9945 \
   --rpc-port 9933 \
@@ -50,7 +49,6 @@ gran:${Your_Mnemonic}
   --base-path /tmp/aura/two \
   --name ocw_two \
   --execution Native \
-  --chain ./chain-data-ares-aura.json \
   --port 30334 \
   --ws-port 9946 \
   --rpc-port 9934 \
