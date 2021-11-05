@@ -51,10 +51,22 @@ impl SubstrateCli for Cli {
 
 	fn load_spec(&self, id: &str) -> Result<Box<dyn sc_service::ChainSpec>, String> {
 		Ok(match id {
-			"dev" => Box::new(chain_spec::development_config()?),
-			"" | "gladios" | "live" => Box::new(chain_spec::local_testnet_config()?),
-			path =>
-				Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?),
+			"dev" => {
+				log::info!("🚅 🚅 🚅 load spec with development_config().");
+				Box::new(chain_spec::development_config()?)
+			}
+			"gladios" => {
+				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
+				Box::new(chain_spec::local_testnet_config()?)
+			},
+			"" => {
+				log::info!("🚅 🚅 🚅 load spec with bytes.");
+				Box::new(chain_spec::ChainSpec::from_json_bytes(&include_bytes!("../../chain-data-ares-aura.json")[..])?)
+			},
+			path => {
+				log::info!("🚅 🚅 🚅 load spec with json file.");
+				Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?)
+			},
 		})
 	}
 
@@ -135,7 +147,7 @@ pub fn run() -> sc_cli::Result<()> {
 						// ares params
 						let mut ares_params: Vec<(&str,Option<Vec<u8>>)> = Vec::new();
 
-						if cli.run.validator {
+						if cli.run.validator || cli.run.shared_params.dev {
 							let request_base = match cli.warehouse {
 								None => {
 									panic!("⛔ Start parameter `--request-base` is required!");

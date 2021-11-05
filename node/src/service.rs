@@ -304,7 +304,6 @@ pub fn new_full(
 		}
 	}).collect();
 
-	println!(" OFFCHAIN param exec result : = {:?}", &result);
 	// ---------
 
 

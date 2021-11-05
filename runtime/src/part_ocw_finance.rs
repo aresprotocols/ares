@@ -13,7 +13,7 @@ parameter_types! {
 	pub const RewardSlot: AskPeriodNum = 1;
 }
 
-impl ocw_finance::Config for Test {
+impl ocw_finance::Config for Runtime {
     type Event = Event;
     type PalletId = AresFinancePalletId;
     type Currency = pallet_balances::Pallet<Self>;
