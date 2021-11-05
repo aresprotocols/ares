@@ -9,8 +9,8 @@ parameter_types! {
 	pub const AresFinancePalletId: PalletId = PalletId(*b"ocw/fund");
 	pub const BasicDollars: Balance = DOLLARS;
 	pub const AskPeriod: BlockNumber = 10;
-	pub const RewardPeriodCycle: AskPeriodNum = 2;
-	pub const RewardSlot: AskPeriodNum = 1;
+	pub const RewardPeriodCycle: AskPeriodNum = 5;
+	pub const RewardSlot: AskPeriodNum = 2;
 }
 
 impl ocw_finance::Config for Runtime {
@@ -21,5 +21,5 @@ impl ocw_finance::Config for Runtime {
     type AskPeriod = AskPeriod;
     type RewardPeriodCycle = RewardPeriodCycle;
     type RewardSlot = RewardSlot;
-    type OnSlash = ();
+    type OnSlash = Treasury;
 }
