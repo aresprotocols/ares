@@ -3287,7 +3287,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.3"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#d194e496de72aa91a12f640a82588d1bb5d186c0"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#e65eb36c9ce0a75fb86f19b328a4dc4e0cebd7c7"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3730,8 +3730,8 @@ dependencies = [
 
 [[package]]
 name = "ocw-finance"
-version = "3.0.2"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#d194e496de72aa91a12f640a82588d1bb5d186c0"
+version = "3.0.3"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#e65eb36c9ce0a75fb86f19b328a4dc4e0cebd7c7"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3782,7 +3782,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#d194e496de72aa91a12f640a82588d1bb5d186c0"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#e65eb36c9ce0a75fb86f19b328a4dc4e0cebd7c7"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3801,7 +3801,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#d194e496de72aa91a12f640a82588d1bb5d186c0"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#e65eb36c9ce0a75fb86f19b328a4dc4e0cebd7c7"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3987,8 +3987,8 @@ dependencies = [
 
 [[package]]
 name = "pallet-ocw"
-version = "3.2.6"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#d194e496de72aa91a12f640a82588d1bb5d186c0"
+version = "3.2.7"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#e65eb36c9ce0a75fb86f19b328a4dc4e0cebd7c7"
 dependencies = [
  "frame-support",
  "frame-system",

@@ -169,7 +169,7 @@ pub fn run() -> sc_cli::Result<()> {
 						service::new_full(config, ares_params)
 					}
 				}
-				.map_err(sc_cli::Error::Service)
+					.map_err(sc_cli::Error::Service)
 			})
 		},
 	}
