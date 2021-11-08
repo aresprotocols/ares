@@ -8,9 +8,9 @@ pub type AskPeriodNum = u64;
 parameter_types! {
 	pub const AresFinancePalletId: PalletId = PalletId(*b"ocw/fund");
 	pub const BasicDollars: Balance = DOLLARS;
-	pub const AskPeriod: BlockNumber = 100;
+	pub const AskPeriod: BlockNumber = 100 ;
 	pub const RewardPeriodCycle: AskPeriodNum = 20 * 24;
-	pub const RewardSlot: AskPeriodNum = 2;
+	pub const RewardSlot: AskPeriodNum = 1;
 }
 
 impl ocw_finance::Config for Runtime {

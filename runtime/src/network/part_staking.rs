@@ -180,8 +180,8 @@ pallet_staking_reward_curve::build! {
 /// };
 
 parameter_types! {
-	pub const SessionsPerEra: sp_staking::SessionIndex = 1; // constants::time::EPOCH_DURATION_IN_BLOCKS (one session 10 min)
-	pub const BondingDuration: pallet_staking::EraIndex = 1;
+	pub const SessionsPerEra: sp_staking::SessionIndex = 100; // constants::time::EPOCH_DURATION_IN_BLOCKS (one session 10 min)
+	pub const BondingDuration: pallet_staking::EraIndex = 100;
 	pub const SlashDeferDuration: pallet_staking::EraIndex = 1; // 1/4 the bonding duration.
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	pub const MaxNominatorRewardedPerValidator: u32 = 256;
