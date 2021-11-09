@@ -1,4 +1,4 @@
-## Ares cow 
+## Ares cow
 
 ### Start with --dev
 
