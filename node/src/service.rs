@@ -1,6 +1,8 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
-use runtime_gladios_node::{self, opaque::Block, RuntimeApi, part_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN};
+use runtime_gladios_node::{
+	self, opaque::Block, part_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, RuntimeApi,
+};
 use sc_client_api::{Backend, ExecutorProvider, RemoteBackend};
 // use ocw_sc_consensus_aura as sc_consensus_aura;
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
@@ -251,61 +253,74 @@ pub fn new_full(
 		telemetry: telemetry.as_mut(),
 	})?;
 
-	let result: Vec<(&str, bool)> = ares_params.iter().map(|(order, x)|{
-
-		match order {
-			&"request-base" => {
-				match x {
-					None => { (*order, false) }
-					Some(exe_vecu8) => {
-						let request_base_str = sp_std::str::from_utf8(exe_vecu8).unwrap();
-						let store_request_u8 = request_base_str.encode();
-						// let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
-						// let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
-						// // println!(" OFFCHAIN request base : = {:?}", &body);
-						// log::info!("OFFCHAIN request base : = {:?}", &body);
-						// _rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
-						if let Some(mut offchain_db) = backend_clone.offchain_storage() {
-							offchain_db.set(STORAGE_PREFIX, LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, store_request_u8.as_slice());
-						}
-						(*order, true)
-					}
-				}
-			},
-			&"ares-keys-file" => {
-
-				match x {
-					None => { (*order, false) },
-					Some(exe_vecu8) => {
-						let key_file_path = sp_std::str::from_utf8(exe_vecu8).unwrap();
-						let mut file = std::fs::File::open(key_file_path).unwrap();
-						let mut contents = String::new();
-						file.read_to_string(&mut contents).unwrap();
-						let rawkey_list = extract_content(contents.as_str());
-						let insert_key_list: Vec<(&str, &str, String)> = rawkey_list.iter().map(|x| {
-							make_author_insert_key_params(*x)
-						}).collect() ;
-						let rpc_list: Vec<Option<String>> = insert_key_list.iter().map(|x|{
-							make_rpc_request("author_insertKey", (x.0, x.1, x.2.as_str()))
-						}).collect();
-						rpc_list.iter().any(|x|{
-							if let Some(rpc_str) = x {
-								// send rpc request.
-								_rpc_handlers.io_handler().handle_request_sync(rpc_str, sc_rpc::Metadata::default());
+	log::info!("setting ares_params: {:?}", ares_params);
+	let result: Vec<(&str, bool)> = ares_params
+		.iter()
+		.map(|(order, x)| {
+			match order {
+				&"request-base" => {
+					match x {
+						None => (*order, false),
+						Some(exe_vecu8) => {
+							let request_base_str = sp_std::str::from_utf8(exe_vecu8).unwrap();
+							let store_request_u8 = request_base_str.encode();
+							// let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
+							// let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
+							// // println!(" OFFCHAIN request base : = {:?}", &body);
+							// log::info!("OFFCHAIN request base : = {:?}", &body);
+							// _rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
+							log::info!("setting request_domain: {:?}", request_base_str);
+							if let Some(mut offchain_db) = backend_clone.offchain_storage() {
+								log::debug!("after setting request_domain: {:?}", request_base_str);
+								offchain_db.set(
+									STORAGE_PREFIX,
+									LOCAL_STORAGE_PRICE_REQUEST_DOMAIN,
+									store_request_u8.as_slice(),
+								);
 							}
-							false
-						});
-
-						(*order, true)
+							(*order, true)
+						}
 					}
 				}
+				&"ares-keys-file" => {
+					match x {
+						None => (*order, false),
+						Some(exe_vecu8) => {
+							let key_file_path = sp_std::str::from_utf8(exe_vecu8).unwrap();
+							let mut file = std::fs::File::open(key_file_path).unwrap();
+							let mut contents = String::new();
+							file.read_to_string(&mut contents).unwrap();
+							let rawkey_list = extract_content(contents.as_str());
+							let insert_key_list: Vec<(&str, &str, String)> = rawkey_list
+								.iter()
+								.map(|x| make_author_insert_key_params(*x))
+								.collect();
+							let rpc_list: Vec<Option<String>> = insert_key_list
+								.iter()
+								.map(|x| {
+									make_rpc_request("author_insertKey", (x.0, x.1, x.2.as_str()))
+								})
+								.collect();
+							rpc_list.iter().any(|x| {
+								if let Some(rpc_str) = x {
+									// send rpc request.
+									_rpc_handlers
+										.io_handler()
+										.handle_request_sync(rpc_str, sc_rpc::Metadata::default());
+								}
+								false
+							});
+
+							(*order, true)
+						}
+					}
+				}
+				&_ => ("NONE", false),
 			}
-			&_ => {("NONE", false) }
-		}
-	}).collect();
+		})
+		.collect();
 
 	// ---------
-
 
 	if role.is_authority() {
 		let proposer_factory = sc_basic_authorship::ProposerFactory::new(
