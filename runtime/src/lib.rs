@@ -54,6 +54,7 @@ pub mod network;
 mod part_challenge;
 pub mod part_member_extend;
 pub mod part_ocw;
+pub mod part_estimates;
 pub mod part_ocw_finance;
 
 pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
@@ -362,6 +363,9 @@ construct_runtime!(
 		Bounties: pallet_bounties::{Pallet, Call, Storage, Event<T>},
 		Democracy: pallet_democracy::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Elections: pallet_elections_phragmen::{Pallet, Call, Storage, Event<T>, Config<T>},
+
+		//test estimates
+		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
 	}
 );
 
