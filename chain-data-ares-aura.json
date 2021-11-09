@@ -2,7 +2,9 @@
   "name": "Ares Gladios",
   "id": "gladios",
   "chainType": "Live",
-  "bootNodes": [],
+  "bootNodes": [
+    "/ip4/158.247.224.166/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp"
+  ],
   "telemetryEndpoints": null,
   "protocolId": null,
   "properties": {
