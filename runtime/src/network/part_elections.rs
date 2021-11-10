@@ -91,7 +91,8 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	type SignedMaxWeight = MinerMaxWeight;
 	type SlashHandler = (); // burn slashes
 	type RewardHandler = (); // nothing to do upon rewards
-	type DataProvider = Staking;
+	type DataProvider = Staking; //
+	// type DataProvider = StakingExtend; // Staking; //
 	type OnChainAccuracy = Perbill;
 	type Solution = NposSolution16;
 	type Fallback = Fallback;

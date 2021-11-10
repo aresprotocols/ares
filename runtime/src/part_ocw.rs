@@ -47,26 +47,15 @@ impl pallet_ocw::Config for Runtime {
 	type FindAuthor =
 		OcwFindAccountFromAuthorIndex<Self, pallet_aura::FindAccountFromAuthorIndex<Self, Aura>>;
 	// type FindAuthor = OcwFindAccountFromAuthorIndex<Self, Aura>;
-
-	// type PriceVecMaxSize = PriceVecMaxSize;
-	// type MaxCountOfPerRequest = MaxCountOfPerRequest;
-	// type NeedVerifierCheck = NeedVerifierCheck;
-	// type UseOnChainPriceRequest = UseOnChainPriceRequest;
 	type FractionLengthNum = FractionLengthNum;
 	type CalculationKind = CalculationKind;
 	// type RequestOrigin = pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective> ; // frame_system::EnsureRoot<AccountId>;
 	type RequestOrigin = EnsureRootOrHalfTechnicalCollective ;
 	// type RequestOrigin = frame_system::EnsureRoot<AccountId>;
-
-	// type MemberAuthority = sp_consensus_babe::AuthorityId ;
-	// type Member = Babe;
-
 	type ValidatorAuthority = <Self as frame_system::Config>::AccountId;
 	// type VMember = StakingExtend;
 	type VMember = MemberExtend;
-
 	type AuthorityCount = pallet_ocw::aura_handler::Pallet<Runtime>;
-
 	type OcwFinanceHandler = OcwFinance;
 }
 
