@@ -56,6 +56,7 @@ pub mod part_member_extend;
 pub mod part_ocw;
 pub mod part_estimates;
 pub mod part_ocw_finance;
+// pub mod part_staking_extend;
 
 pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION, BlockNumber};
@@ -351,6 +352,7 @@ construct_runtime!(
 
 		OCWModule: pallet_ocw::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		OcwFinance: ocw_finance::{Pallet, Call, Storage, Event<T>},
+		// StakingExtend: staking_extend::{Pallet},
 
 		// Governance
 		Scheduler: pallet_scheduler::{Pallet, Call, Storage, Event<T>},
