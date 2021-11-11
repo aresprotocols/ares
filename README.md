@@ -63,3 +63,24 @@ gran:${Your_Mnemonic}
   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
 ```
 
+## Ares-Gladios Builder Docker Image
+### Build Image
+```shell
+docker build -t ares-chain -f docker/builder.Dockerfile  .
+```
+
+### Push Image to your repository
+```shell
+docker tag ares-chain:latest your-repository/image-name:tag
+docker push your-repository/image-name:tag
+```
+
+### Run Image
+```shell
+docker run -d --name ares_gladios -p 9944:9944/tcp -v your-host-path:/data aresprotocollab/ares_gladios:beta gladios-node \
+  --name your-name --chain gladios --ws-external --rpc-external \
+  --rpc-cors=all --rpc-methods=Unsafe  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+```
+> Note! 
+> **your-host-path** must exist
+
