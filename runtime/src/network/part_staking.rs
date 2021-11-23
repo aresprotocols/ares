@@ -10,6 +10,7 @@ pub use pallet_staking::StakerStatus;
 use part_elections::MAX_NOMINATIONS;
 use sp_runtime::curve::PiecewiseLinear;
 pub use sp_staking;
+use staking_extend;
 
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
@@ -210,13 +211,13 @@ impl pallet_staking::Config for Runtime {
 	type EraPayout = pallet_staking::ConvertCurve<RewardCurve>;
 	type NextNewSession = Session;
 	type MaxNominatorRewardedPerValidator = MaxNominatorRewardedPerValidator;
-	type ElectionProvider =  ElectionProviderMultiPhase;
-	// type ElectionProvider = StakingExtend;// // ElectionProviderMultiPhase;
-	type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
-		pallet_election_provider_multi_phase::OnChainConfig<Self>,
-	>;
+	// type ElectionProvider =  ElectionProviderMultiPhase;
+	type ElectionProvider = StakingExtend;// // ElectionProviderMultiPhase;
 	// type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
-	// 	staking_extend::OnChainConfig<Self>,
+	// 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
 	// >;
+	type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
+		staking_extend::OnChainConfig<Self>,
+	>;
 	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
 }

@@ -150,7 +150,7 @@ pub fn run() -> sc_cli::Result<()> {
 						if cli.run.validator || cli.run.shared_params.dev {
 							let request_base = match cli.warehouse {
 								None => {
-									panic!("⛔ Start parameter `--request-base` is required!");
+									panic!("⛔ Start parameter `--warehouse` is required!");
 								}
 								Some(request_url) => {
 									request_url.as_str().as_bytes().to_vec()
