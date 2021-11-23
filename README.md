@@ -1,4 +1,40 @@
-## Ares cow
+## Ares Node Code
+
+Official Rust implementation of the Ares Protocol.
+
+[![GitHub license](https://img.shields.io/badge/license-GPL3%2FApache2-blue)](#LICENSE) [![GitLab Status](https://gitlab.parity.io/parity/substrate/badges/master/pipeline.svg)](https://gitlab.parity.io/parity/substrate/pipelines) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg) [![Discord](https://img.shields.io/badge/discord-join%20chat-blue.svg)](https://discord.gg/cqduK4ZNaY
+)
+
+### How To Join Gladios Testnet
+
+#### 1. **Download Node**
+```shell
+wget -c https://github.com/aresprotocols/ares/releases/download/v1.0.6/gladios-node
+```
+#### 2. **Check Execution Permission**
+```shell
+ls -al gladios-node
+```
+Output 
+```asm
+-rwxrwxrwx  1 root  staff  89189840 11 23 21:44 gladios-node-linux-amd64-1.0.6-e4504d2
+```
+If not have **x**, Execute the following command
+```shell
+chmod +777 gladios-node
+```
+
+#### 3. **Start Node**
+```shell
+./gladios-node --base-path data   --name Ares_xxx   --chain gladios --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+```
+
+**This command explain:**
+
+* --base-path flag specify data storage directory as the **data** folder under the current directory.
+* --name flag specify node name as **Ares_xxx**.
+* --chain flag specify the current chain as the **gladios** testnet.
+* telemetry-url flag specify the link to monitor node status as **wss://telemetry.polkadot.io/submit/ 0**,You can visit [telemetry](https://telemetry.polkadot.io/#list/0x1765d3a35ecdca975e3dc69472cc0a51780ed9ccb4481becfdddfb3c5c2be048) to view.
 
 ### Start with --dev
 
