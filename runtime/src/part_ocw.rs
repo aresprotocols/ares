@@ -6,12 +6,12 @@ use frame_support::sp_runtime::traits;
 use frame_support::sp_runtime::traits::AccountIdConversion;
 use frame_support::traits::FindAuthor;
 use frame_support::ConsensusEngineId;
-use pallet_ocw;
-use pallet_ocw::Config;
+use ares_oracle;
+use ares_oracle::Config;
 use sp_runtime::traits::StaticLookup;
 use sp_runtime::{MultiAddress, SaturatedConversion};
 use crate::governance::part_technical::TechnicalCollective;
-pub use pallet_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
+pub use ares_oracle::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 
 
 // An index to a block.
@@ -30,15 +30,15 @@ parameter_types! {
 	pub const CalculationKind: u8 = 1;
 }
 
-impl pallet_ocw::aura_handler::Config for Runtime {
+impl ares_oracle::aura_handler::Config for Runtime {
 
 }
 
-impl pallet_ocw::Config for Runtime {
+impl ares_oracle::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
-	type AuthorityId = pallet_ocw::crypto::OcwAuthId<Self>;
-	type AuthorityAres = pallet_ocw::crypto::AuthorityId;
+	type AuthorityId = ares_oracle::crypto::OcwAuthId<Self>;
+	type AuthorityAres = ares_oracle::crypto::AuthorityId;
 	// type CheckDeposit = AresChallenge;
 	// type UnsignedInterval = UnsignedInterval;
 	type UnsignedPriority = UnsignedPriority;
@@ -55,7 +55,7 @@ impl pallet_ocw::Config for Runtime {
 	type ValidatorAuthority = <Self as frame_system::Config>::AccountId;
 	// type VMember = StakingExtend;
 	type VMember = MemberExtend;
-	type AuthorityCount = pallet_ocw::aura_handler::Pallet<Runtime>;
+	type AuthorityCount = ares_oracle::aura_handler::Pallet<Runtime>;
 	type OcwFinanceHandler = OcwFinance;
 }
 

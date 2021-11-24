@@ -20,5 +20,6 @@
 **/*.will_del
 **/*.curl
 **/*.private.md
+**/*.private.sh
 **/*.private.bak
 data/*
