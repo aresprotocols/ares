@@ -17,6 +17,6 @@ impl pallet_price_estimates::Config for Runtime {
 	type Currency = Balances;
 	type Call = Call;
 	type PriceProvider = OCWModule;
-	type AuthorityId = pallet_ocw::crypto2::AuraAuthId;
+	type AuthorityId = ares_oracle::crypto2::AuraAuthId;
 	type UnsignedPriority = UnsignedPriority;
 }

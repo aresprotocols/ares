@@ -61,7 +61,7 @@ impl SubstrateCli for Cli {
 			},
 			"" | "gladios" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");
-				Box::new(chain_spec::ChainSpec::from_json_bytes(&include_bytes!("../../chain-data-ares-aura.json")[..])?)
+				Box::new(chain_spec::ChainSpec::from_json_bytes(&include_bytes!("../res/chain-data-ares-aura.json")[..])?)
 			},
 			path => {
 				log::info!("🚅 🚅 🚅 load spec with json file.");
@@ -150,7 +150,7 @@ pub fn run() -> sc_cli::Result<()> {
 						if cli.run.validator || cli.run.shared_params.dev {
 							let request_base = match cli.warehouse {
 								None => {
-									panic!("⛔ Start parameter `--request-base` is required!");
+									panic!("⛔ Start parameter `--warehouse` is required!");
 								}
 								Some(request_url) => {
 									request_url.as_str().as_bytes().to_vec()

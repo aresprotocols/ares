@@ -125,6 +125,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "ares-oracle"
+version = "3.3.0"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#6d27dfc750cd0ab593e3f2136961325fe256cd4f"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "hex",
+ "lite-json",
+ "log",
+ "oracle-finance",
+ "pallet-aura",
+ "pallet-balances",
+ "pallet-session",
+ "parity-scale-codec",
+ "serde",
+ "serde_json",
+ "sp-application-crypto",
+ "sp-consensus-aura",
+ "sp-core",
+ "sp-io",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
 name = "arrayref"
 version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3287,7 +3313,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.3"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#18297c7c61dac6392c6e1bbfd40fc9c18220da96"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#6d27dfc750cd0ab593e3f2136961325fe256cd4f"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3729,24 +3755,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ocw-finance"
-version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#18297c7c61dac6392c6e1bbfd40fc9c18220da96"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "hex",
- "pallet-balances",
- "parity-scale-codec",
- "sp-application-crypto",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std 4.0.0-dev",
-]
-
-[[package]]
 name = "once_cell"
 version = "1.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3771,6 +3779,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "28988d872ab76095a6e6ac88d99b54fd267702734fd7ffe610ca27f533ddb95a"
 
 [[package]]
+name = "oracle-finance"
+version = "3.1.0"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#6d27dfc750cd0ab593e3f2136961325fe256cd4f"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "hex",
+ "pallet-balances",
+ "parity-scale-codec",
+ "sp-application-crypto",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
 name = "owning_ref"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3782,7 +3808,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#18297c7c61dac6392c6e1bbfd40fc9c18220da96"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#6d27dfc750cd0ab593e3f2136961325fe256cd4f"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3801,7 +3827,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#18297c7c61dac6392c6e1bbfd40fc9c18220da96"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#6d27dfc750cd0ab593e3f2136961325fe256cd4f"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3986,40 +4012,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-ocw"
-version = "3.2.8"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#18297c7c61dac6392c6e1bbfd40fc9c18220da96"
-dependencies = [
- "frame-support",
- "frame-system",
- "hex",
- "lite-json",
- "log",
- "ocw-finance",
- "pallet-aura",
- "pallet-balances",
- "pallet-session",
- "parity-scale-codec",
- "serde",
- "serde_json",
- "sp-application-crypto",
- "sp-consensus-aura",
- "sp-core",
- "sp-io",
- "sp-keystore",
- "sp-runtime",
- "sp-std 4.0.0-dev",
-]
-
-[[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#18297c7c61dac6392c6e1bbfd40fc9c18220da96"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#6d27dfc750cd0ab593e3f2136961325fe256cd4f"
 dependencies = [
+ "ares-oracle",
  "frame-support",
  "frame-system",
  "log",
- "pallet-ocw",
  "parity-scale-codec",
  "sp-core",
  "sp-io",
@@ -5170,6 +5170,7 @@ dependencies = [
 name = "runtime-gladios-node"
 version = "3.0.0"
 dependencies = [
+ "ares-oracle",
  "frame-benchmarking",
  "frame-election-provider-support",
  "frame-executive",
@@ -5180,7 +5181,7 @@ dependencies = [
  "hex-literal",
  "log",
  "member-extend",
- "ocw-finance",
+ "oracle-finance",
  "pallet-ares-challenge",
  "pallet-ares-collective",
  "pallet-aura",
@@ -5194,7 +5195,6 @@ dependencies = [
  "pallet-grandpa",
  "pallet-indices",
  "pallet-multisig",
- "pallet-ocw",
  "pallet-price-estimates",
  "pallet-proxy",
  "pallet-randomness-collective-flip",
@@ -5222,6 +5222,7 @@ dependencies = [
  "sp-std 4.0.0-dev",
  "sp-transaction-pool",
  "sp-version",
+ "staking-extend",
  "static_assertions",
  "substrate-wasm-builder",
 ]
@@ -7179,6 +7180,29 @@ name = "stable_deref_trait"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
+
+[[package]]
+name = "staking-extend"
+version = "3.0.3"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#6d27dfc750cd0ab593e3f2136961325fe256cd4f"
+dependencies = [
+ "frame-election-provider-support",
+ "frame-support",
+ "frame-system",
+ "lite-json",
+ "log",
+ "pallet-authorship",
+ "pallet-election-provider-multi-phase",
+ "pallet-session",
+ "parity-scale-codec",
+ "serde",
+ "serde_json",
+ "sp-application-crypto",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+]
 
 [[package]]
 name = "static_assertions"

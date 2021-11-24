@@ -264,11 +264,6 @@ pub fn new_full(
 						Some(exe_vecu8) => {
 							let request_base_str = sp_std::str::from_utf8(exe_vecu8).unwrap();
 							let store_request_u8 = request_base_str.encode();
-							// let store_request_hex = sp_core::hexdisplay::HexDisplay::from(&store_request_u8);
-							// let body = format!("{{\"id\":1, \"jsonrpc\":\"2.0\", \"method\": \"offchain_localStorageSet\", \"params\":[\"PERSISTENT\", \"0x6172652d6f63773a3a70726963655f726571756573745f646f6d61696e\", \"0x{}\"]}}", store_request_hex);
-							// // println!(" OFFCHAIN request base : = {:?}", &body);
-							// log::info!("OFFCHAIN request base : = {:?}", &body);
-							// _rpc_handlers.io_handler().handle_request_sync(&body, sc_rpc::Metadata::default());
 							log::info!("setting request_domain: {:?}", request_base_str);
 							if let Some(mut offchain_db) = backend_clone.offchain_storage() {
 								log::debug!("after setting request_domain: {:?}", request_base_str);
