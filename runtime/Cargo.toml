@@ -195,7 +195,7 @@ pallet-proxy  = { version = "4.0.0-dev", default-features = false, git = "https:
 pallet-vesting = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-elections-phragmen = { version = "5.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
-ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.3.0'}
+ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.3.1'}
 oracle-finance = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.0'}
 member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.3'}
 pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
@@ -203,7 +203,7 @@ pallet-ares-collective = {default-features = false, git = 'https://github.com/ar
 pallet-price-estimates = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1',  version = '3.0.1'}
 staking-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.2'}
 
-#ares-oracle = {default-features = false, path = '../../ocw-suit/pallets/ares-oracle', version = '3.3.0'}
+#ares-oracle = {default-features = false, path = '../../ocw-suit/pallets/ares-oracle', version = '3.3.1'}
 #oracle-finance = {default-features = false, path = '../../ocw-suit/pallets/oracle-finance',  version = '3.1.0'}
 #member-extend = {default-features = false, path = '../../ocw-suit/pallets/member-extend',  version = '3.0.3'}
 #pallet-ares-challenge = {default-features = false, path = '../../ocw-suit/pallets/challenge', version='3.0.1'}
