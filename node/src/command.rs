@@ -156,7 +156,7 @@ pub fn run() -> sc_cli::Result<()> {
 									request_url.as_str().as_bytes().to_vec()
 								}
 							};
-							ares_params.push(("request-base", Some(request_base)));
+							ares_params.push(("warehouse", Some(request_base)));
 
 							match cli.ares_keys {
 								None => {}
