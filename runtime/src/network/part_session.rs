@@ -11,7 +11,8 @@ parameter_types! {
 
 impl_opaque_keys! {
 	pub struct SessionKeys {
-		pub aura: Aura,
+		// pub aura: Aura,
+		pub aura: StakingExtend,
 		pub grandpa: Grandpa,
 	}
 }
