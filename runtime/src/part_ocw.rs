@@ -37,8 +37,9 @@ impl ares_oracle::aura_handler::Config for Runtime {
 impl ares_oracle::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
-	type AuthorityId = ares_oracle::crypto::OcwAuthId<Self>;
-	type AuthorityAres = ares_oracle::crypto::AuthorityId;
+	type OffchainAppCrypto = ares_oracle::crypto::OcwAuthId<Self>;
+	// type AuthorityAres = ares_oracle::crypto::AuthorityId;
+	type AuthorityAres = AuraId;
 	// type CheckDeposit = AresChallenge;
 	// type UnsignedInterval = UnsignedInterval;
 	type UnsignedPriority = UnsignedPriority;
@@ -57,6 +58,7 @@ impl ares_oracle::Config for Runtime {
 	type VMember = MemberExtend;
 	type AuthorityCount = ares_oracle::aura_handler::Pallet<Runtime>;
 	type OcwFinanceHandler = OcwFinance;
+	type AresIStakingNpos = Self;
 }
 
 

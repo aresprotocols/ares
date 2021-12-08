@@ -195,21 +195,21 @@ pallet-proxy  = { version = "4.0.0-dev", default-features = false, git = "https:
 pallet-vesting = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-elections-phragmen = { version = "5.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
-ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.3.2'}
-oracle-finance = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.0'}
-member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.3'}
-pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
-pallet-ares-collective = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev'}
-pallet-price-estimates = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1',  version = '3.0.1'}
-staking-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.2'}
+#ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.3.2'}
+#oracle-finance = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.0'}
+#member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.3'}
+#pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
+#pallet-ares-collective = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev'}
+#pallet-price-estimates = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1',  version = '3.0.1'}
+#staking-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.4'}
 
-#ares-oracle = {default-features = false, path = '../../ocw-suit/pallets/ares-oracle', version = '3.3.2'}
-#oracle-finance = {default-features = false, path = '../../ocw-suit/pallets/oracle-finance',  version = '3.1.0'}
-#member-extend = {default-features = false, path = '../../ocw-suit/pallets/member-extend',  version = '3.0.3'}
-#pallet-ares-challenge = {default-features = false, path = '../../ocw-suit/pallets/challenge', version='3.0.1'}
-#pallet-ares-collective = {default-features = false, path = '../../ocw-suit/pallets/collective',  version = '4.0.0-dev'}
-#pallet-price-estimates = {default-features = false, path = '../../ocw-suit/pallets/price-estimates',  version = '3.0.1'}
-#staking-extend = {default-features = false, path = '../../ocw-suit/pallets/staking-extend',  version = '3.0.2'}
+ares-oracle = {default-features = false, path = '../../ares-ocw-suit/pallets/ares-oracle', version = '3.3.2'}
+oracle-finance = {default-features = false, path = '../../ares-ocw-suit/pallets/oracle-finance',  version = '3.1.0'}
+member-extend = {default-features = false, path = '../../ares-ocw-suit/pallets/member-extend',  version = '3.0.3'}
+pallet-ares-challenge = {default-features = false, path = '../../ares-ocw-suit/pallets/challenge', version='3.0.1'}
+pallet-ares-collective = {default-features = false, path = '../../ares-ocw-suit/pallets/collective',  version = '4.0.0-dev'}
+pallet-price-estimates = {default-features = false, path = '../../ares-ocw-suit/pallets/price-estimates',  version = '3.0.1'}
+staking-extend = {default-features = false, path = '../../ares-ocw-suit/pallets/staking-extend',  version = '3.0.4'}
 
 [features]
 default = ['std']
@@ -264,6 +264,7 @@ std = [
     'pallet-vesting/std',
     'pallet-elections-phragmen/std',
     "member-extend/std",
+    "staking-extend/std",
     "log/std",
     "pallet-indices/std",
     "pallet-session/std",
@@ -272,3 +273,7 @@ std = [
     "pallet-authorship/std",
     "oracle-finance/std",
 ]
+[patch."https://github.com/paritytech/substrate"]
+gladios-node ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/node" }
+runtime-gladios-node ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/runtime" }
+seed-reader ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/seed-reader" }
