@@ -128,6 +128,7 @@ dependencies = [
 name = "ares-oracle"
 version = "3.3.3"
 dependencies = [
+ "ares-oracle-provider-support",
  "frame-support",
  "frame-system",
  "hex",
@@ -146,6 +147,18 @@ dependencies = [
  "sp-io",
  "sp-keystore",
  "sp-runtime",
+ "sp-std 4.0.0-dev",
+ "staking-extend",
+]
+
+[[package]]
+name = "ares-oracle-provider-support"
+version = "3.0.1"
+dependencies = [
+ "frame-support",
+ "lite-json",
+ "parity-scale-codec",
+ "sp-io",
  "sp-std 4.0.0-dev",
 ]
 
@@ -3851,6 +3864,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-authority-discovery"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-session",
+ "parity-scale-codec",
+ "sp-application-crypto",
+ "sp-authority-discovery",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
 name = "pallet-authorship"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
@@ -4013,6 +4041,7 @@ dependencies = [
  "ares-oracle",
  "frame-support",
  "frame-system",
+ "hex",
  "log",
  "parity-scale-codec",
  "sp-core",
@@ -4065,7 +4094,6 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -6561,6 +6589,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sp-authority-discovery"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "parity-scale-codec",
+ "sp-api",
+ "sp-application-crypto",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
 name = "sp-authorship"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
@@ -7177,24 +7217,31 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
 name = "staking-extend"
-version = "3.0.3"
+version = "3.0.4"
 dependencies = [
+ "ares-oracle-provider-support",
  "frame-election-provider-support",
  "frame-support",
  "frame-system",
  "lite-json",
  "log",
+ "pallet-authority-discovery",
  "pallet-authorship",
+ "pallet-balances",
  "pallet-election-provider-multi-phase",
  "pallet-session",
  "pallet-staking",
+ "pallet-staking-reward-curve",
+ "pallet-timestamp",
  "parity-scale-codec",
  "serde",
  "serde_json",
  "sp-application-crypto",
  "sp-core",
  "sp-io",
+ "sp-keystore",
  "sp-runtime",
+ "sp-staking",
  "sp-std 4.0.0-dev",
 ]
 
@@ -8457,3 +8504,7 @@ dependencies = [
  "cc",
  "libc",
 ]
+
+[[patch.unused]]
+name = "pallet-session-benchmarking"
+version = "4.0.0-dev"
