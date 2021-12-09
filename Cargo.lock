@@ -118,6 +118,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.3.3"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -128,7 +129,7 @@ dependencies = [
  "oracle-finance",
  "pallet-aura",
  "pallet-balances",
- "pallet-session 4.0.0-dev",
+ "pallet-session",
  "parity-scale-codec",
  "serde",
  "serde_json",
@@ -145,6 +146,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -3299,6 +3301,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.0.3"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3306,7 +3309,7 @@ dependencies = [
  "log",
  "pallet-aura",
  "pallet-authorship",
- "pallet-session 4.0.0-dev",
+ "pallet-session",
  "parity-scale-codec",
  "serde",
  "serde_json",
@@ -3771,6 +3774,7 @@ checksum = "28988d872ab76095a6e6ac88d99b54fd267702734fd7ffe610ca27f533ddb95a"
 [[package]]
 name = "oracle-finance"
 version = "3.1.0"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3797,6 +3801,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3815,6 +3820,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3849,7 +3855,7 @@ source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#
 dependencies = [
  "frame-support",
  "frame-system",
- "pallet-session 4.0.0-dev (git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1)",
+ "pallet-session",
  "parity-scale-codec",
  "sp-application-crypto",
  "sp-authority-discovery",
@@ -3973,7 +3979,7 @@ dependencies = [
  "frame-system",
  "log",
  "pallet-authorship",
- "pallet-session 4.0.0-dev (git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1)",
+ "pallet-session",
  "parity-scale-codec",
  "sp-application-crypto",
  "sp-core",
@@ -4016,6 +4022,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -4073,26 +4080,7 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-dependencies = [
- "frame-support",
- "frame-system",
- "impl-trait-for-tuples",
- "log",
- "pallet-timestamp",
- "parity-scale-codec",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-std 4.0.0-dev",
- "sp-trie",
-]
-
-[[package]]
-name = "pallet-session"
-version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#d254e3c2fd2c6ac5dc732fd01e560465bf646857"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4119,7 +4107,7 @@ dependencies = [
  "frame-system",
  "log",
  "pallet-authorship",
- "pallet-session 4.0.0-dev (git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1)",
+ "pallet-session",
  "parity-scale-codec",
  "serde",
  "sp-application-crypto",
@@ -5208,7 +5196,7 @@ dependencies = [
  "pallet-proxy",
  "pallet-randomness-collective-flip",
  "pallet-scheduler",
- "pallet-session 4.0.0-dev (git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1)",
+ "pallet-session",
  "pallet-staking",
  "pallet-staking-reward-curve",
  "pallet-sudo",
@@ -7220,6 +7208,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -7231,7 +7220,7 @@ dependencies = [
  "pallet-authorship",
  "pallet-balances",
  "pallet-election-provider-multi-phase",
- "pallet-session 4.0.0-dev",
+ "pallet-session",
  "pallet-staking",
  "pallet-staking-reward-curve",
  "pallet-timestamp",
@@ -8510,4 +8499,4 @@ dependencies = [
 [[patch.unused]]
 name = "pallet-session-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#d254e3c2fd2c6ac5dc732fd01e560465bf646857"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#44df966c1b6c8356b2b795b860b0c545a3568c0a"
