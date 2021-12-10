@@ -57,7 +57,7 @@ impl ares_oracle::Config for Runtime {
 	// type VMember = StakingExtend;
 	type VMember = MemberExtend;
 	type AuthorityCount = ares_oracle::aura_handler::Pallet<Runtime>;
-	type OcwFinanceHandler = OcwFinance;
+	type OracleFinanceHandler = OracleFinance;
 	type AresIStakingNpos = Self;
 }
 

@@ -350,8 +350,8 @@ construct_runtime!(
 		//
 		AresChallenge: pallet_ares_challenge::{Pallet, Call, Storage, Event<T>},
 
-		OCWModule: ares_oracle::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		OcwFinance: oracle_finance::{Pallet, Call, Storage, Event<T>},
+		AresOracle: ares_oracle::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
+		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>},
 		StakingExtend: staking_extend::{Pallet},
 
 		// Governance

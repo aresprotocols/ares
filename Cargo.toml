@@ -11,12 +11,10 @@ members = [
 
 [patch."https://github.com/paritytech/substrate"]
 
-#pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev' }
-#pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev' }
 
-pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1' }
-pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1' }
+#pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1' }
+#pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1' }
 
-#pallet-session = {path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-ocw-suit/pallets/session" }
-#pallet-session-benchmarking ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-ocw-suit/pallets/session/benchmarking" }
+pallet-session = {path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-ocw-suit/pallets/session" }
+pallet-session-benchmarking ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-ocw-suit/pallets/session/benchmarking" }
 

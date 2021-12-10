@@ -5,7 +5,7 @@ use runtime_gladios_node::{
 		part_elections::MAX_NOMINATIONS, part_session::SessionKeys, part_staking::StakerStatus,
 	},
 	AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, OCWModuleConfig, SS58Prefix, SessionConfig, Signature,
+	GenesisConfig, GrandpaConfig, AresOracleConfig, SS58Prefix, SessionConfig, Signature,
 	StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
@@ -308,7 +308,7 @@ fn testnet_genesis(
 			// Assign network admin rights.
 			key: root_key,
 		},
-		ocw_module: OCWModuleConfig {
+		ares_oracle: AresOracleConfig {
 			_phantom: Default::default(),
 			request_base: Vec::new(),
 			price_pool_depth: 3u32,
