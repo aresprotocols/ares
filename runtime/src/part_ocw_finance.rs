@@ -6,7 +6,7 @@ pub type AskPeriodNum = u64;
 // pub const DOLLARS: u64 = 1_000_000_000_000;
 
 parameter_types! {
-	pub const AresFinancePalletId: PalletId = PalletId(*b"ocw/fund");
+	pub const AresFinancePalletId: PalletId = PalletId(*b"aoe/fund");
 	pub const BasicDollars: Balance = DOLLARS;
 	pub const AskPeriod: BlockNumber = 20 ; // * 10
 	pub const RewardPeriodCycle: AskPeriodNum = 3; // * 2 * 24
