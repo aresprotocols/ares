@@ -7,7 +7,7 @@ impl staking_extend::Config for Runtime {
     type ValidatorId = AccountId ; //<Self as frame_system::Config>::AccountId;
     type ValidatorSet = Historical;
     // type AuthorityId = <Aura as OneSessionHandler<AccountId>>::Key;
-    type AuthorityId = AuraId ;// <OCWModule as ares_oracle::Config>::AuthorityAres ;// AuraId;
+    type AuthorityId = AuraId ;// <AresOracle as ares_oracle::Config>::AuthorityAres ;// AuraId;
     // type WithSessionHandler = Aura;
     // type IStakingNpos = Self;
     // type DebugError = <<Self as staking_extend::Config>::ElectionProvider as ElectionProvider<<Self as frame_system::Config>::AccountId, <Self as frame_system::Config>::BlockNumber>>::Error;
@@ -17,5 +17,5 @@ impl staking_extend::Config for Runtime {
     type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
         pallet_election_provider_multi_phase::OnChainConfig<Self>,
     >;
-    type AresOraclePreCheck = OCWModule;
+    type AresOraclePreCheck = AresOracle;
 }
