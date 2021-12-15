@@ -37,23 +37,16 @@ impl ares_oracle::aura_handler::Config for Runtime {
 impl ares_oracle::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
-	type OffchainAppCrypto = ares_oracle::crypto::OcwAuthId<Self>;
-	// type AuthorityAres = ares_oracle::crypto::AuthorityId;
+	type OffchainAppCrypto = ares_oracle::AresCrypto<AuraId>;
 	type AuthorityAres = AuraId;
-	// type CheckDeposit = AresChallenge;
-	// type UnsignedInterval = UnsignedInterval;
 	type UnsignedPriority = UnsignedPriority;
-	// type FindAuthor = staking_extend::OcwFindAuthor<Babe, Self> ; // OcwFindAuthor<Babe>;// Babe;
-	// type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self,Babe>;
-	type FindAuthor =
-		OcwFindAccountFromAuthorIndex<Self, pallet_aura::FindAccountFromAuthorIndex<Self, Aura>>;
-	// type FindAuthor = OcwFindAccountFromAuthorIndex<Self, Aura>;
+	// type FindAuthor =
+	// 	OcwFindAccountFromAuthorIndex<Self, pallet_aura::FindAccountFromAuthorIndex<Self, Aura>>;
+	type FindAuthor = ares_oracle::FindAresAccountFromAuthority<Self, pallet_aura::FindAccountFromAuthorIndex<Self, Aura>>;
 	type FractionLengthNum = FractionLengthNum;
 	type CalculationKind = CalculationKind;
-	// type RequestOrigin = pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective> ; // frame_system::EnsureRoot<AccountId>;
 	type RequestOrigin = EnsureRootOrHalfTechnicalCollective ;
-	// type RequestOrigin = frame_system::EnsureRoot<AccountId>;
-	type ValidatorAuthority = <Self as frame_system::Config>::AccountId;
+	// type ValidatorAuthority = <Self as frame_system::Config>::AccountId;
 	// type VMember = StakingExtend;
 	type VMember = MemberExtend;
 	type AuthorityCount = ares_oracle::aura_handler::Pallet<Runtime>;
@@ -66,74 +59,28 @@ impl ares_oracle::Config for Runtime {
 /// Wraps the author-scraping logic for consensus engines that can recover
 /// the canonical index of an author. This then transforms it into the
 /// registering account-ID of that session key index.
-pub struct OcwFindAccountFromAuthorIndex<T, Inner>(sp_std::marker::PhantomData<(T, Inner)>);
-
-impl<T: Config, Inner: FindAuthor<AuraId>> FindAuthor<T::AccountId>
-	for OcwFindAccountFromAuthorIndex<T, Inner>
-where
-	sp_runtime::AccountId32: From<<T as frame_system::Config>::AccountId>,
-	u64: From<<T as frame_system::Config>::BlockNumber>,
-	<T as frame_system::Config>::AccountId: From<sp_runtime::AccountId32>,
-{
-	fn find_author<'a, I>(digests: I) -> Option<T::AccountId>
-	where
-		I: 'a + IntoIterator<Item = (ConsensusEngineId, &'a [u8])>,
-	{
-		let find_auraid = Inner::find_author(digests)?;
-
-		let mut a = [0u8; 32];
-		a[..].copy_from_slice(&find_auraid.to_raw_vec());
-		// extract AccountId32 from store keys
-		let owner_account_id32 = sp_runtime::AccountId32::new(a);
-		let authro_account_id = owner_account_id32.clone().into();
-		Some(authro_account_id)
-	}
-}
-
-// pub struct OcwFindAuthor<Inner>(sp_std::marker::PhantomData<Inner>);
-
-// const TEST_ID: ConsensusEngineId = [1, 2, 3, 4];
-// pub struct OcwFindAuthor<Inner>(sp_std::marker::PhantomData<Inner>);
-// impl <Inner: FindAuthor<u32>> FindAuthor<u32> for OcwFindAuthor<Inner> {
-//     fn find_author<'a, I>(digests: I) -> Option<u32> where
-//         I: 'a + IntoIterator<Item=(ConsensusEngineId, &'a [u8])>
-//     {
-//         log::info!("RUN OcwFindAuthor<Inner> = Bebing.");
-//         let author_index =  Inner::find_author(digests);
-//         log::info!("RUN OcwFindAuthor<Inner> = Value = {:?} ", author_index);
-//         author_index
-//         // for (id, data) in digests {
-//         //     if id == TEST_ID {
-//         //         return AccountId::decode(&mut &data[..]).ok();
-//         //     }
-//         // }
-//         // None
-//     }
-// }
-
-// pub struct FindAccountFromAuthorIndex<T, Inner>(sp_std::marker::PhantomData<(T, Inner)>);
-// impl<T: Config, Inner: FindAuthor<u32>> FindAuthor<T::ValidatorId>
-// for FindAccountFromAuthorIndex<T, Inner>
-// {
-//     // fn find_author<'a, I>(digests: I) -> Option<T::ValidatorId>
-//     //     where I: 'a + IntoIterator<Item=(ConsensusEngineId, &'a [u8])>
-//     // {
-//     //     let i = Inner::find_author(digests)?;
-//     //
-//     //     let validators = <Module<T>>::validators();
-//     //     validators.get(i as usize).map(|k| k.clone())
-//     // }
+// pub struct OcwFindAccountFromAuthorIndex<T, Inner>(sp_std::marker::PhantomData<(T, Inner)>);
 //
-//     fn find_author<'a, I>(digests: I) -> Option<AccountId> where
-//         I: 'a + IntoIterator<Item=(ConsensusEngineId, &'a [u8])>
-//     {
-//         for (id, data) in digests {
-//             if id == TEST_ID {
-//                 return AccountId::decode(&mut &data[..]).ok();
-//             }
-//         }
-//         None
-//     }
+// impl<T: Config, Inner: FindAuthor<AuraId>> FindAuthor<T::AccountId>
+// 	for OcwFindAccountFromAuthorIndex<T, Inner>
+// where
+// 	sp_runtime::AccountId32: From<<T as frame_system::Config>::AccountId>,
+// 	u64: From<<T as frame_system::Config>::BlockNumber>,
+// 	<T as frame_system::Config>::AccountId: From<sp_runtime::AccountId32>,
+// {
+// 	fn find_author<'a, I>(digests: I) -> Option<T::AccountId>
+// 	where
+// 		I: 'a + IntoIterator<Item = (ConsensusEngineId, &'a [u8])>,
+// 	{
+// 		let find_auraid = Inner::find_author(digests)?;
+//
+// 		let mut a = [0u8; 32];
+// 		a[..].copy_from_slice(&find_auraid.to_raw_vec());
+// 		// extract AccountId32 from store keys
+// 		let owner_account_id32 = sp_runtime::AccountId32::new(a);
+// 		let authro_account_id = owner_account_id32.clone().into();
+// 		Some(authro_account_id)
+// 	}
 // }
 
 //
