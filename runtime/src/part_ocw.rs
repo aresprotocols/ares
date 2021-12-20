@@ -13,7 +13,6 @@ use sp_runtime::{MultiAddress, SaturatedConversion};
 use crate::governance::part_technical::TechnicalCollective;
 pub use ares_oracle::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 
-
 // An index to a block.
 pub type BlockNumber = u32;
 
@@ -37,51 +36,16 @@ impl ares_oracle::aura_handler::Config for Runtime {
 impl ares_oracle::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
-	type OffchainAppCrypto = ares_oracle::AresCrypto<AuraId>;
-	type AuthorityAres = AuraId;
+	type OffchainAppCrypto = ares_oracle::AresCrypto<AresId>;
+	type AuthorityAres = AresId;
 	type UnsignedPriority = UnsignedPriority;
-	// type FindAuthor =
-	// 	OcwFindAccountFromAuthorIndex<Self, pallet_aura::FindAccountFromAuthorIndex<Self, Aura>>;
-	type FindAuthor = ares_oracle::FindAresAccountFromAuthority<Self, pallet_aura::FindAccountFromAuthorIndex<Self, Aura>>;
-	type FractionLengthNum = FractionLengthNum;
+	type FindAuthor = Aura;
 	type CalculationKind = CalculationKind;
 	type RequestOrigin = EnsureRootOrHalfTechnicalCollective ;
-	// type ValidatorAuthority = <Self as frame_system::Config>::AccountId;
-	// type VMember = StakingExtend;
-	type VMember = MemberExtend;
-	type AuthorityCount = ares_oracle::aura_handler::Pallet<Runtime>;
+	type AuthorityCount = AresOracle; // ares_oracle::aura_handler::Pallet<Runtime>;
 	type OracleFinanceHandler = OracleFinance;
 	type AresIStakingNpos = Self;
 }
-
-
-
-/// Wraps the author-scraping logic for consensus engines that can recover
-/// the canonical index of an author. This then transforms it into the
-/// registering account-ID of that session key index.
-// pub struct OcwFindAccountFromAuthorIndex<T, Inner>(sp_std::marker::PhantomData<(T, Inner)>);
-//
-// impl<T: Config, Inner: FindAuthor<AuraId>> FindAuthor<T::AccountId>
-// 	for OcwFindAccountFromAuthorIndex<T, Inner>
-// where
-// 	sp_runtime::AccountId32: From<<T as frame_system::Config>::AccountId>,
-// 	u64: From<<T as frame_system::Config>::BlockNumber>,
-// 	<T as frame_system::Config>::AccountId: From<sp_runtime::AccountId32>,
-// {
-// 	fn find_author<'a, I>(digests: I) -> Option<T::AccountId>
-// 	where
-// 		I: 'a + IntoIterator<Item = (ConsensusEngineId, &'a [u8])>,
-// 	{
-// 		let find_auraid = Inner::find_author(digests)?;
-//
-// 		let mut a = [0u8; 32];
-// 		a[..].copy_from_slice(&find_auraid.to_raw_vec());
-// 		// extract AccountId32 from store keys
-// 		let owner_account_id32 = sp_runtime::AccountId32::new(a);
-// 		let authro_account_id = owner_account_id32.clone().into();
-// 		Some(authro_account_id)
-// 	}
-// }
 
 //
 impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime

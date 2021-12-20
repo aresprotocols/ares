@@ -117,8 +117,8 @@ dependencies = [
 
 [[package]]
 name = "ares-oracle"
-version = "3.4.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+version = "3.5.1"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -148,11 +148,12 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "frame-support",
  "lite-json",
  "parity-scale-codec",
+ "sp-application-crypto",
  "sp-io",
  "sp-std 4.0.0-dev",
 ]
@@ -1919,6 +1920,7 @@ checksum = "78cc372d058dcf6d5ecd98510e7fbc9e5aec4d21de70f65fea8fecebcd881bd4"
 name = "gladios-node"
 version = "3.0.0-monthly-2021-09+1"
 dependencies = [
+ "ares-oracle-provider-support",
  "frame-benchmarking",
  "frame-benchmarking-cli",
  "frame-support",
@@ -3303,7 +3305,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3776,7 +3778,7 @@ checksum = "28988d872ab76095a6e6ac88d99b54fd267702734fd7ffe610ca27f533ddb95a"
 [[package]]
 name = "oracle-finance"
 version = "3.1.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3803,7 +3805,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3822,7 +3824,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4047,7 +4049,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -4105,7 +4107,7 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5193,6 +5195,7 @@ name = "runtime-gladios-node"
 version = "3.0.0"
 dependencies = [
  "ares-oracle",
+ "ares-oracle-provider-support",
  "frame-benchmarking",
  "frame-election-provider-support",
  "frame-executive",
@@ -7233,7 +7236,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -8524,4 +8527,4 @@ dependencies = [
 [[patch.unused]]
 name = "pallet-session-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#069ded92267aa800861c233dd951e406b9f56db6"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#01a7231ed57c48ca972a8e71c61ddbeb29377a6c"
