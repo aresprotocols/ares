@@ -195,8 +195,8 @@ pallet-proxy  = { version = "4.0.0-dev", default-features = false, git = "https:
 pallet-vesting = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-elections-phragmen = { version = "5.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
-
-ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.4.1'}
+ares-oracle-provider-support = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.1'}
+ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.5.1'}
 oracle-finance = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.1'}
 member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.0'}
 pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
@@ -205,7 +205,8 @@ pallet-price-estimates = {default-features = false, git = 'https://github.com/ar
 staking-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.4'}
 pallet-session = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev' }
 
-#ares-oracle = {default-features = false, path = '../../ares-ocw-suit/pallets/ares-oracle', version = '3.4.1'}
+#ares-oracle-provider-support = {default-features = false, path = '../../ares-ocw-suit/pallets/ares-oracle-provider-support', version = '3.0.1'}
+#ares-oracle = {default-features = false, path = '../../ares-ocw-suit/pallets/ares-oracle', version = '3.5.1'}
 #oracle-finance = {default-features = false, path = '../../ares-ocw-suit/pallets/oracle-finance',  version = '3.1.1'}
 #member-extend = {default-features = false, path = '../../ares-ocw-suit/pallets/member-extend',  version = '3.1.0'}
 #pallet-ares-challenge = {default-features = false, path = '../../ares-ocw-suit/pallets/challenge', version='3.0.1'}
@@ -254,6 +255,7 @@ std = [
     'sp-version/std',
     "sp-staking/std",
     'sp-npos-elections/std',
+    'ares-oracle-provider-support/std',
     'ares-oracle/std',
     'pallet-ares-challenge/std',
     'pallet-ares-collective/std',
