@@ -5,9 +5,9 @@ panic = 'unwind'
 members = [
     'node',
     'seed-reader',
-    'runtime',
+    'runtime/gladios',
+    'runtime/pioneer',
 ]
-
 
 [patch."https://github.com/paritytech/substrate"]
 

@@ -28,7 +28,11 @@ rand = "0.8.4"
 sp-offchain = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
 [dependencies.runtime-gladios-node]
-path = '../runtime'
+path = '../runtime/gladios'
+version = '3.0.0'
+
+[dependencies.runtime-pioneer-node]
+path = '../runtime/pioneer'
 version = '3.0.0'
 
 [dependencies.frame-benchmarking]
