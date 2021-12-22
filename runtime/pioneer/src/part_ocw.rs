@@ -27,6 +27,7 @@ parameter_types! {
 	// pub const NeedVerifierCheck: bool = true;
 	pub const FractionLengthNum: u32 = 2;
 	pub const CalculationKind: u8 = 1;
+	pub const ErrLogPoolDepth: u32 = 10;
 }
 
 impl ares_oracle::aura_handler::Config for Runtime {
@@ -45,6 +46,7 @@ impl ares_oracle::Config for Runtime {
 	type AuthorityCount = AresOracle; // ares_oracle::aura_handler::Pallet<Runtime>;
 	type OracleFinanceHandler = OracleFinance;
 	type AresIStakingNpos = Self;
+	type ErrLogPoolDepth = ErrLogPoolDepth;
 }
 
 //

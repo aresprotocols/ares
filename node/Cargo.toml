@@ -80,12 +80,14 @@ version = '0.10.0-dev'
 #path = '../ocw-aura'
 #version = '0.10.0-dev'
 
-[dependencies.ares-oracle-provider-support]
+#[dependencies.ares-oracle-provider-support]
 #path = '../../ares-ocw-suit/pallets/ares-oracle-provider-support'
+#version = '3.0.1'
+
+[dependencies.ares-oracle-provider-support]
 git = 'https://github.com/aresprotocols/ocw-suit.git'
 branch = 'monthly-2021-09+1'
 version = '3.0.1'
-
 
 [dependencies.sc-executor]
 features = ['wasmtime']
