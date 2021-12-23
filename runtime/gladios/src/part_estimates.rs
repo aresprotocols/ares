@@ -16,7 +16,7 @@ impl pallet_price_estimates::Config for Runtime {
 	type MaxEstimatesPerSymbol = EstimatesPerSymbol;
 	type Currency = Balances;
 	type Call = Call;
-	type PriceProvider = OCWModule;
-	type AuthorityId = ares_oracle::crypto2::AuraAuthId;
+	type PriceProvider = AresOracle;
+	type AuthorityId = ares_oracle::AresCrypto<AresId>;
 	type UnsignedPriority = UnsignedPriority;
 }

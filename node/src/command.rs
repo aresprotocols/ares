@@ -20,9 +20,41 @@ use crate::{
 	cli::{Cli, Subcommand},
 	service,
 };
-use runtime_gladios_node::Block;
+use runtime_gladios_node::Block as GladiosNodeBlock;
+use runtime_pioneer_node::Block as PioneerNodeBlock;
+
 use sc_cli::{ChainSpec, Role, RuntimeVersion, SubstrateCli};
 use sc_service::PartialComponents;
+
+trait IdentifyChain {
+	fn is_dev(&self) -> bool;
+	fn is_gladios(&self) -> bool;
+	fn is_pioneer(&self) -> bool;
+}
+
+impl IdentifyChain for dyn sc_service::ChainSpec {
+	fn is_dev(&self) -> bool {
+		self.id().starts_with("dev")
+	}
+	fn is_gladios(&self) -> bool {
+		self.id().starts_with("gladios")
+	}
+	fn is_pioneer(&self) -> bool {
+		self.id().starts_with("pioneer")
+	}
+}
+
+impl<T: sc_service::ChainSpec + 'static> IdentifyChain for T {
+	fn is_dev(&self) -> bool {
+		<dyn sc_service::ChainSpec>::is_dev(self)
+	}
+	fn is_gladios(&self) -> bool {
+		<dyn sc_service::ChainSpec>::is_gladios(self)
+	}
+	fn is_pioneer(&self) -> bool {
+		<dyn sc_service::ChainSpec>::is_pioneer(self)
+	}
+}
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
@@ -57,21 +89,35 @@ impl SubstrateCli for Cli {
 			}
 			"local" => {
 				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
+				Box::new(chain_spec::local_ares_config()?)
+			},
+			"test" => {
+				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
 				Box::new(chain_spec::local_testnet_config()?)
 			},
 			"" | "gladios" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");
-				Box::new(chain_spec::ChainSpec::from_json_bytes(&include_bytes!("../res/chain-data-ares-aura.json")[..])?)
+				Box::new(chain_spec::GladiosNodeChainSpec::from_json_bytes(&include_bytes!("../res/chain-data-ares-aura.json")[..])?)
 			},
 			path => {
 				log::info!("🚅 🚅 🚅 load spec with json file.");
-				Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?)
+				// Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?)
+				let chain_spec = chain_spec::GladiosNodeChainSpec::from_json_file(std::path::PathBuf::from(path))?;
+				if chain_spec.is_gladios() {
+					Box::new(chain_spec::PioneerNodeChainSpec::from_json_file(path.into())?)
+				}else{
+					Box::new(chain_spec)
+				}
 			},
 		})
 	}
 
-	fn native_runtime_version(_: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
-		&runtime_gladios_node::VERSION
+	fn native_runtime_version(chain_spec: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
+		if chain_spec.is_gladios() {
+			&runtime_gladios_node::VERSION
+		} else {
+			&runtime_pioneer_node::VERSION
+		}
 	}
 }
 
@@ -130,8 +176,11 @@ pub fn run() -> sc_cli::Result<()> {
 		Some(Subcommand::Benchmark(cmd)) =>
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
-
-				runner.sync_run(|config| cmd.run::<Block, service::ExecutorDispatch>(config))
+				if runner.config().chain_spec.is_pioneer() {
+					runner.sync_run(|config| cmd.run::<PioneerNodeBlock, service::ExecutorDispatch>(config))
+				}else{
+					runner.sync_run(|config| cmd.run::<GladiosNodeBlock, service::ExecutorDispatch>(config))
+				}
 			} else {
 				Err("Benchmarking wasn't enabled when building the node. You can enable it with \
 				     `--features runtime-benchmarks`."
