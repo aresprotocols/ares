@@ -76,10 +76,6 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '0.10.0-dev'
 
-#[dependencies.ocw-sc-consensus-aura]
-#path = '../ocw-aura'
-#version = '0.10.0-dev'
-
 #[dependencies.ares-oracle-provider-support]
 #path = '../../ares-ocw-suit/pallets/ares-oracle-provider-support'
 #version = '3.0.1'
