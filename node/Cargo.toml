@@ -82,7 +82,7 @@ version = '0.10.0-dev'
 
 [dependencies.ares-oracle-provider-support]
 git = 'https://github.com/aresprotocols/ocw-suit.git'
-branch = 'monthly-2021-09+1'
+branch = 'runtime-104'
 version = '3.0.1'
 
 [dependencies.sc-executor]
