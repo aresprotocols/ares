@@ -117,8 +117,8 @@ dependencies = [
 
 [[package]]
 name = "ares-oracle"
-version = "3.6.3"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+version = "3.7.1"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -148,7 +148,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -3312,7 +3312,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3785,7 +3785,7 @@ checksum = "28988d872ab76095a6e6ac88d99b54fd267702734fd7ffe610ca27f533ddb95a"
 [[package]]
 name = "oracle-finance"
 version = "3.1.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3812,7 +3812,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3831,7 +3831,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4056,7 +4056,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -4114,7 +4114,7 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -7305,7 +7305,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -8595,4 +8595,4 @@ dependencies = [
 [[patch.unused]]
 name = "pallet-session-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=monthly-2021-09+1#242a31725f2f7e4b2df3048f8ea27764ed077a3f"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
