@@ -7,48 +7,98 @@
 
 use std::sync::Arc;
 
+use frame_benchmarking::frame_support::sp_runtime::traits::{Hash, Header};
+use futures::{future::ready, FutureExt, TryFutureExt};
+use jsonrpc_core::{Error as RpcError, ErrorCode};
+use jsonrpc_derive::rpc;
 use runtime_gladios_node::{opaque::Block, AccountId, Balance, Index};
+use sc_client_api::client::ProvideUncles;
 pub use sc_rpc_api::DenyUnsafe;
 use sc_transaction_pool_api::TransactionPool;
 use sp_api::ProvideRuntimeApi;
 use sp_block_builder::BlockBuilder;
 use sp_blockchain::{Error as BlockChainError, HeaderBackend, HeaderMetadata};
+use sp_runtime::traits::{Block as BlockT, NumberFor};
+use sc_client_api::blockchain::Backend;
 
 /// Full client dependencies.
-pub struct FullDeps<C, P> {
+pub struct FullDeps<C, P, B> {
 	/// The client instance to use.
 	pub client: Arc<C>,
 	/// Transaction pool instance.
 	pub pool: Arc<P>,
 	/// Whether to deny unsafe calls
 	pub deny_unsafe: DenyUnsafe,
+
+	pub backend: Arc<B>
 }
 
 /// Instantiate all full RPC extensions.
-pub fn create_full<C, P>(deps: FullDeps<C, P>) -> jsonrpc_core::IoHandler<sc_rpc::Metadata>
+pub fn create_full<C, P, B>(deps: FullDeps<C, P, B>) -> jsonrpc_core::IoHandler<sc_rpc::Metadata>
 where
 	C: ProvideRuntimeApi<Block>,
 	C: HeaderBackend<Block> + HeaderMetadata<Block, Error = BlockChainError> + 'static,
 	C: Send + Sync + 'static,
+	C: ProvideUncles<Block> + 'static,
 	C::Api: substrate_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>,
 	C::Api: pallet_transaction_payment_rpc::TransactionPaymentRuntimeApi<Block, Balance>,
 	C::Api: BlockBuilder<Block>,
 	P: TransactionPool + 'static,
+	B: sc_client_api::Backend<Block> + Send + Sync + 'static,
 {
 	use pallet_transaction_payment_rpc::{TransactionPayment, TransactionPaymentApi};
 	use substrate_frame_rpc_system::{FullSystem, SystemApi};
 
 	let mut io = jsonrpc_core::IoHandler::default();
-	let FullDeps { client, pool, deny_unsafe } = deps;
+	let FullDeps { client, pool, deny_unsafe, backend } = deps;
 
 	io.extend_with(SystemApi::to_delegate(FullSystem::new(client.clone(), pool, deny_unsafe)));
 
 	io.extend_with(TransactionPaymentApi::to_delegate(TransactionPayment::new(client.clone())));
-
+	io.extend_with(AresApi::to_delegate(Ares::new(backend.clone())));
+	// client.block_number_from_id()
 	// Extend this RPC with a custom API by using the following syntax.
 	// `YourRpcStruct` should have a reference to a client, which is needed
 	// to call into the runtime.
 	// `io.extend_with(YourRpcTrait::to_delegate(YourRpcStruct::new(ReferenceToClient, ...)));`
 
 	io
+}
+
+type FutureResult<T> = jsonrpc_core::BoxFuture<Result<T, RpcError>>;
+
+#[rpc]
+pub trait AresApi<Block, BlockHash> {
+	#[rpc(name = "system_children", alias("system_childrenAt"))]
+	fn children(
+		&self,
+		parent_hash: BlockHash,
+	) -> FutureResult<Vec<BlockHash>>;
+}
+
+pub struct Ares<B> {
+	backend: Arc<B>,
+}
+
+impl<B> Ares<B> {
+	/// Create new `FullSystem` given client and transaction pool.
+	pub fn new(backend: Arc<B>) -> Self {
+		Ares { backend }
+	}
+}
+
+impl<B, Block> AresApi<Block, <Block as BlockT>::Hash> for Ares<B>
+where
+	B: sc_client_api::Backend<Block> + Send + Sync + 'static,
+	Block: BlockT,
+{
+	fn children(&self, parent_hash: <Block as BlockT>::Hash) -> FutureResult<Vec<<Block as BlockT>::Hash>> {
+		let res = self.backend.blockchain().children(parent_hash);
+		let res = res.map_err(|e| RpcError {
+			code: ErrorCode::InternalError,
+			message: "Unable to query block.".into(),
+			data: Some(format!("{:?}", e).into()),
+		});
+		async move { res }.boxed()
+	}
 }
