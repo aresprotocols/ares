@@ -15,6 +15,6 @@ members = [
 pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1' }
 pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1' }
 
-#pallet-session = {path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-ocw-suit/pallets/session" }
-#pallet-session-benchmarking ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-ocw-suit/pallets/session/benchmarking" }
+#pallet-session = {path = "../ares-ocw-suit/pallets/session" }
+#pallet-session-benchmarking ={path = "../ares-ocw-suit/pallets/session/benchmarking" }
 
