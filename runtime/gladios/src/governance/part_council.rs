@@ -22,10 +22,4 @@ impl pallet_ares_collective::Config<CouncilCollective> for Runtime {
 		pallet_ares_collective::EnsureProportionAtLeast<_1, _2, AccountId, CouncilCollective>;
 	type AresProposalMaximumThreshold =
 		pallet_ares_collective::EnsureProportionNoMoreThan<_2, _3, AccountId, CouncilCollective>;
-	//TODO new
-	//type Test1 = <Runtime as pallet_template::Config>::Call;
-	// type Test1 = <Runtime as pallet_template::Config>::Call;
-	// type ProposeBond = CouncilProposeBond;
-	// type PublicCall = TemplateModule;
-	// type Currency = Balances;
 }
