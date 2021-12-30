@@ -6,7 +6,7 @@
     "/ip4/45.77.243.246/tcp/30334/ws/p2p/12D3KooWMqDofvvwRtP7AYSAyJ2udNYrj698wnYJbpjomNTHHK9E",
   ],
   "telemetryEndpoints": null,
-  "protocolId": null,
+  "protocolId": "ares",
   "properties": {
     "SS58Prefix": 34,
     "tokenDecimals": 12,
