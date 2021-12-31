@@ -3,7 +3,7 @@
   "id": "gladios",
   "chainType": "Live",
   "bootNodes": [
-    "/ip4/45.77.243.246/tcp/30334/ws/p2p/12D3KooWMqDofvvwRtP7AYSAyJ2udNYrj698wnYJbpjomNTHHK9E",
+    "/ip4/45.77.243.246/tcp/30334/ws/p2p/12D3KooWMqDofvvwRtP7AYSAyJ2udNYrj698wnYJbpjomNTHHK9E"
   ],
   "telemetryEndpoints": null,
   "protocolId": "ares",
