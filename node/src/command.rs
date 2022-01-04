@@ -202,6 +202,9 @@ pub fn run() -> sc_cli::Result<()> {
 									panic!("⛔ Start parameter `--warehouse` is required!");
 								}
 								Some(request_url) => {
+									if !request_url.starts_with("http") {
+										panic!("⛔ `--warehouse` only supports http requests.");
+									}
 									request_url.as_str().as_bytes().to_vec()
 								}
 							};

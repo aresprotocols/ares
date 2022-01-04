@@ -214,6 +214,26 @@ version = "18.0.0"
 [dependencies.jsonrpc-core-client]
 version = "18.0.0"
 
+[dependencies.jsonrpc-pubsub]
+version = "18.0.0"
+
+[dependencies.sc-block-builder]
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-09+1'
+version = "0.10.0-dev"
+
+[dependencies.sp-rpc]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-09+1'
+version = '4.0.0-dev'
+
+[dev-dependencies.substrate-test-runtime-client]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-09+1'
+version = '2.0.0'
+
 [features]
 default = []
 runtime-benchmarks = ['runtime-gladios-node/runtime-benchmarks']

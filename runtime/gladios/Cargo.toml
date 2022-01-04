@@ -212,6 +212,8 @@ pallet-session = {default-features = false, git = 'https://github.com/aresprotoc
 #staking-extend = {default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend',  version = '3.0.4'}
 #pallet-session = {default-features = false, path = '../../../ares-ocw-suit/pallets/session',  version = '4.0.0-dev'}
 
+#reqwest = {default-feature = false, version = '0.11.8'}
+
 [features]
 default = ['std']
 runtime-benchmarks = [
