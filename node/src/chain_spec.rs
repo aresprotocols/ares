@@ -15,6 +15,7 @@ use sp_runtime::{
 
 mod ares_genesis;
 mod testnet_genesis;
+const DEFAULT_PROTOCOL_ID: &str = "ares";
 
 pub use ares_genesis::{GladiosNodeChainSpec, GladiosSS58Prefix, GladiosAccountId, GladiosWASM_BINARY};
 pub use testnet_genesis::{PioneerNodeChainSpec, PioneerSS58Prefix, PioneerAccountId, PioneerWASM_BINARY};
@@ -274,11 +275,11 @@ pub fn local_ares_config() -> Result<GladiosNodeChainSpec, String> {
 			)
 		},
 		// Bootnodes
-		vec!["/ip4/158.247.224.166/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp".parse().unwrap()],
+		vec!["/ip4/45.77.243.246/tcp/30334/ws/p2p/12D3KooWMqDofvvwRtP7AYSAyJ2udNYrj698wnYJbpjomNTHHK9E".parse().unwrap()],
 		// Telemetry
 		None,
 		// Protocol ID
-		None,
+		Some(DEFAULT_PROTOCOL_ID),
 		// Properties
 		Some(properties),
 		// Extensions

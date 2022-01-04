@@ -1,17 +1,29 @@
 version: "3.2"
 
 services:
-  dev:
-    container_name: node-template
-    image: paritytech/ci-linux:974ba3ac-20201006
-    working_dir: /var/www/node-template
+  chain:
+    build:
+#      context: .
+      context: https://github.com/aresprotocols/ares.git#release1.0.1
+      dockerfile: ./docker/builder.Dockerfile
+    container_name: ares-chain
+    image: aresprotocollab/ares_gladios
     ports:
       - "9944:9944"
-    environment:
-      - CARGO_HOME=/var/www/node-template/.cargo
+      - "9933:9933"
+      - "30333:30333"
+      - "9615:9615"
     volumes:
-      - .:/var/www/node-template
-      - type: bind
-        source: ./.local
-        target: /root/.local
-    command: bash -c "cargo build --release && ./target/release/node-template --dev --ws-external"
+      - ./data/ares:/data
+    command: >
+      gladios-node --chain gladios --name Ares_OCW1 --execution Native --pruning archive
+      --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+      --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+      --public-addr '/ip4/xx.xx.xx.xx/tcp/30333' --port 30333
+      --warehouse 'http://api.aresprotocol.io' --validator
+      --log aura=debug --log peerset=debug
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "10"
