@@ -172,6 +172,7 @@ pallet-aura = { version = "4.0.0-dev", default-features = false, git = "https://
 pallet-balances = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-grandpa = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-indices = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-identity = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 frame-election-provider-support = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
 # network
@@ -192,18 +193,18 @@ pallet-proxy  = { version = "4.0.0-dev", default-features = false, git = "https:
 pallet-vesting = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-elections-phragmen = { version = "5.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
-ares-oracle-provider-support = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.1'}
-ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.6.2'}
-oracle-finance = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.1'}
-member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.1.0'}
-pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version='3.0.1'}
-pallet-ares-collective = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev'}
-pallet-price-estimates = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1',  version = '3.0.1'}
-staking-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '3.0.4'}
-pallet-session = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'monthly-2021-09+1', version = '4.0.0-dev' }
+ares-oracle-provider-support = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '3.0.1'}
+ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '3.7.1'}
+oracle-finance = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '3.1.1'}
+member-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '3.1.0'}
+pallet-ares-challenge = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version='3.0.1'}
+pallet-ares-collective = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '4.0.0-dev'}
+pallet-price-estimates = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105',  version = '3.0.1'}
+staking-extend = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '3.0.4'}
+pallet-session = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '4.0.0-dev' }
 
 #ares-oracle-provider-support = {default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support', version = '3.0.1'}
-#ares-oracle = {default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle', version = '3.6.1'}
+#ares-oracle = {default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle', version = '3.7.1'}
 #oracle-finance = {default-features = false, path = '../../../ares-ocw-suit/pallets/oracle-finance',  version = '3.1.1'}
 #member-extend = {default-features = false, path = '../../../ares-ocw-suit/pallets/member-extend',  version = '3.1.0'}
 #pallet-ares-challenge = {default-features = false, path = '../../../ares-ocw-suit/pallets/challenge', version='3.0.1'}
@@ -239,6 +240,7 @@ std = [
     'pallet-timestamp/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',
+    'pallet-identity/std',
     'sp-api/std',
     'sp-block-builder/std',
     'sp-consensus-aura/std',

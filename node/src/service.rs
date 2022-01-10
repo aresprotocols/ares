@@ -228,10 +228,11 @@ pub fn new_full(
 	let rpc_extensions_builder = {
 		let client = client.clone();
 		let pool = transaction_pool.clone();
+		let backend = backend.clone();
 
 		Box::new(move |deny_unsafe, _| {
 			let deps =
-				crate::rpc::FullDeps { client: client.clone(), pool: pool.clone(), deny_unsafe };
+				crate::rpc::FullDeps { client: client.clone(), pool: pool.clone(), deny_unsafe, backend: backend.clone() };
 
 			Ok(crate::rpc::create_full(deps))
 		})

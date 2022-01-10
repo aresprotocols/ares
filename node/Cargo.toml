@@ -76,17 +76,13 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '0.10.0-dev'
 
-#[dependencies.ocw-sc-consensus-aura]
-#path = '../ocw-aura'
-#version = '0.10.0-dev'
-
 #[dependencies.ares-oracle-provider-support]
 #path = '../../ares-ocw-suit/pallets/ares-oracle-provider-support'
 #version = '3.0.1'
 
 [dependencies.ares-oracle-provider-support]
 git = 'https://github.com/aresprotocols/ocw-suit.git'
-branch = 'monthly-2021-09+1'
+branch = 'runtime-105'
 version = '3.0.1'
 
 [dependencies.sc-executor]
@@ -192,6 +188,12 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'monthly-2021-09+1'
 version = '4.0.0-dev'
 
+#[dependencies.sc-consensus]
+#version = "0.10.0-dev"
+#git = 'https://github.com/paritytech/substrate.git'
+#tag = 'monthly-2021-09+1'
+#version = '4.0.0-dev'
+
 [dependencies.seed-reader]
 path = '../seed-reader'
 version = '1.0.1'
@@ -202,6 +204,35 @@ default-features = false
 
 [dependencies.hex-literal]
 version = "0.3.1"
+
+[dependencies.futures]
+version = "0.3.16"
+
+[dependencies.jsonrpc-derive]
+version = "18.0.0"
+
+[dependencies.jsonrpc-core-client]
+version = "18.0.0"
+
+[dependencies.jsonrpc-pubsub]
+version = "18.0.0"
+
+[dependencies.sc-block-builder]
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-09+1'
+version = "0.10.0-dev"
+
+[dependencies.sp-rpc]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-09+1'
+version = '4.0.0-dev'
+
+[dev-dependencies.substrate-test-runtime-client]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'monthly-2021-09+1'
+version = '2.0.0'
 
 [features]
 default = []

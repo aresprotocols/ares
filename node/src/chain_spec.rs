@@ -15,6 +15,7 @@ use sp_runtime::{
 
 mod ares_genesis;
 mod testnet_genesis;
+const DEFAULT_PROTOCOL_ID: &str = "ares";
 
 pub use ares_genesis::{GladiosNodeChainSpec, GladiosSS58Prefix, GladiosAccountId, GladiosWASM_BINARY};
 pub use testnet_genesis::{PioneerNodeChainSpec, PioneerSS58Prefix, PioneerAccountId, PioneerWASM_BINARY};
@@ -221,21 +222,21 @@ pub fn local_ares_config() -> Result<GladiosNodeChainSpec, String> {
 		(
 			hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"].into(),
 			hex!["9e55f821f7b3484f15942af308001c32f113f31444f420a77422702907510669"].into(),
-			hex!["763a6ddd64b5e2f0e0c08a2c6e5143ae47edc563155bd052a26d3f942b806a1f"]
+			hex!["b4879945ce4ef0b387857026c2b6fc8b15dec3386ad13b7bf7d978e484080a18"]
 				.unchecked_into(),
 			hex!["2ce72e098beb0bc8ed6c812099bed8c7c60ae8208c94abf4212d7fdeaf11bab3"]
 				.unchecked_into(),
-			hex!["763a6ddd64b5e2f0e0c08a2c6e5143ae47edc563155bd052a26d3f942b806a1f"]
+			hex!["b4879945ce4ef0b387857026c2b6fc8b15dec3386ad13b7bf7d978e484080a18"]
 				.unchecked_into(),
 		),
 		(
 			hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"].into(),
 			hex!["587bae319ecaee13ce2dbdedfc6d66eb189e5af427666b21b4d4a08c7af0671c"].into(),
-			hex!["a483a387dd54aa61d1619bfca66b41e0bbee9cd199306e4310f823526d6ebe6a"]
+			hex!["126bae3dea6a6a6e346bc0dc2beb4e1c9e54aaf1c0732bf67ff03d772f6a6208"]
 				.unchecked_into(),
 			hex!["b200d0328d26f7cbb67223c179ab14a2152d7afb6689f07b618fda33695d5fd4"]
 				.unchecked_into(),
-			hex!["a483a387dd54aa61d1619bfca66b41e0bbee9cd199306e4310f823526d6ebe6a"]
+			hex!["126bae3dea6a6a6e346bc0dc2beb4e1c9e54aaf1c0732bf67ff03d772f6a6208"]
 				.unchecked_into(),
 		),
 	];
@@ -274,11 +275,11 @@ pub fn local_ares_config() -> Result<GladiosNodeChainSpec, String> {
 			)
 		},
 		// Bootnodes
-		vec!["/ip4/158.247.224.166/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp".parse().unwrap()],
+		vec!["/ip4/45.77.243.246/tcp/30334/ws/p2p/12D3KooWMqDofvvwRtP7AYSAyJ2udNYrj698wnYJbpjomNTHHK9E".parse().unwrap()],
 		// Telemetry
 		None,
 		// Protocol ID
-		None,
+		Some(DEFAULT_PROTOCOL_ID),
 		// Properties
 		Some(properties),
 		// Extensions
@@ -289,8 +290,7 @@ pub fn local_ares_config() -> Result<GladiosNodeChainSpec, String> {
 #[cfg(test)]
 pub(crate) mod tests {
 	use super::*;
-	use crate::service::{new_full_base, new_light_base, NewFullBase};
-	use sc_service_test;
+	use crate::service::{new_full, new_light, new_partial};
 	use sp_runtime::BuildStorage;
 
 	#[test]
