@@ -118,7 +118,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.7.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -148,7 +148,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -1304,6 +1304,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "enumflags2"
+version = "0.6.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83c8d82922337cd23a15f88b70d8e4ef5f11da38dd7cdb55e84dd5de99695da0"
+dependencies = [
+ "enumflags2_derive",
+]
+
+[[package]]
+name = "enumflags2_derive"
+version = "0.6.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "946ee94e3dbf58fdd324f9ce245c7b238d46a66f00e86a020b71996349e46cce"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "env_logger"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1929,12 +1949,14 @@ dependencies = [
  "jsonrpc-core",
  "jsonrpc-core-client",
  "jsonrpc-derive",
+ "jsonrpc-pubsub",
  "log",
  "pallet-transaction-payment-rpc",
  "rand 0.8.4",
  "runtime-gladios-node",
  "runtime-pioneer-node",
  "sc-basic-authorship",
+ "sc-block-builder",
  "sc-cli",
  "sc-client-api",
  "sc-consensus",
@@ -1957,11 +1979,13 @@ dependencies = [
  "sp-core",
  "sp-finality-grandpa",
  "sp-offchain",
+ "sp-rpc",
  "sp-runtime",
  "sp-timestamp",
  "structopt",
  "substrate-build-script-utils",
  "substrate-frame-rpc-system",
+ "substrate-test-runtime-client",
 ]
 
 [[package]]
@@ -3315,7 +3339,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3788,7 +3812,7 @@ checksum = "28988d872ab76095a6e6ac88d99b54fd267702734fd7ffe610ca27f533ddb95a"
 [[package]]
 name = "oracle-finance"
 version = "3.1.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3815,7 +3839,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3834,7 +3858,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4029,6 +4053,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-identity"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "enumflags2",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 4.0.0-dev",
+]
+
+[[package]]
 name = "pallet-indices"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
@@ -4059,7 +4098,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -4117,7 +4156,7 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5228,6 +5267,7 @@ dependencies = [
  "pallet-election-provider-multi-phase",
  "pallet-elections-phragmen",
  "pallet-grandpa",
+ "pallet-identity",
  "pallet-indices",
  "pallet-multisig",
  "pallet-price-estimates",
@@ -5290,6 +5330,7 @@ dependencies = [
  "pallet-election-provider-multi-phase",
  "pallet-elections-phragmen",
  "pallet-grandpa",
+ "pallet-identity",
  "pallet-indices",
  "pallet-multisig",
  "pallet-price-estimates",
@@ -7308,7 +7349,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -7461,6 +7502,94 @@ dependencies = [
  "log",
  "prometheus",
  "tokio",
+]
+
+[[package]]
+name = "substrate-test-client"
+version = "2.0.1"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "async-trait",
+ "futures 0.3.19",
+ "hex",
+ "parity-scale-codec",
+ "sc-client-api",
+ "sc-client-db",
+ "sc-consensus",
+ "sc-executor",
+ "sc-light",
+ "sc-offchain",
+ "sc-service",
+ "serde",
+ "serde_json",
+ "sp-blockchain",
+ "sp-consensus",
+ "sp-core",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-state-machine",
+]
+
+[[package]]
+name = "substrate-test-runtime"
+version = "2.0.0"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "cfg-if 1.0.0",
+ "frame-support",
+ "frame-system",
+ "frame-system-rpc-runtime-api",
+ "log",
+ "memory-db",
+ "pallet-babe",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "parity-util-mem",
+ "sc-service",
+ "serde",
+ "sp-api",
+ "sp-application-crypto",
+ "sp-block-builder",
+ "sp-consensus-aura",
+ "sp-consensus-babe",
+ "sp-core",
+ "sp-externalities",
+ "sp-finality-grandpa",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-runtime-interface",
+ "sp-session",
+ "sp-state-machine",
+ "sp-std 4.0.0-dev",
+ "sp-transaction-pool",
+ "sp-trie",
+ "sp-version",
+ "substrate-wasm-builder",
+ "trie-db",
+]
+
+[[package]]
+name = "substrate-test-runtime-client"
+version = "2.0.0"
+source = "git+https://github.com/paritytech/substrate.git?tag=monthly-2021-09+1#20a9bbb1fe47fcd62fcd64b2fa32456b4f434aaf"
+dependencies = [
+ "futures 0.3.19",
+ "parity-scale-codec",
+ "sc-block-builder",
+ "sc-client-api",
+ "sc-consensus",
+ "sc-light",
+ "sp-api",
+ "sp-blockchain",
+ "sp-consensus",
+ "sp-core",
+ "sp-runtime",
+ "substrate-test-client",
+ "substrate-test-runtime",
 ]
 
 [[package]]
@@ -8598,4 +8727,4 @@ dependencies = [
 [[patch.unused]]
 name = "pallet-session-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-104#25cdbad9fafded2031b9d81435f9ef7ef4acc41e"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-105#9f89d8bf3f563bda86d510593399da0ddb3df57d"
