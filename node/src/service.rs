@@ -6,7 +6,8 @@ use runtime_gladios_node::{
 use sc_client_api::{Backend, ExecutorProvider, RemoteBackend};
 // use ocw_sc_consensus_aura as sc_consensus_aura;
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
-pub use sc_executor::NativeElseWasmExecutor;
+pub use sc_executor::NativeExecutor;
+use sc_executor::native_executor_instance;
 use sc_finality_grandpa::SharedVoterState;
 use sc_keystore::LocalKeystore;
 use sc_service::{error::Error as ServiceError, Configuration, TaskManager};
@@ -24,23 +25,32 @@ use sp_offchain::STORAGE_PREFIX;
 use std::io::Read;
 // use frame_support::{dispatch::DispatchResult, pallet_prelude::*};
 
-// Our native executor instance.
-pub struct ExecutorDispatch;
+// // Our native executor instance.
+// pub struct ExecutorDispatch;
+//
+// impl sc_executor::NativeExecutionDispatch for ExecutorDispatch {
+// 	type ExtendHostFunctions = frame_benchmarking::benchmarking::HostFunctions;
+//
+// 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
+// 		runtime_gladios_node::api::dispatch(method, data)
+// 	}
+//
+// 	fn native_version() -> sc_executor::NativeVersion {
+// 		runtime_gladios_node::native_version()
+// 	}
+// }
 
-impl sc_executor::NativeExecutionDispatch for ExecutorDispatch {
-	type ExtendHostFunctions = frame_benchmarking::benchmarking::HostFunctions;
+// Declare an instance of the native executor named `Executor`. Include the wasm binary as the
+// equivalent wasm code.
+native_executor_instance!(
+	pub Executor,
+	runtime_gladios_node::api::dispatch,
+	runtime_gladios_node::native_version,
+	frame_benchmarking::benchmarking::HostFunctions,
+);
 
-	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-		runtime_gladios_node::api::dispatch(method, data)
-	}
 
-	fn native_version() -> sc_executor::NativeVersion {
-		runtime_gladios_node::native_version()
-	}
-}
-
-type FullClient =
-	sc_service::TFullClient<Block, RuntimeApi, NativeElseWasmExecutor<ExecutorDispatch>>;
+type FullClient = sc_service::TFullClient<Block, RuntimeApi, Executor>;
 type FullBackend = sc_service::TFullBackend<Block>;
 type FullSelectChain = sc_consensus::LongestChain<FullBackend, Block>;
 
@@ -81,17 +91,16 @@ pub fn new_partial(
 		})
 		.transpose()?;
 
-	let executor = NativeElseWasmExecutor::<ExecutorDispatch>::new(
-		config.wasm_method,
-		config.default_heap_pages,
-		config.max_runtime_instances,
-	);
+	// let executor = NativeElseWasmExecutor::<ExecutorDispatch>::new(
+	// 	config.wasm_method,
+	// 	config.default_heap_pages,
+	// 	config.max_runtime_instances,
+	// );
 
 	let (client, backend, keystore_container, task_manager) =
-		sc_service::new_full_parts::<Block, RuntimeApi, _>(
+		sc_service::new_full_parts::<Block, RuntimeApi, Executor>(
 			&config,
 			telemetry.as_ref().map(|(_, telemetry)| telemetry.handle()),
-			executor,
 		)?;
 	let client = Arc::new(client);
 
@@ -426,17 +435,16 @@ pub fn new_light(mut config: Configuration) -> Result<TaskManager, ServiceError>
 		})
 		.transpose()?;
 
-	let executor = NativeElseWasmExecutor::<ExecutorDispatch>::new(
-		config.wasm_method,
-		config.default_heap_pages,
-		config.max_runtime_instances,
-	);
+	// let executor = NativeElseWasmExecutor::<ExecutorDispatch>::new(
+	// 	config.wasm_method,
+	// 	config.default_heap_pages,
+	// 	config.max_runtime_instances,
+	// );
 
 	let (client, backend, keystore_container, mut task_manager, on_demand) =
-		sc_service::new_light_parts::<Block, RuntimeApi, _>(
+		sc_service::new_light_parts::<Block, RuntimeApi, Executor>(
 			&config,
 			telemetry.as_ref().map(|(_, telemetry)| telemetry.handle()),
-			executor,
 		)?;
 
 	let mut telemetry = telemetry.map(|(worker, telemetry)| {

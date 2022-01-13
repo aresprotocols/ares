@@ -177,9 +177,9 @@ pub fn run() -> sc_cli::Result<()> {
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
 				if runner.config().chain_spec.is_pioneer() {
-					runner.sync_run(|config| cmd.run::<PioneerNodeBlock, service::ExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<PioneerNodeBlock, service::Executor>(config))
 				}else{
-					runner.sync_run(|config| cmd.run::<GladiosNodeBlock, service::ExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<GladiosNodeBlock, service::Executor>(config))
 				}
 			} else {
 				Err("Benchmarking wasn't enabled when building the node. You can enable it with \
