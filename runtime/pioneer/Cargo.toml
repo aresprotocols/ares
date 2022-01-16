@@ -185,13 +185,15 @@ pallet-authorship = { version = "4.0.0-dev", default-features = false, git = "ht
 # Goverence
 pallet-collective = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-democracy = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
-pallet-treasury  = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
-pallet-bounties  = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-treasury = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-bounties = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-scheduler = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
-pallet-multisig  = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
-pallet-proxy  = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-multisig = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-proxy = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-vesting = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 pallet-elections-phragmen = { version = "5.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-im-online = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
+pallet-offences = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", tag = "monthly-2021-09+1" }
 
 #ares-oracle-provider-support = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '3.0.1'}
 #ares-oracle = {default-features = false, git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-105', version = '3.7.2'}
@@ -226,21 +228,43 @@ runtime-benchmarks = [
     'sp-runtime/runtime-benchmarks',
 ]
 std = [
+    'ares-oracle-provider-support/std',
+    'ares-oracle/std',
     'codec/std',
     'frame-executive/std',
     'frame-support/std',
     'frame-system-rpc-runtime-api/std',
     'frame-system/std',
     'frame-election-provider-support/std',
+    'member-extend/std',
+    "oracle-finance/std",
     'pallet-aura/std',
+    'pallet-ares-challenge/std',
+    'pallet-ares-collective/std',
     'pallet-balances/std',
+    'pallet-bounties/std',
+    'pallet-collective/std',
+    'pallet-democracy/std',
+    'pallet-elections-phragmen/std',
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
     'pallet-sudo/std',
+    'pallet-session/std',
+    'pallet-staking/std',
     'pallet-timestamp/std',
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',
     'pallet-identity/std',
+    "pallet-im-online/std",
+    'pallet-indices/std',
+    'pallet-treasury/std',
+    'pallet-scheduler/std',
+    'pallet-multisig/std',
+    'pallet-offences/std',
+    'pallet-proxy/std',
+    'pallet-election-provider-multi-phase/std',
+    "pallet-authorship/std",
+    'pallet-vesting/std',
     'sp-api/std',
     'sp-block-builder/std',
     'sp-consensus-aura/std',
@@ -250,32 +274,12 @@ std = [
     'sp-runtime/std',
     'sp-session/std',
     'sp-std/std',
+    'sp-staking/std',
     'sp-transaction-pool/std',
     'sp-version/std',
-    "sp-staking/std",
     'sp-npos-elections/std',
-    'ares-oracle-provider-support/std',
-    'ares-oracle/std',
-    'pallet-ares-challenge/std',
-    'pallet-ares-collective/std',
-    'pallet-collective/std',
-    'pallet-democracy/std',
-    'pallet-treasury/std',
-    'pallet-bounties/std',
-    'pallet-scheduler/std',
-    'pallet-multisig/std',
-    'pallet-proxy/std',
-    'pallet-vesting/std',
-    'pallet-elections-phragmen/std',
-    "member-extend/std",
     "staking-extend/std",
     "log/std",
-    "pallet-indices/std",
-    "pallet-session/std",
-    "pallet-staking/std",
-    "pallet-election-provider-multi-phase/std",
-    "pallet-authorship/std",
-    "oracle-finance/std",
 ]
 
 #[patch."https://github.com/paritytech/substrate"]

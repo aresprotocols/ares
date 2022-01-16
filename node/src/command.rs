@@ -102,9 +102,9 @@ impl SubstrateCli for Cli {
 			path => {
 				log::info!("🚅 🚅 🚅 load spec with json file.");
 				// Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?)
-				let chain_spec = chain_spec::GladiosNodeChainSpec::from_json_file(std::path::PathBuf::from(path))?;
+				let chain_spec = chain_spec::PioneerNodeChainSpec::from_json_file(std::path::PathBuf::from(path))?;
 				if chain_spec.is_gladios() {
-					Box::new(chain_spec::PioneerNodeChainSpec::from_json_file(path.into())?)
+					Box::new(chain_spec::GladiosNodeChainSpec::from_json_file(std::path::PathBuf::from(path))?)
 				}else{
 					Box::new(chain_spec)
 				}
