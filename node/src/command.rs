@@ -97,7 +97,7 @@ impl SubstrateCli for Cli {
 			},
 			"" | "gladios" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");
-				Box::new(chain_spec::GladiosNodeChainSpec::from_json_bytes(&include_bytes!("../res/chain-data-ares-aura.json")[..])?)
+				Box::new(chain_spec::GladiosNodeChainSpec::from_json_bytes(&include_bytes!("../res/chain-data-ares-aura-raw.json")[..])?)
 			},
 			path => {
 				log::info!("🚅 🚅 🚅 load spec with json file.");
@@ -177,9 +177,9 @@ pub fn run() -> sc_cli::Result<()> {
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
 				if runner.config().chain_spec.is_pioneer() {
-					runner.sync_run(|config| cmd.run::<PioneerNodeBlock, service::ExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<PioneerNodeBlock, service::Executor>(config))
 				}else{
-					runner.sync_run(|config| cmd.run::<GladiosNodeBlock, service::ExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<GladiosNodeBlock, service::Executor>(config))
 				}
 			} else {
 				Err("Benchmarking wasn't enabled when building the node. You can enable it with \
