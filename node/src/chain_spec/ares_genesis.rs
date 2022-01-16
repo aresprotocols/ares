@@ -5,8 +5,8 @@ pub use runtime_gladios_node::{
     network::{
         part_elections::MAX_NOMINATIONS, part_session::SessionKeys, part_staking::StakerStatus,
     },
-    AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
-    GenesisConfig, GrandpaConfig, AresOracleConfig, SS58Prefix, SessionConfig, Signature,
+    AccountId, AuraConfig, AresOracleConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, ImOnlineConfig,
+    GenesisConfig, GrandpaConfig, SS58Prefix, SessionConfig, Signature,
     StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as GladiosWASM_BINARY,
 };
 
@@ -34,24 +34,25 @@ fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
 }
 
 /// Generate an Aura authority key.
-pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, AuraId, GrandpaId, AresId) {
+pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, AuraId, GrandpaId, AresId, ImOnlineId) {
     (
         get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", seed)),
         get_account_id_from_seed::<sr25519::Public>(seed),
         get_from_seed::<AuraId>(seed),
         get_from_seed::<GrandpaId>(seed),
         get_from_seed::<AresId>(seed),
+        get_from_seed::<ImOnlineId>(seed),
     )
 }
 
-fn session_keys(aura: AuraId, grandpa: GrandpaId, ares: AresId) -> SessionKeys {
-    SessionKeys { aura, grandpa, ares }
+fn session_keys(aura: AuraId, grandpa: GrandpaId, ares: AresId, im_online: ImOnlineId) -> SessionKeys {
+    SessionKeys { aura, grandpa, ares, im_online }
 }
 
 /// Configure initial storage state for FRAME modules.
 pub fn make_ares_genesis(
     wasm_binary: &[u8],
-    initial_authorities: Vec<(AccountId, AccountId, AuraId, GrandpaId, AresId)>,
+    initial_authorities: Vec<(AccountId, AccountId, AuraId, GrandpaId, AresId, ImOnlineId)>,
     initial_nominators: Vec<AccountId>,
     root_key: AccountId,
     endowed_accounts: Vec<AccountId>,
@@ -74,6 +75,7 @@ pub fn make_ares_genesis(
             code: wasm_binary.to_vec(),
             changes_trie_config: Default::default(),
         },
+        im_online: ImOnlineConfig { keys: vec![] },
         balances: BalancesConfig {
             // Configure endowed accounts with initial balance of 1 << 60.
             balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),
@@ -94,7 +96,7 @@ pub fn make_ares_genesis(
         session: SessionConfig {
             keys: initial_authorities
                 .iter()
-                .map(|x| (x.0.clone(), x.0.clone(), session_keys(x.2.clone(), x.3.clone(), x.4.clone())))
+                .map(|x| (x.0.clone(), x.0.clone(), session_keys(x.2.clone(), x.3.clone(), x.4.clone(), x.5.clone())))
                 .collect::<Vec<_>>(),
         },
         grandpa: GrandpaConfig {
