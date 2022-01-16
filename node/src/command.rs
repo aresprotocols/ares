@@ -97,7 +97,7 @@ impl SubstrateCli for Cli {
 			},
 			"" | "gladios" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");
-				Box::new(chain_spec::GladiosNodeChainSpec::from_json_bytes(&include_bytes!("../res/chain-data-ares-aura.json")[..])?)
+				Box::new(chain_spec::GladiosNodeChainSpec::from_json_bytes(&include_bytes!("../res/chain-data-ares-aura-raw.json")[..])?)
 			},
 			path => {
 				log::info!("🚅 🚅 🚅 load spec with json file.");
