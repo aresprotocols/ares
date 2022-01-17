@@ -71,16 +71,18 @@ pallet-multisig = { git = "https://github.com/paritytech/substrate", default-fea
 pallet-proxy = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 pallet-vesting = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
+pallet-im-online = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
+pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 
-ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
-ares-oracle = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
-oracle-finance = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
-member-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
-pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
-pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
-pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
-staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
-pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.10" }
+ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
+ares-oracle = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
+oracle-finance = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
+member-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
+pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
+pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
+pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
+staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
+pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107" }
 
 #ares-oracle-provider-support = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
 #ares-oracle = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle' }
@@ -122,6 +124,8 @@ std = [
     'pallet-transaction-payment-rpc-runtime-api/std',
     'pallet-transaction-payment/std',
     'pallet-identity/std',
+    'pallet-im-online/std',
+    'pallet-offences/std',
     'sp-api/std',
     'sp-block-builder/std',
     'sp-consensus-aura/std',

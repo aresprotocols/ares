@@ -34,12 +34,13 @@ runtime-gladios-node = { path = "../runtime/gladios" }
 runtime-pioneer-node = { path = "../runtime/pioneer" }
 seed-reader = { path = "../seed-reader" }
 #ares-oracle-provider-support = { path = "../../ares-ocw-suit/pallets/ares-oracle-provider-support" }
-ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.10" }
+ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "runtime-107" }
 
 frame-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 frame-benchmarking = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 frame-benchmarking-cli = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 pallet-transaction-payment-rpc = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
+pallet-im-online = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 sc-basic-authorship = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 sc-executor = { git = "https://github.com/paritytech/substrate", features = ['wasmtime'], branch = "polkadot-v0.9.10" }
 sc-cli = { git = "https://github.com/paritytech/substrate", features = ['wasmtime'], branch = "polkadot-v0.9.10" }

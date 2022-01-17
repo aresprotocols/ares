@@ -14,7 +14,7 @@ impl_opaque_keys! {
 		pub aura: Aura,
 		pub grandpa: Grandpa,
 		pub ares: AresOracle,
-		pub im_online: ImOnline,
+		// pub im_online: ImOnline,
 	}
 }
 
