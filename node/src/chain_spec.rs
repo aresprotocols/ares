@@ -97,7 +97,7 @@ pub fn local_testnet_config() -> Result<PioneerNodeChainSpec, String> {
 		AuraId,
 		GrandpaId,
 		AresId,
-		ImOnlineId,
+		// ImOnlineId,
 	)> = vec![
 		(
 			hex!["70214e02fb2ec155a4c7bb8c122864b3b03f58c4ac59e8d83af7dc29851df657"].into(),
@@ -108,8 +108,8 @@ pub fn local_testnet_config() -> Result<PioneerNodeChainSpec, String> {
 				.unchecked_into(),
 			hex!["08ecdc14e2dd427724c60c6879a1aeade21d9708c30c4477f679dde971cb1378"]
 				.unchecked_into(),
-			hex!["08ecdc14e2dd427724c60c6879a1aeade21d9708c30c4477f679dde971cb1378"]
-				.unchecked_into(),
+			// hex!["08ecdc14e2dd427724c60c6879a1aeade21d9708c30c4477f679dde971cb1378"]
+			// 	.unchecked_into(),
 		),
 		(
 			hex!["c82c3780d981812be804345618d27228680f61bb06a22689dcacf32b9be8815a"].into(),
@@ -120,8 +120,8 @@ pub fn local_testnet_config() -> Result<PioneerNodeChainSpec, String> {
 				.unchecked_into(),
 			hex!["46bd24b721b0252e4c5b933b3c1b53b5179799511594695bf03f06d17b91154e"]
 				.unchecked_into(),
-			hex!["46bd24b721b0252e4c5b933b3c1b53b5179799511594695bf03f06d17b91154e"]
-				.unchecked_into(),
+			// hex!["46bd24b721b0252e4c5b933b3c1b53b5179799511594695bf03f06d17b91154e"]
+			// 	.unchecked_into(),
 		),
 		(
 			hex!["acad76a1f273ab3b8e453d630d347668f1cfa9b01605800dab7126a494c04c7c"].into(),
@@ -132,8 +132,8 @@ pub fn local_testnet_config() -> Result<PioneerNodeChainSpec, String> {
 				.unchecked_into(),
 			hex!["763a6ddd64b5e2f0e0c08a2c6e5143ae47edc563155bd052a26d3f942b806a1f"]
 				.unchecked_into(),
-			hex!["763a6ddd64b5e2f0e0c08a2c6e5143ae47edc563155bd052a26d3f942b806a1f"]
-				.unchecked_into(),
+			// hex!["763a6ddd64b5e2f0e0c08a2c6e5143ae47edc563155bd052a26d3f942b806a1f"]
+			// 	.unchecked_into(),
 		),
 		(
 			hex!["4aa6e0eeed2e3d1f35a8eb1cd650451327ad378fb8975dbf5747016ff3be2460"].into(),
@@ -144,8 +144,8 @@ pub fn local_testnet_config() -> Result<PioneerNodeChainSpec, String> {
 				.unchecked_into(),
 			hex!["a483a387dd54aa61d1619bfca66b41e0bbee9cd199306e4310f823526d6ebe6a"]
 				.unchecked_into(),
-			hex!["a483a387dd54aa61d1619bfca66b41e0bbee9cd199306e4310f823526d6ebe6a"]
-				.unchecked_into(),
+			// hex!["a483a387dd54aa61d1619bfca66b41e0bbee9cd199306e4310f823526d6ebe6a"]
+			// 	.unchecked_into(),
 		),
 	];
 
