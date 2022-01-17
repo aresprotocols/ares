@@ -1,7 +1,7 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
 use runtime_gladios_node::{
-	self, opaque::Block, part_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, RuntimeApi,
+	self, opaque::Block as GladiosBlock, part_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, RuntimeApi as GladiosRuntimeApi,
 };
 use sc_client_api::{Backend, ExecutorProvider, RemoteBackend};
 // use ocw_sc_consensus_aura as sc_consensus_aura;
@@ -40,19 +40,20 @@ use std::io::Read;
 // 	}
 // }
 
+
+
 // Declare an instance of the native executor named `Executor`. Include the wasm binary as the
 // equivalent wasm code.
 native_executor_instance!(
-	pub Executor,
+	pub GladiosExecutor,
 	runtime_gladios_node::api::dispatch,
 	runtime_gladios_node::native_version,
 	frame_benchmarking::benchmarking::HostFunctions,
 );
 
-
-type FullClient = sc_service::TFullClient<Block, RuntimeApi, Executor>;
-type FullBackend = sc_service::TFullBackend<Block>;
-type FullSelectChain = sc_consensus::LongestChain<FullBackend, Block>;
+type FullClient = sc_service::TFullClient<GladiosBlock, GladiosRuntimeApi, GladiosExecutor>;
+type FullBackend = sc_service::TFullBackend<GladiosBlock>;
+type FullSelectChain = sc_consensus::LongestChain<FullBackend, GladiosBlock>;
 
 pub fn new_partial(
 	config: &Configuration,
@@ -61,21 +62,23 @@ pub fn new_partial(
 		FullClient,
 		FullBackend,
 		FullSelectChain,
-		sc_consensus::DefaultImportQueue<Block, FullClient>,
-		sc_transaction_pool::FullPool<Block, FullClient>,
+		sc_consensus::DefaultImportQueue<GladiosBlock, FullClient>,
+		sc_transaction_pool::FullPool<GladiosBlock, FullClient>,
 		(
 			sc_finality_grandpa::GrandpaBlockImport<
 				FullBackend,
-				Block,
+				GladiosBlock,
 				FullClient,
 				FullSelectChain,
 			>,
-			sc_finality_grandpa::LinkHalf<Block, FullClient, FullSelectChain>,
+			sc_finality_grandpa::LinkHalf<GladiosBlock, FullClient, FullSelectChain>,
 			Option<Telemetry>,
 		),
 	>,
 	ServiceError,
 > {
+
+
 	if config.keystore_remote.is_some() {
 		return Err(ServiceError::Other(format!("Remote Keystores are not supported.")));
 	}
@@ -98,7 +101,7 @@ pub fn new_partial(
 	// );
 
 	let (client, backend, keystore_container, task_manager) =
-		sc_service::new_full_parts::<Block, RuntimeApi, Executor>(
+		sc_service::new_full_parts::<GladiosBlock, GladiosRuntimeApi, GladiosExecutor>(
 			&config,
 			telemetry.as_ref().map(|(_, telemetry)| telemetry.handle()),
 		)?;
@@ -442,7 +445,7 @@ pub fn new_light(mut config: Configuration) -> Result<TaskManager, ServiceError>
 	// );
 
 	let (client, backend, keystore_container, mut task_manager, on_demand) =
-		sc_service::new_light_parts::<Block, RuntimeApi, Executor>(
+		sc_service::new_light_parts::<GladiosBlock, GladiosRuntimeApi, GladiosExecutor>(
 			&config,
 			telemetry.as_ref().map(|(_, telemetry)| telemetry.handle()),
 		)?;

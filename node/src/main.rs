@@ -3,7 +3,8 @@
 
 mod chain_spec;
 #[macro_use]
-mod service;
+mod gladios_service;
+mod pioneer_service;
 mod cli;
 mod command;
 mod rpc;

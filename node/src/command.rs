@@ -18,7 +18,8 @@
 use crate::{
 	chain_spec,
 	cli::{Cli, Subcommand},
-	service,
+	gladios_service,
+	pioneer_service,
 };
 use runtime_gladios_node::Block as GladiosNodeBlock;
 use runtime_pioneer_node::Block as PioneerNodeBlock;
@@ -133,31 +134,57 @@ pub fn run() -> sc_cli::Result<()> {
 		},
 		Some(Subcommand::CheckBlock(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.async_run(|config| {
+					let PartialComponents { client, task_manager, import_queue, .. } =
+						pioneer_service::new_partial(&config)?;
+					Ok((cmd.run(client, import_queue), task_manager))
+				});
+			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, import_queue, .. } =
-					service::new_partial(&config)?;
+					gladios_service::new_partial(&config)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
 		Some(Subcommand::ExportBlocks(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.async_run(|config| {
+					let PartialComponents { client, task_manager, .. } = pioneer_service::new_partial(&config)?;
+					Ok((cmd.run(client, config.database), task_manager))
+				});
+			}
 			runner.async_run(|config| {
-				let PartialComponents { client, task_manager, .. } = service::new_partial(&config)?;
+				let PartialComponents { client, task_manager, .. } = gladios_service::new_partial(&config)?;
 				Ok((cmd.run(client, config.database), task_manager))
 			})
 		},
 		Some(Subcommand::ExportState(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.async_run(|config| {
+					let PartialComponents { client, task_manager, .. } = pioneer_service::new_partial(&config)?;
+					Ok((cmd.run(client, config.chain_spec), task_manager))
+				});
+			}
 			runner.async_run(|config| {
-				let PartialComponents { client, task_manager, .. } = service::new_partial(&config)?;
+				let PartialComponents { client, task_manager, .. } = gladios_service::new_partial(&config)?;
 				Ok((cmd.run(client, config.chain_spec), task_manager))
 			})
 		},
 		Some(Subcommand::ImportBlocks(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.async_run(|config| {
+					let PartialComponents { client, task_manager, import_queue, .. } =
+						pioneer_service::new_partial(&config)?;
+					Ok((cmd.run(client, import_queue), task_manager))
+				});
+			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, import_queue, .. } =
-					service::new_partial(&config)?;
+					gladios_service::new_partial(&config)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
@@ -167,9 +194,16 @@ pub fn run() -> sc_cli::Result<()> {
 		},
 		Some(Subcommand::Revert(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.async_run(|config| {
+					let PartialComponents { client, task_manager, backend, .. } =
+						pioneer_service::new_partial(&config)?;
+					Ok((cmd.run(client, backend), task_manager))
+				})
+			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, backend, .. } =
-					service::new_partial(&config)?;
+					gladios_service::new_partial(&config)?;
 				Ok((cmd.run(client, backend), task_manager))
 			})
 		},
@@ -177,9 +211,9 @@ pub fn run() -> sc_cli::Result<()> {
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
 				if runner.config().chain_spec.is_pioneer() {
-					runner.sync_run(|config| cmd.run::<PioneerNodeBlock, service::Executor>(config))
+					runner.sync_run(|config| cmd.run::<PioneerNodeBlock, pioneer_service::PioneerExecutor<>>(config))
 				}else{
-					runner.sync_run(|config| cmd.run::<GladiosNodeBlock, service::Executor>(config))
+					runner.sync_run(|config| cmd.run::<GladiosNodeBlock, gladios_service::GladiosExecutor>(config))
 				}
 			} else {
 				Err("Benchmarking wasn't enabled when building the node. You can enable it with \
@@ -188,10 +222,16 @@ pub fn run() -> sc_cli::Result<()> {
 			},
 		None => {
 			let runner = cli.create_runner(&cli.run)?;
+			let is_pioneer = runner.config().chain_spec.is_pioneer();
 			runner.run_node_until_exit(|config| async move {
-
 				match config.role {
-					Role::Light => service::new_light(config),
+					Role::Light => {
+						if is_pioneer {
+							pioneer_service::new_light(config)
+						}else{
+							gladios_service::new_light(config)
+						}
+					},
 					_ => {
 						// ares params
 						let mut ares_params: Vec<(&str,Option<Vec<u8>>)> = Vec::new();
@@ -218,7 +258,11 @@ pub fn run() -> sc_cli::Result<()> {
 							}
 						}
 
-						service::new_full(config, ares_params)
+						if is_pioneer {
+							pioneer_service::new_full(config, ares_params)
+						}else{
+							gladios_service::new_full(config, ares_params)
+						}
 					}
 				}
 					.map_err(sc_cli::Error::Service)

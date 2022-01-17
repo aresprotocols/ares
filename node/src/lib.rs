@@ -1,3 +1,4 @@
 pub mod chain_spec;
 pub mod rpc;
-pub mod service;
+pub mod gladios_service;
+pub mod pioneer_service;
