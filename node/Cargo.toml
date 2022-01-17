@@ -33,8 +33,8 @@ hex-literal = { version = "0.3.1" }
 runtime-gladios-node = { path = "../runtime/gladios" }
 runtime-pioneer-node = { path = "../runtime/pioneer" }
 seed-reader = { path = "../seed-reader" }
-ares-oracle-provider-support = { path = "../../ares-ocw-suit/pallets/ares-oracle-provider-support" }
-#ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "runtime-107" }
+#ares-oracle-provider-support = { path = "../../ares-ocw-suit/pallets/ares-oracle-provider-support" }
+ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "runtime-107-debug" }
 
 frame-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 frame-benchmarking = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
