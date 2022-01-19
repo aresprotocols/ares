@@ -276,14 +276,15 @@ pub fn new_full(
 						None => (*order, false),
 						Some(exe_vecu8) => {
 							let request_base_str = sp_std::str::from_utf8(exe_vecu8).unwrap();
-							let store_request_u8 = request_base_str.encode();
+							// let store_request_u8 = request_base_str.encode();
+							let store_request_u8 = request_base_str.as_bytes();
 							log::info!("setting request_domain: {:?}", request_base_str);
 							if let Some(mut offchain_db) = backend_clone.offchain_storage() {
 								log::debug!("after setting request_domain: {:?}", request_base_str);
 								offchain_db.set(
 									STORAGE_PREFIX,
 									LOCAL_STORAGE_PRICE_REQUEST_DOMAIN,
-									store_request_u8.as_slice(),
+									store_request_u8,
 								);
 							}
 							(*order, true)

@@ -74,25 +74,25 @@ pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", d
 pallet-im-online = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 
-ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
-ares-oracle = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
-oracle-finance = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
-member-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
-pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
-pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
-pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
-staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
-pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#ares-oracle = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#oracle-finance = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#member-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
+#pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "runtime-107-debug" }
 
-#ares-oracle-provider-support = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
-#ares-oracle = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle' }
-#oracle-finance = { default-features = false, path = '../../../ares-ocw-suit/pallets/oracle-finance' }
-#member-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/member-extend' }
-#pallet-ares-challenge = { default-features = false, path = '../../../ares-ocw-suit/pallets/challenge' }
-#pallet-ares-collective = { default-features = false, path = '../../../ares-ocw-suit/pallets/collective' }
-#pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
-#staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
-#pallet-session = { default-features = false, path = '../../../ares-ocw-suit/pallets/session' }
+ares-oracle-provider-support = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
+ares-oracle = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle' }
+oracle-finance = { default-features = false, path = '../../../ares-ocw-suit/pallets/oracle-finance' }
+member-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/member-extend' }
+pallet-ares-challenge = { default-features = false, path = '../../../ares-ocw-suit/pallets/challenge' }
+pallet-ares-collective = { default-features = false, path = '../../../ares-ocw-suit/pallets/collective' }
+pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
+staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
+pallet-session = { default-features = false, path = '../../../ares-ocw-suit/pallets/session' }
 
 [features]
 default = ['std']
