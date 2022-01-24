@@ -55,7 +55,7 @@ pub mod constants;
 mod governance;
 pub mod network;
 mod part_challenge;
-pub mod part_member_extend;
+// pub mod part_member_extend;
 pub mod part_ocw;
 pub mod part_estimates;
 pub mod part_ocw_finance;
@@ -111,7 +111,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	//   `spec_version`, and `authoring_version` are the same between Wasm and native.
 	// This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
 	//   the compatible custom types.
-	spec_version: 107,
+	spec_version: 110,
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -338,7 +338,7 @@ construct_runtime!(
 		Authorship: pallet_authorship::{Pallet, Call, Storage, Inherent},
 
 		//
-		MemberExtend: member_extend::{Pallet},
+		// MemberExtend: member_extend::{Pallet},
 		//
 		AresChallenge: pallet_ares_challenge::{Pallet, Call, Storage, Event<T>},
 
