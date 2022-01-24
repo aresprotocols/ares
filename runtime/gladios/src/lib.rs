@@ -55,7 +55,7 @@ pub mod constants;
 mod governance;
 pub mod network;
 mod part_challenge;
-pub mod part_member_extend;
+// pub mod part_member_extend;
 pub mod part_ocw;
 pub mod part_estimates;
 pub mod part_ocw_finance;
@@ -338,7 +338,7 @@ construct_runtime!(
 		Authorship: pallet_authorship::{Pallet, Call, Storage, Inherent},
 
 		//
-		MemberExtend: member_extend::{Pallet},
+		// MemberExtend: member_extend::{Pallet},
 		//
 		AresChallenge: pallet_ares_challenge::{Pallet, Call, Storage, Event<T>},
 

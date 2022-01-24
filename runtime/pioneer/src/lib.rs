@@ -55,7 +55,7 @@ pub mod constants;
 mod governance;
 pub mod network;
 mod part_challenge;
-pub mod part_member_extend;
+// pub mod part_member_extend;
 pub mod part_ocw;
 pub mod part_estimates;
 pub mod part_ocw_finance;
@@ -338,7 +338,7 @@ construct_runtime!(
 		Authorship: pallet_authorship::{Pallet, Call, Storage, Inherent},
 
 		//
-		MemberExtend: member_extend::{Pallet},
+		// MemberExtend: member_extend::{Pallet},
 		//
 		AresChallenge: pallet_ares_challenge::{Pallet, Call, Storage, Event<T>},
 
@@ -357,8 +357,8 @@ construct_runtime!(
 		Bounties: pallet_bounties::{Pallet, Call, Storage, Event<T>},
 		Democracy: pallet_democracy::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Elections: pallet_elections_phragmen::{Pallet, Call, Storage, Event<T>, Config<T>},
-		// ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		// Offences: pallet_offences::{Pallet, Storage, Event},
+		ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
+		Offences: pallet_offences::{Pallet, Storage, Event},
 
 		//test estimates
 		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
