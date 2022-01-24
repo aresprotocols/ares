@@ -9,12 +9,12 @@ members = [
     'runtime/pioneer',
 ]
 
-[patch."https://github.com/paritytech/substrate"]
+[patch."https://github.com/zzm-Zhong/substrate"]
 
 
-#pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-107-debug' }
-#pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'runtime-107-debug' }
+pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'polkadot-v0.9.13' }
+pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'polkadot-v0.9.13' }
 
-pallet-session = {path = "../ares-ocw-suit/pallets/session" }
-pallet-session-benchmarking ={path = "../ares-ocw-suit/pallets/session/benchmarking" }
+#pallet-session = {path = "../ares-ocw-suit/pallets/session" }
+#pallet-session-benchmarking ={path = "../ares-ocw-suit/pallets/session/benchmarking" }
 
