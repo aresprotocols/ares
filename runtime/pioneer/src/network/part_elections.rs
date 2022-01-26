@@ -1,13 +1,15 @@
 use super::*;
+use codec::Decode;
 use constants::{
 	currency::{CENTS, DOLLARS},
 	time::EPOCH_DURATION_IN_BLOCKS,
 };
+use governance::part_council::CouncilCollective;
 pub use pallet_election_provider_multi_phase;
-use pallet_election_provider_multi_phase::FallbackStrategy;
+// use pallet_election_provider_multi_phase::FallbackStrategy;
 use part_staking::OffchainRepeat;
 use sp_runtime::transaction_validity::TransactionPriority;
-use governance::part_council::CouncilCollective;
+use frame_election_provider_support::onchain;
 
 parameter_types! {
 	/// We prioritize im-online heartbeats over election solution submission.
@@ -24,7 +26,7 @@ parameter_types! {
 	pub const SignedDepositByte: Balance = 1 * CENTS;
 
 	// fallback: no on-chain fallback.
-	pub const Fallback: FallbackStrategy = FallbackStrategy::OnChain;
+	// pub const Fallback: FallbackStrategy = FallbackStrategy::OnChain;
 
 	pub SolutionImprovementThreshold: Perbill = Perbill::from_rational(1u32, 10_000);
 
@@ -40,6 +42,11 @@ parameter_types! {
 		*BlockLength::get()
 		.max
 		.get(DispatchClass::Normal);
+
+	// BagsList allows a practically unbounded count of nominators to participate in NPoS elections.
+	// To ensure we respect memory limits when using the BagsList this must be set to a number of
+	// voters we know can fit into a single vec allocation.
+	pub const VoterSnapshotPerBlock: u32 = 10_000;
 }
 
 sp_npos_elections::generate_solution_type!(
@@ -55,13 +62,13 @@ sp_npos_elections::generate_solution_type!(
 /// to ensure election snapshot will not run out of memory.
 pub struct BenchmarkConfig;
 impl pallet_election_provider_multi_phase::BenchmarkingConfig for BenchmarkConfig {
-	const VOTERS: [u32; 2] = [5_000, 10_000];
-	const TARGETS: [u32; 2] = [1_000, 2_000];
-	const ACTIVE_VOTERS: [u32; 2] = [1000, 4_000];
-	const DESIRED_TARGETS: [u32; 2] = [400, 800];
-	const SNAPSHOT_MAXIMUM_VOTERS: u32 = 25_000;
-	const MINER_MAXIMUM_VOTERS: u32 = 15_000;
-	const MAXIMUM_TARGETS: u32 = 2000;
+	const VOTERS: [u32; 2] = [1000, 2000];
+	const TARGETS: [u32; 2] = [500, 1000];
+	const ACTIVE_VOTERS: [u32; 2] = [500, 800];
+	const DESIRED_TARGETS: [u32; 2] = [200, 400];
+	const SNAPSHOT_MAXIMUM_VOTERS: u32 = 1000;
+	const MINER_MAXIMUM_VOTERS: u32 = 1000;
+	const MAXIMUM_TARGETS: u32 = 300;
 }
 
 pub const MAX_NOMINATIONS: u32 = <NposSolution16 as sp_npos_elections::NposSolution>::LIMIT as u32;
@@ -71,6 +78,32 @@ type EnsureRootOrHalfCouncil = EnsureOneOf<
 	pallet_ares_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
 >;
 
+/// Maximum number of iterations for balancing that will be executed in the embedded OCW
+/// miner of election provider multi phase.
+pub const MINER_MAX_ITERATIONS: u32 = 10;
+
+/// A source of random balance for NposSolver, which is meant to be run by the OCW election miner.
+pub struct OffchainRandomBalancing;
+impl frame_support::pallet_prelude::Get<Option<(usize, sp_npos_elections::ExtendedBalance)>>
+	for OffchainRandomBalancing
+{
+	fn get() -> Option<(usize, sp_npos_elections::ExtendedBalance)> {
+		use sp_runtime::traits::TrailingZeroInput;
+		let iters = match MINER_MAX_ITERATIONS {
+			0 => 0,
+			max @ _ => {
+				let seed = sp_io::offchain::random_seed();
+				let random = <u32>::decode(&mut TrailingZeroInput::new(&seed))
+					.expect("input is padded with zeroes; qed") %
+					max.saturating_add(1);
+				random as usize
+			},
+		};
+
+		Some((iters, 0))
+	}
+}
+
 impl pallet_election_provider_multi_phase::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
@@ -79,7 +112,6 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	type UnsignedPhase = UnsignedPhase;
 	type SolutionImprovementThreshold = SolutionImprovementThreshold;
 	type OffchainRepeat = OffchainRepeat;
-	type MinerMaxIterations = MinerMaxIterations;
 	type MinerMaxWeight = MinerMaxWeight;
 	type MinerMaxLength = MinerMaxLength;
 	type MinerTxPriority = MultiPhaseUnsignedPriority;
@@ -91,12 +123,21 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	type SignedMaxWeight = MinerMaxWeight;
 	type SlashHandler = (); // burn slashes
 	type RewardHandler = (); // nothing to do upon rewards
-	// type DataProvider = Staking; //
+						 // type DataProvider = Staking; //
 	type DataProvider = StakingExtend; // Staking; //
-	type OnChainAccuracy = Perbill;
+								   // type OnChainAccuracy = Perbill;
 	type Solution = NposSolution16;
-	type Fallback = Fallback;
+	// type Fallback = ElectionProviderMultiPhase;
+	type Fallback = pallet_election_provider_multi_phase::NoFallback<Self>;
+	// type Fallback = onchain::OnChainSequentialPhragmen<Self>;
+	type Solver = frame_election_provider_support::SequentialPhragmen<
+		AccountId,
+		pallet_election_provider_multi_phase::SolutionAccuracyOf<Self>,
+		OffchainRandomBalancing,
+	>;
 	type WeightInfo = pallet_election_provider_multi_phase::weights::SubstrateWeight<Runtime>;
 	type ForceOrigin = EnsureRootOrHalfCouncil;
 	type BenchmarkingConfig = BenchmarkConfig;
+	type VoterSnapshotPerBlock = VoterSnapshotPerBlock;
+
 }

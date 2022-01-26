@@ -1,8 +1,8 @@
 use super::*;
 
 use frame_election_provider_support::onchain;
-use frame_support::traits::U128CurrencyToVote;
-use frame_system::{limits::BlockWeights, EnsureOneOf, EnsureRoot};
+use frame_support::traits::{ConstU32, U128CurrencyToVote};
+use frame_system::{EnsureOneOf, EnsureRoot};
 use governance::part_council::CouncilCollective;
 use pallet_ares_collective;
 use pallet_staking;
@@ -10,8 +10,6 @@ pub use pallet_staking::StakerStatus;
 use part_elections::MAX_NOMINATIONS;
 use sp_runtime::curve::PiecewiseLinear;
 pub use sp_staking;
-use staking_extend;
-
 
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
@@ -31,7 +29,30 @@ parameter_types! {
 	pub const SlashDeferDuration: pallet_staking::EraIndex = 24 * 7; // 1/4 the bonding duration.
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	pub const MaxNominatorRewardedPerValidator: u32 = 256;
+	pub const OffendingValidatorsThreshold: Perbill = Perbill::from_percent(17);
 	pub OffchainRepeat: BlockNumber = 5;
+}
+
+parameter_types! {
+	pub const BagThresholds: &'static [u64] = &voter_bags::THRESHOLDS;
+}
+
+impl onchain::Config for Runtime {
+	type Accuracy = Perbill;
+	type DataProvider = Staking;
+}
+
+impl pallet_bags_list::Config for Runtime {
+	type Event = Event;
+	type VoteWeightProvider = Staking;
+	type WeightInfo = pallet_bags_list::weights::SubstrateWeight<Runtime>;
+	type BagThresholds = BagThresholds;
+}
+
+pub struct StakingBenchmarkingConfig;
+impl pallet_staking::BenchmarkingConfig for StakingBenchmarkingConfig {
+	type MaxNominators = ConstU32<1000>;
+	type MaxValidators = ConstU32<1000>;
 }
 
 impl pallet_staking::Config for Runtime {
@@ -56,13 +77,16 @@ impl pallet_staking::Config for Runtime {
 	type EraPayout = pallet_staking::ConvertCurve<RewardCurve>;
 	type NextNewSession = Session;
 	type MaxNominatorRewardedPerValidator = MaxNominatorRewardedPerValidator;
+	type OffendingValidatorsThreshold = OffendingValidatorsThreshold;
 	// type ElectionProvider =  ElectionProviderMultiPhase;
-	type ElectionProvider = StakingExtend;// // ElectionProviderMultiPhase;
-	// type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
-	// 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
-	// >;
-	type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
-		staking_extend::OnChainConfig<Self>,
-	>;
+	type ElectionProvider = onchain::OnChainSequentialPhragmen<Self>; // // ElectionProviderMultiPhase;
+									   // type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
+									   // 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
+									   // >;
+	type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<Self>;
 	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
+	// Alternatively, use pallet_staking::UseNominatorsMap<Runtime> to just use the nominators map.
+	// Note that the aforementioned does not scale to a very large number of nominators.
+	type SortedListProvider = BagsList;
+	type BenchmarkingConfig = StakingBenchmarkingConfig;
 }

@@ -1,7 +1,6 @@
 use super::*;
 use constants::currency::{Balance, CENTS, DOLLARS};
 use crate::governance::part_council::CouncilCollective;
-use crate::governance::part_technical::TechnicalCollective;
 
 type EnsureRootOrHalfCouncil = EnsureOneOf<
 	AccountId,

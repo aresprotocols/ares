@@ -3,12 +3,7 @@ use codec::Encode;
 use frame_support::sp_runtime::app_crypto::Public;
 use frame_support::sp_runtime::generic::{Era, SignedPayload};
 use frame_support::sp_runtime::traits;
-use frame_support::sp_runtime::traits::AccountIdConversion;
-use frame_support::traits::FindAuthor;
-use frame_support::ConsensusEngineId;
 use ares_oracle;
-use ares_oracle::Config;
-use sp_runtime::traits::StaticLookup;
 use sp_runtime::{MultiAddress, SaturatedConversion};
 use crate::governance::part_technical::TechnicalCollective;
 pub use ares_oracle::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
@@ -24,10 +19,8 @@ pub type EnsureRootOrHalfTechnicalCollective = EnsureOneOf<
 
 parameter_types! {
 	pub const UnsignedPriority: u64 = 1 << 20;
-	// pub const NeedVerifierCheck: bool = true;
-	pub const FractionLengthNum: u32 = 2;
 	pub const CalculationKind: u8 = 1;
-	pub const ErrLogPoolDepth: u32 = 10;
+	pub const ErrLogPoolDepth: u32 = 1000;
 }
 
 impl ares_oracle::aura_handler::Config for Runtime {

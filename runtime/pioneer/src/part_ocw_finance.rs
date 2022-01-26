@@ -8,8 +8,8 @@ pub type AskPeriodNum = u64;
 parameter_types! {
 	pub const AresFinancePalletId: PalletId = PalletId(*b"aoe/fund");
 	pub const BasicDollars: Balance = DOLLARS;
-	pub const AskPeriod: BlockNumber = 20 ; // * 10
-	pub const RewardPeriodCycle: AskPeriodNum = 3; // * 2 * 24
+	pub const AskPeriod: BlockNumber = 1 * DAYS ;
+	pub const RewardPeriodCycle: AskPeriodNum = 100;
 	pub const RewardSlot: AskPeriodNum = 1; //
 }
 

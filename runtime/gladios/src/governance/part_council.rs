@@ -21,5 +21,5 @@ impl pallet_ares_collective::Config<CouncilCollective> for Runtime {
 	type AresProposalMinimumThreshold =
 		pallet_ares_collective::EnsureProportionAtLeast<_1, _2, AccountId, CouncilCollective>;
 	type AresProposalMaximumThreshold =
-		pallet_ares_collective::EnsureProportionNoMoreThan<_2, _3, AccountId, CouncilCollective>;
+		pallet_ares_collective::ares::EnsureProportionNoMoreThan<_2, _3, AccountId, CouncilCollective>;
 }

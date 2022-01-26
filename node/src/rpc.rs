@@ -8,33 +8,30 @@
 use std::sync::Arc;
 
 use frame_support::sp_runtime::traits::{Hash, Header};
-use futures::future::{ready, TryFutureExt};
 use jsonrpc_core::{
-	futures::future::{result, Future},
+	futures::future::Future,
 	Error as RpcError, ErrorCode,
 };
 use jsonrpc_derive::rpc;
 use runtime_gladios_node::{opaque::Block, AccountId, Balance, Index};
-use sc_client_api::client::ProvideUncles;
+use sc_client_api::{blockchain::Backend, client::ProvideUncles};
+use sc_consensus::{BlockCheckParams, BlockImport, ImportResult};
+use sc_rpc::chain::new_full;
 pub use sc_rpc_api::DenyUnsafe;
 use sc_transaction_pool_api::TransactionPool;
-use sp_api::{ProvideRuntimeApi, HeaderT};
+use sp_api::{HeaderT, ProvideRuntimeApi};
 use sp_block_builder::BlockBuilder;
 use sp_blockchain::{Error as BlockChainError, HeaderBackend, HeaderMetadata};
 use sp_runtime::traits::{Block as BlockT, NumberFor};
-use sc_client_api::blockchain::Backend;
-use sc_consensus::{BlockImport, BlockCheckParams, ImportResult};
-use sc_rpc::chain::new_full;
-use sc_service::TaskExecutor;
+// use sc_service::TaskExecutor;
+use sc_block_builder::BlockBuilderProvider;
 use sp_consensus::BlockOrigin;
 use sp_rpc::{list::ListOrValue, number::NumberOrHex};
-use sc_block_builder::BlockBuilderProvider;
 
+use frame_support::sp_runtime::generic::BlockId;
+use futures::FutureExt;
 use jsonrpc_pubsub::manager::SubscriptionManager;
 use sc_client_api::BlockBackend;
-use frame_support::sp_runtime::generic::BlockId;
-
-
 /// Full client dependencies.
 pub struct FullDeps<C, P, B> {
 	/// The client instance to use.
@@ -44,14 +41,18 @@ pub struct FullDeps<C, P, B> {
 	/// Whether to deny unsafe calls
 	pub deny_unsafe: DenyUnsafe,
 
-	pub backend: Arc<B>
+	pub backend: Arc<B>,
 }
 
 /// Instantiate all full RPC extensions.
 pub fn create_full<C, P, B>(deps: FullDeps<C, P, B>) -> jsonrpc_core::IoHandler<sc_rpc::Metadata>
 where
 	C: ProvideRuntimeApi<Block>,
-	C: HeaderBackend<Block> +BlockBackend<Block> + BlockImport<Block> + HeaderMetadata<Block, Error = BlockChainError> + 'static,
+	C: HeaderBackend<Block>
+		+ BlockBackend<Block>
+		+ BlockImport<Block>
+		+ HeaderMetadata<Block, Error = BlockChainError>
+		+ 'static,
 	C: Send + Sync + 'static,
 	C: ProvideUncles<Block> + 'static,
 	C::Api: substrate_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>,
@@ -79,22 +80,14 @@ where
 	io
 }
 
-type FutureResult<T> = Box<dyn Future<Item = T, Error = RpcError> + Send>;
-
+type FutureResult<T> = jsonrpc_core::BoxFuture<Result<T, RpcError>>;
 #[rpc]
 pub trait AresApi<Block, BlockHash, BlockNum> {
 	#[rpc(name = "system_children", alias("system_childrenAt"))]
-	fn children(
-		&self,
-		parent_hash: BlockHash,
-	) -> FutureResult<Vec<BlockHash>>;
+	fn children(&self, parent_hash: BlockHash) -> FutureResult<Vec<BlockHash>>;
 
 	#[rpc(name = "system_forkBlocks", alias("system_forkBlocksAt"))]
-	fn check_block(
-		&self,
-		number: BlockNum,
-		parent_hash: BlockHash,
-	) ;
+	fn check_block(&self, number: BlockNum, parent_hash: BlockHash);
 }
 
 pub struct Ares<C, B> {
@@ -129,13 +122,10 @@ where
 			message: "Unable to query block.".into(),
 			data: Some(format!("{:?}", e).into()),
 		});
-		Box::new(result(res))
+		async move { res }.boxed()
 	}
 
-	fn check_block(
-		&self,
-		number: <<Block as BlockT>::Header as HeaderT>::Number,
-		hash: <Block as BlockT>::Hash) {
+	fn check_block(&self, number: <<Block as BlockT>::Header as HeaderT>::Number, hash: <Block as BlockT>::Hash) {
 
 		// let match hash.into() {
 		// 	None => self.client().info().best_hash,
@@ -158,10 +148,8 @@ where
 	}
 }
 
-
 #[test]
 fn should_return_a_block() {
-
 	use substrate_test_runtime_client::{
 		prelude::*,
 		runtime::{Block as TestBlock, Header as TestHeader, H256},

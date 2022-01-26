@@ -311,7 +311,7 @@ pub fn local_ares_config() -> Result<GladiosNodeChainSpec, String> {
 #[cfg(test)]
 pub(crate) mod tests {
 	use super::*;
-	use crate::gladios_service::{new_full, new_light, new_partial};
+	// use crate::gladios_service::{new_full, new_light, new_partial};
 	use sp_runtime::BuildStorage;
 
 	#[test]

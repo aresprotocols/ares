@@ -5,7 +5,7 @@ pub use runtime_pioneer_node::{
     network::{
         part_elections::MAX_NOMINATIONS, part_session::SessionKeys, part_staking::StakerStatus,
     },
-    AccountId, AuraConfig, AresOracleConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, ImOnlineConfig,
+    AccountId, AuraConfig, AresOracleConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, /*ImOnlineConfig,*/
     GenesisConfig, GrandpaConfig, SS58Prefix, SessionConfig, Signature,
     StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as PioneerWASM_BINARY,
 };
@@ -45,7 +45,8 @@ pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, AuraId, Gr
 }
 
 fn session_keys(aura: AuraId, grandpa: GrandpaId, ares: AresId, im_online: ImOnlineId) -> SessionKeys {
-    SessionKeys { aura, grandpa, ares, im_online }
+    // SessionKeys { aura, grandpa, ares, im_online }
+    SessionKeys { aura, grandpa, ares }
 }
 
 /// Configure initial storage state for FRAME modules.
@@ -72,9 +73,9 @@ pub fn make_testnet_genesis(
         system: SystemConfig {
             // Add Wasm runtime to storage.
             code: wasm_binary.to_vec(),
-            changes_trie_config: Default::default(),
+            // changes_trie_config: Default::default(),
         },
-        im_online: ImOnlineConfig { keys: vec![] },
+        // im_online: ImOnlineConfig { keys: vec![] },
         balances: BalancesConfig {
             // Configure endowed accounts with initial balance of 1 << 60.
             balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),

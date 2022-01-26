@@ -7,7 +7,7 @@
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 use pallet_grandpa::{
-	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList,
+	AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, fg_primitives,
 };
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -16,14 +16,14 @@ use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 
 use sp_core::{
 	crypto::KeyTypeId,
-	u32_trait::{_1, _2, _3, _4, _5},
 	OpaqueMetadata,
+	u32_trait::{_1, _2, _3, _4},
 };
 use sp_runtime::{
-	create_runtime_str, generic,
-	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
-	transaction_validity::{TransactionSource, TransactionValidity},
-	ApplyExtrinsicResult, MultiSignature,
+	ApplyExtrinsicResult, create_runtime_str,
+	generic,
+	MultiSignature,
+	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify}, transaction_validity::{TransactionSource, TransactionValidity},
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -32,16 +32,16 @@ use sp_version::RuntimeVersion;
 
 // A few exports that help ease life for downstream crates.
 pub use frame_support::{
-	construct_runtime, parameter_types,
-	traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
-	weights::{
+	construct_runtime, PalletId,
+	parameter_types,
+	RuntimeDebug,
+	StorageValue, traits::{KeyOwnerProofSystem, Randomness, StorageInfo}, weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 		DispatchClass, IdentityFee, Weight,
 	},
-	PalletId, RuntimeDebug, StorageValue,
 };
 
-use frame_system::{limits::BlockWeights, EnsureOneOf, EnsureRoot};
+use frame_system::{EnsureOneOf, EnsureRoot, limits::BlockWeights};
 
 pub use pallet_balances::Call as BalancesCall;
 use pallet_collective;
@@ -59,10 +59,9 @@ mod part_challenge;
 pub mod part_ocw;
 pub mod part_estimates;
 pub mod part_ocw_finance;
-pub mod part_staking_extend;
 
-pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
-use constants::time::{DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION, BlockNumber};
+pub use constants::currency::{Balance, CENTS, deposit, DOLLARS, MILLICENTS};
+use constants::time::{BlockNumber, DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;
@@ -255,6 +254,7 @@ impl pallet_grandpa::Config for Runtime {
 	type HandleEquivocation = ();
 
 	type WeightInfo = ();
+	type MaxAuthorities = network::part_aura::MaxAuthorities;
 }
 
 parameter_types! {
@@ -291,11 +291,13 @@ impl pallet_balances::Config for Runtime {
 
 parameter_types! {
 	pub const TransactionByteFee: Balance = 1;
+	pub const OperationalFeeMultiplier: u8 = 5;
 }
 
 impl pallet_transaction_payment::Config for Runtime {
 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
 	type TransactionByteFee = TransactionByteFee;
+	type OperationalFeeMultiplier = OperationalFeeMultiplier;
 	type WeightToFee = IdentityFee<Balance>;
 	type FeeMultiplierUpdate = ();
 }
@@ -331,12 +333,12 @@ construct_runtime!(
 
 		// network
 		Aura: pallet_aura::{Pallet, Config<T>, Storage},
-		ElectionProviderMultiPhase: pallet_election_provider_multi_phase::{Pallet, Call, Storage, Event<T>, ValidateUnsigned},
+		ElectionProviderMultiPhase: pallet_election_provider_multi_phase,
 		Staking: pallet_staking::{Pallet, Call, Config<T>, Storage, Event<T>},
 		Session: pallet_session::{Pallet, Call, Storage, Event, Config<T>},
 		Historical: pallet_session::historical::{Pallet},
 		Authorship: pallet_authorship::{Pallet, Call, Storage, Inherent},
-
+		BagsList: pallet_bags_list,
 		//
 		// MemberExtend: member_extend::{Pallet},
 		//
@@ -357,10 +359,9 @@ construct_runtime!(
 		Bounties: pallet_bounties::{Pallet, Call, Storage, Event<T>},
 		Democracy: pallet_democracy::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Elections: pallet_elections_phragmen::{Pallet, Call, Storage, Event<T>, Config<T>},
-		ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		Offences: pallet_offences::{Pallet, Storage, Event},
+		// ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
+		// Offences: pallet_offences::{Pallet, Storage, Event},
 
-		//test estimates
 		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
 	}
 );
@@ -394,6 +395,7 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPallets,
+	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
 >;
 
 impl_runtime_apis! {
@@ -413,7 +415,7 @@ impl_runtime_apis! {
 
 	impl sp_api::Metadata<Block> for Runtime {
 		fn metadata() -> OpaqueMetadata {
-			Runtime::metadata().into()
+			OpaqueMetadata::new(Runtime::metadata().into())
 		}
 	}
 
@@ -460,7 +462,7 @@ impl_runtime_apis! {
 		}
 
 		fn authorities() -> Vec<AuraId> {
-			Aura::authorities()
+			Aura::authorities().into_inner()
 		}
 	}
 
@@ -533,15 +535,18 @@ impl_runtime_apis! {
 			Vec<frame_benchmarking::BenchmarkList>,
 			Vec<frame_support::traits::StorageInfo>,
 		) {
-			use frame_benchmarking::{list_benchmark, Benchmarking, BenchmarkList};
+			use frame_benchmarking::{list_benchmark, baseline, Benchmarking, BenchmarkList};
 			use frame_support::traits::StorageInfoTrait;
 			use frame_system_benchmarking::Pallet as SystemBench;
+			use baseline::Pallet as BaselineBench;
 
 			let mut list = Vec::<BenchmarkList>::new();
 
+			list_benchmark!(list, extra, frame_benchmarking, BaselineBench::<Runtime>);
 			list_benchmark!(list, extra, frame_system, SystemBench::<Runtime>);
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
+			list_benchmark!(list, extra, pallet_template, TemplateModule);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -551,10 +556,13 @@ impl_runtime_apis! {
 		fn dispatch_benchmark(
 			config: frame_benchmarking::BenchmarkConfig
 		) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
-			use frame_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark, TrackedStorageKey};
+			use frame_benchmarking::{baseline, Benchmarking, BenchmarkBatch, add_benchmark, TrackedStorageKey};
 
 			use frame_system_benchmarking::Pallet as SystemBench;
+			use baseline::Pallet as BaselineBench;
+
 			impl frame_system_benchmarking::Config for Runtime {}
+			impl baseline::Config for Runtime {}
 
 			let whitelist: Vec<TrackedStorageKey> = vec![
 				// Block Number
@@ -572,11 +580,12 @@ impl_runtime_apis! {
 			let mut batches = Vec::<BenchmarkBatch>::new();
 			let params = (&config, &whitelist);
 
+			add_benchmark!(params, batches, frame_benchmarking, BaselineBench::<Runtime>);
 			add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
 			add_benchmark!(params, batches, pallet_balances, Balances);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
+			add_benchmark!(params, batches, pallet_template, TemplateModule);
 
-			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)
 		}
 	}

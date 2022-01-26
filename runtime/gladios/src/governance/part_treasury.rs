@@ -4,11 +4,8 @@ use constants::time::DAYS;
 use pallet_treasury;
 use part_council;
 use part_council::CouncilCollective;
-use part_technical::TechnicalCollective;
 use sp_core::{
-	crypto::KeyTypeId,
-	u32_trait::{_1, _2, _3, _4, _5},
-	OpaqueMetadata,
+	u32_trait::{_1, _2, _3, _5},
 };
 use sp_runtime::Percent;
 
