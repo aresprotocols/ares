@@ -37,8 +37,8 @@ parameter_types! {
 	pub const BagThresholds: &'static [u64] = &voter_bags::THRESHOLDS;
 }
 
-impl onchain::Config for Runtime {
-	type Accuracy = Perbill;
+impl staking_extend::elect::Config for Runtime {
+	type ElectionProvider = ElectionProviderMultiPhase;
 	type DataProvider = Staking;
 }
 
@@ -79,11 +79,11 @@ impl pallet_staking::Config for Runtime {
 	type MaxNominatorRewardedPerValidator = MaxNominatorRewardedPerValidator;
 	type OffendingValidatorsThreshold = OffendingValidatorsThreshold;
 	// type ElectionProvider =  ElectionProviderMultiPhase;
-	type ElectionProvider = onchain::OnChainSequentialPhragmen<Self>; // // ElectionProviderMultiPhase;
+	type ElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>; // // ElectionProviderMultiPhase;
 									   // type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
 									   // 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
 									   // >;
-	type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<Self>;
+	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
 	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
 	// Alternatively, use pallet_staking::UseNominatorsMap<Runtime> to just use the nominators map.
 	// Note that the aforementioned does not scale to a very large number of nominators.

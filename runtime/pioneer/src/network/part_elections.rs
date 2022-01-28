@@ -7,9 +7,9 @@ use constants::{
 use governance::part_council::CouncilCollective;
 pub use pallet_election_provider_multi_phase;
 // use pallet_election_provider_multi_phase::FallbackStrategy;
+use frame_election_provider_support::onchain;
 use part_staking::OffchainRepeat;
 use sp_runtime::transaction_validity::TransactionPriority;
-use frame_election_provider_support::onchain;
 
 parameter_types! {
 	/// We prioritize im-online heartbeats over election solution submission.
@@ -104,6 +104,20 @@ impl frame_support::pallet_prelude::Get<Option<(usize, sp_npos_elections::Extend
 	}
 }
 
+impl staking_extend::data::Config for Runtime {
+	type DataProvider = Staking;
+	type ValidatorId = AccountId ;
+	type ValidatorSet = Historical;
+	type AuthorityId = AresId ;
+	type AresOraclePreCheck = AresOracle;
+}
+
+/// on chain elect
+impl onchain::Config for Runtime {
+	type Accuracy = Perbill;
+	type DataProvider = staking_extend::data::DataProvider<Self>;
+}
+
 impl pallet_election_provider_multi_phase::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
@@ -124,12 +138,13 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	type SlashHandler = (); // burn slashes
 	type RewardHandler = (); // nothing to do upon rewards
 						 // type DataProvider = Staking; //
-	type DataProvider = StakingExtend; // Staking; //
-								   // type OnChainAccuracy = Perbill;
+	type DataProvider = staking_extend::data::DataProvider<Self>;
 	type Solution = NposSolution16;
 	// type Fallback = ElectionProviderMultiPhase;
-	type Fallback = pallet_election_provider_multi_phase::NoFallback<Self>;
-	// type Fallback = onchain::OnChainSequentialPhragmen<Self>;
+	// TODO fix
+	// type Fallback = pallet_election_provider_multi_phase::NoFallback<Self>;
+	type Fallback = onchain::OnChainSequentialPhragmen<Self>;
+
 	type Solver = frame_election_provider_support::SequentialPhragmen<
 		AccountId,
 		pallet_election_provider_multi_phase::SolutionAccuracyOf<Self>,
@@ -139,5 +154,4 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	type ForceOrigin = EnsureRootOrHalfCouncil;
 	type BenchmarkingConfig = BenchmarkConfig;
 	type VoterSnapshotPerBlock = VoterSnapshotPerBlock;
-
 }

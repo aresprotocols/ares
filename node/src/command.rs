@@ -126,7 +126,6 @@ impl SubstrateCli for Cli {
 /// Parse and run command line arguments
 pub fn run() -> sc_cli::Result<()> {
 	let cli = Cli::from_args();
-	use crate::services;
 	use services::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch};
 	match &cli.subcommand {
 		Some(Subcommand::Key(cmd)) => cmd.run(&cli),
@@ -138,14 +137,16 @@ pub fn run() -> sc_cli::Result<()> {
 			let runner = cli.create_runner(cmd)?;
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
-					let PartialComponents { client, task_manager, import_queue, .. } = services::pioneer::new_partial(&config)?;
-						// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_partial(&config)?;
+					let PartialComponents { client, task_manager, import_queue, .. } =
+						services::pioneer::new_partial(&config)?;
+					// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_partial(&config)?;
 					Ok((cmd.run(client, import_queue), task_manager))
 				})
 			}
 			runner.async_run(|config| {
-				let PartialComponents { client, task_manager, import_queue, .. } = services::gladios::new_partial(&config)?;
-					// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
+				let PartialComponents { client, task_manager, import_queue, .. } =
+					services::gladios::new_partial(&config)?;
+				// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
@@ -154,14 +155,14 @@ pub fn run() -> sc_cli::Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, .. } = services::pioneer::new_partial(&config)?;
-						// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_partial(&config)?;
+					// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_partial(&config)?;
 
 					Ok((cmd.run(client, config.database), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, .. } = services::gladios::new_partial(&config)?;
-					// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
+				// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
 				Ok((cmd.run(client, config.database), task_manager))
 			})
 		},
@@ -170,13 +171,13 @@ pub fn run() -> sc_cli::Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, .. } = services::pioneer::new_partial(&config)?;
-						// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_partial(&config)?;
+					// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_partial(&config)?;
 					Ok((cmd.run(client, config.chain_spec), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, .. } = services::gladios::new_partial(&config)?;
-					//services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
+				//services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
 				Ok((cmd.run(client, config.chain_spec), task_manager))
 			})
 		},
@@ -184,14 +185,16 @@ pub fn run() -> sc_cli::Result<()> {
 			let runner = cli.create_runner(cmd)?;
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
-					let PartialComponents { client, task_manager, import_queue, .. } = services::pioneer::new_partial(&config)?;
+					let PartialComponents { client, task_manager, import_queue, .. } =
+						services::pioneer::new_partial(&config)?;
 					//services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_partial(&config)?;
 					Ok((cmd.run(client, import_queue), task_manager))
 				})
 			}
 			runner.async_run(|config| {
-				let PartialComponents { client, task_manager, import_queue, .. } = services::gladios::new_partial(&config)?;
-					// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
+				let PartialComponents { client, task_manager, import_queue, .. } =
+					services::gladios::new_partial(&config)?;
+				// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
@@ -203,14 +206,15 @@ pub fn run() -> sc_cli::Result<()> {
 			let runner = cli.create_runner(cmd)?;
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
-					let PartialComponents { client, task_manager, backend, .. } = services::pioneer::new_partial(&config)?;
+					let PartialComponents { client, task_manager, backend, .. } =
+						services::pioneer::new_partial(&config)?;
 					// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_partial(&config)?;
 					Ok((cmd.run(client, backend), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, backend, .. } = services::gladios::new_partial(&config)?;
-					// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
+				// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_partial(&config)?;
 				Ok((cmd.run(client, backend), task_manager))
 			})
 		},
@@ -233,8 +237,8 @@ pub fn run() -> sc_cli::Result<()> {
 			runner.run_node_until_exit(|config| async move {
 				// ares params
 				let mut ares_params: Vec<(&str, Option<Vec<u8>>)> = Vec::new();
-
-				if cli.run.validator || cli.run.shared_params.dev {
+				// if cli.run.validator || cli.run.shared_params.dev {
+				if config.role.is_authority() {
 					let request_base = match cli.warehouse {
 						None => {
 							panic!("⛔ Start parameter `--warehouse` is required!");
@@ -255,14 +259,16 @@ pub fn run() -> sc_cli::Result<()> {
 						},
 					}
 				}
+
 				if is_pioneer {
-					services::pioneer::new_full(config,ares_params).map_err(sc_cli::Error::Service)
-					// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_full(config, ares_params)
-					// 	.map_err(sc_cli::Error::Service)
+					services::pioneer::new_full(config, ares_params).map_err(sc_cli::Error::Service)
+				// services::<runtime_pioneer_node::RuntimeApi, PExecutorDispatch>::new_full(config,
+				// ares_params) 	.map_err(sc_cli::Error::Service)
 				} else {
-					services::gladios::new_full(config,ares_params).map_err(sc_cli::Error::Service)
-					// services::<runtime_gladios_node::RuntimeApi, GExecutorDispatch>::new_full(config, ares_params)
-					// 	.map_err(sc_cli::Error::Service)
+					services::gladios::new_full(config, ares_params).map_err(sc_cli::Error::Service)
+					// services::<runtime_gladios_node::RuntimeApi,
+					// GExecutorDispatch>::new_full(config, ares_params) 	.map_err(sc_cli::Error::
+					// Service)
 				}
 			})
 		},

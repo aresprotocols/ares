@@ -346,7 +346,7 @@ construct_runtime!(
 
 		AresOracle: ares_oracle::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>},
-		StakingExtend: staking_extend::{Pallet},
+		// StakingExtend: staking_extend::{Pallet},
 
 		// Governance
 		Scheduler: pallet_scheduler::{Pallet, Call, Storage, Event<T>},
