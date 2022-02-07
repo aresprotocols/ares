@@ -14,6 +14,7 @@ use sp_api::ConstructRuntimeApi;
 use sp_consensus::SlotData;
 use sp_consensus_aura::sr25519::{AuthorityId as AuraId, AuthorityPair as AuraPair};
 use sp_core::offchain::{OffchainStorage, STORAGE_PREFIX};
+use sp_core::Encode;
 use sp_runtime::{
 	generic, sp_std,
 	traits::{BlakeTwo256, Block as BlockT, IdentifyAccount, Verify},
@@ -335,7 +336,7 @@ where
 						None => (*order, false),
 						Some(exe_vecu8) => {
 							let request_base_str = sp_std::str::from_utf8(exe_vecu8).unwrap();
-							let store_request_u8 = request_base_str.encode();
+							let store_request_u8 = Box::new(request_base_str).encode();
 							// let store_request_u8 = request_base_str.as_bytes();
 							log::info!("setting request_domain: {:?}", request_base_str);
 							if let Some(mut offchain_db) = backend_clone.offchain_storage() {
