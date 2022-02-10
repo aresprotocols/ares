@@ -12,6 +12,7 @@ use sc_telemetry::{Telemetry, TelemetryWorker};
 use seed_reader::{extract_content, make_author_insert_key_params, make_rpc_request};
 use sp_api::ConstructRuntimeApi;
 use sp_consensus::SlotData;
+use sp_core::Encode;
 use sp_consensus_aura::sr25519::{AuthorityId as AuraId, AuthorityPair as AuraPair};
 use sp_core::offchain::{OffchainStorage, STORAGE_PREFIX};
 use sp_runtime::{

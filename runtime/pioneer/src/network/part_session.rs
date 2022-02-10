@@ -4,8 +4,9 @@ pub use pallet_session;
 use sp_runtime::{impl_opaque_keys, traits::OpaqueKeys};
 
 parameter_types! {
-	pub const DisabledValidatorsThreshold: Perbill = Perbill::from_percent(17);
-	pub const Period: u32 = EPOCH_DURATION_IN_BLOCKS as u32; // 100 block = 10min  [10b = 1min] [10min = 100b]
+	// pub const DisabledValidatorsThreshold: Perbill = Perbill::from_percent(17);
+	// pub const Period: u32 = EPOCH_DURATION_IN_BLOCKS as u32; // 100 block = 10min  [10b = 1min] [10min = 100b]
+	pub const Period: u32 = MINUTES * 2u32;
 	pub const Offset: u32 = 0;
 }
 
@@ -14,7 +15,7 @@ impl_opaque_keys! {
 		pub aura: Aura,
 		pub grandpa: Grandpa,
 		pub ares: AresOracle,
-		// pub im_online: ImOnline,
+		pub im_online: ImOnline,
 	}
 }
 
