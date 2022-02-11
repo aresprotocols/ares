@@ -11,9 +11,9 @@ members = [
 
 [patch."https://github.com/zzm-Zhong/substrate"]
 
-#pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'polkadot-v0.9.15' }
-#pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'polkadot-v0.9.15' }
+pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'polkadot-v0.9.15' }
+pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'polkadot-v0.9.15' }
 
-pallet-session = {path = "../ares-ocw-suit/pallets/session" }
-pallet-session-benchmarking ={path = "../ares-ocw-suit/pallets/session/benchmarking" }
+#pallet-session = {path = "../ares-ocw-suit/pallets/session" }
+#pallet-session-benchmarking ={path = "../ares-ocw-suit/pallets/session/benchmarking" }
 
