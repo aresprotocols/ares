@@ -12,9 +12,11 @@ use sc_telemetry::{Telemetry, TelemetryWorker};
 use seed_reader::{extract_content, make_author_insert_key_params, make_rpc_request};
 use sp_api::ConstructRuntimeApi;
 use sp_consensus::SlotData;
-use sp_core::Encode;
 use sp_consensus_aura::sr25519::{AuthorityId as AuraId, AuthorityPair as AuraPair};
-use sp_core::offchain::{OffchainStorage, STORAGE_PREFIX};
+use sp_core::{
+	offchain::{OffchainStorage, STORAGE_PREFIX},
+	Encode,
+};
 use sp_runtime::{
 	generic, sp_std,
 	traits::{BlakeTwo256, Block as BlockT, IdentifyAccount, Verify},
@@ -71,16 +73,17 @@ type FullSelectChain = sc_consensus::LongestChain<FullBackend, Block>;
 
 /// A set of APIs that polkadot-like runtimes must implement.
 pub trait RuntimeApiCollection:
-	sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
+	frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce>
 	+ sp_api::ApiExt<Block>
-	+ sp_api::Core<Block>
+	+ sp_consensus_aura::AuraApi<Block, AuraId>
 	+ sp_block_builder::BlockBuilder<Block>
-	+ frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce>
-	+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
+	+ sp_api::Core<Block>
+	+ sp_finality_grandpa::GrandpaApi<Block>
 	+ sp_api::Metadata<Block>
 	+ sp_offchain::OffchainWorkerApi<Block>
-	+ sp_finality_grandpa::GrandpaApi<Block>
 	+ sp_session::SessionKeys<Block>
+	+ sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
+	+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
 where
 	<Self as sp_api::ApiExt<Block>>::StateBackend: sp_api::StateBackend<BlakeTwo256>,
 {
@@ -88,17 +91,17 @@ where
 
 impl<Api> RuntimeApiCollection for Api
 where
-	Api:
-		sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
+	Api: frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce>
 		+ sp_api::ApiExt<Block>
-		+ sp_api::Core<Block>
+		+ sp_consensus_aura::AuraApi<Block, AuraId>
 		+ sp_block_builder::BlockBuilder<Block>
-		+ frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce>
-		+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
+		+ sp_api::Core<Block>
+		+ sp_finality_grandpa::GrandpaApi<Block>
 		+ sp_api::Metadata<Block>
 		+ sp_offchain::OffchainWorkerApi<Block>
-		+ sp_finality_grandpa::GrandpaApi<Block>
-		+ sp_session::SessionKeys<Block>,
+		+ sp_session::SessionKeys<Block>
+		+ sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
+		+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>,
 	<Self as sp_api::ApiExt<Block>>::StateBackend: sp_api::StateBackend<BlakeTwo256>,
 {
 }
@@ -128,7 +131,6 @@ pub fn new_partial<RuntimeApi, ExecutorDispatch>(
 where
 	RuntimeApi: ConstructRuntimeApi<Block, FullClient<RuntimeApi, ExecutorDispatch>> + Send + Sync + 'static,
 	RuntimeApi::RuntimeApi: RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
-	RuntimeApi::RuntimeApi: sp_consensus_aura::AuraApi<Block, AuraId>,
 	ExecutorDispatch: sc_executor::NativeExecutionDispatch + 'static,
 {
 	if config.keystore_remote.is_some() {
@@ -231,7 +233,6 @@ pub fn new_full<RuntimeApi, ExecutorDispatch: NativeExecutionDispatch>(
 where
 	RuntimeApi: ConstructRuntimeApi<Block, FullClient<RuntimeApi, ExecutorDispatch>> + Send + Sync + 'static,
 	RuntimeApi::RuntimeApi: RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
-	RuntimeApi::RuntimeApi: sp_consensus_aura::AuraApi<Block, AuraId>,
 	ExecutorDispatch: sc_executor::NativeExecutionDispatch + 'static,
 {
 	let sc_service::PartialComponents::<
@@ -343,7 +344,8 @@ where
 								log::debug!("after setting request_domain: {:?}", request_base_str);
 								offchain_db.set(
 									STORAGE_PREFIX,
-									b"are-ocw::price_request_domain", // copy from ocw-suit
+									//LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, // copy from ocw-suit
+									b"are-ocw::price_request_domain",
 									store_request_u8.as_slice(),
 								);
 							}
