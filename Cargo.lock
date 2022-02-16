@@ -118,7 +118,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.8.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -148,7 +148,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -3490,7 +3490,7 @@ checksum = "60302e4db3a61da70c0cb7991976248362f30319e88850c487b9b95bbf059e00"
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3973,7 +3973,7 @@ checksum = "28988d872ab76095a6e6ac88d99b54fd267702734fd7ffe610ca27f533ddb95a"
 [[package]]
 name = "oracle-finance"
 version = "3.1.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4000,7 +4000,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4019,7 +4019,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4295,7 +4295,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -4354,7 +4354,7 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -7669,7 +7669,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -9289,4 +9289,4 @@ dependencies = [
 [[patch.unused]]
 name = "pallet-session-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=runtime-110#a95db41d45672c4265278f6aec8eef5462a3e298"
