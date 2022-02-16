@@ -55,7 +55,6 @@ gran:${Your_Mnemonic}
 * At least you need two sets of files. `ares_key_file_01.txt`, `ares_key_file_02.txt` are used in the example
 
 ### Start `bootnodes` validator
-
 ```text
 ./target/release/gladios-node purge-chain --base-path /tmp/aura/one --chain gladios -y
 ./target/release/gladios-node \
@@ -119,4 +118,3 @@ docker run -d --name ares_gladios -p 9944:9944/tcp -v your-host-path:/data aresp
 ```
 > Note! 
 > **your-host-path** must exist
-
