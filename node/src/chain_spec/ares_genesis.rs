@@ -5,7 +5,7 @@ pub use runtime_gladios_node::{
     network::{
         part_elections::MAX_NOMINATIONS, part_session::SessionKeys, part_staking::StakerStatus,
     },
-    AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
+    AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, ImOnlineConfig,
     GenesisConfig, GrandpaConfig, AresOracleConfig, SS58Prefix, SessionConfig, Signature,
     StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as GladiosWASM_BINARY,
 };
@@ -51,7 +51,7 @@ fn session_keys(aura: AuraId, grandpa: GrandpaId, ares: AresId) -> SessionKeys {
 /// Configure initial storage state for FRAME modules.
 pub fn make_ares_genesis(
     wasm_binary: &[u8],
-    initial_authorities: Vec<(AccountId, AccountId, AuraId, GrandpaId, AresId)>,
+    initial_authorities: Vec<(AccountId, AccountId, AuraId, GrandpaId, AresId, ImOnlineId)>,
     initial_nominators: Vec<AccountId>,
     root_key: AccountId,
     endowed_accounts: Vec<AccountId>,
@@ -74,6 +74,7 @@ pub fn make_ares_genesis(
             code: wasm_binary.to_vec(),
             // changes_trie_config: Default::default(),
         },
+        im_online: ImOnlineConfig { keys: vec![] },
         balances: BalancesConfig {
             // Configure endowed accounts with initial balance of 1 << 60.
             balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),
@@ -107,7 +108,7 @@ pub fn make_ares_genesis(
         ares_oracle: AresOracleConfig {
             _phantom: Default::default(),
             request_base: Vec::new(),
-            price_pool_depth: 3u32,
+            price_pool_depth: 5u32,
             price_allowable_offset: 10u8,
             authorities: vec![],
             price_requests: vec![

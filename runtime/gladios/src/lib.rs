@@ -359,8 +359,8 @@ construct_runtime!(
 		Bounties: pallet_bounties::{Pallet, Call, Storage, Event<T>},
 		Democracy: pallet_democracy::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Elections: pallet_elections_phragmen::{Pallet, Call, Storage, Event<T>, Config<T>},
-		// ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		// Offences: pallet_offences::{Pallet, Storage, Event},
+		ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
+		Offences: pallet_offences::{Pallet, Storage, Event},
 
 		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
 	}
