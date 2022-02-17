@@ -117,8 +117,8 @@ dependencies = [
 
 [[package]]
 name = "ares-oracle"
-version = "3.9.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+version = "3.9.2"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -149,7 +149,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -3391,7 +3391,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3868,7 +3868,7 @@ checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 [[package]]
 name = "oracle-finance"
 version = "3.1.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3898,7 +3898,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3918,7 +3918,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4228,7 +4228,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -4290,7 +4290,7 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -7454,7 +7454,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#32dc22c2147d6ccf57316d5166fd84c560d5156d"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.15#b6bdee21a84f7bc47c6fd755e58f3fbc42ddbc24"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -8116,7 +8116,7 @@ version = "1.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4ee73e6e4924fe940354b8d4d98cad5231175d615cd855b758adc658c0aac6a0"
 dependencies = [
- "cfg-if 0.1.10",
+ "cfg-if 1.0.0",
  "rand 0.8.5",
  "static_assertions",
 ]
