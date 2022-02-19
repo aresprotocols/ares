@@ -78,7 +78,7 @@ pallet-im-online = { git = "https://github.com/zzm-Zhong/substrate", default-fea
 pallet-offences = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
 
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-ares-oracle = { version = '3.9.2', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+ares-oracle = { version = '3.9.3', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
 oracle-finance = { version = '3.1.2', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
 member-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
 pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
