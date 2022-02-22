@@ -113,7 +113,7 @@ docker push your-repository/image-name:tag
 
 ### Run Image
 ```shell
-docker run -d --name ares_gladios -p 9944:9944/tcp -v your-host-path:/data aresprotocollab/ares_gladios:beta gladios-node \
+docker run -d --name ares_gladios -p 9944:9944/tcp -v `pwd`:/data aresprotocollab/ares_gladios:beta gladios-node \
   --name your-name --chain gladios --ws-external --rpc-external \
   --rpc-cors=all --rpc-methods=Unsafe  --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
 ```
