@@ -11,7 +11,7 @@ parameter_types! {
 	// pub const RewardPeriodCycle: AskPeriodNum = 100;
 	// pub const RewardSlot: AskPeriodNum = 1; //
     pub AskPerEra: SessionIndex = 2;
-    pub const HistoryDepth: u32 = 5;
+    pub const HistoryDepth: u32 = 1000;
 }
 
 impl oracle_finance::Config for Runtime {

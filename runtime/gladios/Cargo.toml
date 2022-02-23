@@ -77,25 +77,25 @@ pallet-elections-phragmen = { git = "https://github.com/zzm-Zhong/substrate", de
 pallet-im-online = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
 pallet-offences = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
 
-ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-oracle-finance = { version = '3.1.2', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-member-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
-pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#oracle-finance = { version = '3.1.2', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#member-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
+#pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.15" }
 
-#ares-oracle-provider-support = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
-#ares-oracle = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle' }
-#oracle-finance = { default-features = false, path = '../../../ares-ocw-suit/pallets/oracle-finance' }
-#member-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/member-extend' }
-#pallet-ares-challenge = { default-features = false, path = '../../../ares-ocw-suit/pallets/challenge' }
-#pallet-ares-collective = { default-features = false, path = '../../../ares-ocw-suit/pallets/collective' }
-#pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
-#staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
-#pallet-session = { default-features = false, path = '../../../ares-ocw-suit/pallets/session' }
+ares-oracle-provider-support = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
+ares-oracle = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle' }
+oracle-finance = { default-features = false, path = '../../../ares-ocw-suit/pallets/oracle-finance' }
+member-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/member-extend' }
+pallet-ares-challenge = { default-features = false, path = '../../../ares-ocw-suit/pallets/challenge' }
+pallet-ares-collective = { default-features = false, path = '../../../ares-ocw-suit/pallets/collective' }
+pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
+staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
+pallet-session = { default-features = false, path = '../../../ares-ocw-suit/pallets/session' }
 
 #reqwest = {default-feature = false, version = '0.11.8'}
 
