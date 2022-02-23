@@ -58,7 +58,7 @@ impl<T: sc_service::ChainSpec + 'static> IdentifyChain for T {
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Substrate Node".into()
+		"Ares Node".into()
 	}
 
 	fn impl_version() -> String {
