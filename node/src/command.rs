@@ -214,6 +214,21 @@ pub fn run() -> sc_cli::Result<()> {
 				Ok((cmd.run(client, backend), task_manager))
 			})
 		},
+		Some(Subcommand::ForceRevert(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.async_run(|config| {
+					let PartialComponents { client, task_manager, backend, .. } =
+						services::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+					Ok((cmd.run(client, backend), task_manager))
+				})
+			}
+			runner.async_run(|config| {
+				let PartialComponents { client, task_manager, backend, .. } =
+					services::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+				Ok((cmd.run(client, backend), task_manager))
+			})
+		},
 		Some(Subcommand::Benchmark(cmd)) =>
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
