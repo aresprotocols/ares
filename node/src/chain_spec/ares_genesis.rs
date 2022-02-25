@@ -44,8 +44,9 @@ pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, AuraId, Gr
     )
 }
 
-fn session_keys(aura: AuraId, grandpa: GrandpaId, ares: AresId) -> SessionKeys {
-    SessionKeys { aura, grandpa, ares }
+fn session_keys(aura: AuraId, grandpa: GrandpaId, ares: AresId, im_online: ImOnlineId) -> SessionKeys {
+    SessionKeys { aura, grandpa, ares, im_online }
+    // SessionKeys { aura, grandpa, ares }
 }
 
 /// Configure initial storage state for FRAME modules.
@@ -95,7 +96,7 @@ pub fn make_ares_genesis(
         session: SessionConfig {
             keys: initial_authorities
                 .iter()
-                .map(|x| (x.0.clone(), x.0.clone(), session_keys(x.2.clone(), x.3.clone(), x.4.clone())))
+                .map(|x| (x.0.clone(), x.0.clone(), session_keys(x.2.clone(), x.3.clone(), x.4.clone(), x.5.clone())))
                 .collect::<Vec<_>>(),
         },
         grandpa: GrandpaConfig {
