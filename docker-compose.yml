@@ -3,7 +3,7 @@ version: "3.2"
 services:
   chain:
     build:
-#      context: .
+      #      context: .
       context: https://github.com/aresprotocols/ares.git#release1.0.1
       dockerfile: ./docker/builder.Dockerfile
     container_name: ares-chain
