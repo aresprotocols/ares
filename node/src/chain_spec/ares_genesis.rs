@@ -5,13 +5,26 @@ pub use runtime_gladios_node::{
     network::{
         part_elections::MAX_NOMINATIONS, part_session::SessionKeys, part_staking::StakerStatus,
     },
-    AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, ImOnlineConfig,
+    AccountId, AuraConfig, BalancesConfig, Block, CouncilConfig, DemocracyConfig, ElectionsConfig, ImOnlineConfig,
     GenesisConfig, GrandpaConfig, AresOracleConfig, SS58Prefix, SessionConfig, Signature,
     StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as GladiosWASM_BINARY,
 };
+use serde::{Deserialize, Serialize};
+use sc_chain_spec::ChainSpecExtension;
+
+#[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
+#[serde(rename_all = "camelCase")]
+pub struct Extensions {
+    /// Block numbers with known hashes.
+    pub fork_blocks: sc_client_api::ForkBlocks<Block>,
+    /// Known bad block hashes.
+    pub bad_blocks: sc_client_api::BadBlocks<Block>,
+    /// The light sync state extension used by the sync-state rpc.
+    pub light_sync_state: sc_sync_state_rpc::LightSyncStateExtension,
+}
 
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
-pub type GladiosNodeChainSpec = sc_service::GenericChainSpec<GenesisConfig>;
+pub type GladiosNodeChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
 pub type GladiosSS58Prefix = SS58Prefix;
 pub type GladiosAccountId = AccountId;
 

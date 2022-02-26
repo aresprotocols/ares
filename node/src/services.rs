@@ -1,7 +1,7 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
 // use node_template_runtime::{self, opaque::Block, RuntimeApi};
-use sc_client_api::{Backend, ExecutorProvider};
+use sc_client_api::{Backend, ExecutorProvider, BadBlocks, ForkBlocks};
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 pub use sc_executor::NativeElseWasmExecutor;
 use sc_executor::NativeExecutionDispatch;

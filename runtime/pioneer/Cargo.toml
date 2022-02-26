@@ -12,7 +12,7 @@ version = '3.0.0'
 targets = ['x86_64-unknown-linux-gnu']
 
 [build-dependencies]
-substrate-wasm-builder = { git = "https://github.com/zzm-Zhong/substrate", branch = "polkadot-v0.9.15-fix" }
+substrate-wasm-builder = { git = "https://github.com/zzm-Zhong/substrate.git", branch = "polkadot-v0.9.15-fix" }
 
 [dependencies]
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ['derive'] }
@@ -21,45 +21,45 @@ static_assertions = "1.1.0"
 log = { version = "0.4.14", default-features = false }
 scale-info = { version = "1.0", default-features = false, features = ["derive"] }
 
-frame-benchmarking = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, optional = true, branch = "polkadot-v0.9.15-fix" }
-frame-system-benchmarking = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, optional = true, branch = "polkadot-v0.9.15-fix" }
-frame-executive = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-frame-support = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-frame-system = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-frame-system-rpc-runtime-api = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-frame-election-provider-support = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
+frame-benchmarking = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, optional = true, branch = "polkadot-v0.9.15-fix" }
+frame-system-benchmarking = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, optional = true, branch = "polkadot-v0.9.15-fix" }
+frame-executive = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+frame-support = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+frame-system = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+frame-system-rpc-runtime-api = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+frame-election-provider-support = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 
 # primitives
-sp-api = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-block-builder = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-consensus-aura = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-core = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-inherents = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-offchain = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-runtime = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-session = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-std = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-transaction-pool = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-version = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-staking = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-io = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-npos-elections = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-api = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-block-builder = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-consensus-aura = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-core = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-inherents = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-offchain = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-runtime = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-session = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-std = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-transaction-pool = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-version = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-staking = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-io = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-npos-elections = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 
-pallet-randomness-collective-flip = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-sudo = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-timestamp = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-transaction-payment = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-aura = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-balances = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-grandpa = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-indices = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-identity = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-pallet-bags-list = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-randomness-collective-flip = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-sudo = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-timestamp = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-transaction-payment = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-aura = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-balances = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-grandpa = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-indices = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-identity = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+pallet-bags-list = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 
 # Network
-#pallet-session = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.10" }
-pallet-staking-reward-curve = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
+#pallet-session = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.10" }
+pallet-staking-reward-curve = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 pallet-staking = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
 pallet-election-provider-multi-phase = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
 pallet-authorship = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }

@@ -7,12 +7,12 @@ edition = "2018"
 
 [dependencies]
 codec = { package = 'parity-scale-codec', default-features = false, version = '2.0.0', features = ['derive'] }
-sp-core = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-runtime = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-std = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-sp-application-crypto = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-frame-support = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
-frame-system = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-core = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-runtime = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-std = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-application-crypto = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+frame-support = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+frame-system = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 
 [features]
 default = ['std']
