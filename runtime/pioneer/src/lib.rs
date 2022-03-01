@@ -6,24 +6,22 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use pallet_grandpa::{
-	AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, fg_primitives,
-};
+use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
+use pallet_grandpa::{fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList};
+use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
-use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 
 use sp_core::{
 	crypto::KeyTypeId,
-	OpaqueMetadata,
 	u32_trait::{_1, _2, _3, _4},
+	OpaqueMetadata,
 };
 use sp_runtime::{
-	ApplyExtrinsicResult, create_runtime_str,
-	generic,
-	MultiSignature,
-	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify}, transaction_validity::{TransactionSource, TransactionValidity},
+	create_runtime_str, generic,
+	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
+	transaction_validity::{TransactionSource, TransactionValidity},
+	ApplyExtrinsicResult, MultiSignature,
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -32,16 +30,16 @@ use sp_version::RuntimeVersion;
 
 // A few exports that help ease life for downstream crates.
 pub use frame_support::{
-	construct_runtime, PalletId,
-	parameter_types,
-	RuntimeDebug,
-	StorageValue, traits::{KeyOwnerProofSystem, Randomness, StorageInfo}, weights::{
+	construct_runtime, parameter_types,
+	traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
+	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 		DispatchClass, IdentityFee, Weight,
 	},
+	PalletId, RuntimeDebug, StorageValue,
 };
 
-use frame_system::{EnsureOneOf, EnsureRoot, limits::BlockWeights};
+use frame_system::{limits::BlockWeights, EnsureOneOf, EnsureRoot};
 
 pub use pallet_balances::Call as BalancesCall;
 use pallet_collective;
@@ -56,11 +54,11 @@ mod governance;
 pub mod network;
 mod part_challenge;
 // pub mod part_member_extend;
-pub mod part_ocw;
 pub mod part_estimates;
+pub mod part_ocw;
 pub mod part_ocw_finance;
 
-pub use constants::currency::{Balance, CENTS, deposit, DOLLARS, MILLICENTS};
+pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{BlockNumber, DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
@@ -95,7 +93,6 @@ pub mod opaque {
 	pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 	/// Opaque block identifier type.
 	pub type BlockId = generic::BlockId<Block>;
-
 }
 
 // To learn more about runtime versioning and what each of the following value means:
@@ -115,6 +112,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
 };
+
 /// This determines the average expected block time that we are targeting.
 /// Blocks will be produced at a minimum duration defined by `SLOT_DURATION`.
 /// `SLOT_DURATION` is picked up by `pallet_timestamp` which is in turn picked
@@ -231,7 +229,6 @@ parameter_types! {
 
 impl pallet_randomness_collective_flip::Config for Runtime {}
 
-
 // impl pallet_aura::Config for Runtime {
 // 	type AuthorityId = AccountId;
 // 	type DisabledValidators = ();
@@ -243,13 +240,10 @@ impl pallet_grandpa::Config for Runtime {
 
 	type KeyOwnerProofSystem = ();
 
-	type KeyOwnerProof =
-		<Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::Proof;
+	type KeyOwnerProof = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::Proof;
 
-	type KeyOwnerIdentification = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
-		KeyTypeId,
-		GrandpaId,
-	)>>::IdentificationTuple;
+	type KeyOwnerIdentification =
+		<Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::IdentificationTuple;
 
 	type HandleEquivocation = ();
 
@@ -395,7 +389,7 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPallets,
-	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
+	(pallet_bags_list::migrations::CheckCounterPrefix<Runtime>, network::part_session::UpgradeSessionKeys),
 >;
 
 impl_runtime_apis! {
