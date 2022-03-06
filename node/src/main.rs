@@ -7,6 +7,7 @@ mod cli;
 mod command;
 mod rpc;
 mod services;
+mod grandpa_hard_forks;
 
 fn main() -> sc_cli::Result<()> {
 	command::run()

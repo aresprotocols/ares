@@ -1,11 +1,9 @@
-use sc_cli::{GenericNumber, RunCmd};
-use structopt::StructOpt;
-use std::{fmt::Debug, str::FromStr, sync::Arc};
-use sp_runtime::traits::{Block as BlockT, Header as HeaderT};
+use jsonrpc_core::serde_json;
+use sc_cli::{CliConfiguration, GenericNumber, PruningParams, Result, RunCmd, SharedParams};
 use sc_client_api::{Backend, UsageProvider};
-use sc_cli::{Result, CliConfiguration};
-use sc_cli::{SharedParams, PruningParams};
-use sp_runtime::traits::Zero;
+use sp_runtime::traits::{Block as BlockT, Header as HeaderT, Zero};
+use std::{fmt::Debug, str::FromStr, sync::Arc};
+use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
 pub struct Cli {
@@ -53,13 +51,14 @@ pub enum Subcommand {
 	/// The custom benchmark subcommmand benchmarking runtime pallets.
 	#[structopt(name = "benchmark", about = "Benchmark runtime pallets.")]
 	Benchmark(frame_benchmarking_cli::BenchmarkCmd),
-}
 
+	/// Get grandpa current authorities set
+	GrandpaState(GrandpaStateCmd),
+}
 
 /// The `revert` command used revert the chain to a previous state.
 #[derive(Debug, StructOpt)]
 pub struct ForceRevertCmd {
-
 	/// Number of blocks to revert.
 	#[structopt(default_value = "256")]
 	pub num: GenericNumber,
@@ -74,13 +73,12 @@ pub struct ForceRevertCmd {
 }
 
 impl ForceRevertCmd {
-	/// Run the revert command
 	pub async fn run<B, BA, C>(&self, client: Arc<C>, backend: Arc<BA>) -> Result<()>
-		where
-			B: BlockT,
-			BA: Backend<B>,
-			C: UsageProvider<B>,
-			<<<B as BlockT>::Header as HeaderT>::Number as FromStr>::Err: Debug,
+	where
+		B: BlockT,
+		BA: Backend<B>,
+		C: UsageProvider<B>,
+		<<<B as BlockT>::Header as HeaderT>::Number as FromStr>::Err: Debug,
 	{
 		let blocks = self.num.parse()?;
 		// let force = self.force.parse().unwrap_or(false);
@@ -104,5 +102,41 @@ impl CliConfiguration for ForceRevertCmd {
 
 	fn pruning_params(&self) -> Option<&PruningParams> {
 		Some(&self.pruning_params)
+	}
+}
+
+#[derive(Debug, StructOpt)]
+pub struct GrandpaStateCmd {
+	#[allow(missing_docs)]
+	#[structopt(flatten)]
+	pub shared_params: SharedParams,
+
+	#[allow(missing_docs)]
+	#[structopt(flatten)]
+	pub pruning_params: PruningParams,
+}
+
+impl CliConfiguration for GrandpaStateCmd {
+	fn shared_params(&self) -> &SharedParams {
+		&self.shared_params
+	}
+
+	fn pruning_params(&self) -> Option<&PruningParams> {
+		Some(&self.pruning_params)
+	}
+}
+
+impl GrandpaStateCmd {
+	//LinkHalf<Block: BlockT, C, SC>
+	pub async fn run<Block, C, SC>(&self, link_half: sc_finality_grandpa::LinkHalf<Block, C, SC>) -> Result<()>
+	where
+		Block: BlockT,
+		C: UsageProvider<Block>,
+	{
+		use sp_serializer as ser;
+		let authority_set = link_half.shared_authority_set();
+		let authority_set = authority_set.clone_inner();
+		log::info!("{}", ser::to_string_pretty(&authority_set));
+		Ok(())
 	}
 }
