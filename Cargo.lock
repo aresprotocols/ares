@@ -1986,6 +1986,7 @@ dependencies = [
  "sp-offchain",
  "sp-rpc",
  "sp-runtime",
+ "sp-serializer",
  "sp-session",
  "sp-timestamp",
  "sp-transaction-pool",

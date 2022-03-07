@@ -1,7 +1,7 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
 // use node_template_runtime::{self, opaque::Block, RuntimeApi};
-use super::services::{gladios, pioneer};
+// use super::services::{gladios, pioneer};
 use sc_client_api::{Backend, ExecutorProvider};
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 pub use sc_executor::NativeElseWasmExecutor;
@@ -26,8 +26,8 @@ use sp_runtime::{
 	MultiSignature,
 };
 use std::{io::Read, sync::Arc, time::Duration};
-// pub mod gladios;
-// pub mod pioneer;
+pub mod gladios;
+pub mod pioneer;
 // use futures::{prelude::*, StreamExt};
 // use futures::future::ok;
 // use log::log;
@@ -130,18 +130,6 @@ pub fn new_partial<RuntimeApi, ExecutorDispatch>(
 		sc_consensus::DefaultImportQueue<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		sc_transaction_pool::FullPool<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		(
-			// sc_finality_grandpa::GrandpaBlockImport<
-			// 	FullBackend,
-			// 	Block,
-			// 	FullClient<RuntimeApi, ExecutorDispatch>,
-			// 	FullSelectChain,
-			// >,
-			// sc_finality_grandpa::LinkHalf<Block, FullClient<RuntimeApi, ExecutorDispatch>, FullSelectChain>,
-
-			// impl Fn(
-			// 	node_rpc::DenyUnsafe,
-			// 	sc_rpc::SubscriptionTaskExecutor,
-			// ) -> Result<node_rpc::IoHandler, sc_service::Error>,
 			(
 				sc_consensus_babe::BabeBlockImport<
 					Block,
@@ -244,6 +232,7 @@ where
 		telemetry.as_ref().map(|x| x.handle()),
 	)?;
 
+	// let grandpa_link_clone = grandpa_link.clone();
 	let import_setup = (block_import, grandpa_link, babe_link);
 
 	let rpc_setup = {
@@ -272,6 +261,7 @@ where
 
 		rpc_setup
 	};
+
 
 	Ok(sc_service::PartialComponents {
 		client,
@@ -309,10 +299,6 @@ where
 		sc_consensus::DefaultImportQueue<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		sc_transaction_pool::FullPool<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		(
-			// impl Fn(
-			// 	node_rpc::DenyUnsafe,
-			// 	sc_rpc::SubscriptionTaskExecutor,
-			// ) -> Result<node_rpc::IoHandler, sc_service::Error>,
 			(
 				sc_consensus_babe::BabeBlockImport<
 					Block,

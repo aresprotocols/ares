@@ -18,10 +18,10 @@
 use crate::{
 	chain_spec,
 	cli::{Cli, Subcommand},
-	services,service_babe
+	service_babe
 };
-// use runtime_gladios_node::Block as GladiosNodeBlock;
-// use runtime_pioneer_node::Block as PioneerNodeBlock;
+use runtime_gladios_node::Block as GladiosNodeBlock;
+use runtime_pioneer_node::Block as PioneerNodeBlock;
 
 use sc_cli::{ChainSpec, Role, RuntimeVersion, SubstrateCli};
 use sc_service::PartialComponents;
@@ -128,7 +128,10 @@ pub fn run() -> sc_cli::Result<()> {
 	let cli = Cli::from_args();
 	use runtime_gladios_node::RuntimeApi as GRuntimeApi;
 	use runtime_pioneer_node::RuntimeApi as PRuntimeApi;
-	use services::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch};
+	// use services::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch};
+	use service_babe::gladios::ExecutorDispatch as GExecutorDispatch;
+	use service_babe::pioneer::ExecutorDispatch as PExecutorDispatch;
+
 	match &cli.subcommand {
 		Some(Subcommand::Key(cmd)) => cmd.run(&cli),
 		Some(Subcommand::BuildSpec(cmd)) => {
@@ -214,13 +217,62 @@ pub fn run() -> sc_cli::Result<()> {
 				Ok((cmd.run(client, backend), task_manager))
 			})
 		},
+		Some(Subcommand::ForceRevert(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.async_run(|config| {
+					let PartialComponents { client, task_manager, backend, .. } =
+						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+					Ok((cmd.run(client, backend), task_manager))
+				})
+			}
+			runner.async_run(|config| {
+				let PartialComponents { client, task_manager, backend, .. } =
+					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+				Ok((cmd.run(client, backend), task_manager))
+			})
+		},
+		Some(Subcommand::GrandpaState(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.async_run(|config| {
+					let PartialComponents {
+						client,
+						backend,
+						task_manager,
+						keystore_container,
+						select_chain,
+						import_queue,
+						transaction_pool,
+						other,
+					} = service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+					let (_, grandpa_link,_) = other.0;
+					Ok((cmd.run(grandpa_link), task_manager))
+				})
+			}
+			runner.async_run(|config| {
+				let PartialComponents {
+					client,
+					backend,
+					task_manager,
+					keystore_container,
+					select_chain,
+					import_queue,
+					transaction_pool,
+					other,
+				} = service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+				// let grandpa_link = other.1;
+				let (_, grandpa_link,_) = other.0;
+				Ok((cmd.run(grandpa_link), task_manager))
+			})
+		},
 		Some(Subcommand::Benchmark(cmd)) =>
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
 				if runner.config().chain_spec.is_pioneer() {
-					runner.sync_run(|config| cmd.run::<services::Block, PExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<service_babe::Block, PExecutorDispatch>(config))
 				} else {
-					runner.sync_run(|config| cmd.run::<services::Block, GExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<service_babe::Block, GExecutorDispatch>(config))
 				}
 			} else {
 				Err("Benchmarking wasn't enabled when building the node. You can enable it with \

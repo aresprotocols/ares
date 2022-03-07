@@ -83,6 +83,7 @@ sp-rpc = { git = "https://github.com/zzm-Zhong/substrate", default-features = fa
 sc-block-builder = { git = "https://github.com/zzm-Zhong/substrate", branch = "polkadot-v0.9.15-fix" }
 substrate-frame-rpc-system = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
 node-rpc = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sp-serializer = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
 
 [dev-dependencies]
 substrate-test-runtime-client = { git = "https://github.com/zzm-Zhong/substrate", default-features = false, branch = "polkadot-v0.9.15-fix" }
