@@ -1,7 +1,8 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
 // use node_template_runtime::{self, opaque::Block, RuntimeApi};
-use sc_client_api::{Backend, ExecutorProvider};
+use crate::grandpa_hard_forks;
+use sc_client_api::{Backend, BadBlocks, ExecutorProvider, ForkBlocks};
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 pub use sc_executor::NativeElseWasmExecutor;
 use sc_executor::NativeExecutionDispatch;
@@ -178,14 +179,15 @@ where
 		task_manager.spawn_essential_handle(),
 		client.clone(),
 	);
-
+	// let (grandpa_block_import, grandpa_link) =
+	// sc_finality_grandpa::block_import_with_authority_set_hard_forks(
 	let (grandpa_block_import, grandpa_link) = sc_finality_grandpa::block_import(
 		client.clone(),
 		&(client.clone() as Arc<_>),
 		select_chain.clone(),
+		// grandpa_hard_forks::forks(),
 		telemetry.as_ref().map(|x| x.handle()),
 	)?;
-
 	let slot_duration = sc_consensus_aura::slot_duration(&*client)?.slot_duration();
 
 	let import_queue = sc_consensus_aura::import_queue::<AuraPair, _, _, _, _, _, _>(ImportQueueParams {

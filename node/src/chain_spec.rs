@@ -80,7 +80,7 @@ pub fn development_config() -> Result<PioneerNodeChainSpec, String> {
 		// Properties
 		Some(properties),
 		// Extensions
-		None,
+		Default::default(),
 	))
 }
 
@@ -192,7 +192,7 @@ pub fn local_testnet_config() -> Result<PioneerNodeChainSpec, String> {
 		// Properties
 		Some(properties),
 		// Extensions
-		None,
+		Default::default(),
 	))
 }
 
@@ -304,7 +304,7 @@ pub fn local_ares_config() -> Result<GladiosNodeChainSpec, String> {
 		// Properties
 		Some(properties),
 		// Extensions
-		None,
+		Default::default(),
 	))
 }
 
