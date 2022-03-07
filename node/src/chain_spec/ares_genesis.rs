@@ -4,12 +4,14 @@ pub use runtime_gladios_node::{
     constants::currency::{Balance, CENTS},
     network::{
         part_elections::MAX_NOMINATIONS, part_session::SessionKeys, part_staking::StakerStatus,
+        part_babe::BABE_GENESIS_EPOCH_CONFIG
     },
-    AccountId, AuraConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, ImOnlineConfig,
+    AccountId, BabeConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, ImOnlineConfig,
     GenesisConfig, GrandpaConfig, AresOracleConfig, SS58Prefix, SessionConfig, Signature,
     StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as GladiosWASM_BINARY,
-};
 
+};
+use sc_consensus_babe::AuthorityId as BabeId;
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type GladiosNodeChainSpec = sc_service::GenericChainSpec<GenesisConfig>;
 pub type GladiosSS58Prefix = SS58Prefix;
@@ -34,25 +36,25 @@ fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
 }
 
 /// Generate an Aura authority key.
-pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, AuraId, GrandpaId, AresId) {
+pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, BabeId, GrandpaId, AresId) {
     (
         get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", seed)),
         get_account_id_from_seed::<sr25519::Public>(seed),
-        get_from_seed::<AuraId>(seed),
+        get_from_seed::<BabeId>(seed),
         get_from_seed::<GrandpaId>(seed),
         get_from_seed::<AresId>(seed),
     )
 }
 
-fn session_keys(aura: AuraId, grandpa: GrandpaId, ares: AresId, im_online: ImOnlineId) -> SessionKeys {
-    SessionKeys { aura, grandpa, ares, im_online }
+fn session_keys(babe: BabeId, grandpa: GrandpaId, ares: AresId, im_online: ImOnlineId) -> SessionKeys {
+    SessionKeys { babe, grandpa, ares, im_online }
     // SessionKeys { aura, grandpa, ares }
 }
 
 /// Configure initial storage state for FRAME modules.
 pub fn make_ares_genesis(
     wasm_binary: &[u8],
-    initial_authorities: Vec<(AccountId, AccountId, AuraId, GrandpaId, AresId, ImOnlineId)>,
+    initial_authorities: Vec<(AccountId, AccountId, BabeId, GrandpaId, AresId, ImOnlineId)>,
     initial_nominators: Vec<AccountId>,
     root_key: AccountId,
     endowed_accounts: Vec<AccountId>,
@@ -81,9 +83,13 @@ pub fn make_ares_genesis(
             balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),
         },
         // network
-        aura: AuraConfig {
-            // authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
+        // aura: AuraConfig {
+        //     // authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
+        //     authorities: vec![],
+        // },
+        babe: BabeConfig {
             authorities: vec![],
+            epoch_config: Some(BABE_GENESIS_EPOCH_CONFIG),
         },
         staking: StakingConfig {
             validator_count: initial_authorities.len() as u32,

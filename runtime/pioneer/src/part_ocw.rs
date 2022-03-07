@@ -25,7 +25,10 @@ parameter_types! {
 	pub const ErrLogPoolDepth: u32 = 1000;
 }
 
-impl ares_oracle::aura_handler::Config for Runtime {}
+// impl ares_oracle::aura_handler::Config for Runtime {}
+impl ares_oracle::babe_handler::Config for Runtime {
+	type AuthorityId = pallet_babe::AuthorityId;
+}
 
 impl staking_extend::Config for Runtime {
 	type AuthorityId = AresId;
@@ -37,7 +40,7 @@ impl ares_oracle::Config for Runtime {
 	type OffchainAppCrypto = ares_oracle::AresCrypto<AresId>;
 	type AuthorityAres = AresId;
 	type UnsignedPriority = UnsignedPriority;
-	type FindAuthor = Aura;
+	type FindAuthor = Babe;
 	type CalculationKind = CalculationKind;
 	type RequestOrigin = EnsureRootOrHalfTechnicalCollective;
 	type AuthorityCount = AresOracle; // ares_oracle::aura_handler::Pallet<Runtime>;

@@ -11,7 +11,7 @@ parameter_types! {
 
 impl_opaque_keys! {
 	pub struct SessionKeys {
-		pub aura: Aura,
+		pub babe: Babe,
 		pub grandpa: Grandpa,
 		pub ares: AresOracle,
 		pub im_online: ImOnline,

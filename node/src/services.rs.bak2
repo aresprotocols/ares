@@ -1,63 +1,141 @@
-use frame_support::{pallet_prelude::Encode, sp_std};
-use log;
-use runtime_pioneer_node::{
-	self, api::dispatch, native_version, opaque::Block, part_ocw::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, RuntimeApi,
-};
+//! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
+
+// use node_template_runtime::{self, opaque::Block, RuntimeApi};
 use sc_client_api::{Backend, ExecutorProvider};
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
-use sc_executor::NativeElseWasmExecutor;
+pub use sc_executor::NativeElseWasmExecutor;
+use sc_executor::NativeExecutionDispatch;
 use sc_finality_grandpa::SharedVoterState;
 use sc_keystore::LocalKeystore;
 use sc_service::{error::Error as ServiceError, Configuration, TaskManager};
 use sc_telemetry::{Telemetry, TelemetryWorker};
-use seed_reader::*;
+use seed_reader::{extract_content, make_author_insert_key_params, make_rpc_request};
+use sp_api::ConstructRuntimeApi;
 use sp_consensus::SlotData;
-use sp_consensus_aura::sr25519::AuthorityPair as AuraPair;
-use sp_core::offchain::OffchainStorage;
-use sp_offchain::STORAGE_PREFIX;
+use sp_consensus_aura::sr25519::{AuthorityId as AuraId, AuthorityPair as AuraPair};
+use sp_core::{
+	offchain::{OffchainStorage, STORAGE_PREFIX},
+	Encode,
+};
+use sp_runtime::{
+	generic, sp_std,
+	traits::{BlakeTwo256, Block as BlockT, IdentifyAccount, Verify},
+	MultiSignature,
+};
 use std::{io::Read, sync::Arc, time::Duration};
+pub mod gladios;
+pub mod pioneer;
+// use futures::{prelude::*, StreamExt};
+// use futures::future::ok;
+// use log::log;
+// // Our native executor instance.
+// pub struct ExecutorDispatch;
+//
+// impl sc_executor::NativeExecutionDispatch for ExecutorDispatch {
+// 	/// Only enable the benchmarking host functions when we actually want to benchmark.
+// 	#[cfg(feature = "runtime-benchmarks")]
+// 	type ExtendHostFunctions = frame_benchmarking::benchmarking::HostFunctions;
+// 	/// Otherwise we only use the default Substrate host functions.
+// 	#[cfg(not(feature = "runtime-benchmarks"))]
+// 	type ExtendHostFunctions = ();
+//
+// 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
+// 		node_template_runtime::api::dispatch(method, data)
+// 	}
+//
+// 	fn native_version() -> sc_executor::NativeVersion {
+// 		node_template_runtime::native_version()
+// 	}
+// }
 
-// Our native executor instance.
-pub struct ExecutorDispatch;
+/// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
+pub type Signature = MultiSignature;
+pub type Balance = u128;
+pub type BlockNumber = u32;
 
-impl sc_executor::NativeExecutionDispatch for ExecutorDispatch {
-	/// Only enable the benchmarking host functions when we actually want to benchmark.
-	#[cfg(feature = "runtime-benchmarks")]
-	type ExtendHostFunctions = frame_benchmarking::benchmarking::HostFunctions;
-	/// Otherwise we only use the default Substrate host functions.
-	#[cfg(not(feature = "runtime-benchmarks"))]
-	type ExtendHostFunctions = ();
+/// Index of a transaction in the chain. 32-bit should be plenty.
+pub type Nonce = u32;
+/// Some way of identifying an account on the chain. We intentionally make it equivalent
+/// to the public key of our transaction signing scheme.
+pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
 
-	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-		dispatch(method, data)
-	}
+/// Opaque, encoded, unchecked extrinsic.
+pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
 
-	fn native_version() -> sc_executor::NativeVersion {
-		native_version()
-	}
-}
+/// Block header type as expected by this runtime.
+pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
+/// Block type as expected by this runtime.
+pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 
-type FullClient = sc_service::TFullClient<Block, RuntimeApi, NativeElseWasmExecutor<ExecutorDispatch>>;
+type FullClient<RuntimeApi, ExecutorDispatch> =
+	sc_service::TFullClient<Block, RuntimeApi, NativeElseWasmExecutor<ExecutorDispatch>>;
+
 type FullBackend = sc_service::TFullBackend<Block>;
+
 type FullSelectChain = sc_consensus::LongestChain<FullBackend, Block>;
 
-pub fn new_partial(
+/// A set of APIs that polkadot-like runtimes must implement.
+pub trait RuntimeApiCollection:
+	frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce>
+	+ sp_api::ApiExt<Block>
+	+ sp_consensus_aura::AuraApi<Block, AuraId>
+	+ sp_block_builder::BlockBuilder<Block>
+	+ sp_api::Core<Block>
+	+ sp_finality_grandpa::GrandpaApi<Block>
+	+ sp_api::Metadata<Block>
+	+ sp_offchain::OffchainWorkerApi<Block>
+	+ sp_session::SessionKeys<Block>
+	+ sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
+	+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
+where
+	<Self as sp_api::ApiExt<Block>>::StateBackend: sp_api::StateBackend<BlakeTwo256>,
+{
+}
+
+impl<Api> RuntimeApiCollection for Api
+where
+	Api: frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Nonce>
+		+ sp_api::ApiExt<Block>
+		+ sp_consensus_aura::AuraApi<Block, AuraId>
+		+ sp_block_builder::BlockBuilder<Block>
+		+ sp_api::Core<Block>
+		+ sp_finality_grandpa::GrandpaApi<Block>
+		+ sp_api::Metadata<Block>
+		+ sp_offchain::OffchainWorkerApi<Block>
+		+ sp_session::SessionKeys<Block>
+		+ sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
+		+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>,
+	<Self as sp_api::ApiExt<Block>>::StateBackend: sp_api::StateBackend<BlakeTwo256>,
+{
+}
+
+pub fn new_partial<RuntimeApi, ExecutorDispatch>(
 	config: &Configuration,
 ) -> Result<
 	sc_service::PartialComponents<
-		FullClient,
+		FullClient<RuntimeApi, ExecutorDispatch>,
 		FullBackend,
 		FullSelectChain,
-		sc_consensus::DefaultImportQueue<Block, FullClient>,
-		sc_transaction_pool::FullPool<Block, FullClient>,
+		sc_consensus::DefaultImportQueue<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
+		sc_transaction_pool::FullPool<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		(
-			sc_finality_grandpa::GrandpaBlockImport<FullBackend, Block, FullClient, FullSelectChain>,
-			sc_finality_grandpa::LinkHalf<Block, FullClient, FullSelectChain>,
+			sc_finality_grandpa::GrandpaBlockImport<
+				FullBackend,
+				Block,
+				FullClient<RuntimeApi, ExecutorDispatch>,
+				FullSelectChain,
+			>,
+			sc_finality_grandpa::LinkHalf<Block, FullClient<RuntimeApi, ExecutorDispatch>, FullSelectChain>,
 			Option<Telemetry>,
 		),
 	>,
 	ServiceError,
-> {
+>
+where
+	RuntimeApi: ConstructRuntimeApi<Block, FullClient<RuntimeApi, ExecutorDispatch>> + Send + Sync + 'static,
+	RuntimeApi::RuntimeApi: RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
+	ExecutorDispatch: sc_executor::NativeExecutionDispatch + 'static,
+{
 	if config.keystore_remote.is_some() {
 		return Err(ServiceError::Other(format!("Remote Keystores are not supported.")))
 	}
@@ -151,11 +229,32 @@ fn remote_keystore(_url: &String) -> Result<Arc<LocalKeystore>, &'static str> {
 }
 
 /// Builds a new service for a full client.
-pub fn new_full(
+pub fn new_full<RuntimeApi, ExecutorDispatch: NativeExecutionDispatch>(
 	mut config: Configuration,
 	ares_params: Vec<(&str, Option<Vec<u8>>)>,
-) -> Result<TaskManager, ServiceError> {
-	let sc_service::PartialComponents {
+) -> Result<TaskManager, ServiceError>
+where
+	RuntimeApi: ConstructRuntimeApi<Block, FullClient<RuntimeApi, ExecutorDispatch>> + Send + Sync + 'static,
+	RuntimeApi::RuntimeApi: RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
+	ExecutorDispatch: sc_executor::NativeExecutionDispatch + 'static,
+{
+	let sc_service::PartialComponents::<
+		FullClient<RuntimeApi, ExecutorDispatch>,
+		FullBackend,
+		FullSelectChain,
+		sc_consensus::DefaultImportQueue<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
+		sc_transaction_pool::FullPool<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
+		(
+			sc_finality_grandpa::GrandpaBlockImport<
+				FullBackend,
+				Block,
+				FullClient<RuntimeApi, ExecutorDispatch>,
+				FullSelectChain,
+			>,
+			sc_finality_grandpa::LinkHalf<Block, FullClient<RuntimeApi, ExecutorDispatch>, FullSelectChain>,
+			Option<Telemetry>,
+		),
+	> {
 		client,
 		backend,
 		mut task_manager,
@@ -248,7 +347,8 @@ pub fn new_full(
 								log::debug!("after setting request_domain: {:?}", request_base_str);
 								offchain_db.set(
 									STORAGE_PREFIX,
-									LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, // copy from ocw-suit
+									//LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, // copy from ocw-suit
+									b"are-ocw::price_request_domain",
 									store_request_u8.as_slice(),
 								);
 							}
@@ -379,6 +479,15 @@ pub fn new_full(
 		);
 	}
 
+	// task_manager.spawn_essential_handle().spawn_blocking("ares-upgrade", None,test_upgrade(client.clone()));
+
 	network_starter.start_network();
 	Ok(task_manager)
 }
+
+// pub fn test_upgrade<RuntimeApi, ExecutorDispatch>(
+// 	client: Arc<FullClient<RuntimeApi, ExecutorDispatch>>,
+// ) -> sp_blockchain::Result<impl Future<Output = ()> + Send> {
+//     log::info!("{:?}",client.info().finalized_hash);
+//     Ok(100)
+// }

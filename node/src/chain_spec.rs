@@ -2,7 +2,7 @@ use hex_literal::hex;
 
 use sc_service::ChainType;
 use sc_telemetry::serde_json;
-use sp_consensus_aura::sr25519::AuthorityId as AuraId;
+use sp_consensus_babe::AuthorityId as BabeId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
 use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
@@ -95,7 +95,7 @@ pub fn local_testnet_config() -> Result<PioneerNodeChainSpec, String> {
 	let initial_authorities: Vec<(
 		PioneerAccountId, // stash
 		PioneerAccountId, // controller
-		AuraId,
+		BabeId,
 		GrandpaId,
 		AresId,
 		ImOnlineId,
@@ -207,7 +207,7 @@ pub fn local_ares_config() -> Result<GladiosNodeChainSpec, String> {
 	let initial_authorities: Vec<(
 		GladiosAccountId, // stash
 		GladiosAccountId, // controller
-		AuraId,
+		BabeId,
 		GrandpaId,
 		AresId,
 		ImOnlineId,

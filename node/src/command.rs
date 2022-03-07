@@ -18,7 +18,7 @@
 use crate::{
 	chain_spec,
 	cli::{Cli, Subcommand},
-	services,
+	service_babe
 };
 // use runtime_gladios_node::Block as GladiosNodeBlock;
 // use runtime_pioneer_node::Block as PioneerNodeBlock;
@@ -128,7 +128,8 @@ pub fn run() -> sc_cli::Result<()> {
 	let cli = Cli::from_args();
 	use runtime_gladios_node::RuntimeApi as GRuntimeApi;
 	use runtime_pioneer_node::RuntimeApi as PRuntimeApi;
-	use services::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch};
+	use service_babe::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch};
+
 	match &cli.subcommand {
 		Some(Subcommand::Key(cmd)) => cmd.run(&cli),
 		Some(Subcommand::BuildSpec(cmd)) => {
@@ -140,13 +141,13 @@ pub fn run() -> sc_cli::Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, import_queue, .. } =
-						services::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, import_queue), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, import_queue, .. } =
-					services::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
@@ -155,13 +156,13 @@ pub fn run() -> sc_cli::Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, .. } =
-						services::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, config.database), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, .. } =
-					services::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, config.database), task_manager))
 			})
 		},
@@ -170,13 +171,13 @@ pub fn run() -> sc_cli::Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, .. } =
-						services::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, config.chain_spec), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, .. } =
-					services::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, config.chain_spec), task_manager))
 			})
 		},
@@ -185,13 +186,13 @@ pub fn run() -> sc_cli::Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, import_queue, .. } =
-						services::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, import_queue), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, import_queue, .. } =
-					services::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
@@ -204,13 +205,13 @@ pub fn run() -> sc_cli::Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, backend, .. } =
-						services::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, backend), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, backend, .. } =
-					services::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, backend), task_manager))
 			})
 		},
@@ -219,13 +220,13 @@ pub fn run() -> sc_cli::Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, backend, .. } =
-						services::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, backend), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, backend, .. } =
-					services::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, backend), task_manager))
 			})
 		},
@@ -233,9 +234,9 @@ pub fn run() -> sc_cli::Result<()> {
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
 				if runner.config().chain_spec.is_pioneer() {
-					runner.sync_run(|config| cmd.run::<services::Block, PExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<service_babe::Block, PExecutorDispatch>(config))
 				} else {
-					runner.sync_run(|config| cmd.run::<services::Block, GExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<service_babe::Block, GExecutorDispatch>(config))
 				}
 			} else {
 				Err("Benchmarking wasn't enabled when building the node. You can enable it with \
@@ -272,10 +273,10 @@ pub fn run() -> sc_cli::Result<()> {
 				}
 
 				if is_pioneer {
-					services::new_full::<PRuntimeApi, PExecutorDispatch>(config, ares_params)
+					service_babe::new_full::<PRuntimeApi, PExecutorDispatch>(config, ares_params)
 						.map_err(sc_cli::Error::Service)
 				} else {
-					services::new_full::<GRuntimeApi, GExecutorDispatch>(config, ares_params)
+					service_babe::new_full::<GRuntimeApi, GExecutorDispatch>(config, ares_params)
 						.map_err(sc_cli::Error::Service)
 				}
 			})
