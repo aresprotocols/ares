@@ -10,14 +10,14 @@ parameter_types! {
 	pub const Offset: u32 = 0;
 }
 
-// TODO Remove while runtime upgrade is done.
-impl_opaque_keys! {
-	pub struct OldSessionKeys {
-		pub aura: Aura,
-		pub grandpa: Grandpa,
-		pub ares: AresOracle,
-	}
-}
+// // TODO Remove while runtime upgrade is done.
+// impl_opaque_keys! {
+// 	pub struct OldSessionKeys {
+// 		pub aura: Aura,
+// 		pub grandpa: Grandpa,
+// 		pub ares: AresOracle,
+// 	}
+// }
 
 impl_opaque_keys! {
 	pub struct SessionKeys {
@@ -28,36 +28,74 @@ impl_opaque_keys! {
 	}
 }
 
-pub fn dummy_imonline_id_from_account_id(a: AccountId) -> ImOnlineId {
-	let mut id = ImOnlineId::default();
-	let id_raw: &mut [u8] = id.as_mut();
+// pub fn dummy_imonline_id_from_account_id(a: AccountId) -> ImOnlineId {
+// 	let mut id = ImOnlineId::default();
+// 	let id_raw: &mut [u8] = id.as_mut();
+//
+// 	id_raw[0..].copy_from_slice(a.as_ref());
+// 	id_raw[0..4].copy_from_slice(&sp_core::crypto::key_types::IM_ONLINE.0);
+//
+// 	id
+// }
+//
+// // When this is removed, should also remove `OldSessionKeys`.
+// fn transform_session_keys(v: AccountId, old: OldSessionKeys) -> SessionKeys {
+// 	SessionKeys {
+// 		aura: old.aura,
+// 		grandpa: old.grandpa,
+// 		ares: old.ares,
+// 		im_online: dummy_imonline_id_from_account_id(v),
+// 	}
+// }
+//
+// // When this is removed, should also remove `OldSessionKeys`.
+// pub struct UpgradeSessionKeys;
+// impl frame_support::traits::OnRuntimeUpgrade for UpgradeSessionKeys {
+// 	fn on_runtime_upgrade() -> frame_support::weights::Weight {
+// 		Session::upgrade_keys::<OldSessionKeys, _>(transform_session_keys);
+//
+// 		// Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block
+// 		RuntimeBlockWeights::get().max_block / 2
+// 	}
+// }
+//
+// // TODO Remove while runtime upgrade is done.
+// impl_opaque_keys! {
+// 	pub struct OldSessionKeys {
+// 		pub aura: Aura,
+// 		pub grandpa: Grandpa,
+// 		pub ares: AresOracle,
+// 	}
+// }
 
-	id_raw[0..].copy_from_slice(a.as_ref());
-	id_raw[0..4].copy_from_slice(&sp_core::crypto::key_types::IM_ONLINE.0);
+// pub fn dummy_imonline_id_from_account_id(a: AuraId) -> ImOnlineId {
+// 	let mut id = ImOnlineId::default();
+// 	let id_raw: &mut [u8] = id.as_mut();
+//
+// 	id_raw[0..].copy_from_slice(a.as_ref());
+// 	id_raw[0..4].copy_from_slice(&sp_core::crypto::key_types::IM_ONLINE.0);
+//
+// 	id
+// }
 
-	id
-}
+// // When this is removed, should also remove `OldSessionKeys`.
+// fn transform_session_keys(v: AccountId, old: OldSessionKeys) -> SessionKeys {
+// 	SessionKeys {
+// 		aura: old.aura.clone(),
+// 		grandpa: old.grandpa,
+// 		ares: old.ares,
+// 		im_online: dummy_imonline_id_from_account_id(old.aura),
+// 	}
+// }
 
-// When this is removed, should also remove `OldSessionKeys`.
-fn transform_session_keys(v: AccountId, old: OldSessionKeys) -> SessionKeys {
-	SessionKeys {
-		aura: old.aura,
-		grandpa: old.grandpa,
-		ares: old.ares,
-		im_online: dummy_imonline_id_from_account_id(v),
-	}
-}
-
-// When this is removed, should also remove `OldSessionKeys`.
-pub struct UpgradeSessionKeys;
-impl frame_support::traits::OnRuntimeUpgrade for UpgradeSessionKeys {
-	fn on_runtime_upgrade() -> frame_support::weights::Weight {
-		Session::upgrade_keys::<OldSessionKeys, _>(transform_session_keys);
-
-		// Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block
-		RuntimeBlockWeights::get().max_block / 2
-	}
-}
+// // When this is removed, should also remove `OldSessionKeys`.
+// pub struct UpgradeSessionKeys;
+// impl frame_support::traits::OnRuntimeUpgrade for UpgradeSessionKeys {
+// 	fn on_runtime_upgrade() -> frame_support::weights::Weight {
+// 		Session::upgrade_keys::<OldSessionKeys, _>(transform_session_keys);
+// 		RuntimeBlockWeights::get().max_block / 2
+// 	}
+// }
 
 impl pallet_session::Config for Runtime {
 	type Event = Event;

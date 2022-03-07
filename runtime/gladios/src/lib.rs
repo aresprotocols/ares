@@ -6,9 +6,7 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use pallet_grandpa::{
-	AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, fg_primitives,
-};
+use pallet_grandpa::{AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, fg_primitives, GrandpaEquivocationOffence};
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
@@ -59,6 +57,8 @@ mod part_challenge;
 pub mod part_ocw;
 pub mod part_estimates;
 pub mod part_ocw_finance;
+
+use network::part_staking::{BondingDuration, SessionsPerEra};
 
 pub use constants::currency::{Balance, CENTS, deposit, DOLLARS, MILLICENTS};
 use constants::time::{BlockNumber, DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
@@ -237,11 +237,19 @@ impl pallet_randomness_collective_flip::Config for Runtime {}
 // 	type DisabledValidators = ();
 // }
 
+parameter_types! {
+	pub const EpochDuration: u64 = constants::time::EPOCH_DURATION_IN_BLOCKS as u64;
+	pub const ReportLongevity: u64 =
+		BondingDuration::get() as u64 * SessionsPerEra::get() as u64 * EpochDuration::get();
+}
+
+
+
 impl pallet_grandpa::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 
-	type KeyOwnerProofSystem = ();
+	type KeyOwnerProofSystem = Historical;
 
 	type KeyOwnerProof =
 		<Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::Proof;
@@ -251,7 +259,12 @@ impl pallet_grandpa::Config for Runtime {
 		GrandpaId,
 	)>>::IdentificationTuple;
 
-	type HandleEquivocation = ();
+	type HandleEquivocation = pallet_grandpa::EquivocationHandler<
+		Self::KeyOwnerIdentification,
+		Offences, // ReportOffence<T::AccountId, Self::KeyOwnerIdentification, ReportLongevity>
+		ReportLongevity,
+		GrandpaEquivocationOffence<Self::KeyOwnerIdentification>
+	>;
 
 	type WeightInfo = ();
 	type MaxAuthorities = network::part_aura::MaxAuthorities;
@@ -326,7 +339,7 @@ construct_runtime!(
 		Identity: pallet_identity::{Pallet, Call, Storage, Event<T>},
 
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
-		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
+		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event, ValidateUnsigned},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
@@ -362,7 +375,7 @@ construct_runtime!(
 		ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		Offences: pallet_offences::{Pallet, Storage, Event},
 
-		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
+		Estimates: pallet_price_estimates,
 	}
 );
 
@@ -395,7 +408,8 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPallets,
-	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
+	// (pallet_bags_list::migrations::CheckCounterPrefix<Runtime>, network::part_session::UpgradeSessionKeys),
+	(pallet_bags_list::migrations::CheckCounterPrefix<Runtime>),
 >;
 
 impl_runtime_apis! {
