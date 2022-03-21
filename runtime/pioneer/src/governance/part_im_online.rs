@@ -1,7 +1,7 @@
 use super::*;
 use pallet_session;
 use sp_runtime::{transaction_validity::{TransactionPriority}};
-use crate::network::part_session::{Period, Offset};
+// use crate::network::part_session::{Period, Offset};
 parameter_types! {
 	pub const ImOnlineUnsignedPriority: TransactionPriority = TransactionPriority::max_value();
 	pub const MaxKeys: u32 = 10_000;
@@ -12,7 +12,7 @@ parameter_types! {
 impl pallet_im_online::Config for Runtime {
 	type AuthorityId = ImOnlineId;
 	type Event = Event;
-	type NextSessionRotation = pallet_session::PeriodicSessions::<Period, Offset> ; // Aura;
+	type NextSessionRotation = Babe; // pallet_session::PeriodicSessions::<Period, Offset> ; // Aura;
 	type ValidatorSet = Historical;
 	type ReportUnresponsiveness = Offences;
 	type UnsignedPriority = ImOnlineUnsignedPriority;
