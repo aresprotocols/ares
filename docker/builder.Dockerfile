@@ -1,7 +1,8 @@
 FROM docker.io/paritytech/ci-linux:production as builder
 WORKDIR /substrate
 COPY . /substrate
-RUN cargo build --locked --release
+# RUN cargo build --locked --release
+RUN cargo update && cargo build --release --bin gladios-node
 
 FROM docker.io/library/ubuntu:20.04
 COPY --from=builder /substrate/target/release/gladios-node /usr/local/bin
