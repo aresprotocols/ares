@@ -314,49 +314,49 @@ construct_runtime!(
 		NodeBlock = opaque::Block,
 		UncheckedExtrinsic = UncheckedExtrinsic
 	{
-		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
-		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage},
-		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		Identity: pallet_identity::{Pallet, Call, Storage, Event<T>},
+		System: frame_system,
+		RandomnessCollectiveFlip: pallet_randomness_collective_flip,
+		Timestamp: pallet_timestamp,
+		Identity: pallet_identity,
 
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
-		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
-		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
+		Grandpa: pallet_grandpa,
+		Balances: pallet_balances,
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
-		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
+		Sudo: pallet_sudo,
 
 		// network
-		Aura: pallet_aura::{Pallet, Config<T>, Storage},
+		Aura: pallet_aura,
 		ElectionProviderMultiPhase: pallet_election_provider_multi_phase,
-		Staking: pallet_staking::{Pallet, Call, Config<T>, Storage, Event<T>},
-		Session: pallet_session::{Pallet, Call, Storage, Event, Config<T>},
-		Historical: pallet_session::historical::{Pallet},
-		Authorship: pallet_authorship::{Pallet, Call, Storage, Inherent},
+		Staking: pallet_staking,
+		Session: pallet_session,
+		Historical: pallet_session::historical,
+		Authorship: pallet_authorship,
 		BagsList: pallet_bags_list,
 		//
 		// MemberExtend: member_extend::{Pallet},
 		//
-		AresChallenge: pallet_ares_challenge::{Pallet, Call, Storage, Event<T>},
+		AresChallenge: pallet_ares_challenge,
 
-		AresOracle: ares_oracle::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
+		AresOracle: ares_oracle,
 		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>},
 		// StakingExtend: staking_extend::{Pallet},
 
 		// Governance
 		Scheduler: pallet_scheduler::{Pallet, Call, Storage, Event<T>},
-		Multisig: pallet_multisig::{Pallet, Call, Storage, Event<T>},
-		Proxy: pallet_proxy::{Pallet, Call, Storage, Event<T>},
-		Vesting: pallet_vesting::{Pallet, Call, Storage, Event<T>, Config<T>},
-		Council: pallet_ares_collective::<Instance1>::{Pallet, Call, Storage, Event<T>, Origin<T>, Config<T>},
-		TechnicalCommittee: pallet_collective::<Instance2>::{Pallet, Call, Storage, Origin<T>, Event<T>, Config<T>},
-		Treasury: pallet_treasury::{Pallet, Call, Storage, Config, Event<T>},
-		Bounties: pallet_bounties::{Pallet, Call, Storage, Event<T>},
-		Democracy: pallet_democracy::{Pallet, Call, Storage, Config<T>, Event<T>},
-		Elections: pallet_elections_phragmen::{Pallet, Call, Storage, Event<T>, Config<T>},
-		ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		Offences: pallet_offences::{Pallet, Storage, Event},
+		Multisig: pallet_multisig,
+		Proxy: pallet_proxy,
+		Vesting: pallet_vesting,
+		Council: pallet_ares_collective::<Instance1>,
+		TechnicalCommittee: pallet_collective::<Instance2>,
+		Treasury: pallet_treasury,
+		Bounties: pallet_bounties,
+		Democracy: pallet_democracy,
+		Elections: pallet_elections_phragmen,
+		ImOnline: pallet_im_online,
+		Offences: pallet_offences,
 
-		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
+		Estimates: pallet_price_estimates,
 	}
 );
 
