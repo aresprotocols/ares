@@ -292,6 +292,15 @@ where
 		sc_service::build_offchain_workers(&config, task_manager.spawn_handle(), client.clone(), network.clone());
 	}
 
+	let justification_stream = grandpa_link.justification_stream();
+	let shared_authority_set = grandpa_link.shared_authority_set().clone();
+	let shared_voter_state = sc_finality_grandpa::SharedVoterState::empty();
+	let rpc_setup = shared_voter_state.clone();
+	let finality_proof_provider = sc_finality_grandpa::FinalityProofProvider::new_for_service(
+		backend.clone(),
+		Some(shared_authority_set.clone()),
+	);
+
 	let role = config.role.clone();
 	let force_authoring = config.force_authoring;
 	let backoff_authoring_blocks: Option<()> = None;
@@ -303,12 +312,20 @@ where
 		let client = client.clone();
 		let pool = transaction_pool.clone();
 		let backend = backend.clone();
-		Box::new(move |deny_unsafe, _| {
+		let shared_voter_state = shared_voter_state.clone();
+		Box::new(move |deny_unsafe, subscription_executor| {
 			let deps = crate::rpc::FullDeps {
 				client: client.clone(),
 				pool: pool.clone(),
 				deny_unsafe,
 				backend: backend.clone(),
+				grandpa: crate::rpc::GrandpaDeps {
+					shared_voter_state: shared_voter_state.clone(),
+					shared_authority_set: shared_authority_set.clone(),
+					justification_stream: justification_stream.clone(),
+					subscription_executor,
+					finality_provider: finality_proof_provider.clone(),
+				},
 			};
 
 			Ok(crate::rpc::create_full(deps))
@@ -465,7 +482,7 @@ where
 			network,
 			voting_rule: sc_finality_grandpa::VotingRulesBuilder::default().build(),
 			prometheus_registry,
-			shared_voter_state: SharedVoterState::empty(),
+			shared_voter_state,
 			telemetry: telemetry.as_ref().map(|x| x.handle()),
 		};
 

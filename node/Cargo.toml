@@ -55,6 +55,7 @@ sc-client-db = { git = "https://github.com/zzm-Zhong/substrate.git", default-fea
 sc-consensus = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 sc-consensus-aura = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 sc-finality-grandpa = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
+sc-finality-grandpa-rpc = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 sc-keystore = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 sc-rpc = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
 sc-rpc-api = { git = "https://github.com/zzm-Zhong/substrate.git", default-features = false, branch = "polkadot-v0.9.15-fix" }
