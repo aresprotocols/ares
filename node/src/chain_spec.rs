@@ -25,7 +25,7 @@ use testnet_genesis::{make_testnet_genesis, get_account_id_from_seed};
 
 // For dev config.
 pub fn development_config() -> Result<PioneerNodeChainSpec, String> {
-	let wasm_binary = GladiosWASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	let wasm_binary = PioneerWASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
 	let mut properties = serde_json::map::Map::new();
 	properties.insert("tokenDecimals".into(), 12.into());
 	properties.insert("tokenSymbol".into(), "ARES".into());
