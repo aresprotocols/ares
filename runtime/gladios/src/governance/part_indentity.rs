@@ -1,9 +1,9 @@
 use super::*;
 use constants::currency::{Balance, CENTS, DOLLARS};
 use crate::governance::part_council::CouncilCollective;
+use frame_support::traits::EnsureOneOf;
 
 type EnsureRootOrHalfCouncil = EnsureOneOf<
-	AccountId,
 	EnsureRoot<AccountId>,
 	pallet_ares_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
 >;

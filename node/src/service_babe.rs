@@ -2,7 +2,7 @@
 
 // use node_template_runtime::{self, opaque::Block, RuntimeApi};
 // use super::services::{gladios, pioneer};
-use sc_client_api::{Backend, ExecutorProvider};
+use sc_client_api::{Backend, BlockBackend, ExecutorProvider};
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 pub use sc_executor::NativeElseWasmExecutor;
 use sc_executor::NativeExecutionDispatch;
@@ -169,6 +169,7 @@ where
 		config.wasm_method,
 		config.default_heap_pages,
 		config.max_runtime_instances,
+		config.runtime_cache_size,
 	);
 
 	let (client, backend, keystore_container, task_manager) = sc_service::new_full_parts::<Block, RuntimeApi, _>(
@@ -200,8 +201,14 @@ where
 		telemetry.as_ref().map(|x| x.handle()),
 	)?;
 
+	// let (block_import, babe_link) = sc_consensus_babe::block_import(
+	// 	sc_consensus_babe::Config::get_or_compute(&*client)?,
+	// 	grandpa_block_import.clone(),
+	// 	client.clone(),
+	// )?;
+
 	let (block_import, babe_link) = sc_consensus_babe::block_import(
-		sc_consensus_babe::Config::get_or_compute(&*client)?,
+		sc_consensus_babe::Config::get(&*client)?,
 		grandpa_block_import.clone(),
 		client.clone(),
 	)?;
@@ -325,7 +332,12 @@ where
 	let shared_voter_state = rpc_setup;
 	let auth_disc_publish_non_global_ips = config.network.allow_non_globals_in_dht;
 
-	config.network.extra_sets.push(sc_finality_grandpa::grandpa_peers_set_config());
+	let grandpa_protocol_name = sc_finality_grandpa::protocol_standard_name(
+		&client.block_hash(0).ok().flatten().expect("Genesis block exists; qed"),
+		&config.chain_spec,
+	);
+
+	config.network.extra_sets.push(sc_finality_grandpa::grandpa_peers_set_config(grandpa_protocol_name.clone()));
 	let warp_sync = Arc::new(sc_finality_grandpa::warp_proof::NetworkProvider::new(
 		backend.clone(),
 		import_setup.1.shared_authority_set().clone(),
@@ -517,6 +529,7 @@ where
 		keystore,
 		local_role: role,
 		telemetry: telemetry.as_ref().map(|x| x.handle()),
+		protocol_name: grandpa_protocol_name,
 	};
 
 	if enable_grandpa {

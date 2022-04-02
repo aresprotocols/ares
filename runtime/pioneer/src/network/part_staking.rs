@@ -1,15 +1,15 @@
 use super::*;
 
 use frame_election_provider_support::onchain;
-use frame_support::traits::{ConstU32, U128CurrencyToVote};
-use frame_system::{EnsureOneOf, EnsureRoot};
+use frame_support::traits::{ConstU32, EnsureOneOf, U128CurrencyToVote};
+use frame_system::{EnsureRoot};
 use governance::part_council::CouncilCollective;
 use pallet_ares_collective;
 use pallet_staking;
 pub use pallet_staking::StakerStatus;
 use part_elections::MAX_NOMINATIONS;
 use sp_runtime::curve::PiecewiseLinear;
-pub use sp_staking;
+pub use sp_staking::{self, EraIndex};
 
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
@@ -25,8 +25,8 @@ pallet_staking_reward_curve::build! {
 parameter_types! {
 	// pub const SessionsPerEra: sp_staking::SessionIndex = 6;
 	pub const SessionsPerEra: sp_staking::SessionIndex = 1;
-	pub const BondingDuration: pallet_staking::EraIndex = 4;
-	pub const SlashDeferDuration: pallet_staking::EraIndex = 3; // 1/4 the bonding duration.
+	pub const BondingDuration: EraIndex = 4;
+	pub const SlashDeferDuration: EraIndex = 3; // 1/4 the bonding duration.
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	pub const MaxNominatorRewardedPerValidator: u32 = 256;
 	pub const OffendingValidatorsThreshold: Perbill = Perbill::from_percent(17);
@@ -35,11 +35,6 @@ parameter_types! {
 
 parameter_types! {
 	pub const BagThresholds: &'static [u64] = &voter_bags::THRESHOLDS;
-}
-
-impl staking_extend::elect::Config for Runtime {
-	type ElectionProvider = ElectionProviderMultiPhase;
-	type DataProvider = Staking;
 }
 
 impl pallet_bags_list::Config for Runtime {
@@ -55,8 +50,21 @@ impl pallet_staking::BenchmarkingConfig for StakingBenchmarkingConfig {
 	type MaxValidators = ConstU32<1000>;
 }
 
+sp_npos_elections::generate_solution_type!(
+	#[compact]
+	pub struct NposSolution16::<
+		VoterIndex = u32,
+		TargetIndex = u16,
+		Accuracy = sp_runtime::PerU16,
+	>(16)
+);
+
+parameter_types! {
+	pub MaxNominations: u32 = <NposSolution16 as sp_npos_elections::NposSolution>::LIMIT as u32;
+}
+
 impl pallet_staking::Config for Runtime {
-	const MAX_NOMINATIONS: u32 = MAX_NOMINATIONS;
+	type MaxNominations = MaxNominations;
 	type Currency = Balances;
 	type UnixTime = Timestamp;
 	type CurrencyToVote = U128CurrencyToVote;
@@ -69,7 +77,6 @@ impl pallet_staking::Config for Runtime {
 	type SlashDeferDuration = SlashDeferDuration;
 	/// A super-majority of the council can cancel the slash.
 	type SlashCancelOrigin = EnsureOneOf<
-		AccountId,
 		EnsureRoot<AccountId>,
 		pallet_ares_collective::EnsureProportionAtLeast<_3, _4, AccountId, CouncilCollective>,
 	>;

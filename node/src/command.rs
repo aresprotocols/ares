@@ -23,7 +23,7 @@ use crate::{
 use runtime_gladios_node::Block as GladiosNodeBlock;
 use runtime_pioneer_node::Block as PioneerNodeBlock;
 
-use sc_cli::{ChainSpec, Role, RuntimeVersion, SubstrateCli};
+use sc_cli::{ChainSpec, Result, RuntimeVersion, SubstrateCli};
 use sc_service::PartialComponents;
 
 trait IdentifyChain {
@@ -81,7 +81,7 @@ impl SubstrateCli for Cli {
 		2017
 	}
 
-	fn load_spec(&self, id: &str) -> Result<Box<dyn sc_service::ChainSpec>, String> {
+	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 		Ok(match id {
 			"dev" => {
 				log::info!("🚅 🚅 🚅 load spec with development_config().");
@@ -124,8 +124,9 @@ impl SubstrateCli for Cli {
 }
 
 /// Parse and run command line arguments
-pub fn run() -> sc_cli::Result<()> {
+pub fn run() -> Result<()> {
 	let cli = Cli::from_args();
+
 	use runtime_gladios_node::RuntimeApi as GRuntimeApi;
 	use runtime_pioneer_node::RuntimeApi as PRuntimeApi;
 	// use services::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch};
@@ -133,6 +134,19 @@ pub fn run() -> sc_cli::Result<()> {
 	use service_babe::pioneer::ExecutorDispatch as PExecutorDispatch;
 
 	match &cli.subcommand {
+		Some(Subcommand::Inspect(cmd)) => {
+			// let runner = cli.create_runner(cmd)?;
+			// runner.sync_run(|config| cmd.run::<Block, RuntimeApi, ExecutorDispatch>(config))
+
+			let runner = cli.create_runner(cmd)?;
+			if runner.config().chain_spec.is_pioneer() {
+				return runner.sync_run(|config| cmd.run::<runtime_pioneer_node::Block, PRuntimeApi, PExecutorDispatch>(config))
+			}
+			runner.sync_run(|config| cmd.run::<runtime_gladios_node::Block, GRuntimeApi, GExecutorDispatch>(config))
+		},
+		Some(Subcommand::Sign(cmd)) => cmd.run(),
+		Some(Subcommand::Verify(cmd)) => cmd.run(),
+		Some(Subcommand::Vanity(cmd)) => cmd.run(),
 		Some(Subcommand::Key(cmd)) => cmd.run(&cli),
 		Some(Subcommand::BuildSpec(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
@@ -217,55 +231,55 @@ pub fn run() -> sc_cli::Result<()> {
 				Ok((cmd.run(client, backend), task_manager))
 			})
 		},
-		Some(Subcommand::ForceRevert(cmd)) => {
-			let runner = cli.create_runner(cmd)?;
-			if runner.config().chain_spec.is_pioneer() {
-				return runner.async_run(|config| {
-					let PartialComponents { client, task_manager, backend, .. } =
-						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
-					Ok((cmd.run(client, backend), task_manager))
-				})
-			}
-			runner.async_run(|config| {
-				let PartialComponents { client, task_manager, backend, .. } =
-					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
-				Ok((cmd.run(client, backend), task_manager))
-			})
-		},
-		Some(Subcommand::GrandpaState(cmd)) => {
-			let runner = cli.create_runner(cmd)?;
-			if runner.config().chain_spec.is_pioneer() {
-				return runner.async_run(|config| {
-					let PartialComponents {
-						client,
-						backend,
-						task_manager,
-						keystore_container,
-						select_chain,
-						import_queue,
-						transaction_pool,
-						other,
-					} = service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
-					let (_, grandpa_link,_) = other.0;
-					Ok((cmd.run(grandpa_link), task_manager))
-				})
-			}
-			runner.async_run(|config| {
-				let PartialComponents {
-					client,
-					backend,
-					task_manager,
-					keystore_container,
-					select_chain,
-					import_queue,
-					transaction_pool,
-					other,
-				} = service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
-				// let grandpa_link = other.1;
-				let (_, grandpa_link,_) = other.0;
-				Ok((cmd.run(grandpa_link), task_manager))
-			})
-		},
+		// Some(Subcommand::ForceRevert(cmd)) => {
+		// 	let runner = cli.create_runner(cmd)?;
+		// 	if runner.config().chain_spec.is_pioneer() {
+		// 		return runner.async_run(|config| {
+		// 			let PartialComponents { client, task_manager, backend, .. } =
+		// 				service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+		// 			Ok((cmd.run(client, backend), task_manager))
+		// 		})
+		// 	}
+		// 	runner.async_run(|config| {
+		// 		let PartialComponents { client, task_manager, backend, .. } =
+		// 			service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+		// 		Ok((cmd.run(client, backend), task_manager))
+		// 	})
+		// },
+		// Some(Subcommand::GrandpaState(cmd)) => {
+		// 	let runner = cli.create_runner(cmd)?;
+		// 	if runner.config().chain_spec.is_pioneer() {
+		// 		return runner.async_run(|config| {
+		// 			let PartialComponents {
+		// 				client,
+		// 				backend,
+		// 				task_manager,
+		// 				keystore_container,
+		// 				select_chain,
+		// 				import_queue,
+		// 				transaction_pool,
+		// 				other,
+		// 			} = service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+		// 			let (_, grandpa_link,_) = other.0;
+		// 			Ok((cmd.run(grandpa_link), task_manager))
+		// 		})
+		// 	}
+		// 	runner.async_run(|config| {
+		// 		let PartialComponents {
+		// 			client,
+		// 			backend,
+		// 			task_manager,
+		// 			keystore_container,
+		// 			select_chain,
+		// 			import_queue,
+		// 			transaction_pool,
+		// 			other,
+		// 		} = service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+		// 		// let grandpa_link = other.1;
+		// 		let (_, grandpa_link,_) = other.0;
+		// 		Ok((cmd.run(grandpa_link), task_manager))
+		// 	})
+		// },
 		Some(Subcommand::Benchmark(cmd)) =>
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;

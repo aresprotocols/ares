@@ -8,13 +8,13 @@ use frame_support::sp_runtime::{
 	generic::{Era, SignedPayload},
 	traits,
 };
+use frame_support::traits::EnsureOneOf;
 use sp_runtime::{MultiAddress, SaturatedConversion};
 
 // An index to a block.
 pub type BlockNumber = u32;
 
 pub type EnsureRootOrHalfTechnicalCollective = EnsureOneOf<
-	AccountId,
 	EnsureRoot<AccountId>,
 	pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective>,
 >;
@@ -25,10 +25,10 @@ parameter_types! {
 	pub const ErrLogPoolDepth: u32 = 1000;
 }
 
-// impl ares_oracle::aura_handler::Config for Runtime {}
-impl ares_oracle::babe_handler::Config for Runtime {
-	type AuthorityId = pallet_babe::AuthorityId;
-}
+// // impl ares_oracle::aura_handler::Config for Runtime {}
+// impl ares_oracle::babe_handler::Config for Runtime {
+// 	type AuthorityId = pallet_babe::AuthorityId;
+// }
 
 impl staking_extend::Config for Runtime {
 	type AuthorityId = AresId;

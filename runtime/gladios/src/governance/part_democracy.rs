@@ -2,6 +2,7 @@ use super::*;
 use pallet_democracy;
 use part_council::CouncilCollective;
 use part_technical::TechnicalCollective;
+use frame_support::traits::EnsureOneOf;
 
 parameter_types! {
 	pub const LaunchPeriod: BlockNumber = 28 * 24 * 60 * MINUTES;
@@ -50,7 +51,6 @@ impl pallet_democracy::Config for Runtime {
 	// To cancel a proposal before it has been passed, the technical committee must be unanimous or
 	// Root must agree.
 	type CancelProposalOrigin = EnsureOneOf<
-		AccountId,
 		EnsureRoot<AccountId>,
 		pallet_collective::EnsureProportionAtLeast<_1, _1, AccountId, TechnicalCollective>,
 	>;

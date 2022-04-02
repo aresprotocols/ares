@@ -39,7 +39,7 @@ pub use frame_support::{
 	PalletId, RuntimeDebug, StorageValue,
 };
 
-use frame_system::{limits::BlockWeights, EnsureOneOf, EnsureRoot};
+use frame_system::{limits::BlockWeights, EnsureRoot};
 
 pub use pallet_balances::Call as BalancesCall;
 use pallet_collective;
@@ -107,10 +107,11 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	//   `spec_version`, and `authoring_version` are the same between Wasm and native.
 	// This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
 	//   the compatible custom types.
-	spec_version: 123,
+	spec_version: 124,
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
+	state_version: 1,
 };
 
 /// This determines the average expected block time that we are targeting.
@@ -213,6 +214,8 @@ impl frame_system::Config for Runtime {
 	type SS58Prefix = SS58Prefix;
 	/// The set code logic, just the default since we're not a parachain.
 	type OnSetCode = ();
+	///
+	type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
 
 parameter_types! {

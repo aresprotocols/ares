@@ -78,6 +78,7 @@ pub fn development_config() -> Result<PioneerNodeChainSpec, String> {
 		// Protocol ID
 		None,
 		// Properties
+		None,
 		Some(properties),
 		// Extensions
 		Default::default(),
@@ -190,6 +191,7 @@ pub fn local_testnet_config() -> Result<PioneerNodeChainSpec, String> {
 		// Protocol ID
 		None,
 		// Properties
+		None,
 		Some(properties),
 		// Extensions
 		Default::default(),
@@ -302,6 +304,7 @@ pub fn local_ares_config() -> Result<GladiosNodeChainSpec, String> {
 		// Protocol ID
 		Some(DEFAULT_PROTOCOL_ID),
 		// Properties
+		None,
 		Some(properties),
 		// Extensions
 		Default::default(),

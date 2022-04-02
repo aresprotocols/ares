@@ -109,7 +109,7 @@ pub fn make_testnet_genesis(
         },
         sudo: SudoConfig {
             // Assign network admin rights.
-            key: root_key,
+            key: Some(root_key),
         },
         ares_oracle: AresOracleConfig {
             _phantom: Default::default(),

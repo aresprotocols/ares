@@ -8,6 +8,7 @@ use governance::part_council::CouncilCollective;
 pub use pallet_election_provider_multi_phase;
 // use pallet_election_provider_multi_phase::FallbackStrategy;
 use frame_election_provider_support::onchain;
+use frame_support::traits::EnsureOneOf;
 use part_staking::OffchainRepeat;
 use sp_runtime::transaction_validity::TransactionPriority;
 
@@ -73,7 +74,6 @@ impl pallet_election_provider_multi_phase::BenchmarkingConfig for BenchmarkConfi
 
 pub const MAX_NOMINATIONS: u32 = <NposSolution16 as sp_npos_elections::NposSolution>::LIMIT as u32;
 type EnsureRootOrHalfCouncil = EnsureOneOf<
-	AccountId,
 	EnsureRoot<AccountId>,
 	pallet_ares_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
 >;
@@ -104,14 +104,6 @@ impl frame_support::pallet_prelude::Get<Option<(usize, sp_npos_elections::Extend
 	}
 }
 
-impl staking_extend::data::Config for Runtime {
-	type DataProvider = Staking;
-	type ValidatorId = AccountId ;
-	type ValidatorSet = Historical;
-	type AuthorityId = AresId ;
-	type AresOraclePreCheck = AresOracle;
-}
-
 /// on chain elect
 impl onchain::Config for Runtime {
 	type Accuracy = Perbill;
@@ -137,14 +129,10 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	type SignedMaxWeight = MinerMaxWeight;
 	type SlashHandler = (); // burn slashes
 	type RewardHandler = (); // nothing to do upon rewards
-						 // type DataProvider = Staking; //
-	type DataProvider = staking_extend::data::DataProvider<Self>;
+	type DataProvider = staking_extend::data::DataProvider<Self>; // problem
 	type Solution = NposSolution16;
-	// type Fallback = ElectionProviderMultiPhase;
-	// TODO fix
-	// type Fallback = pallet_election_provider_multi_phase::NoFallback<Self>;
 	type Fallback = onchain::OnChainSequentialPhragmen<Self>;
-
+	type GovernanceFallback = frame_election_provider_support::onchain::OnChainSequentialPhragmen<Self>;
 	type Solver = frame_election_provider_support::SequentialPhragmen<
 		AccountId,
 		pallet_election_provider_multi_phase::SolutionAccuracyOf<Self>,
