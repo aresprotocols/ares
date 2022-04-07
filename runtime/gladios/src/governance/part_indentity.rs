@@ -1,6 +1,6 @@
 use super::*;
-use constants::currency::{Balance, CENTS, DOLLARS};
 use crate::governance::part_council::CouncilCollective;
+use constants::currency::{deposit, Balance, CENTS, DOLLARS};
 use frame_support::traits::EnsureOneOf;
 
 type EnsureRootOrHalfCouncil = EnsureOneOf<
@@ -9,9 +9,10 @@ type EnsureRootOrHalfCouncil = EnsureOneOf<
 >;
 
 parameter_types! {
-	pub const BasicDeposit: Balance = 10 * DOLLARS;       // 258 bytes on-chain
-	pub const FieldDeposit: Balance = 250 * CENTS;        // 66 bytes on-chain
-	pub const SubAccountDeposit: Balance = 2 * DOLLARS;   // 53 bytes on-chain
+	// Minimum 2 CENTS/byte
+	pub const BasicDeposit: Balance = deposit(1, 258);
+	pub const FieldDeposit: Balance = deposit(0, 66);
+	pub const SubAccountDeposit: Balance = deposit(1, 53);
 	pub const MaxSubAccounts: u32 = 100;
 	pub const MaxAdditionalFields: u32 = 100;
 	pub const MaxRegistrars: u32 = 20;

@@ -55,7 +55,7 @@ impl InstanceFilter<Call> for ProxyType {
 			// 	Call::Utility(..)
 			// ),
 			ProxyType::CancelProxy => {
-				matches!(c, Call::Proxy(pallet_proxy::Call::reject_announcement {..}))
+				matches!(c, Call::Proxy(pallet_proxy::Call::reject_announcement { .. }))
 			},
 		}
 	}

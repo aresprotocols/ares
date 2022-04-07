@@ -1,15 +1,15 @@
 use super::*;
 
+use crate::network::part_elections::NposCompactSolution16;
 use frame_election_provider_support::onchain;
 use frame_support::traits::{ConstU32, EnsureOneOf, U128CurrencyToVote};
-use frame_system::{EnsureRoot};
+use frame_system::EnsureRoot;
 use governance::part_council::CouncilCollective;
 use pallet_ares_collective;
 use pallet_staking;
 pub use pallet_staking::StakerStatus;
-use part_elections::MAX_NOMINATIONS;
 use sp_runtime::curve::PiecewiseLinear;
-pub use sp_staking::{self, EraIndex};
+pub use sp_staking;
 
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
@@ -23,14 +23,17 @@ pallet_staking_reward_curve::build! {
 }
 
 parameter_types! {
+	// Six sessions in an era (12 hours).
 	pub const SessionsPerEra: sp_staking::SessionIndex = 6;
-	// pub const SessionsPerEra: sp_staking::SessionIndex = 1;
-	pub const BondingDuration: EraIndex = 24 * 28;
-	pub const SlashDeferDuration: EraIndex = 24 * 7; // 1/4 the bonding duration.
+	// 28 eras for unbonding (14 days).
+	pub const BondingDuration: sp_staking::EraIndex = 28;
+	// 27 eras in which slashes can be cancelled (slightly less than 14 days).
+	pub const SlashDeferDuration: sp_staking::EraIndex = 27;
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	pub const MaxNominatorRewardedPerValidator: u32 = 256;
 	pub const OffendingValidatorsThreshold: Perbill = Perbill::from_percent(17);
-	pub OffchainRepeat: BlockNumber = 5;
+	// 16
+	pub const MaxNominations: u32 = <NposCompactSolution16 as sp_npos_elections::NposSolution>::LIMIT as u32;
 }
 
 parameter_types! {
@@ -44,34 +47,24 @@ impl pallet_bags_list::Config for Runtime {
 	type BagThresholds = BagThresholds;
 }
 
-pub struct StakingBenchmarkingConfig;
-impl pallet_staking::BenchmarkingConfig for StakingBenchmarkingConfig {
-	type MaxNominators = ConstU32<1000>;
-	type MaxValidators = ConstU32<1000>;
-}
-
-sp_npos_elections::generate_solution_type!(
-	#[compact]
-	pub struct NposSolution16::<
-		VoterIndex = u32,
-		TargetIndex = u16,
-		Accuracy = sp_runtime::PerU16,
-	>(16)
-);
-
-parameter_types! {
-	pub MaxNominations: u32 = <NposSolution16 as sp_npos_elections::NposSolution>::LIMIT as u32;
-}
-
 impl pallet_staking::Config for Runtime {
-	type MaxNominations = MaxNominations;
 	type Currency = Balances;
 	type UnixTime = Timestamp;
-	type CurrencyToVote = U128CurrencyToVote;
+	type CurrencyToVote = runtime_common::CurrencyToVote;
+	// type ElectionProvider =  ElectionProviderMultiPhase;
+	type ElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
+	// // ElectionProviderMultiPhase;
+	// type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
+	// 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
+	// >;
+	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
+	type MaxNominations = MaxNominations;
 	type RewardRemainder = Treasury;
 	type Event = Event;
-	type Slash = Treasury; // send the slashed funds to the treasury.
-	type Reward = (); // rewards are minted from the void
+	type Slash = Treasury;
+	// send the slashed funds to the treasury.
+	type Reward = ();
+	// rewards are minted from the void
 	type SessionsPerEra = SessionsPerEra;
 	type BondingDuration = BondingDuration;
 	type SlashDeferDuration = SlashDeferDuration;
@@ -85,15 +78,9 @@ impl pallet_staking::Config for Runtime {
 	type NextNewSession = Session;
 	type MaxNominatorRewardedPerValidator = MaxNominatorRewardedPerValidator;
 	type OffendingValidatorsThreshold = OffendingValidatorsThreshold;
-	// type ElectionProvider =  ElectionProviderMultiPhase;
-	type ElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>; // // ElectionProviderMultiPhase;
-									   // type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
-									   // 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
-									   // >;
-	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
-	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
 	// Alternatively, use pallet_staking::UseNominatorsMap<Runtime> to just use the nominators map.
 	// Note that the aforementioned does not scale to a very large number of nominators.
 	type SortedListProvider = BagsList;
-	type BenchmarkingConfig = StakingBenchmarkingConfig;
+	type BenchmarkingConfig = runtime_common::StakingBenchmarkingConfig;
+	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
 }

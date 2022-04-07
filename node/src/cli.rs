@@ -1,10 +1,10 @@
+use clap::Parser;
 use jsonrpc_core::serde_json;
 use sc_cli::{CliConfiguration, GenericNumber, PruningParams, Result, RunCmd, SharedParams};
 use sc_client_api::{Backend, UsageProvider};
 use sp_runtime::traits::{Block as BlockT, Header as HeaderT, Zero};
 use std::{fmt::Debug, str::FromStr, sync::Arc};
 use structopt::StructOpt;
-use clap::Parser;
 
 #[derive(Debug, clap::Parser)]
 pub struct Cli {
@@ -67,10 +67,7 @@ pub struct Cli {
 #[derive(Debug, clap::Subcommand)]
 pub enum Subcommand {
 	/// The custom inspect subcommmand for decoding blocks and extrinsics.
-	#[clap(
-	name = "inspect",
-	about = "Decode given block or extrinsic using current native runtime."
-	)]
+	#[clap(name = "inspect", about = "Decode given block or extrinsic using current native runtime.")]
 	Inspect(node_inspect::cli::InspectCmd),
 
 	/// The custom benchmark subcommmand benchmarking runtime pallets.
@@ -110,12 +107,11 @@ pub enum Subcommand {
 
 	/// Revert the chain to a previous state.
 	Revert(sc_cli::RevertCmd),
+	/* /// Revert the chain to a previous state.
+	 * ForceRevert(ForceRevertCmd), */
 
-	// /// Revert the chain to a previous state.
-	// ForceRevert(ForceRevertCmd),
-
-	// 	/// Get grandpa current authorities set
-	// 	GrandpaState(GrandpaStateCmd),
+	/* 	/// Get grandpa current authorities set
+	 * 	GrandpaState(GrandpaStateCmd), */
 }
 
 // #[derive(Debug, StructOpt)]
@@ -150,8 +146,8 @@ pub enum Subcommand {
 // 		if reverted.0.is_zero() {
 // 			log::info!("There aren't any non-finalized blocks to force revert.");
 // 		} else {
-// 			log::info!("Force reverted {} blocks. Best: #{} ({})", reverted.0, info.best_number, info.best_hash);
-// 		}
+// 			log::info!("Force reverted {} blocks. Best: #{} ({})", reverted.0, info.best_number,
+// info.best_hash); 		}
 // 		Ok(())
 // 	}
 // }
@@ -189,8 +185,8 @@ pub enum Subcommand {
 //
 // impl GrandpaStateCmd {
 // 	//LinkHalf<Block: BlockT, C, SC>
-// 	pub async fn run<Block, C, SC>(&self, link_half: sc_finality_grandpa::LinkHalf<Block, C, SC>) -> Result<()>
-// 	where
+// 	pub async fn run<Block, C, SC>(&self, link_half: sc_finality_grandpa::LinkHalf<Block, C, SC>) ->
+// Result<()> 	where
 // 		Block: BlockT,
 // 		C: UsageProvider<Block>,
 // 	{

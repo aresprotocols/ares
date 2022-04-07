@@ -6,7 +6,9 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use pallet_grandpa::{AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, fg_primitives, GrandpaEquivocationOffence};
+use pallet_grandpa::{
+	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, GrandpaEquivocationOffence,
+};
 use sp_api::impl_runtime_apis;
 // use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
@@ -14,14 +16,14 @@ use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 
 use sp_core::{
 	crypto::KeyTypeId,
-	OpaqueMetadata,
 	u32_trait::{_1, _2, _3, _4},
+	OpaqueMetadata,
 };
 use sp_runtime::{
-	ApplyExtrinsicResult, create_runtime_str,
-	generic,
-	MultiSignature,
-	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify}, transaction_validity::{TransactionSource, TransactionValidity},
+	create_runtime_str, generic,
+	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
+	transaction_validity::{TransactionSource, TransactionValidity},
+	ApplyExtrinsicResult, MultiSignature,
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -30,16 +32,16 @@ use sp_version::RuntimeVersion;
 
 // A few exports that help ease life for downstream crates.
 pub use frame_support::{
-	construct_runtime, PalletId,
-	parameter_types,
-	RuntimeDebug,
-	StorageValue, traits::{KeyOwnerProofSystem, Randomness, StorageInfo}, weights::{
+	construct_runtime, parameter_types,
+	traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
+	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 		DispatchClass, IdentityFee, Weight,
 	},
+	PalletId, RuntimeDebug, StorageValue,
 };
 
-use frame_system::{EnsureRoot, limits::BlockWeights};
+use frame_system::{limits::BlockWeights, EnsureRoot};
 
 pub use pallet_balances::Call as BalancesCall;
 use pallet_collective;
@@ -54,13 +56,13 @@ mod governance;
 pub mod network;
 mod part_challenge;
 // pub mod part_member_extend;
-pub mod part_ocw;
 pub mod part_estimates;
+pub mod part_ocw;
 pub mod part_ocw_finance;
 
 use network::part_staking::{BondingDuration, SessionsPerEra};
 
-pub use constants::currency::{Balance, CENTS, deposit, DOLLARS, MILLICENTS};
+pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{BlockNumber, DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
@@ -95,7 +97,6 @@ pub mod opaque {
 	pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 	/// Opaque block identifier type.
 	pub type BlockId = generic::BlockId<Block>;
-
 }
 
 // To learn more about runtime versioning and what each of the following value means:
@@ -138,30 +139,6 @@ const MAXIMUM_BLOCK_WEIGHT: Weight = 2 * WEIGHT_PER_SECOND;
 
 parameter_types! {
 	pub const Version: RuntimeVersion = VERSION;
-	pub const BlockHashCount: BlockNumber = 2400;
-	/// We allow for 2 seconds of compute with a 6 second average block time.
-	// pub BlockWeights: frame_system::limits::BlockWeights = frame_system::limits::BlockWeights
-	// 	::with_sensible_defaults(2 * WEIGHT_PER_SECOND, NORMAL_DISPATCH_RATIO);
-	pub RuntimeBlockWeights: BlockWeights = BlockWeights::builder()
-		.base_block(BlockExecutionWeight::get())
-		.for_class(DispatchClass::all(), |weights| {
-			weights.base_extrinsic = ExtrinsicBaseWeight::get();
-		})
-		.for_class(DispatchClass::Normal, |weights| {
-			weights.max_total = Some(NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT);
-		})
-		.for_class(DispatchClass::Operational, |weights| {
-			weights.max_total = Some(MAXIMUM_BLOCK_WEIGHT);
-			// Operational transactions have some extra reserved space, so that they
-			// are included even if block reached `MAXIMUM_BLOCK_WEIGHT`.
-			weights.reserved = Some(
-				MAXIMUM_BLOCK_WEIGHT - NORMAL_DISPATCH_RATIO * MAXIMUM_BLOCK_WEIGHT
-			);
-		})
-		.avg_block_initialization(AVERAGE_ON_INITIALIZE_RATIO)
-		.build_or_panic();
-	pub BlockLength: frame_system::limits::BlockLength = frame_system::limits::BlockLength
-		::max_with_normal_ratio(5 * 1024 * 1024, NORMAL_DISPATCH_RATIO);
 	pub const SS58Prefix: u8 = 34;
 }
 
@@ -171,9 +148,9 @@ impl frame_system::Config for Runtime {
 	/// The basic call filter to use in dispatchable.
 	type BaseCallFilter = frame_support::traits::Everything;
 	/// Block & extrinsics weights: base values and limits.
-	type BlockWeights = RuntimeBlockWeights;
+	type BlockWeights = runtime_common::BlockWeights;
 	/// The maximum length of a block (in bytes).
-	type BlockLength = BlockLength;
+	type BlockLength = runtime_common::BlockLength;
 	/// The identifier used to distinguish between accounts.
 	type AccountId = AccountId;
 	/// The aggregated dispatch type that is available for extrinsics.
@@ -195,7 +172,7 @@ impl frame_system::Config for Runtime {
 	/// The ubiquitous origin type.
 	type Origin = Origin;
 	/// Maximum number of block number to block hash mappings to keep (oldest pruned first).
-	type BlockHashCount = BlockHashCount;
+	type BlockHashCount = runtime_common::BlockHashCount;
 	/// The weight of database operations that the runtime can invoke.
 	type DbWeight = RocksDbWeight;
 	/// Version of the runtime.
@@ -234,7 +211,6 @@ parameter_types! {
 
 impl pallet_randomness_collective_flip::Config for Runtime {}
 
-
 // impl pallet_aura::Config for Runtime {
 // 	type AuthorityId = AccountId;
 // 	type DisabledValidators = ();
@@ -252,19 +228,16 @@ impl pallet_grandpa::Config for Runtime {
 
 	type KeyOwnerProofSystem = Historical;
 
-	type KeyOwnerProof =
-		<Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::Proof;
+	type KeyOwnerProof = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::Proof;
 
-	type KeyOwnerIdentification = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
-		KeyTypeId,
-		GrandpaId,
-	)>>::IdentificationTuple;
+	type KeyOwnerIdentification =
+		<Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::IdentificationTuple;
 
 	type HandleEquivocation = pallet_grandpa::EquivocationHandler<
 		Self::KeyOwnerIdentification,
 		Offences, // ReportOffence<T::AccountId, Self::KeyOwnerIdentification, ReportLongevity>
 		ReportLongevity,
-		GrandpaEquivocationOffence<Self::KeyOwnerIdentification>
+		GrandpaEquivocationOffence<Self::KeyOwnerIdentification>,
 	>;
 
 	type WeightInfo = ();
@@ -338,6 +311,7 @@ construct_runtime!(
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
 		Identity: pallet_identity::{Pallet, Call, Storage, Event<T>},
+		Preimage: pallet_preimage::{Pallet, Call, Storage, Event<T>},
 
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event, ValidateUnsigned},

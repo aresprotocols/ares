@@ -11,15 +11,16 @@ parameter_types! {
 }
 
 impl pallet_ares_challenge::Config for Runtime {
-    type Event = Event;
-    type MinimumDeposit = MinimumDeposit;
-    type PalletId = DemoPalletId;
-    type CouncilMajorityOrigin = pallet_ares_collective::EnsureProportionAtLeast<_3, _4, AccountId, governance::part_council::CouncilCollective>;
-    type Currency = Balances;
-    type SlashProposer = AresChallenge;
-    type BidderMinimumDeposit = BidderMinimumDeposit;
-    type IsAuthority = Babe; //Aura Or Babe
-    // type AuthorityId = AuraId; // (Aura or Babe) AuthorityId
-    type AuthorityId = pallet_babe::AuthorityId;
-    // type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
+	type Event = Event;
+	type MinimumDeposit = MinimumDeposit;
+	type PalletId = DemoPalletId;
+	type CouncilMajorityOrigin =
+		pallet_ares_collective::EnsureProportionAtLeast<_3, _4, AccountId, governance::part_council::CouncilCollective>;
+	type Currency = Balances;
+	type SlashProposer = AresChallenge;
+	type BidderMinimumDeposit = BidderMinimumDeposit;
+	type IsAuthority = Babe; //Aura Or Babe
+						 // type AuthorityId = AuraId; // (Aura or Babe) AuthorityId
+	type AuthorityId = pallet_babe::AuthorityId;
+	// type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
 }

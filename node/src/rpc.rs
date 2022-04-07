@@ -8,10 +8,7 @@
 use std::sync::Arc;
 
 use frame_support::sp_runtime::traits::{Hash, Header};
-use jsonrpc_core::{
-	futures::future::Future,
-	Error as RpcError, ErrorCode,
-};
+use jsonrpc_core::{futures::future::Future, Error as RpcError, ErrorCode};
 use jsonrpc_derive::rpc;
 use runtime_gladios_node::{opaque::Block, AccountId, Balance, Index};
 use sc_client_api::{blockchain::Backend, client::ProvideUncles};
@@ -198,5 +195,6 @@ fn should_return_a_block() {
 	// 	}
 	// );
 	//
-	// assert_matches!(executor::block_on(api.block(Some(H256::from_low_u64_be(5)).into())), Ok(None));
+	// assert_matches!(executor::block_on(api.block(Some(H256::from_low_u64_be(5)).into())),
+	// Ok(None));
 }

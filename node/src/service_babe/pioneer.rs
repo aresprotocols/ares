@@ -5,7 +5,7 @@ use runtime_pioneer_node::{
 };
 use sc_client_api::{Backend, ExecutorProvider};
 // use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
-use sc_consensus_babe::{SlotProportion};
+use sc_consensus_babe::SlotProportion;
 use sc_executor::NativeElseWasmExecutor;
 use sc_finality_grandpa::SharedVoterState;
 use sc_keystore::LocalKeystore;

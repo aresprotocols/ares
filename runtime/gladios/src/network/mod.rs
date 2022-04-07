@@ -1,6 +1,5 @@
 use super::*;
 
-
 parameter_types! {
 	pub const MaxAuthorities: u32 = 100;
 }
@@ -13,8 +12,6 @@ pub mod part_session;
 pub mod part_staking;
 pub mod part_staking_extend;
 pub mod voter_bags;
-
-
 
 // ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 

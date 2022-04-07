@@ -3,12 +3,14 @@ use crate::governance::part_technical::TechnicalCollective;
 use ares_oracle;
 pub use ares_oracle::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 use codec::Encode;
-use frame_support::sp_runtime::{
-	app_crypto::Public,
-	generic::{Era, SignedPayload},
-	traits,
+use frame_support::{
+	sp_runtime::{
+		app_crypto::Public,
+		generic::{Era, SignedPayload},
+		traits,
+	},
+	traits::EnsureOneOf,
 };
-use frame_support::traits::EnsureOneOf;
 use sp_runtime::{MultiAddress, SaturatedConversion};
 
 // An index to a block.
@@ -63,7 +65,10 @@ where
 	) -> Option<(Call, <UncheckedExtrinsic as traits::Extrinsic>::SignaturePayload)> {
 		let tip = 0;
 		// take the biggest period possible.
-		let period = BlockHashCount::get().checked_next_power_of_two().map(|c| c / 2).unwrap_or(2) as u64;
+		let period = runtime_common::BlockHashCount::get()
+			.checked_next_power_of_two()
+			.map(|c| c / 2)
+			.unwrap_or(2) as u64;
 		let current_block = System::block_number()
 			.saturated_into::<u64>()
 			// The `System::block_number` is initialized with `n+1`,

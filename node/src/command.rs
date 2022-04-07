@@ -18,7 +18,7 @@
 use crate::{
 	chain_spec,
 	cli::{Cli, Subcommand},
-	service_babe
+	service_babe,
 };
 use runtime_gladios_node::Block as GladiosNodeBlock;
 use runtime_pioneer_node::Block as PioneerNodeBlock;
@@ -129,9 +129,11 @@ pub fn run() -> Result<()> {
 
 	use runtime_gladios_node::RuntimeApi as GRuntimeApi;
 	use runtime_pioneer_node::RuntimeApi as PRuntimeApi;
-	// use services::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch};
-	use service_babe::gladios::ExecutorDispatch as GExecutorDispatch;
-	use service_babe::pioneer::ExecutorDispatch as PExecutorDispatch;
+	// use services::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as
+	// PExecutorDispatch};
+	use service_babe::{
+		gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch,
+	};
 
 	match &cli.subcommand {
 		Some(Subcommand::Inspect(cmd)) => {
@@ -140,7 +142,8 @@ pub fn run() -> Result<()> {
 
 			let runner = cli.create_runner(cmd)?;
 			if runner.config().chain_spec.is_pioneer() {
-				return runner.sync_run(|config| cmd.run::<runtime_pioneer_node::Block, PRuntimeApi, PExecutorDispatch>(config))
+				return runner
+					.sync_run(|config| cmd.run::<runtime_pioneer_node::Block, PRuntimeApi, PExecutorDispatch>(config))
 			}
 			runner.sync_run(|config| cmd.run::<runtime_gladios_node::Block, GRuntimeApi, GExecutorDispatch>(config))
 		},

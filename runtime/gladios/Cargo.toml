@@ -77,6 +77,7 @@ pallet-proxy = { git = "https://github.com/paritytech/substrate", default-featur
 pallet-vesting = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-im-online = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-preimage = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
 pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
@@ -89,6 +90,8 @@ pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", de
 staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 
+
+runtime-common = { package = "runtime-common", path = "../common", default-features = false }
 #ares-oracle-provider-support = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
 #ares-oracle = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle' }
 #oracle-finance = { default-features = false, path = '../../../ares-ocw-suit/pallets/oracle-finance' }
@@ -112,6 +115,7 @@ runtime-benchmarks = [
     'pallet-balances/runtime-benchmarks',
     'pallet-timestamp/runtime-benchmarks',
     'sp-runtime/runtime-benchmarks',
+    'runtime-common/runtime-benchmarks',
 ]
 std = [
     'codec/std',
@@ -132,6 +136,7 @@ std = [
     'pallet-identity/std',
     'pallet-im-online/std',
     'pallet-offences/std',
+    "pallet-preimage/std",
     "pallet-bags-list/std",
     'sp-api/std',
     'sp-block-builder/std',
@@ -170,6 +175,7 @@ std = [
     "pallet-election-provider-multi-phase/std",
     "pallet-authorship/std",
     "oracle-finance/std",
+    "runtime-common/std"
 ]
 
 #[patch."https://github.com/paritytech/substrate"]

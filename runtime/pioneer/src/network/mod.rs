@@ -1,6 +1,5 @@
 use super::*;
 
-
 parameter_types! {
 	pub const MaxAuthorities: u32 = 100;
 }

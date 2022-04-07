@@ -1,6 +1,15 @@
 use super::*;
 use pallet_bounties;
-use part_treasury::*;
+
+parameter_types! {
+	pub const BountyDepositBase: Balance = 50 * CENTS;
+	pub const BountyDepositPayoutDelay: BlockNumber = 2 * DAYS;
+	pub const BountyUpdatePeriod: BlockNumber = 12 * DAYS;
+	pub const MaximumReasonLength: u32 = 16384;
+	pub const BountyCuratorDeposit: Permill = Permill::from_percent(50);
+	pub const BountyValueMinimum: Balance = 200 * CENTS;
+	pub const DataDepositPerByte: Balance = 1 * CENTS;
+}
 
 impl pallet_bounties::Config for Runtime {
 	type Event = Event;

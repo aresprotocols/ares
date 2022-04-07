@@ -78,6 +78,7 @@ pallet-vesting = { git = "https://github.com/paritytech/substrate", default-feat
 pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-im-online = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-preimage = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
 
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
@@ -98,6 +99,7 @@ pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-fe
 #pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
 #staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
 #pallet-session = { default-features = false, path = '../../../ares-ocw-suit/pallets/session' }
+runtime-common = { package = "runtime-common", path = "../common", default-features = false }
 
 [features]
 default = ['std']
@@ -130,6 +132,7 @@ std = [
     'pallet-identity/std',
     'pallet-im-online/std',
     "pallet-offences/std",
+    "pallet-preimage/std",
     "pallet-bags-list/std",
     'sp-api/std',
     'sp-block-builder/std',
@@ -168,6 +171,7 @@ std = [
     "pallet-election-provider-multi-phase/std",
     "pallet-authorship/std",
     "oracle-finance/std",
+    "runtime-common/std",
 ]
 
 #[patch."https://github.com/paritytech/substrate"]
