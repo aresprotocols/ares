@@ -20,7 +20,10 @@ frame-system = { git = "https://github.com/paritytech/substrate", default-featur
 sp-io = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sp-runtime = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sp-npos-elections = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+pallet-authorship = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-balances = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-staking = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-treasury = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-transaction-payment = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
 pallet-election-provider-multi-phase = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
 
@@ -37,8 +40,11 @@ no_std = []
 std = [
     "frame-support/std",
     "frame-system/std",
+    "pallet-balances/std",
     "sp-io/std",
     "sp-runtime/std",
+    "pallet-authorship/std",
+    "pallet-treasury/std",
     "sp-npos-elections/std",
     "pallet-staking/std",
     "pallet-transaction-payment/std",

@@ -1,6 +1,6 @@
 use super::*;
 use constants::{
-	currency::{Balance, DOLLARS},
+	currency::{DOLLARS, GRAND},
 	time::DAYS,
 };
 use frame_support::traits::EnsureOneOf;
@@ -12,11 +12,10 @@ use sp_runtime::Percent;
 
 parameter_types! {
 	pub const ProposalBond: Permill = Permill::from_percent(5);
-	pub const ProposalBondMinimum: Balance = 100 * DOLLARS;
-	pub const ProposalBondMaximum: Balance = 500 * DOLLARS;
-	pub const SpendPeriod: BlockNumber = 14 * DAYS;
-	pub const Burn: Permill = Permill::from_percent(1);
-
+	pub const ProposalBondMinimum: Balance = 2000 * CENTS;
+	pub const ProposalBondMaximum: Balance = 1 * GRAND;
+	pub const SpendPeriod: BlockNumber = 6 * DAYS;
+	pub const Burn: Permill = Permill::from_perthousand(2);
 	pub const TreasuryPalletId: PalletId = PalletId(*b"py/trsry");
 	pub const MaxApprovals: u32 = 100;
 }

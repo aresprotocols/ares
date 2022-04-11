@@ -1,13 +1,15 @@
 use super::*;
 
+use runtime_common::{ Signature, AccountId};
 pub use runtime_pioneer_node::{
 	constants::currency::{Balance, CENTS},
 	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
-	AccountId, AresOracleConfig, BabeConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, Signature, StakingConfig, SudoConfig,
+	AresOracleConfig, BabeConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
+	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig,
 	SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as PioneerWASM_BINARY,
 };
 use sc_consensus_babe::AuthorityId as BabeId;
+
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type PioneerNodeChainSpec = sc_service::GenericChainSpec<GenesisConfig>;
 pub type PioneerSS58Prefix = SS58Prefix;
@@ -23,7 +25,7 @@ pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Pu
 type AccountPublic = <Signature as Verify>::Signer;
 
 /// Generate an account ID from seed.
-pub fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
+pub fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> PioneerAccountId
 where
 	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
 {

@@ -1,4 +1,5 @@
 use super::*;
+use runtime_common::*;
 use frame_support::traits::EnsureOneOf;
 use pallet_democracy;
 use part_council::CouncilCollective;
@@ -6,12 +7,12 @@ use part_technical::TechnicalCollective;
 use runtime_common::prod_or_fast;
 
 parameter_types! {
-	pub LaunchPeriod: BlockNumber = prod_or_fast!(14 * DAYS, 1, "ARES_LAUNCH_PERIOD");
-	pub VotingPeriod: BlockNumber = prod_or_fast!(14 * DAYS, 1 * MINUTES, "ARES_VOTING_PERIOD");
+	pub LaunchPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 1, "ARES_LAUNCH_PERIOD");
+	pub VotingPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 1 * MINUTES, "ARES_VOTING_PERIOD");
 	pub FastTrackVotingPeriod: BlockNumber = prod_or_fast!(3 * HOURS, 1 * MINUTES, "ARES_FAST_TRACK_VOTING_PERIOD");
-	pub const MinimumDeposit: Balance = 50 * DOLLARS;
-	pub EnactmentPeriod: BlockNumber = prod_or_fast!(14 * DAYS, 1, "ARES_ENACTMENT_PERIOD");
-	pub CooloffPeriod: BlockNumber = prod_or_fast!(4 * DAYS, 1, "ARES_COOLOFF_PERIOD");
+	pub const MinimumDeposit: Balance = 100 * CENTS;
+	pub EnactmentPeriod: BlockNumber = prod_or_fast!(8 * DAYS, 1, "ARES_ENACTMENT_PERIOD");
+	pub CooloffPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 1, "ARES_COOLOFF_PERIOD");
 	pub const InstantAllowed: bool = true;
 	pub const MaxVotes: u32 = 100;
 	pub const MaxProposals: u32 = 100;
@@ -29,8 +30,10 @@ impl pallet_democracy::Config for Runtime {
 	/// A straight majority of the council can decide what their next motion is.
 	type ExternalOrigin = pallet_ares_collective::EnsureProportionAtLeast<_1, _2, AccountId, CouncilCollective>;
 	/// A super-majority can have the next scheduled referendum be a straight majority-carries vote.
+	// type ExternalMajorityOrigin =
+	// 	pallet_ares_collective::EnsureProportionAtLeast<_3, sp_core::u32_trait::_5, AccountId, CouncilCollective>;
 	type ExternalMajorityOrigin =
-		pallet_ares_collective::EnsureProportionAtLeast<_3, sp_core::u32_trait::_5, AccountId, CouncilCollective>;
+		pallet_ares_collective::EnsureProportionAtLeast<_1, _2, AccountId, CouncilCollective>;
 	/// A unanimous council can have the next scheduled referendum be a straight default-carries
 	/// (NTB) vote.
 	type ExternalDefaultOrigin = pallet_ares_collective::EnsureProportionAtLeast<_1, _1, AccountId, CouncilCollective>;

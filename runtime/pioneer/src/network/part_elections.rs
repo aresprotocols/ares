@@ -37,14 +37,13 @@ parameter_types! {
 	pub SignedRewardBase: Balance = 1 * DOLLARS;
 	pub SolutionImprovementThreshold: Perbill = Perbill::from_rational(5u32, 10_000);
 
-	// 2 hour session, 0.5 hour unsigned phase, 8 offchain executions.
-	pub OffchainRepeat: BlockNumber = UnsignedPhase::get() / 8;
+	// 2 hour session, 0.5 hour unsigned phase, 16 offchain executions.
+	pub OffchainRepeat: BlockNumber = UnsignedPhase::get() / 32;
 
 	/// Whilst `UseNominatorsAndUpdateBagsList` or `UseNominatorsMap` is in use, this can still be a
 	/// very large value. Once the `BagsList` is in full motion, staking might open its door to many
 	/// more nominators, and this value should instead be what is a "safe" number (e.g. 22500).
 	pub const VoterSnapshotPerBlock: u32 = 22_500;
-
 
 	// miner configs
 	pub NposSolutionPriority: TransactionPriority = Perbill::from_percent(90) * TransactionPriority::max_value();
@@ -53,11 +52,11 @@ parameter_types! {
 
 sp_npos_elections::generate_solution_type!(
 	#[compact]
-	pub struct NposCompactSolution24::<
+	pub struct NposCompactSolution16::<
 		VoterIndex = u32,
 		TargetIndex = u16,
 		Accuracy = sp_runtime::PerU16,
-	>(24)
+	>(16)
 );
 
 /// on chain elect
@@ -91,7 +90,7 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	// nothing to do upon rewards
 	type DataProvider = staking_extend::data::DataProvider<Self>;
 	// problem
-	type Solution = NposCompactSolution24;
+	type Solution = NposCompactSolution16;
 	type Fallback = pallet_election_provider_multi_phase::NoFallback<Self>;
 	type GovernanceFallback = frame_election_provider_support::onchain::OnChainSequentialPhragmen<Self>;
 	type Solver = frame_election_provider_support::SequentialPhragmen<

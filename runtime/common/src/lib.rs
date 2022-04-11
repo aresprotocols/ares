@@ -3,19 +3,27 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub use frame_support::weights::constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight};
-use frame_support::{
-	parameter_types,
-	traits::ConstU32,
-	weights::{constants::WEIGHT_PER_SECOND, DispatchClass, Weight},
-};
+use frame_support::{parameter_types, sp_std, traits::ConstU32, weights::{constants::WEIGHT_PER_SECOND, DispatchClass, Weight}};
+use frame_support::traits::{Currency, Imbalance, OnUnbalanced};
 use frame_system::limits;
+use pallet_balances::NegativeImbalance;
 use pallet_transaction_payment::{Multiplier, TargetedFeeAdjustment};
-use sp_runtime::{FixedPointNumber, Perbill, Perquintill};
+use sp_runtime::{FixedPointNumber, MultiSignature, Perbill, Perquintill};
+use sp_runtime::traits::{IdentifyAccount, Verify};
 use static_assertions::const_assert;
+
+pub type Balance = u128;
 
 /// The block number type used by Polkadot.
 /// 32-bits will allow for 136 years of blocks assuming 1 block per second.
 pub type BlockNumber = u32;
+
+/// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
+pub type Signature = MultiSignature;
+
+/// Some way of identifying an account on the chain. We intentionally make it equivalent
+/// to the public key of our transaction signing scheme.
+pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
 
 /// We assume that an on-initialize consumes 1% of the weight on average, hence a single extrinsic
 /// will not be allowed to consume more than `AvailableBlockRatio - 1%`.
@@ -64,6 +72,11 @@ parameter_types! {
 		.avg_block_initialization(AVERAGE_ON_INITIALIZE_RATIO)
 		.build_or_panic();
 }
+
+/// Parameterized slow adjusting fee updated based on
+/// https://research.web3.foundation/en/latest/polkadot/overview/2-token-economics.html#-2.-slow-adjusting-mechanism
+pub type SlowAdjustingFeeUpdate<R> =
+	TargetedFeeAdjustment<R, TargetBlockFullness, AdjustmentVariable, MinimumMultiplier>;
 
 /// The type used for currency conversion.
 ///
@@ -167,4 +180,44 @@ macro_rules! prod_or_fast {
 			$prod
 		}
 	};
+}
+
+/// Logic for the author to get a portion of fees.
+pub struct ToAuthor<R>(sp_std::marker::PhantomData<R>);
+impl<R> OnUnbalanced<NegativeImbalance<R>> for ToAuthor<R>
+	where
+		R: pallet_balances::Config + pallet_authorship::Config,
+		<R as frame_system::Config>::AccountId: From<AccountId>,
+		<R as frame_system::Config>::AccountId: Into<AccountId>,
+		<R as frame_system::Config>::Event: From<pallet_balances::Event<R>>,
+{
+	fn on_nonzero_unbalanced(amount: NegativeImbalance<R>) {
+		if let Some(author) = <pallet_authorship::Pallet<R>>::author() {
+			<pallet_balances::Pallet<R>>::resolve_creating(&author, amount);
+		}
+	}
+}
+
+pub struct DealWithFees<R>(sp_std::marker::PhantomData<R>);
+impl<R> OnUnbalanced<NegativeImbalance<R>> for DealWithFees<R>
+	where
+		R: pallet_balances::Config + pallet_treasury::Config + pallet_authorship::Config,
+		pallet_treasury::Pallet<R>: OnUnbalanced<NegativeImbalance<R>>,
+		<R as frame_system::Config>::AccountId: From<AccountId>,
+		<R as frame_system::Config>::AccountId: Into<AccountId>,
+		<R as frame_system::Config>::Event: From<pallet_balances::Event<R>>,
+{
+	fn on_unbalanceds<B>(mut fees_then_tips: impl Iterator<Item = NegativeImbalance<R>>) {
+		if let Some(fees) = fees_then_tips.next() {
+			// for fees, 80% to treasury, 20% to author
+			let mut split = fees.ration(80, 20);
+			if let Some(tips) = fees_then_tips.next() {
+				// for tips, if any, 100% to author
+				tips.merge_into(&mut split.1);
+			}
+			use pallet_treasury::Pallet as Treasury;
+			<Treasury<R> as OnUnbalanced<_>>::on_unbalanced(split.0);
+			<ToAuthor<R> as OnUnbalanced<_>>::on_unbalanced(split.1);
+		}
+	}
 }

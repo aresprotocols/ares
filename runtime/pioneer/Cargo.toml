@@ -15,6 +15,7 @@ targets = ['x86_64-unknown-linux-gnu']
 substrate-wasm-builder = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.17" }
 
 [dependencies]
+smallvec = "1.6.1"
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ['derive'] }
 hex-literal = { version = '0.3.1', optional = true }
 static_assertions = "1.1.0"
@@ -28,6 +29,7 @@ frame-support = { git = "https://github.com/paritytech/substrate", default-featu
 frame-system = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 frame-system-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 frame-election-provider-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+sp-arithmetic = { package = "sp-arithmetic", git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
 
 # primitives
 sp-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
@@ -77,8 +79,8 @@ pallet-proxy = { git = "https://github.com/paritytech/substrate", default-featur
 pallet-vesting = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-im-online = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
-pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-preimage = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
@@ -89,7 +91,10 @@ pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", de
 pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-gilt = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+pallet-staking-reward-fn = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
 
+runtime-common = { package = "runtime-common", path = "../common", default-features = false }
 #ares-oracle-provider-support = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
 #ares-oracle = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle' }
 #oracle-finance = { default-features = false, path = '../../../ares-ocw-suit/pallets/oracle-finance' }
@@ -99,7 +104,8 @@ pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-fe
 #pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
 #staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
 #pallet-session = { default-features = false, path = '../../../ares-ocw-suit/pallets/session' }
-runtime-common = { package = "runtime-common", path = "../common", default-features = false }
+
+#reqwest = {default-feature = false, version = '0.11.8'}
 
 [features]
 default = ['std']
@@ -112,6 +118,7 @@ runtime-benchmarks = [
     'pallet-balances/runtime-benchmarks',
     'pallet-timestamp/runtime-benchmarks',
     'sp-runtime/runtime-benchmarks',
+    'runtime-common/runtime-benchmarks',
 ]
 std = [
     'codec/std',
@@ -131,7 +138,7 @@ std = [
     'pallet-transaction-payment/std',
     'pallet-identity/std',
     'pallet-im-online/std',
-    "pallet-offences/std",
+    'pallet-offences/std',
     "pallet-preimage/std",
     "pallet-bags-list/std",
     'sp-api/std',
@@ -172,6 +179,8 @@ std = [
     "pallet-authorship/std",
     "oracle-finance/std",
     "runtime-common/std",
+    "pallet-gilt/std",
+    "pallet-staking-reward-fn/std",
 ]
 
 #[patch."https://github.com/paritytech/substrate"]

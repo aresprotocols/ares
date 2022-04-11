@@ -27,7 +27,7 @@ parameter_types! {
 	pub const ErrLogPoolDepth: u32 = 1000;
 }
 
-// // impl ares_oracle::aura_handler::Config for Runtime {}
+// impl ares_oracle::aura_handler::Config for Runtime {}
 // impl ares_oracle::babe_handler::Config for Runtime {
 // 	type AuthorityId = pallet_babe::AuthorityId;
 // }

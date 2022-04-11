@@ -20,7 +20,7 @@ impl pallet_ares_challenge::Config for Runtime {
 	type SlashProposer = AresChallenge;
 	type BidderMinimumDeposit = BidderMinimumDeposit;
 	type IsAuthority = Babe; //Aura Or Babe
-						 //type AuthorityId = AuraId; // (Aura or Babe) AuthorityId
-	type AuthorityId = pallet_babe::AuthorityId; // (Aura or Babe) AuthorityId
-											 // type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
+						 // type AuthorityId = AuraId; // (Aura or Babe) AuthorityId
+	type AuthorityId = pallet_babe::AuthorityId;
+	// type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
 }

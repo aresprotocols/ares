@@ -6,14 +6,14 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, GrandpaEquivocationOffence,
 };
-use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 use sp_api::impl_runtime_apis;
 // use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use network::part_staking::{BondingDuration, SessionsPerEra};
+use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
+use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
+
 use sp_core::{
 	crypto::KeyTypeId,
 	u32_trait::{_1, _2, _3, _4},
@@ -60,6 +60,8 @@ pub mod part_estimates;
 pub mod part_ocw;
 pub mod part_ocw_finance;
 
+use network::part_staking::{BondingDuration, SessionsPerEra};
+
 pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{BlockNumber, DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
 
@@ -101,8 +103,8 @@ pub mod opaque {
 //   https://substrate.dev/docs/en/knowledgebase/runtime/upgrades#runtime-versioning
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("ares-gladios"),
-	impl_name: create_runtime_str!("ares-gladios"),
+	spec_name: create_runtime_str!("ares-pioneer"),
+	impl_name: create_runtime_str!("ares-pioneer"),
 	authoring_version: 1,
 	// The version of the runtime specification. A full node will not attempt to use its native
 	//   runtime in substitute for the on-chain Wasm runtime unless all of `spec_name`,
@@ -115,7 +117,6 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	transaction_version: 1,
 	state_version: 1,
 };
-
 /// This determines the average expected block time that we are targeting.
 /// Blocks will be produced at a minimum duration defined by `SLOT_DURATION`.
 /// `SLOT_DURATION` is picked up by `pallet_timestamp` which is in turn picked
@@ -215,6 +216,12 @@ impl pallet_randomness_collective_flip::Config for Runtime {}
 // 	type DisabledValidators = ();
 // }
 
+parameter_types! {
+	pub const EpochDuration: u64 = constants::time::EPOCH_DURATION_IN_BLOCKS as u64;
+	pub const ReportLongevity: u64 =
+		BondingDuration::get() as u64 * SessionsPerEra::get() as u64 * EpochDuration::get();
+}
+
 impl pallet_grandpa::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
@@ -229,7 +236,7 @@ impl pallet_grandpa::Config for Runtime {
 	type HandleEquivocation = pallet_grandpa::EquivocationHandler<
 		Self::KeyOwnerIdentification,
 		Offences, // ReportOffence<T::AccountId, Self::KeyOwnerIdentification, ReportLongevity>
-		network::part_babe::ReportLongevity,
+		ReportLongevity,
 		GrandpaEquivocationOffence<Self::KeyOwnerIdentification>,
 	>;
 
@@ -307,7 +314,7 @@ construct_runtime!(
 		Preimage: pallet_preimage::{Pallet, Call, Storage, Event<T>},
 
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
-		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
+		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event, ValidateUnsigned},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
@@ -344,7 +351,7 @@ construct_runtime!(
 		ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		Offences: pallet_offences::{Pallet, Storage, Event},
 
-		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
+		Estimates: pallet_price_estimates,
 	}
 );
 
@@ -439,15 +446,6 @@ impl_runtime_apis! {
 		}
 	}
 
-	// impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
-	// 	fn slot_duration() -> sp_consensus_aura::SlotDuration {
-	// 		sp_consensus_aura::SlotDuration::from_millis(Aura::slot_duration())
-	// 	}
-	//
-	// 	fn authorities() -> Vec<AuraId> {
-	// 		Aura::authorities().to_vec()
-	// 	}
-	// }
 	// impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
 	// 	fn slot_duration() -> sp_consensus_aura::SlotDuration {
 	// 		sp_consensus_aura::SlotDuration::from_millis(Aura::slot_duration())

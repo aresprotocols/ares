@@ -4,9 +4,19 @@ pub use pallet_session;
 use sp_runtime::{impl_opaque_keys, traits::OpaqueKeys};
 
 // parameter_types! {
-// 	pub const DisabledValidatorsThreshold: Perbill = Perbill::from_percent(17);
+// 	// pub const DisabledValidatorsThreshold: Perbill = Perbill::from_percent(17);
 // 	// pub const Period: u32 = EPOCH_DURATION_IN_BLOCKS as u32; // 100 block = 10min  [10b = 1min]
-// [10min = 100b] 	// pub const Offset: u32 = 0;
+// [10min = 100b] 	// pub const Period: u32 = MINUTES * 2u32;
+// 	// pub const Offset: u32 = 0;
+// }
+
+// // TODO Remove while runtime upgrade is done.
+// impl_opaque_keys! {
+// 	pub struct OldSessionKeys {
+// 		pub aura: Aura,
+// 		pub grandpa: Grandpa,
+// 		pub ares: AresOracle,
+// 	}
 // }
 
 impl_opaque_keys! {
@@ -18,16 +28,7 @@ impl_opaque_keys! {
 	}
 }
 
-// TODO Remove while runtime upgrade is done.
-// impl_opaque_keys! {
-// 	pub struct OldSessionKeys {
-// 		pub aura: Aura,
-// 		pub grandpa: Grandpa,
-// 		pub ares: AresOracle,
-// 	}
-// }
-
-// pub fn dummy_imonline_id_from_account_id(a: AuraId) -> ImOnlineId {
+// pub fn dummy_imonline_id_from_account_id(a: AccountId) -> ImOnlineId {
 // 	let mut id = ImOnlineId::default();
 // 	let id_raw: &mut [u8] = id.as_mut();
 //
@@ -40,10 +41,10 @@ impl_opaque_keys! {
 // When this is removed, should also remove `OldSessionKeys`.
 // fn transform_session_keys(v: AccountId, old: OldSessionKeys) -> SessionKeys {
 // 	SessionKeys {
-// 		aura: old.aura.clone(),
+// 		aura: old.aura,
 // 		grandpa: old.grandpa,
 // 		ares: old.ares,
-// 		im_online: dummy_imonline_id_from_account_id(old.aura),
+// 		im_online: dummy_imonline_id_from_account_id(v),
 // 	}
 // }
 
@@ -52,6 +53,8 @@ impl_opaque_keys! {
 // impl frame_support::traits::OnRuntimeUpgrade for UpgradeSessionKeys {
 // 	fn on_runtime_upgrade() -> frame_support::weights::Weight {
 // 		Session::upgrade_keys::<OldSessionKeys, _>(transform_session_keys);
+//
+// 		// Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block
 // 		RuntimeBlockWeights::get().max_block / 2
 // 	}
 // }
@@ -61,10 +64,11 @@ impl pallet_session::Config for Runtime {
 	type ValidatorId = <Self as frame_system::Config>::AccountId;
 	type ValidatorIdOf = pallet_staking::StashOf<Self>;
 	type ShouldEndSession = Babe; // pallet_session::PeriodicSessions<Period, Offset>;
-	type NextSessionRotation = Babe; //pallet_session::PeriodicSessions<Period, Offset>;
-	type SessionManager = OracleFinance; //pallet_session::historical::NoteHistoricalRoot<Self, Staking>;
+	type NextSessionRotation = Babe; // pallet_session::PeriodicSessions<Period, Offset>;
+	type SessionManager = OracleFinance;
 	type SessionHandler = <SessionKeys as OpaqueKeys>::KeyTypeIdProviders;
 	type Keys = SessionKeys;
+	// type DisabledValidatorsThreshold = DisabledValidatorsThreshold;
 	type WeightInfo = pallet_session::weights::SubstrateWeight<Runtime>;
 }
 

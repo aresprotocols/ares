@@ -13,8 +13,6 @@ pub const BABE_GENESIS_EPOCH_CONFIG: sp_consensus_babe::BabeEpochConfiguration =
 	};
 
 parameter_types! {
-	// NOTE: Currently it is not possible to change the epoch duration after the chain has started.
-	//       Attempting to do so will brick block production.
 	pub EpochDuration: u64 = prod_or_fast!(
 		EPOCH_DURATION_IN_BLOCKS as u64,
 		2 * MINUTES as u64,

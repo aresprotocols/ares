@@ -12,10 +12,11 @@ use sp_runtime::Percent;
 
 parameter_types! {
 	pub const ProposalBond: Permill = Permill::from_percent(5);
-	pub const ProposalBondMinimum: Balance = 2000 * CENTS;
-	pub const ProposalBondMaximum: Balance = 1000 * DOLLARS;
-	pub const SpendPeriod: BlockNumber = 3 * DAYS;
-	pub const Burn: Permill = Permill::from_perthousand(2);
+	pub const ProposalBondMinimum: Balance = 100 * DOLLARS;
+	pub const ProposalBondMaximum: Balance = 500 * DOLLARS;
+	pub const SpendPeriod: BlockNumber = 24 * DAYS;
+	pub const Burn: Permill = Permill::from_percent(1);
+
 	pub const TreasuryPalletId: PalletId = PalletId(*b"py/trsry");
 	pub const MaxApprovals: u32 = 100;
 }

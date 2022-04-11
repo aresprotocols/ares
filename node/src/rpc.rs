@@ -10,7 +10,7 @@ use std::sync::Arc;
 use frame_support::sp_runtime::traits::{Hash, Header};
 use jsonrpc_core::{futures::future::Future, Error as RpcError, ErrorCode};
 use jsonrpc_derive::rpc;
-use runtime_gladios_node::{opaque::Block, AccountId, Balance, Index};
+use runtime_gladios_node::{opaque::Block, Balance, Index};
 use sc_client_api::{blockchain::Backend, client::ProvideUncles};
 use sc_consensus::{BlockCheckParams, BlockImport, ImportResult};
 use sc_rpc::chain::new_full;
@@ -29,6 +29,8 @@ use frame_support::sp_runtime::generic::BlockId;
 use futures::FutureExt;
 use jsonrpc_pubsub::manager::SubscriptionManager;
 use sc_client_api::BlockBackend;
+use runtime_common::AccountId;
+
 /// Full client dependencies.
 pub struct FullDeps<C, P, B> {
 	/// The client instance to use.

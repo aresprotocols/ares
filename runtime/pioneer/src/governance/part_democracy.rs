@@ -6,12 +6,12 @@ use part_technical::TechnicalCollective;
 use runtime_common::prod_or_fast;
 
 parameter_types! {
-	pub LaunchPeriod: BlockNumber = prod_or_fast!(3 * DAYS, 1, "ARES_LAUNCH_PERIOD");
-	pub VotingPeriod: BlockNumber = prod_or_fast!(3 * DAYS, 1 * MINUTES, "ARES_VOTING_PERIOD");
-	pub FastTrackVotingPeriod: BlockNumber = prod_or_fast!(1 * HOURS, 1 * MINUTES, "ARES_FAST_TRACK_VOTING_PERIOD");
-	pub const MinimumDeposit: Balance = 100 * CENTS;
-	pub EnactmentPeriod: BlockNumber = prod_or_fast!(4 * DAYS, 1, "ARES_ENACTMENT_PERIOD");
-	pub CooloffPeriod: BlockNumber = prod_or_fast!(3 * DAYS, 1, "ARES_COOLOFF_PERIOD");
+	pub LaunchPeriod: BlockNumber = prod_or_fast!(28 * DAYS, 1, "ARES_LAUNCH_PERIOD");
+	pub VotingPeriod: BlockNumber = prod_or_fast!(28 * DAYS, 1 * MINUTES, "ARES_VOTING_PERIOD");
+	pub FastTrackVotingPeriod: BlockNumber = prod_or_fast!(3 * HOURS, 1 * MINUTES, "ARES_FAST_TRACK_VOTING_PERIOD");
+	pub const MinimumDeposit: Balance = 100 * DOLLARS;
+	pub EnactmentPeriod: BlockNumber = prod_or_fast!(28 * DAYS, 1, "ARES_ENACTMENT_PERIOD");
+	pub CooloffPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 1, "ARES_COOLOFF_PERIOD");
 	pub const InstantAllowed: bool = true;
 	pub const MaxVotes: u32 = 100;
 	pub const MaxProposals: u32 = 100;

@@ -6,14 +6,15 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
+use runtime_common::*;
+use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, GrandpaEquivocationOffence,
 };
+use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 use sp_api::impl_runtime_apis;
 // use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
-use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
-
+use network::part_staking::{BondingDuration, SessionsPerEra};
 use sp_core::{
 	crypto::KeyTypeId,
 	u32_trait::{_1, _2, _3, _4},
@@ -36,7 +37,7 @@ pub use frame_support::{
 	traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
 	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
-		DispatchClass, IdentityFee, Weight,
+		DispatchClass, Weight,
 	},
 	PalletId, RuntimeDebug, StorageValue,
 };
@@ -59,18 +60,18 @@ mod part_challenge;
 pub mod part_estimates;
 pub mod part_ocw;
 pub mod part_ocw_finance;
-
-use network::part_staking::{BondingDuration, SessionsPerEra};
-
-pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
-use constants::time::{BlockNumber, DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
+pub use runtime_common::*;
+pub use constants::currency::{deposit, CENTS, DOLLARS, MILLICENTS};
+use constants::time::{DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
+use runtime_common::{DealWithFees, Signature, AccountId, SlowAdjustingFeeUpdate};
+use crate::constants::fee::WeightToFee;
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
-pub type Signature = MultiSignature;
+// pub type Signature = Signature ;// MultiSignature;
 
 /// Some way of identifying an account on the chain. We intentionally make it equivalent
 /// to the public key of our transaction signing scheme.
-pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
+// pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
 
 /// Index of a transaction in the chain.
 pub type Index = u32;
@@ -117,6 +118,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	transaction_version: 1,
 	state_version: 1,
 };
+
 /// This determines the average expected block time that we are targeting.
 /// Blocks will be produced at a minimum duration defined by `SLOT_DURATION`.
 /// `SLOT_DURATION` is picked up by `pallet_timestamp` which is in turn picked
@@ -216,12 +218,6 @@ impl pallet_randomness_collective_flip::Config for Runtime {}
 // 	type DisabledValidators = ();
 // }
 
-parameter_types! {
-	pub const EpochDuration: u64 = constants::time::EPOCH_DURATION_IN_BLOCKS as u64;
-	pub const ReportLongevity: u64 =
-		BondingDuration::get() as u64 * SessionsPerEra::get() as u64 * EpochDuration::get();
-}
-
 impl pallet_grandpa::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
@@ -236,7 +232,7 @@ impl pallet_grandpa::Config for Runtime {
 	type HandleEquivocation = pallet_grandpa::EquivocationHandler<
 		Self::KeyOwnerIdentification,
 		Offences, // ReportOffence<T::AccountId, Self::KeyOwnerIdentification, ReportLongevity>
-		ReportLongevity,
+		network::part_babe::ReportLongevity,
 		GrandpaEquivocationOffence<Self::KeyOwnerIdentification>,
 	>;
 
@@ -281,12 +277,20 @@ parameter_types! {
 	pub const OperationalFeeMultiplier: u8 = 5;
 }
 
+// impl pallet_transaction_payment::Config for Runtime {
+// 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
+// 	type TransactionByteFee = TransactionByteFee;
+// 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
+// 	type WeightToFee = IdentityFee<Balance>;
+// 	type FeeMultiplierUpdate = ();
+// }
+
 impl pallet_transaction_payment::Config for Runtime {
-	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
+	type OnChargeTransaction = CurrencyAdapter<Balances, DealWithFees<Self>>;
 	type TransactionByteFee = TransactionByteFee;
 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
-	type WeightToFee = IdentityFee<Balance>;
-	type FeeMultiplierUpdate = ();
+	type WeightToFee = WeightToFee;
+	type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -314,7 +318,7 @@ construct_runtime!(
 		Preimage: pallet_preimage::{Pallet, Call, Storage, Event<T>},
 
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
-		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event, ValidateUnsigned},
+		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
@@ -350,8 +354,9 @@ construct_runtime!(
 		Elections: pallet_elections_phragmen::{Pallet, Call, Storage, Event<T>, Config<T>},
 		ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		Offences: pallet_offences::{Pallet, Storage, Event},
-
-		Estimates: pallet_price_estimates,
+		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
+		// Gilts pallet.
+		// Gilt: pallet_gilt::{Pallet, Call, Storage, Event<T>, Config} ,
 	}
 );
 
@@ -446,6 +451,15 @@ impl_runtime_apis! {
 		}
 	}
 
+	// impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
+	// 	fn slot_duration() -> sp_consensus_aura::SlotDuration {
+	// 		sp_consensus_aura::SlotDuration::from_millis(Aura::slot_duration())
+	// 	}
+	//
+	// 	fn authorities() -> Vec<AuraId> {
+	// 		Aura::authorities().to_vec()
+	// 	}
+	// }
 	// impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
 	// 	fn slot_duration() -> sp_consensus_aura::SlotDuration {
 	// 		sp_consensus_aura::SlotDuration::from_millis(Aura::slot_duration())

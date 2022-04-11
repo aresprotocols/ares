@@ -1,8 +1,9 @@
 use super::*;
 use pallet_collective;
+use runtime_common::prod_or_fast;
 
 parameter_types! {
-	pub const TechnicalMotionDuration: BlockNumber = 5 * DAYS;
+	pub TechnicalMotionDuration: BlockNumber = prod_or_fast!(7 * DAYS, 2 * MINUTES, "ARES_MOTION_DURATION");
 	pub const TechnicalMaxProposals: u32 = 100;
 	pub const TechnicalMaxMembers: u32 = 100;
 }

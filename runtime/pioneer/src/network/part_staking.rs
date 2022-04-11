@@ -1,6 +1,6 @@
 use super::*;
 
-use crate::network::part_elections::NposCompactSolution24;
+use crate::network::part_elections::NposCompactSolution16;
 use frame_election_provider_support::onchain;
 use frame_support::traits::{ConstU32, EnsureOneOf, U128CurrencyToVote};
 use frame_system::EnsureRoot;
@@ -11,11 +11,14 @@ pub use pallet_staking::StakerStatus;
 use sp_runtime::curve::PiecewiseLinear;
 pub use sp_staking;
 
+
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
 		min_inflation: 0_025_000,
 		max_inflation: 0_100_000,
-		ideal_stake: 0_500_000,
+		// 3:2:1 staked : parachains : float.
+		// while there's no parachains, then this is 75% staked : 25% float.
+		ideal_stake: 0_750_000,
 		falloff: 0_050_000,
 		max_piece_count: 40,
 		test_precision: 0_005_000,
@@ -23,17 +26,17 @@ pallet_staking_reward_curve::build! {
 }
 
 parameter_types! {
-	// Six sessions in an era (3 hours).
+	// Six sessions in an era (12 hours).
 	pub const SessionsPerEra: sp_staking::SessionIndex = 6;
-	// 14 eras for unbonding (42 hours).
-	pub const BondingDuration: sp_staking::EraIndex = 14;
-	// 13 eras in which slashes can be cancelled (slightly less than 39 hours).
+	// 28 eras for unbonding (14 days).
+	pub const BondingDuration: sp_staking::EraIndex = 28;
+	// 27 eras in which slashes can be cancelled (slightly less than 14 days).
 	pub const SlashDeferDuration: sp_staking::EraIndex = 27;
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
 	pub const MaxNominatorRewardedPerValidator: u32 = 256;
 	pub const OffendingValidatorsThreshold: Perbill = Perbill::from_percent(17);
-	// 24
-	pub const MaxNominations: u32 = <NposCompactSolution24 as sp_npos_elections::NposSolution>::LIMIT as u32;
+	// 16
+	pub const MaxNominations: u32 = <NposCompactSolution16 as sp_npos_elections::NposSolution>::LIMIT as u32;
 }
 
 parameter_types! {
@@ -51,7 +54,12 @@ impl pallet_staking::Config for Runtime {
 	type Currency = Balances;
 	type UnixTime = Timestamp;
 	type CurrencyToVote = runtime_common::CurrencyToVote;
+	// type ElectionProvider =  ElectionProviderMultiPhase;
 	type ElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
+	// // ElectionProviderMultiPhase;
+	// type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
+	// 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
+	// >;
 	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
 	type MaxNominations = MaxNominations;
 	type RewardRemainder = Treasury;

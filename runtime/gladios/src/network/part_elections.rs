@@ -34,11 +34,11 @@ parameter_types! {
 	// 0.005 Ares per KB of solution data.
 	pub const SignedDepositByte: Balance = deposit(0, 10) / 1024;
 	// Each good submission will get 1 DOT as reward
-	pub SignedRewardBase: Balance = 1 * DOLLARS;
+	pub SignedRewardBase: Balance = DOLLARS / 10;
 	pub SolutionImprovementThreshold: Perbill = Perbill::from_rational(5u32, 10_000);
 
-	// 2 hour session, 0.5 hour unsigned phase, 16 offchain executions.
-	pub OffchainRepeat: BlockNumber = UnsignedPhase::get() / 16;
+	// 2 hour session, 0.5 hour unsigned phase, 8 offchain executions.
+	pub OffchainRepeat: BlockNumber = UnsignedPhase::get() / 8;
 
 	/// Whilst `UseNominatorsAndUpdateBagsList` or `UseNominatorsMap` is in use, this can still be a
 	/// very large value. Once the `BagsList` is in full motion, staking might open its door to many
@@ -53,11 +53,11 @@ parameter_types! {
 
 sp_npos_elections::generate_solution_type!(
 	#[compact]
-	pub struct NposCompactSolution16::<
+	pub struct NposCompactSolution24::<
 		VoterIndex = u32,
 		TargetIndex = u16,
 		Accuracy = sp_runtime::PerU16,
-	>(16)
+	>(24)
 );
 
 /// on chain elect
@@ -91,7 +91,7 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	// nothing to do upon rewards
 	type DataProvider = staking_extend::data::DataProvider<Self>;
 	// problem
-	type Solution = NposCompactSolution16;
+	type Solution = NposCompactSolution24;
 	type Fallback = pallet_election_provider_multi_phase::NoFallback<Self>;
 	type GovernanceFallback = frame_election_provider_support::onchain::OnChainSequentialPhragmen<Self>;
 	type Solver = frame_election_provider_support::SequentialPhragmen<
