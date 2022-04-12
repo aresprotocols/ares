@@ -3,8 +3,8 @@ use pallet_price_estimates;
 
 /// Configure the pallet-ares-demo in pallets/demo.
 parameter_types! {
-	pub const MinimumDeposit: Balance = 100 * DOLLARS;
-	pub const BidderMinimumDeposit: Balance = 1000 * DOLLARS;
+	pub const MinimumDeposit: Balance = 100 * DOLLARS * ARES_AMOUNT_MULT;
+	pub const BidderMinimumDeposit: Balance = 1000 * DOLLARS * ARES_AMOUNT_MULT;
 	pub const EstimatesPalletId: PalletId = PalletId(*b"py/arest");
 	pub const EstimatesPerSymbol: u32 = 1;
 	pub const UnsignedPriority: u64 = 1 << 20;

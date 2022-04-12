@@ -5,8 +5,8 @@ pub type SessionIndex = u32;
 parameter_types! {
 	pub const AresFinancePalletId: PalletId = PalletId(*b"aoe/fund");
 	pub const BasicDollars: Balance = DOLLARS;
-	pub AskPerEra: SessionIndex = 6;
-	pub const HistoryDepth: u32 = 7 * 24;
+	pub const AskPerEra: SessionIndex = 6;
+	pub const HistoryDepth: u32 = 1000;
 }
 
 impl oracle_finance::Config for Runtime {

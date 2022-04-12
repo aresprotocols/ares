@@ -7,10 +7,7 @@ pub type SessionIndex = u32;
 parameter_types! {
 	pub const AresFinancePalletId: PalletId = PalletId(*b"aoe/fund");
 	pub const BasicDollars: Balance = DOLLARS;
-	// pub const AskPeriod: BlockNumber = 1 * DAYS ;
-	// pub const RewardPeriodCycle: AskPeriodNum = 100;
-	// pub const RewardSlot: AskPeriodNum = 1; //
-	pub AskPerEra: SessionIndex = 2;
+	pub const AskPerEra: SessionIndex = 6;
 	pub const HistoryDepth: u32 = 1000;
 }
 

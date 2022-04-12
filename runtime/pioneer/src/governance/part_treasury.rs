@@ -12,8 +12,8 @@ use sp_runtime::Percent;
 
 parameter_types! {
 	pub const ProposalBond: Permill = Permill::from_percent(5);
-	pub const ProposalBondMinimum: Balance = 100 * DOLLARS;
-	pub const ProposalBondMaximum: Balance = 500 * DOLLARS;
+	pub const ProposalBondMinimum: Balance = 100 * DOLLARS * ARES_AMOUNT_MULT;
+	pub const ProposalBondMaximum: Balance = 500 * DOLLARS * ARES_AMOUNT_MULT;
 	pub const SpendPeriod: BlockNumber = 24 * DAYS;
 	pub const Burn: Permill = Permill::from_percent(1);
 

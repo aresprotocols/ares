@@ -5,9 +5,9 @@ use pallet_multisig;
 
 parameter_types! {
 	// One storage item; key size is 32; value is size 4+4+16+32 bytes = 56 bytes.
-	pub const DepositBase: Balance = deposit(1, 88);
+	pub const DepositBase: Balance = deposit(1, 88) * ARES_AMOUNT_MULT;
 	// Additional storage item size of 32 bytes.
-	pub const DepositFactor: Balance = deposit(0, 32);
+	pub const DepositFactor: Balance = deposit(0, 32) * ARES_AMOUNT_MULT;
 	pub const MaxSignatories: u16 = 100;
 }
 

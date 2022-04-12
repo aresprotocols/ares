@@ -30,11 +30,11 @@ parameter_types! {
 	// signed config
 	pub const SignedMaxSubmissions: u32 = 16;
 	// 20 Ares fixed deposit..
-	pub const SignedDepositBase: Balance = deposit(2, 0);
+	pub const SignedDepositBase: Balance = deposit(2, 0) * ARES_AMOUNT_MULT;
 	// 0.005 Ares per KB of solution data.
-	pub const SignedDepositByte: Balance = deposit(0, 10) / 1024;
+	pub const SignedDepositByte: Balance = deposit(0, 10) / 1024 * ARES_AMOUNT_MULT;
 	// Each good submission will get 1 DOT as reward
-	pub SignedRewardBase: Balance = DOLLARS / 10;
+	pub SignedRewardBase: Balance = DOLLARS / 10 * ARES_AMOUNT_MULT;
 	pub SolutionImprovementThreshold: Perbill = Perbill::from_rational(5u32, 10_000);
 
 	// 2 hour session, 0.5 hour unsigned phase, 8 offchain executions.

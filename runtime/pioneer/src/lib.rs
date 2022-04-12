@@ -62,7 +62,7 @@ pub mod part_ocw_finance;
 
 use network::part_staking::{BondingDuration, SessionsPerEra};
 
-pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS};
+pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS, ARES_AMOUNT_MULT};
 use constants::time::{BlockNumber, DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.

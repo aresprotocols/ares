@@ -3,7 +3,7 @@ use pallet_vesting;
 use sp_runtime::traits::ConvertInto;
 
 parameter_types! {
-	pub const MinVestedTransfer: Balance = 1 * DOLLARS;
+	pub const MinVestedTransfer: Balance = 1 * DOLLARS * ARES_AMOUNT_MULT;
 }
 
 impl pallet_vesting::Config for Runtime {

@@ -10,9 +10,9 @@ type EnsureRootOrHalfCouncil = EnsureOneOf<
 
 parameter_types! {
 	// Minimum 4 CENTS/byte
-	pub const BasicDeposit: Balance = deposit(1, 258);
-	pub const FieldDeposit: Balance = deposit(0, 66);
-	pub const SubAccountDeposit: Balance = deposit(1, 53);
+	pub const BasicDeposit: Balance = deposit(1, 258) * ARES_AMOUNT_MULT;
+	pub const FieldDeposit: Balance = deposit(0, 66) * ARES_AMOUNT_MULT;
+	pub const SubAccountDeposit: Balance = deposit(1, 53) * ARES_AMOUNT_MULT;
 	pub const MaxSubAccounts: u32 = 100;
 	pub const MaxAdditionalFields: u32 = 100;
 	pub const MaxRegistrars: u32 = 20;

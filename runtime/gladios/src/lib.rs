@@ -61,7 +61,7 @@ pub mod part_estimates;
 pub mod part_ocw;
 pub mod part_ocw_finance;
 pub use runtime_common::*;
-pub use constants::currency::{deposit, CENTS, DOLLARS, MILLICENTS};
+pub use constants::currency::{deposit, CENTS, DOLLARS, MILLICENTS, ARES_AMOUNT_MULT};
 use constants::time::{DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
 use runtime_common::{DealWithFees, Signature, AccountId, SlowAdjustingFeeUpdate};
 use crate::constants::fee::WeightToFee;
