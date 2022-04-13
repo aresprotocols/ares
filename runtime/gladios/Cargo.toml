@@ -179,7 +179,7 @@ std = [
     "pallet-gilt/std",
     "pallet-staking-reward-fn/std",
 ]
-
+fast-runtime = []
 #[patch."https://github.com/paritytech/substrate"]
 #gladios-node ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/node" }
 #runtime-gladios-node ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/runtime" }
