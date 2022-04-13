@@ -10,9 +10,9 @@ use static_assertions::const_assert;
 parameter_types! {
 	pub const CandidacyBond: Balance = 100 * CENTS * ARES_AMOUNT_MULT;
 	// 1 storage item created, key size is 32 bytes, value size is 16+16.
-	pub const VotingBondBase: Balance = deposit(1, 64);
+	pub const VotingBondBase: Balance = deposit(1, 64) * ARES_AMOUNT_MULT;
 	// additional data per vote is 32 bytes (account id).
-	pub const VotingBondFactor: Balance = deposit(0, 32);
+	pub const VotingBondFactor: Balance = deposit(0, 32) * ARES_AMOUNT_MULT;
 	/// Weekly council elections; scaling up to monthly eventually.
 	pub TermDuration: BlockNumber = prod_or_fast!(24 * HOURS, 2 * MINUTES, "ARES_TERM_DURATION");
 	/// 13 members initially, to be increased to 23 eventually.

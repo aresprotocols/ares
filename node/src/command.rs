@@ -129,17 +129,13 @@ pub fn run() -> Result<()> {
 
 	use runtime_gladios_node::RuntimeApi as GRuntimeApi;
 	use runtime_pioneer_node::RuntimeApi as PRuntimeApi;
-	// use services::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as
-	// PExecutorDispatch};
+
 	use service_babe::{
 		gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch,
 	};
 
 	match &cli.subcommand {
 		Some(Subcommand::Inspect(cmd)) => {
-			// let runner = cli.create_runner(cmd)?;
-			// runner.sync_run(|config| cmd.run::<Block, RuntimeApi, ExecutorDispatch>(config))
-
 			let runner = cli.create_runner(cmd)?;
 			if runner.config().chain_spec.is_pioneer() {
 				return runner
@@ -252,55 +248,6 @@ pub fn run() -> Result<()> {
 		Some(Subcommand::TryRuntime) => Err("TryRuntime wasn't enabled when building the node. \
 				You can enable it with `--features try-runtime`."
 			.into()),
-		// Some(Subcommand::ForceRevert(cmd)) => {
-		// 	let runner = cli.create_runner(cmd)?;
-		// 	if runner.config().chain_spec.is_pioneer() {
-		// 		return runner.async_run(|config| {
-		// 			let PartialComponents { client, task_manager, backend, .. } =
-		// 				service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
-		// 			Ok((cmd.run(client, backend), task_manager))
-		// 		})
-		// 	}
-		// 	runner.async_run(|config| {
-		// 		let PartialComponents { client, task_manager, backend, .. } =
-		// 			service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
-		// 		Ok((cmd.run(client, backend), task_manager))
-		// 	})
-		// },
-		// Some(Subcommand::GrandpaState(cmd)) => {
-		// 	let runner = cli.create_runner(cmd)?;
-		// 	if runner.config().chain_spec.is_pioneer() {
-		// 		return runner.async_run(|config| {
-		// 			let PartialComponents {
-		// 				client,
-		// 				backend,
-		// 				task_manager,
-		// 				keystore_container,
-		// 				select_chain,
-		// 				import_queue,
-		// 				transaction_pool,
-		// 				other,
-		// 			} = service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
-		// 			let (_, grandpa_link,_) = other.0;
-		// 			Ok((cmd.run(grandpa_link), task_manager))
-		// 		})
-		// 	}
-		// 	runner.async_run(|config| {
-		// 		let PartialComponents {
-		// 			client,
-		// 			backend,
-		// 			task_manager,
-		// 			keystore_container,
-		// 			select_chain,
-		// 			import_queue,
-		// 			transaction_pool,
-		// 			other,
-		// 		} = service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
-		// 		// let grandpa_link = other.1;
-		// 		let (_, grandpa_link,_) = other.0;
-		// 		Ok((cmd.run(grandpa_link), task_manager))
-		// 	})
-		// },
 		Some(Subcommand::Benchmark(cmd)) =>
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
@@ -317,6 +264,7 @@ pub fn run() -> Result<()> {
 		None => {
 			let runner = cli.create_runner(&cli.run)?;
 			let is_pioneer = runner.config().chain_spec.is_pioneer();
+			let is_dev = runner.config().chain_spec.is_dev();
 			runner.run_node_until_exit(|config| async move {
 				// ares params
 				let mut ares_params: Vec<(&str, Option<Vec<u8>>)> = Vec::new();
@@ -343,7 +291,7 @@ pub fn run() -> Result<()> {
 					}
 				}
 
-				if is_pioneer {
+				if is_pioneer || is_dev {
 					service_babe::new_full::<PRuntimeApi, PExecutorDispatch>(config, ares_params)
 						.map_err(sc_cli::Error::Service)
 				} else {

@@ -9,14 +9,19 @@ use pallet_treasury;
 use part_council::{self, CouncilCollective};
 use sp_core::u32_trait::{_1, _2, _3, _5};
 use sp_runtime::Percent;
+use runtime_common::prod_or_fast;
 
 parameter_types! {
 	pub const ProposalBond: Permill = Permill::from_percent(5);
 	pub const ProposalBondMinimum: Balance = 100 * DOLLARS * ARES_AMOUNT_MULT;
 	pub const ProposalBondMaximum: Balance = 500 * DOLLARS * ARES_AMOUNT_MULT;
-	pub const SpendPeriod: BlockNumber = 24 * DAYS;
+	// pub const SpendPeriod: BlockNumber = 24 * DAYS;
+	pub SpendPeriod: BlockNumber = prod_or_fast!(
+		24 * DAYS,
+		6 * MINUTES,
+		"ARES_UNSIGNED_PHASE"
+	);
 	pub const Burn: Permill = Permill::from_percent(1);
-
 	pub const TreasuryPalletId: PalletId = PalletId(*b"py/trsry");
 	pub const MaxApprovals: u32 = 100;
 }

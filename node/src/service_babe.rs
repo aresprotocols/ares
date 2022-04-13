@@ -1,8 +1,6 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
-// use node_template_runtime::{self, opaque::Block, RuntimeApi};
-// use super::services::{gladios, pioneer};
-use sc_client_api::{Backend, BlockBackend, ExecutorProvider};
+use sc_client_api::{Backend, BlockBackend, ExecutorProvider, BadBlocks, ForkBlocks};
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 pub use sc_executor::NativeElseWasmExecutor;
 use sc_executor::NativeExecutionDispatch;
@@ -200,12 +198,6 @@ where
 		select_chain.clone(),
 		telemetry.as_ref().map(|x| x.handle()),
 	)?;
-
-	// let (block_import, babe_link) = sc_consensus_babe::block_import(
-	// 	sc_consensus_babe::Config::get_or_compute(&*client)?,
-	// 	grandpa_block_import.clone(),
-	// 	client.clone(),
-	// )?;
 
 	let (block_import, babe_link) = sc_consensus_babe::block_import(
 		sc_consensus_babe::Config::get(&*client)?,
@@ -417,8 +409,6 @@ where
 
 	let (block_import, grandpa_link, babe_link) = import_setup;
 
-	// (with_startup_data)(&block_import, &babe_link);
-
 	log::info!("setting ares_params: {:?}", ares_params);
 	let result: Vec<(&str, bool)> = ares_params
 		.iter()
@@ -488,7 +478,14 @@ where
 			telemetry.as_ref().map(|x| x.handle()),
 		);
 
+		use sp_version::GetNativeVersion;
 		let can_author_with = sp_consensus::CanAuthorWithNativeVersion::new(client.executor().clone());
+		// let test_client = client.executor().clone();
+		// let test_native_version = test_client.native_version();
+		// println!("test_native_version = {:?}", test_native_version); // return "ares-gladios"
+		// // let test_show = |cc: dyn sp_version::GetRuntimeVersionAt<Block> + sp_version::GetNativeVersion| {
+		// //
+		// // };
 
 		let client_clone = client.clone();
 		let slot_duration = babe_link.config().slot_duration();

@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -140,7 +140,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -412,7 +412,7 @@ dependencies = [
  "cc",
  "cfg-if 1.0.0",
  "libc",
- "miniz_oxide",
+ "miniz_oxide 0.4.4",
  "object",
  "rustc-demangle",
 ]
@@ -1534,15 +1534,15 @@ checksum = "279fb028e20b3c4c320317955b77c5e0c9701f05a1d309905d6fc702cdc5053e"
 
 [[package]]
 name = "flate2"
-version = "1.0.22"
+version = "1.0.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e6988e897c1c9c485f43b47a529cef42fde0547f9d8d41a7062518f1d8fc53f"
+checksum = "b39522e96686d38f4bc984b9198e3a0613264abaebaff2c5c918bfa6b6da09af"
 dependencies = [
  "cfg-if 1.0.0",
  "crc32fast",
  "libc",
  "libz-sys",
- "miniz_oxide",
+ "miniz_oxide 0.5.1",
 ]
 
 [[package]]
@@ -2043,6 +2043,7 @@ dependencies = [
  "runtime-pioneer-node",
  "sc-basic-authorship",
  "sc-block-builder",
+ "sc-chain-spec",
  "sc-cli",
  "sc-client-api",
  "sc-client-db",
@@ -2057,11 +2058,13 @@ dependencies = [
  "sc-rpc",
  "sc-rpc-api",
  "sc-service",
+ "sc-sync-state-rpc",
  "sc-telemetry",
  "sc-transaction-pool",
  "sc-transaction-pool-api",
  "scale-info",
  "seed-reader",
+ "serde",
  "sp-api",
  "sp-application-crypto",
  "sp-authorship",
@@ -2080,6 +2083,7 @@ dependencies = [
  "sp-timestamp",
  "sp-transaction-pool",
  "sp-transaction-storage-proof",
+ "sp-version",
  "structopt",
  "substrate-build-script-utils",
  "substrate-frame-cli",
@@ -2293,9 +2297,9 @@ dependencies = [
 
 [[package]]
 name = "httparse"
-version = "1.6.0"
+version = "1.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9100414882e15fb7feccb4897e5f0ff0ff1ca7d1a86a23208ada4d7a18e6c6c4"
+checksum = "6330e8a36bd8c859f3fa6d9382911fbb7147ec39807f63b923933a247240b9ba"
 
 [[package]]
 name = "httpdate"
@@ -2916,9 +2920,9 @@ checksum = "830d08ce1d1d941e6b30645f1a0eb5643013d835ce3779a5fc208261dbe10f55"
 
 [[package]]
 name = "libc"
-version = "0.2.122"
+version = "0.2.123"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec647867e2bf0772e28c8bcde4f0d19a9216916e890543b5a03ed8ef27b8f259"
+checksum = "cb691a747a7ab48abc15c5b42066eaafde10dc427e3b6ee2a1cf43db04c763bd"
 
 [[package]]
 name = "libloading"
@@ -3654,7 +3658,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3761,6 +3765,15 @@ checksum = "a92518e98c078586bc6c934028adcca4c92a53d6a958196de835170a01d84e4b"
 dependencies = [
  "adler",
  "autocfg",
+]
+
+[[package]]
+name = "miniz_oxide"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2b29bd4bc3f33391105ebee3589c19197c4271e3e5a9ec9bfe8127eeff8f082"
+dependencies = [
+ "adler",
 ]
 
 [[package]]
@@ -4315,7 +4328,7 @@ checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4354,7 +4367,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4374,7 +4387,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4948,7 +4961,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -5040,7 +5053,7 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5840,9 +5853,9 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.17"
+version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "632d02bff7f874a36f33ea8bb416cd484b90cc66c1194b1a1110d067a7013f58"
+checksum = "a1feb54ed693b93a84e14094943b84b7c4eae204c512b7ccb95ab0c66d278ad1"
 dependencies = [
  "proc-macro2",
 ]
@@ -8555,7 +8568,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -9138,9 +9151,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-core"
-version = "0.1.24"
+version = "0.1.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "90442985ee2f57c9e1b548ee72ae842f4a9a20e3f417cc38dbc5dc684d9bb4ee"
+checksum = "6dfce9f3241b150f36e8e54bb561a742d5daa1a47b5dd9a5ce369fd4a4db2210"
 dependencies = [
  "lazy_static",
  "valuable",
@@ -10039,4 +10052,4 @@ dependencies = [
 [[patch.unused]]
 name = "pallet-session-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#4d58f60c4ba511173044a95a951bb24ab88df5fa"
+source = "git+https://github.com/aresprotocols/ocw-suit.git?branch=polkadot-v0.9.17#8a574a9430163aa85f67cf278629cad63cf6f330"
