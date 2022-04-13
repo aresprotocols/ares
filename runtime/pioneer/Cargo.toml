@@ -29,7 +29,8 @@ frame-support = { git = "https://github.com/paritytech/substrate", default-featu
 frame-system = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 frame-system-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 frame-election-provider-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
-sp-arithmetic = { package = "sp-arithmetic", git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+frame-try-runtime = { git = "https://github.com/paritytech/substrate.git", default-features = false, optional = true, branch = "polkadot-v0.9.17" }
+sp-arithmetic = { package = "sp-arithmetic", git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 # primitives
 sp-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
@@ -79,7 +80,7 @@ pallet-proxy = { git = "https://github.com/paritytech/substrate", default-featur
 pallet-vesting = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-im-online = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
-pallet-preimage = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+pallet-preimage = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
@@ -91,8 +92,8 @@ pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", de
 pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-session = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
-pallet-gilt = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
-pallet-staking-reward-fn = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+pallet-gilt = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-staking-reward-fn = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 runtime-common = { package = "runtime-common", path = "../common", default-features = false }
 #ares-oracle-provider-support = { default-features = false, path = '../../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
@@ -120,14 +121,19 @@ runtime-benchmarks = [
     'sp-runtime/runtime-benchmarks',
     'runtime-common/runtime-benchmarks',
 ]
+try-runtime = [
+    "frame-executive/try-runtime",
+    "frame-try-runtime",
+    "frame-system/try-runtime",
+]
 std = [
     'codec/std',
     'frame-executive/std',
     'frame-support/std',
     'frame-system-rpc-runtime-api/std',
     'frame-system/std',
+    'frame-try-runtime/std',
     'frame-election-provider-support/std',
-#    'pallet-aura/std',
     'pallet-babe/std',
     'pallet-balances/std',
     'pallet-grandpa/std',
@@ -143,7 +149,7 @@ std = [
     "pallet-bags-list/std",
     'sp-api/std',
     'sp-block-builder/std',
-#    'sp-consensus-aura/std',
+    #    'sp-consensus-aura/std',
     'sp-consensus-babe/std',
     'sp-core/std',
     'sp-inherents/std',

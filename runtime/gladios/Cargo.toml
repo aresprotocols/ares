@@ -46,7 +46,8 @@ sp-version = { git = "https://github.com/paritytech/substrate", default-features
 sp-staking = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sp-io = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sp-npos-elections = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
-sp-arithmetic = { package = "sp-arithmetic", git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+frame-try-runtime = { git = "https://github.com/paritytech/substrate.git", default-features = false, optional = true, branch = "polkadot-v0.9.17" }
+sp-arithmetic = { package = "sp-arithmetic", git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 pallet-randomness-collective-flip = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-sudo = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
@@ -60,8 +61,8 @@ pallet-grandpa = { git = "https://github.com/paritytech/substrate", default-feat
 pallet-indices = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-identity = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-bags-list = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
-pallet-gilt = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
-pallet-staking-reward-fn = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+pallet-gilt = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-staking-reward-fn = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 # Network
 #pallet-session = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
@@ -82,7 +83,7 @@ pallet-vesting = { git = "https://github.com/paritytech/substrate", default-feat
 pallet-elections-phragmen = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-im-online = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
-pallet-preimage = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "polkadot-v0.9.17" }
+pallet-preimage = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
@@ -117,14 +118,20 @@ runtime-benchmarks = [
     'pallet-timestamp/runtime-benchmarks',
     'sp-runtime/runtime-benchmarks',
 ]
+try-runtime = [
+    "frame-executive/try-runtime",
+    "frame-try-runtime",
+    "frame-system/try-runtime",
+]
 std = [
     'codec/std',
     'frame-executive/std',
     'frame-support/std',
     'frame-system-rpc-runtime-api/std',
     'frame-system/std',
+    'frame-try-runtime/std',
     'frame-election-provider-support/std',
-#    'pallet-aura/std',
+    #    'pallet-aura/std',
     'pallet-babe/std',
     'pallet-balances/std',
     'pallet-grandpa/std',
@@ -140,7 +147,7 @@ std = [
     "pallet-bags-list/std",
     'sp-api/std',
     'sp-block-builder/std',
-#    'sp-consensus-aura/std',
+    #    'sp-consensus-aura/std',
     'sp-consensus-babe/std',
     'sp-core/std',
     'sp-inherents/std',

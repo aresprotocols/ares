@@ -64,6 +64,7 @@ sc-consensus = { git = "https://github.com/paritytech/substrate", default-featur
 sc-consensus-aura = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sc-consensus-babe = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sc-finality-grandpa = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+sc-finality-grandpa-rpc = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sc-keystore = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sc-rpc = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sc-rpc-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
@@ -121,5 +122,8 @@ cli = [
     "try-runtime-cli",
 ]
 # in the near future.
-try-runtime = ["try-runtime-cli"]
+try-runtime = [
+    "try-runtime-cli",
+    "runtime-pioneer-node/try-runtime"
+]
 #fast-runtime = ["service/fast-runtime"]

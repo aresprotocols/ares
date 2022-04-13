@@ -1,6 +1,6 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
-use sc_client_api::{Backend, BlockBackend, ExecutorProvider, BadBlocks, ForkBlocks};
+use sc_client_api::{Backend, BadBlocks, BlockBackend, ExecutorProvider, ForkBlocks};
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 pub use sc_executor::NativeElseWasmExecutor;
 use sc_executor::NativeExecutionDispatch;
@@ -137,7 +137,6 @@ pub fn new_partial<RuntimeApi, ExecutorDispatch>(
 				sc_finality_grandpa::LinkHalf<Block, FullClient<RuntimeApi, ExecutorDispatch>, FullSelectChain>,
 				sc_consensus_babe::BabeLink<Block>,
 			),
-			sc_finality_grandpa::SharedVoterState,
 			Option<Telemetry>,
 		),
 	>,
@@ -234,33 +233,6 @@ where
 	// let grandpa_link_clone = grandpa_link.clone();
 	let import_setup = (block_import, grandpa_link, babe_link);
 
-	let rpc_setup = {
-		let (_, grandpa_link, babe_link) = &import_setup;
-
-		let justification_stream = grandpa_link.justification_stream();
-		let shared_authority_set = grandpa_link.shared_authority_set().clone();
-		let shared_voter_state = sc_finality_grandpa::SharedVoterState::empty();
-		let rpc_setup = shared_voter_state.clone();
-
-		let finality_proof_provider = sc_finality_grandpa::FinalityProofProvider::new_for_service(
-			backend.clone(),
-			Some(shared_authority_set.clone()),
-		);
-
-		let babe_config = babe_link.config().clone();
-		let shared_epoch_changes = babe_link.epoch_changes().clone();
-
-		let client = client.clone();
-		let pool = transaction_pool.clone();
-		let select_chain = select_chain.clone();
-		let keystore = keystore_container.sync_keystore();
-		let chain_spec = config.chain_spec.cloned_box();
-
-		let backend_clone = backend.clone();
-
-		rpc_setup
-	};
-
 	Ok(sc_service::PartialComponents {
 		client,
 		backend,
@@ -269,7 +241,7 @@ where
 		select_chain,
 		import_queue,
 		transaction_pool,
-		other: (import_setup, rpc_setup, telemetry),
+		other: (import_setup, telemetry),
 	})
 }
 
@@ -306,7 +278,6 @@ where
 				sc_finality_grandpa::LinkHalf<Block, FullClient<RuntimeApi, ExecutorDispatch>, FullSelectChain>,
 				sc_consensus_babe::BabeLink<Block>,
 			),
-			sc_finality_grandpa::SharedVoterState,
 			Option<Telemetry>,
 		),
 	> {
@@ -317,16 +288,16 @@ where
 		mut keystore_container,
 		select_chain,
 		transaction_pool,
-		other: (import_setup, rpc_setup, mut telemetry),
+		other: (import_setup, mut telemetry),
 	} = new_partial(&config)?;
 
-	let shared_voter_state = rpc_setup;
 	let auth_disc_publish_non_global_ips = config.network.allow_non_globals_in_dht;
 
 	let grandpa_protocol_name = sc_finality_grandpa::protocol_standard_name(
 		&client.block_hash(0).ok().flatten().expect("Genesis block exists; qed"),
 		&config.chain_spec,
 	);
+	let (block_import, grandpa_link, babe_link) = import_setup;
 
 	config
 		.network
@@ -334,7 +305,7 @@ where
 		.push(sc_finality_grandpa::grandpa_peers_set_config(grandpa_protocol_name.clone()));
 	let warp_sync = Arc::new(sc_finality_grandpa::warp_proof::NetworkProvider::new(
 		backend.clone(),
-		import_setup.1.shared_authority_set().clone(),
+		grandpa_link.shared_authority_set().clone(),
 		Vec::default(),
 	));
 
@@ -355,7 +326,6 @@ where
 	let justification_stream = grandpa_link.justification_stream();
 	let shared_authority_set = grandpa_link.shared_authority_set().clone();
 	let shared_voter_state = sc_finality_grandpa::SharedVoterState::empty();
-	let rpc_setup = shared_voter_state.clone();
 	let finality_proof_provider = sc_finality_grandpa::FinalityProofProvider::new_for_service(
 		backend.clone(),
 		Some(shared_authority_set.clone()),
@@ -406,8 +376,6 @@ where
 		config,
 		telemetry: telemetry.as_mut(),
 	})?;
-
-	let (block_import, grandpa_link, babe_link) = import_setup;
 
 	log::info!("setting ares_params: {:?}", ares_params);
 	let result: Vec<(&str, bool)> = ares_params
@@ -478,14 +446,7 @@ where
 			telemetry.as_ref().map(|x| x.handle()),
 		);
 
-		use sp_version::GetNativeVersion;
 		let can_author_with = sp_consensus::CanAuthorWithNativeVersion::new(client.executor().clone());
-		// let test_client = client.executor().clone();
-		// let test_native_version = test_client.native_version();
-		// println!("test_native_version = {:?}", test_native_version); // return "ares-gladios"
-		// // let test_show = |cc: dyn sp_version::GetRuntimeVersionAt<Block> + sp_version::GetNativeVersion| {
-		// //
-		// // };
 
 		let client_clone = client.clone();
 		let slot_duration = babe_link.config().slot_duration();

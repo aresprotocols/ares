@@ -21,16 +21,33 @@ use sp_block_builder::BlockBuilder;
 use sp_blockchain::{Error as BlockChainError, HeaderBackend, HeaderMetadata};
 use sp_runtime::traits::{Block as BlockT, NumberFor};
 // use sc_service::TaskExecutor;
-use sc_block_builder::BlockBuilderProvider;
-use sp_consensus::BlockOrigin;
-use sp_rpc::{list::ListOrValue, number::NumberOrHex};
-
+use crate::service_babe::BlockNumber;
 use frame_support::sp_runtime::generic::BlockId;
 use futures::FutureExt;
 use jsonrpc_pubsub::manager::SubscriptionManager;
-use sc_client_api::BlockBackend;
 use runtime_common::AccountId;
+use sc_block_builder::BlockBuilderProvider;
+use sc_client_api::BlockBackend;
+use sc_finality_grandpa::{FinalityProofProvider, GrandpaJustificationStream, SharedAuthoritySet, SharedVoterState};
+use sc_finality_grandpa_rpc::GrandpaRpcHandler;
+use sc_rpc::SubscriptionTaskExecutor;
+use sp_consensus::BlockOrigin;
+use sp_core::H256;
+use sp_rpc::{list::ListOrValue, number::NumberOrHex};
 
+/// Extra dependencies for GRANDPA
+pub struct GrandpaDeps<B> {
+	/// Voting round info.
+	pub shared_voter_state: SharedVoterState,
+	/// Authority set info.
+	pub shared_authority_set: SharedAuthoritySet<H256, BlockNumber>,
+	/// Receives notifications about justification events from Grandpa.
+	pub justification_stream: GrandpaJustificationStream<Block>,
+	/// Executor to drive the subscription manager in the Grandpa RPC handler.
+	pub subscription_executor: SubscriptionTaskExecutor,
+	/// Finality proof provider.
+	pub finality_provider: Arc<FinalityProofProvider<B, Block>>,
+}
 /// Full client dependencies.
 pub struct FullDeps<C, P, B> {
 	/// The client instance to use.
@@ -41,6 +58,9 @@ pub struct FullDeps<C, P, B> {
 	pub deny_unsafe: DenyUnsafe,
 
 	pub backend: Arc<B>,
+
+	/// GRANDPA specific dependencies.
+	pub grandpa: GrandpaDeps<B>,
 }
 
 /// Instantiate all full RPC extensions.
@@ -64,8 +84,14 @@ where
 	use substrate_frame_rpc_system::{FullSystem, SystemApi};
 
 	let mut io = jsonrpc_core::IoHandler::default();
-	let FullDeps { client, pool, deny_unsafe, backend } = deps;
-
+	let FullDeps { client, pool, deny_unsafe, backend, grandpa } = deps;
+	let GrandpaDeps {
+		shared_voter_state,
+		shared_authority_set,
+		justification_stream,
+		subscription_executor,
+		finality_provider,
+	} = grandpa;
 	io.extend_with(SystemApi::to_delegate(FullSystem::new(client.clone(), pool, deny_unsafe)));
 
 	io.extend_with(TransactionPaymentApi::to_delegate(TransactionPayment::new(client.clone())));
@@ -75,7 +101,13 @@ where
 	// `YourRpcStruct` should have a reference to a client, which is needed
 	// to call into the runtime.
 	// `io.extend_with(YourRpcTrait::to_delegate(YourRpcStruct::new(ReferenceToClient, ...)));`
-
+	io.extend_with(sc_finality_grandpa_rpc::GrandpaApi::to_delegate(GrandpaRpcHandler::new(
+		shared_authority_set.clone(),
+		shared_voter_state,
+		justification_stream,
+		subscription_executor,
+		finality_provider,
+	)));
 	io
 }
 
