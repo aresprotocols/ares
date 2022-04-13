@@ -1,4 +1,4 @@
-FROM docker.io/paritytech/ci-linux:production as builder
+FROM ares-builder:latest as builder
 WORKDIR /substrate
 COPY . /substrate
 # RUN cargo build --locked --release
