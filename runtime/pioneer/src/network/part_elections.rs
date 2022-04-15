@@ -1,14 +1,9 @@
 use super::*;
-use codec::Decode;
-use constants::{
-	currency::{CENTS, DOLLARS},
-	time::EPOCH_DURATION_IN_BLOCKS,
-};
-use governance::part_council::CouncilCollective;
-pub use pallet_election_provider_multi_phase;
-// use pallet_election_provider_multi_phase::FallbackStrategy;
+use constants::{currency::DOLLARS, time::EPOCH_DURATION_IN_BLOCKS};
 use frame_election_provider_support::onchain;
 use frame_support::traits::EnsureOneOf;
+use governance::part_council::CouncilCollective;
+pub use pallet_election_provider_multi_phase;
 use part_babe::EpochDuration;
 use runtime_common::prod_or_fast;
 use sp_runtime::{transaction_validity::TransactionPriority, SaturatedConversion};
@@ -18,12 +13,12 @@ parameter_types! {
 	// in testing: 1min or half of the session for each
 	pub SignedPhase: u32 = prod_or_fast!(
 		EPOCH_DURATION_IN_BLOCKS / 4,
-		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 2),
+		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 4),
 		"ARES_SIGNED_PHASE"
 	);
 	pub UnsignedPhase: u32 = prod_or_fast!(
 		EPOCH_DURATION_IN_BLOCKS / 4,
-		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 2),
+		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 4),
 		"ARES_UNSIGNED_PHASE"
 	);
 

@@ -17,7 +17,7 @@ impl pallet_bounties::Config for Runtime {
 	type BountyUpdatePeriod = BountyUpdatePeriod;
 	type BountyCuratorDeposit = BountyCuratorDeposit;
 	type BountyValueMinimum = BountyValueMinimum;
-    type DataDepositPerByte = DataDepositPerByte;
+	type DataDepositPerByte = DataDepositPerByte;
 	type ChildBountyManager = ();
 	type Event = Event;
 	type MaximumReasonLength = MaximumReasonLength;

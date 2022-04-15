@@ -6,15 +6,14 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use runtime_common::*;
 use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, GrandpaEquivocationOffence,
 };
 use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
+use runtime_common::*;
 use sp_api::impl_runtime_apis;
 // use sp_consensus_aura::sr25519::AuthorityId as AuraId;
-use network::part_staking::{BondingDuration, SessionsPerEra};
 use sp_core::{
 	crypto::KeyTypeId,
 	u32_trait::{_1, _2, _3, _4},
@@ -22,9 +21,9 @@ use sp_core::{
 };
 use sp_runtime::{
 	create_runtime_str, generic,
-	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
+	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, NumberFor},
 	transaction_validity::{TransactionSource, TransactionValidity},
-	ApplyExtrinsicResult, MultiSignature,
+	ApplyExtrinsicResult,
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -42,7 +41,7 @@ pub use frame_support::{
 	PalletId, RuntimeDebug, StorageValue,
 };
 
-use frame_system::{limits::BlockWeights, EnsureRoot};
+use frame_system::EnsureRoot;
 
 pub use pallet_balances::Call as BalancesCall;
 use pallet_collective;
@@ -60,11 +59,11 @@ mod part_challenge;
 pub mod part_estimates;
 pub mod part_ocw;
 pub mod part_ocw_finance;
-pub use runtime_common::*;
-pub use constants::currency::{deposit, CENTS, DOLLARS, MILLICENTS, ARES_AMOUNT_MULT};
-use constants::time::{DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
-use runtime_common::{DealWithFees, Signature, AccountId, SlowAdjustingFeeUpdate};
 use crate::constants::fee::WeightToFee;
+pub use constants::currency::{deposit, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
+use constants::time::{DAYS, HOURS, MINUTES, SLOT_DURATION};
+pub use runtime_common::*;
+use runtime_common::{AccountId, DealWithFees, Signature, SlowAdjustingFeeUpdate};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 // pub type Signature = Signature ;// MultiSignature;
@@ -129,15 +128,6 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 pub fn native_version() -> NativeVersion {
 	NativeVersion { runtime_version: VERSION, can_author_with: Default::default() }
 }
-
-/// We assume that ~10% of the block weight is consumed by `on_initialize` handlers.
-/// This is used to limit the maximal weight of a single extrinsic.
-const AVERAGE_ON_INITIALIZE_RATIO: Perbill = Perbill::from_percent(10);
-/// We allow `Normal` extrinsics to fill up the block up to 75%, the rest can be used
-/// by  Operational  extrinsics.
-const NORMAL_DISPATCH_RATIO: Perbill = Perbill::from_percent(75);
-/// We allow for 2 seconds of compute with a 6 second average block time.
-const MAXIMUM_BLOCK_WEIGHT: Weight = 2 * WEIGHT_PER_SECOND;
 
 parameter_types! {
 	pub const Version: RuntimeVersion = VERSION;
@@ -390,7 +380,7 @@ pub type Executive = frame_executive::Executive<
 	Runtime,
 	AllPallets,
 	// (pallet_bags_list::migrations::CheckCounterPrefix<Runtime>, network::part_session::UpgradeSessionKeys),
-	(pallet_bags_list::migrations::CheckCounterPrefix<Runtime>),
+	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
 >;
 
 impl_runtime_apis! {

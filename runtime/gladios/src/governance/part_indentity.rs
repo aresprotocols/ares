@@ -1,6 +1,6 @@
 use super::*;
 use crate::governance::part_council::CouncilCollective;
-use constants::currency::{deposit, CENTS, DOLLARS};
+use constants::currency::CENTS;
 use frame_support::traits::EnsureOneOf;
 
 type EnsureRootOrHalfCouncil = EnsureOneOf<

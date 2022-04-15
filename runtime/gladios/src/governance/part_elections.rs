@@ -1,6 +1,5 @@
 use super::*;
-use runtime_common::*;
-use constants::currency::{deposit, DOLLARS};
+use constants::currency::deposit;
 use frame_support::traits::{LockIdentifier, U128CurrencyToVote};
 use pallet_elections_phragmen;
 use part_council::CouncilMaxMembers;

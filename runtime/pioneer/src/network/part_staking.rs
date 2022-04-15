@@ -1,16 +1,15 @@
 use super::*;
 
 use crate::network::part_elections::NposCompactSolution16;
-use frame_election_provider_support::onchain;
-use frame_support::traits::{ConstU32, EnsureOneOf, U128CurrencyToVote};
+use frame_support::traits::EnsureOneOf;
 use frame_system::EnsureRoot;
 use governance::part_council::CouncilCollective;
 use pallet_ares_collective;
 use pallet_staking;
 pub use pallet_staking::StakerStatus;
+use runtime_common::prod_or_fast;
 use sp_runtime::curve::PiecewiseLinear;
 pub use sp_staking;
-
 
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
@@ -27,7 +26,7 @@ pallet_staking_reward_curve::build! {
 
 parameter_types! {
 	// Six sessions in an era (12 hours).
-	pub const SessionsPerEra: sp_staking::SessionIndex = 6;
+	pub SessionsPerEra: sp_staking::SessionIndex = prod_or_fast!(6, 3, "ARES_SESSION_PER_ERA");
 	// 28 eras for unbonding (14 days).
 	pub const BondingDuration: sp_staking::EraIndex = 28;
 	// 27 eras in which slashes can be cancelled (slightly less than 14 days).

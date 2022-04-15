@@ -1,6 +1,4 @@
 use super::*;
-use frame_support::Parameter;
-use frame_system::Config;
 
 pub type SessionIndex = u32;
 

@@ -3,13 +3,18 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub use frame_support::weights::constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight};
-use frame_support::{parameter_types, sp_std, traits::ConstU32, weights::{constants::WEIGHT_PER_SECOND, DispatchClass, Weight}};
-use frame_support::traits::{Currency, Imbalance, OnUnbalanced};
+use frame_support::{
+	parameter_types, sp_std,
+	traits::{ConstU32, Currency, Imbalance, OnUnbalanced},
+	weights::{constants::WEIGHT_PER_SECOND, DispatchClass, Weight},
+};
 use frame_system::limits;
 use pallet_balances::NegativeImbalance;
 use pallet_transaction_payment::{Multiplier, TargetedFeeAdjustment};
-use sp_runtime::{FixedPointNumber, MultiSignature, Perbill, Perquintill};
-use sp_runtime::traits::{IdentifyAccount, Verify};
+use sp_runtime::{
+	traits::{IdentifyAccount, Verify},
+	FixedPointNumber, MultiSignature, Perbill, Perquintill,
+};
 use static_assertions::const_assert;
 
 pub type Balance = u128;
@@ -185,11 +190,11 @@ macro_rules! prod_or_fast {
 /// Logic for the author to get a portion of fees.
 pub struct ToAuthor<R>(sp_std::marker::PhantomData<R>);
 impl<R> OnUnbalanced<NegativeImbalance<R>> for ToAuthor<R>
-	where
-		R: pallet_balances::Config + pallet_authorship::Config,
-		<R as frame_system::Config>::AccountId: From<AccountId>,
-		<R as frame_system::Config>::AccountId: Into<AccountId>,
-		<R as frame_system::Config>::Event: From<pallet_balances::Event<R>>,
+where
+	R: pallet_balances::Config + pallet_authorship::Config,
+	<R as frame_system::Config>::AccountId: From<AccountId>,
+	<R as frame_system::Config>::AccountId: Into<AccountId>,
+	<R as frame_system::Config>::Event: From<pallet_balances::Event<R>>,
 {
 	fn on_nonzero_unbalanced(amount: NegativeImbalance<R>) {
 		if let Some(author) = <pallet_authorship::Pallet<R>>::author() {
@@ -200,12 +205,12 @@ impl<R> OnUnbalanced<NegativeImbalance<R>> for ToAuthor<R>
 
 pub struct DealWithFees<R>(sp_std::marker::PhantomData<R>);
 impl<R> OnUnbalanced<NegativeImbalance<R>> for DealWithFees<R>
-	where
-		R: pallet_balances::Config + pallet_treasury::Config + pallet_authorship::Config,
-		pallet_treasury::Pallet<R>: OnUnbalanced<NegativeImbalance<R>>,
-		<R as frame_system::Config>::AccountId: From<AccountId>,
-		<R as frame_system::Config>::AccountId: Into<AccountId>,
-		<R as frame_system::Config>::Event: From<pallet_balances::Event<R>>,
+where
+	R: pallet_balances::Config + pallet_treasury::Config + pallet_authorship::Config,
+	pallet_treasury::Pallet<R>: OnUnbalanced<NegativeImbalance<R>>,
+	<R as frame_system::Config>::AccountId: From<AccountId>,
+	<R as frame_system::Config>::AccountId: Into<AccountId>,
+	<R as frame_system::Config>::Event: From<pallet_balances::Event<R>>,
 {
 	fn on_unbalanceds<B>(mut fees_then_tips: impl Iterator<Item = NegativeImbalance<R>>) {
 		if let Some(fees) = fees_then_tips.next() {

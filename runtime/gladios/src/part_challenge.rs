@@ -3,7 +3,6 @@ use governance;
 pub use pallet_ares_challenge;
 pub use pallet_ares_collective;
 
-/// Configure the pallet-ares-demo in pallets/demo.
 parameter_types! {
 	pub const MinimumDeposit: Balance = 100 * DOLLARS * ARES_AMOUNT_MULT;
 	pub const BidderMinimumDeposit: Balance = 1000 * DOLLARS * ARES_AMOUNT_MULT;

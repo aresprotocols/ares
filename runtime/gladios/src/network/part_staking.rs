@@ -1,16 +1,13 @@
 use super::*;
 
 use crate::network::part_elections::NposCompactSolution24;
-use frame_election_provider_support::onchain;
-use frame_support::sp_runtime::Perquintill;
-use frame_support::traits::{ConstU32, EnsureOneOf, U128CurrencyToVote};
+use frame_support::traits::EnsureOneOf;
 use frame_system::EnsureRoot;
 use governance::part_council::CouncilCollective;
 use pallet_ares_collective;
 use pallet_staking;
 pub use pallet_staking::StakerStatus;
 use sp_runtime::curve::PiecewiseLinear;
-use sp_runtime::traits::Saturating;
 pub use sp_staking;
 
 pallet_staking_reward_curve::build! {
@@ -40,8 +37,8 @@ pallet_staking_reward_curve::build! {
 // 	// 30% reserved for up to 60 slots.
 // 	let auction_proportion = Perquintill::from_rational(auctioned_slots.min(60), 200u64);
 //
-// 	// Therefore the ideal amount at stake (as a percentage of total issuance) is 75% less the amount that we expect
-// 	// to be taken up with auctions.
+// 	// Therefore the ideal amount at stake (as a percentage of total issuance) is 75% less the amount
+// that we expect 	// to be taken up with auctions.
 // 	let ideal_stake = Perquintill::from_percent(75).saturating_sub(auction_proportion);
 //
 // 	let stake = Perquintill::from_rational(total_staked, non_gilt_issuance);
@@ -57,8 +54,8 @@ pallet_staking_reward_curve::build! {
 // 	let other_issuance = non_gilt_issuance.saturating_sub(total_staked);
 // 	if total_staked > other_issuance {
 // 		let _cap_rest = Perquintill::from_rational(other_issuance, total_staked) * staking_payout;
-// 		// We don't do anything with this, but if we wanted to, we could introduce a cap on the treasury amount
-// 		// with: `rest = rest.min(cap_rest);`
+// 		// We don't do anything with this, but if we wanted to, we could introduce a cap on the treasury
+// amount 		// with: `rest = rest.min(cap_rest);`
 // 	}
 // 	(staking_payout, rest)
 // }

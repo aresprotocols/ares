@@ -1,5 +1,4 @@
 use super::*;
-use pallet_session;
 use sp_runtime::transaction_validity::TransactionPriority;
 // use crate::network::part_session::{Period, Offset};
 parameter_types! {

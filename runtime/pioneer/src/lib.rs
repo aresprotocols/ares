@@ -41,7 +41,7 @@ pub use frame_support::{
 	PalletId, RuntimeDebug, StorageValue,
 };
 
-use frame_system::{limits::BlockWeights, EnsureRoot};
+use frame_system::EnsureRoot;
 
 pub use pallet_balances::Call as BalancesCall;
 use pallet_collective;
@@ -62,8 +62,8 @@ pub mod part_ocw_finance;
 
 use network::part_staking::{BondingDuration, SessionsPerEra};
 
-pub use constants::currency::{deposit, Balance, CENTS, DOLLARS, MILLICENTS, ARES_AMOUNT_MULT};
-use constants::time::{BlockNumber, DAYS, HOURS, MILLISECS_PER_BLOCK, MINUTES, SLOT_DURATION};
+pub use constants::currency::{deposit, Balance, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
+use constants::time::{BlockNumber, DAYS, HOURS, MINUTES, SLOT_DURATION};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;
@@ -127,15 +127,6 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 pub fn native_version() -> NativeVersion {
 	NativeVersion { runtime_version: VERSION, can_author_with: Default::default() }
 }
-
-/// We assume that ~10% of the block weight is consumed by `on_initialize` handlers.
-/// This is used to limit the maximal weight of a single extrinsic.
-const AVERAGE_ON_INITIALIZE_RATIO: Perbill = Perbill::from_percent(10);
-/// We allow `Normal` extrinsics to fill up the block up to 75%, the rest can be used
-/// by  Operational  extrinsics.
-const NORMAL_DISPATCH_RATIO: Perbill = Perbill::from_percent(75);
-/// We allow for 2 seconds of compute with a 6 second average block time.
-const MAXIMUM_BLOCK_WEIGHT: Weight = 2 * WEIGHT_PER_SECOND;
 
 parameter_types! {
 	pub const Version: RuntimeVersion = VERSION;
@@ -218,7 +209,7 @@ impl pallet_randomness_collective_flip::Config for Runtime {}
 
 parameter_types! {
 	pub const EpochDuration: u64 = constants::time::EPOCH_DURATION_IN_BLOCKS as u64;
-	pub const ReportLongevity: u64 =
+	pub ReportLongevity: u64 =
 		BondingDuration::get() as u64 * SessionsPerEra::get() as u64 * EpochDuration::get();
 }
 
@@ -385,7 +376,7 @@ pub type Executive = frame_executive::Executive<
 	Runtime,
 	AllPallets,
 	// (pallet_bags_list::migrations::CheckCounterPrefix<Runtime>, network::part_session::UpgradeSessionKeys),
-	(pallet_bags_list::migrations::CheckCounterPrefix<Runtime>),
+	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
 >;
 
 impl_runtime_apis! {

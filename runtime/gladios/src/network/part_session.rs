@@ -1,5 +1,4 @@
 use super::*;
-use constants::time::EPOCH_DURATION_IN_BLOCKS;
 pub use pallet_session;
 use sp_runtime::{impl_opaque_keys, traits::OpaqueKeys};
 

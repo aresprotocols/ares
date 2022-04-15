@@ -1,5 +1,4 @@
 use super::*;
-use runtime_common::*;
 use constants::currency::deposit;
 use pallet_multisig;
 

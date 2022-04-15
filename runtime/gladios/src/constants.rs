@@ -42,11 +42,8 @@ pub mod time {
 
 /// Fee-related.
 pub mod fee {
-	use frame_support::weights::{
-		WeightToFeeCoefficient, WeightToFeeCoefficients, WeightToFeePolynomial,
-	};
-	use runtime_common::Balance;
-	use runtime_common::ExtrinsicBaseWeight;
+	use frame_support::weights::{WeightToFeeCoefficient, WeightToFeeCoefficients, WeightToFeePolynomial};
+	use runtime_common::{Balance, ExtrinsicBaseWeight};
 	use smallvec::smallvec;
 	pub use sp_runtime::Perbill;
 
@@ -79,4 +76,3 @@ pub mod fee {
 		}
 	}
 }
-

@@ -5,7 +5,6 @@ pub use ares_oracle::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 use codec::Encode;
 use frame_support::{
 	sp_runtime::{
-		app_crypto::Public,
 		generic::{Era, SignedPayload},
 		traits,
 	},

@@ -1,10 +1,9 @@
 use super::*;
-use runtime_common::*;
 use frame_support::traits::EnsureOneOf;
 use pallet_democracy;
 use part_council::CouncilCollective;
 use part_technical::TechnicalCollective;
-use runtime_common::prod_or_fast;
+use runtime_common::{prod_or_fast, *};
 
 parameter_types! {
 	pub LaunchPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 1, "ARES_LAUNCH_PERIOD");
@@ -31,9 +30,9 @@ impl pallet_democracy::Config for Runtime {
 	type ExternalOrigin = pallet_ares_collective::EnsureProportionAtLeast<_1, _2, AccountId, CouncilCollective>;
 	/// A super-majority can have the next scheduled referendum be a straight majority-carries vote.
 	// type ExternalMajorityOrigin =
-	// 	pallet_ares_collective::EnsureProportionAtLeast<_3, sp_core::u32_trait::_5, AccountId, CouncilCollective>;
-	type ExternalMajorityOrigin =
-		pallet_ares_collective::EnsureProportionAtLeast<_1, _2, AccountId, CouncilCollective>;
+	// 	pallet_ares_collective::EnsureProportionAtLeast<_3, sp_core::u32_trait::_5, AccountId,
+	// CouncilCollective>;
+	type ExternalMajorityOrigin = pallet_ares_collective::EnsureProportionAtLeast<_1, _2, AccountId, CouncilCollective>;
 	/// A unanimous council can have the next scheduled referendum be a straight default-carries
 	/// (NTB) vote.
 	type ExternalDefaultOrigin = pallet_ares_collective::EnsureProportionAtLeast<_1, _1, AccountId, CouncilCollective>;

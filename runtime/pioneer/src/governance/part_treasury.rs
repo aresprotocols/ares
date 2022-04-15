@@ -7,9 +7,8 @@ use frame_support::traits::EnsureOneOf;
 use frame_system::EnsureRoot;
 use pallet_treasury;
 use part_council::{self, CouncilCollective};
-use sp_core::u32_trait::{_1, _2, _3, _5};
-use sp_runtime::Percent;
 use runtime_common::prod_or_fast;
+use sp_core::u32_trait::{_1, _2, _3, _5};
 
 parameter_types! {
 	pub const ProposalBond: Permill = Permill::from_percent(5);
