@@ -1,16 +1,21 @@
 use super::*;
 
-use runtime_common::{AccountId, Signature};
+use runtime_common::{ Signature, AccountId};
 pub use runtime_gladios_node::{
-	constants::currency::{Balance, DOLLARS},
+	constants::currency::{Balance, CENTS, DOLLARS},
 	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
 	AresOracleConfig, BabeConfig, BalancesConfig, Block, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
-	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as GladiosWASM_BINARY,
+	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig,
+	SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as GladiosWASM_BINARY,
 };
 
-use sc_chain_spec::ChainSpecExtension;
 use serde::{Deserialize, Serialize};
+use sc_chain_spec::ChainSpecExtension;
+
+const TOTAL_ISSUANCE: Balance = 1_000_000_000 * DOLLARS; // one billion.
+const PER_ELECTION_DESPOSIT: Balance = 2000 * DOLLARS;
+const PER_STAKING_DESPOSIT: Balance = 2000 * DOLLARS; // Stake balance per validator.
+
 
 #[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
 #[serde(rename_all = "camelCase")]
@@ -24,10 +29,14 @@ pub struct Extensions {
 }
 
 use sc_consensus_babe::AuthorityId as BabeId;
+use sp_core::sp_std::convert::TryInto;
+use sp_runtime::traits::Saturating;
+
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type GladiosNodeChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
 pub type GladiosSS58Prefix = SS58Prefix;
 pub type GladiosAccountId = AccountId;
+pub type GladiosBalance = Balance;
 
 /// Generate a crypto pair from seed.
 pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
@@ -40,8 +49,8 @@ type AccountPublic = <Signature as Verify>::Signer;
 
 /// Generate an account ID from seed.
 fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
-where
-	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
+	where
+		AccountPublic: From<<TPublic::Pair as Pair>::Public>,
 {
 	AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
 }
@@ -66,20 +75,34 @@ fn session_keys(babe: BabeId, grandpa: GrandpaId, ares: AresId, im_online: ImOnl
 pub fn make_ares_genesis(
 	wasm_binary: &[u8],
 	initial_authorities: Vec<(AccountId, AccountId, BabeId, GrandpaId, AresId, ImOnlineId)>,
-	initial_nominators: Vec<AccountId>,
+	_initial_nominators: Vec<AccountId>,
 	root_key: AccountId,
 	endowed_accounts: Vec<AccountId>,
 	council_members: Vec<AccountId>,
+	immigration_account: Option<Vec<(AccountId, Balance)>>,
 	_enable_println: bool,
 ) -> GenesisConfig {
-	const TOTAL_ISSUANCE: Balance = 10_0000_0000 * DOLLARS; // one billion
-	let endowment: Balance = TOTAL_ISSUANCE / endowed_accounts.len() as u128;
-	let elections_stash: Balance = endowment / 1000;
+
+	let balance_accounts = merge_accounts_balance(
+		// initial_authorities.len(),
+		// council_members.len(),
+		// endowed_accounts,
+		// immigration_account,
+		AresBalanceConfig{
+			total_issuance: TOTAL_ISSUANCE,
+			per_election_desposit: PER_ELECTION_DESPOSIT,
+			per_staking_desposit: PER_STAKING_DESPOSIT,
+			authorities_len: initial_authorities.len(),
+			council_len: council_members.len(),
+			endowed_accounts,
+			immigration_account,
+		}
+	);
 
 	let mut rng = rand::thread_rng();
 	let stakers = initial_authorities
 		.iter()
-		.map(|x| (x.0.clone(), x.1.clone(), elections_stash, StakerStatus::Validator))
+		.map(|x| (x.0.clone(), x.1.clone(), PER_STAKING_DESPOSIT, StakerStatus::Validator))
 		.collect::<Vec<_>>();
 
 	GenesisConfig {
@@ -88,8 +111,9 @@ pub fn make_ares_genesis(
 			code: wasm_binary.to_vec(),
 		},
 		im_online: ImOnlineConfig { keys: vec![] },
-		balances: BalancesConfig { balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect() },
-		// network
+		balances: BalancesConfig {
+			balances: balance_accounts,
+		},
 		babe: BabeConfig { authorities: vec![], epoch_config: Some(BABE_GENESIS_EPOCH_CONFIG) },
 		staking: StakingConfig {
 			validator_count: initial_authorities.len() as u32,
@@ -207,7 +231,7 @@ pub fn make_ares_genesis(
 			members: council_members
 				.clone()
 				.iter()
-				.map(|member| (member.clone(), elections_stash))
+				.map(|member| (member.clone(), PER_ELECTION_DESPOSIT))
 				.collect(),
 		},
 	}

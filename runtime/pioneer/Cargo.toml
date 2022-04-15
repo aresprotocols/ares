@@ -62,6 +62,8 @@ pallet-indices = { git = "https://github.com/paritytech/substrate", default-feat
 pallet-identity = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-bags-list = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
+polkadot-runtime-common = { git = "https://github.com/paritytech/polkadot.git", default-features = false, branch = "release-v0.9.17" }
+
 # Network
 #pallet-session = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
 pallet-staking-reward-curve = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
@@ -187,6 +189,7 @@ std = [
     "runtime-common/std",
     "pallet-gilt/std",
     "pallet-staking-reward-fn/std",
+    "polkadot-runtime-common/std",
 ]
 fast-runtime = []
 #[patch."https://github.com/paritytech/substrate"]

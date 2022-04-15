@@ -2,6 +2,7 @@ use super::*;
 
 pub mod part_bounties;
 pub mod part_council;
+pub mod part_claims;
 pub mod part_democracy;
 pub mod part_elections;
 pub mod part_im_online;

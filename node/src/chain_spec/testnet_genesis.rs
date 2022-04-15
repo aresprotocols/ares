@@ -1,16 +1,20 @@
 use super::*;
 
-use runtime_common::{AccountId, Signature};
+use runtime_common::{ Signature, AccountId};
 pub use runtime_pioneer_node::{
 	constants::currency::{Balance, CENTS},
 	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
-	AresOracleConfig, BabeConfig, BalancesConfig, Block, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
-	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as PioneerWASM_BINARY,
+	AresOracleConfig, BabeConfig, BalancesConfig, Block, CouncilConfig, ClaimsConfig, DemocracyConfig, ElectionsConfig,
+	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig,
+	SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as PioneerWASM_BINARY,
 };
 
-use sc_chain_spec::ChainSpecExtension;
 use serde::{Deserialize, Serialize};
+use sc_chain_spec::ChainSpecExtension;
+
+const TOTAL_ISSUANCE: Balance = 1_000_000_000 * DOLLARS; // one billion.
+const PER_ELECTION_DESPOSIT: Balance = 2000 * DOLLARS;
+const PER_STAKING_DESPOSIT: Balance = 2000 * DOLLARS; // Stake balance per validator.
 
 #[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
 #[serde(rename_all = "camelCase")]
@@ -24,11 +28,13 @@ pub struct Extensions {
 }
 
 use sc_consensus_babe::AuthorityId as BabeId;
+use runtime_pioneer_node::DOLLARS;
 
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type PioneerNodeChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
 pub type PioneerSS58Prefix = SS58Prefix;
 pub type PioneerAccountId = AccountId;
+pub type PioneerBalance = Balance;
 
 /// Generate a crypto pair from seed.
 pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
@@ -41,8 +47,8 @@ type AccountPublic = <Signature as Verify>::Signer;
 
 /// Generate an account ID from seed.
 pub fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> PioneerAccountId
-where
-	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
+	where
+		AccountPublic: From<<TPublic::Pair as Pair>::Public>,
 {
 	AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
 }
@@ -70,36 +76,45 @@ pub fn make_testnet_genesis(
 	initial_authorities: Vec<(AccountId, AccountId, BabeId, GrandpaId, AresId, ImOnlineId)>,
 	initial_nominators: Vec<AccountId>,
 	root_key: AccountId,
-	endowed_accounts: Vec<(AccountId, Balance)>,
+	endowed_accounts: Vec<AccountId>,
 	council_members: Vec<AccountId>,
+	immigration_account: Option<Vec<(AccountId, Balance)>>,
 	_enable_println: bool,
 ) -> GenesisConfig {
-	const TOTAL_ISSUANCE: Balance = 10_0000_0000 * CENTS; // one billion
-	let endowment: Balance = TOTAL_ISSUANCE / endowed_accounts.len() as u128;
-	let elections_stash: Balance = endowment / 1000;
+
+	let balance_accounts = merge_accounts_balance(
+		// initial_authorities.len(),
+		// council_members.len(),
+		// endowed_accounts,
+		// immigration_account,
+		AresBalanceConfig{
+			total_issuance: TOTAL_ISSUANCE,
+			per_election_desposit: PER_ELECTION_DESPOSIT,
+			per_staking_desposit: PER_STAKING_DESPOSIT,
+			authorities_len: initial_authorities.len(),
+			council_len: council_members.len(),
+			endowed_accounts,
+			immigration_account,
+		}
+	);
 
 	let mut rng = rand::thread_rng();
 	let stakers = initial_authorities
 		.iter()
-		.map(|x| (x.0.clone(), x.1.clone(), elections_stash, StakerStatus::Validator))
+		.map(|x| (x.0.clone(), x.1.clone(), PER_STAKING_DESPOSIT, StakerStatus::Validator))
 		.collect::<Vec<_>>();
 
 	GenesisConfig {
 		system: SystemConfig {
 			// Add Wasm runtime to storage.
 			code: wasm_binary.to_vec(),
-			// changes_trie_config: Default::default(),
 		},
 		im_online: ImOnlineConfig { keys: vec![] },
 		balances: BalancesConfig {
 			// Configure endowed accounts with initial balance of 1 << 60.
-			balances: endowed_accounts.clone(),
+			// balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),
+			balances: balance_accounts,
 		},
-		// network
-		// aura: AuraConfig {
-		//     // authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
-		//     authorities: vec![],
-		// },
 		babe: BabeConfig { authorities: vec![], epoch_config: Some(BABE_GENESIS_EPOCH_CONFIG) },
 		staking: StakingConfig {
 			validator_count: initial_authorities.len() as u32,
@@ -143,6 +158,7 @@ pub fn make_testnet_genesis(
 		// council: CouncilConfig { phantom: Default::default(), members: council_members.clone() },
 		council: CouncilConfig::default(),
 		technical_committee: TechnicalCommitteeConfig { phantom: Default::default(), members: council_members.clone() },
+		claims: ClaimsConfig { claims: vec![], vesting: vec![] },
 		vesting: VestingConfig { vesting: vec![] },
 		treasury: Default::default(),
 		democracy: DemocracyConfig::default(),
@@ -150,7 +166,7 @@ pub fn make_testnet_genesis(
 			members: council_members
 				.clone()
 				.iter()
-				.map(|member| (member.clone(), elections_stash))
+				.map(|member| (member.clone(), PER_ELECTION_DESPOSIT))
 				.collect(),
 		},
 	}
