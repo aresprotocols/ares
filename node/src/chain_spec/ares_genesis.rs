@@ -1,17 +1,18 @@
 use super::*;
 
-use runtime_common::{ Signature, AccountId};
+use runtime_common::{AccountId, Signature};
 pub use runtime_gladios_node::{
-	constants::currency::{Balance, CENTS},
+	constants::currency::{Balance, DOLLARS},
 	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
 	AresOracleConfig, BabeConfig, BalancesConfig, Block, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig,
-	SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as GladiosWASM_BINARY,
+	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
+	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as GladiosWASM_BINARY,
 };
 
+use sc_chain_spec::ChainSpecExtension;
 use serde::{Deserialize, Serialize};
-use sc_chain_spec::ChainSpecExtension;#[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
 
+#[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
 #[serde(rename_all = "camelCase")]
 pub struct Extensions {
 	/// Block numbers with known hashes.
@@ -21,7 +22,6 @@ pub struct Extensions {
 	/// The light sync state extension used by the sync-state rpc.
 	pub light_sync_state: sc_sync_state_rpc::LightSyncStateExtension,
 }
-
 
 use sc_consensus_babe::AuthorityId as BabeId;
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
@@ -72,7 +72,7 @@ pub fn make_ares_genesis(
 	council_members: Vec<AccountId>,
 	_enable_println: bool,
 ) -> GenesisConfig {
-	const TOTAL_ISSUANCE: Balance = 10_0000_0000 * CENTS; // one billion
+	const TOTAL_ISSUANCE: Balance = 10_0000_0000 * DOLLARS; // one billion
 	let endowment: Balance = TOTAL_ISSUANCE / endowed_accounts.len() as u128;
 	let elections_stash: Balance = endowment / 1000;
 
@@ -86,18 +86,10 @@ pub fn make_ares_genesis(
 		system: SystemConfig {
 			// Add Wasm runtime to storage.
 			code: wasm_binary.to_vec(),
-			// changes_trie_config: Default::default(),
 		},
 		im_online: ImOnlineConfig { keys: vec![] },
-		balances: BalancesConfig {
-			// Configure endowed accounts with initial balance of 1 << 60.
-			balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),
-		},
+		balances: BalancesConfig { balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect() },
 		// network
-		// aura: AuraConfig {
-		//     // authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
-		//     authorities: vec![],
-		// },
 		babe: BabeConfig { authorities: vec![], epoch_config: Some(BABE_GENESIS_EPOCH_CONFIG) },
 		staking: StakingConfig {
 			validator_count: initial_authorities.len() as u32,

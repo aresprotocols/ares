@@ -1,16 +1,16 @@
 use super::*;
 
-use runtime_common::{ Signature, AccountId};
+use runtime_common::{AccountId, Signature};
 pub use runtime_pioneer_node::{
 	constants::currency::{Balance, CENTS},
 	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
 	AresOracleConfig, BabeConfig, BalancesConfig, Block, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig,
-	SystemConfig, TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as PioneerWASM_BINARY,
+	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
+	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as PioneerWASM_BINARY,
 };
 
-use serde::{Deserialize, Serialize};
 use sc_chain_spec::ChainSpecExtension;
+use serde::{Deserialize, Serialize};
 
 #[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
 #[serde(rename_all = "camelCase")]
@@ -70,7 +70,7 @@ pub fn make_testnet_genesis(
 	initial_authorities: Vec<(AccountId, AccountId, BabeId, GrandpaId, AresId, ImOnlineId)>,
 	initial_nominators: Vec<AccountId>,
 	root_key: AccountId,
-	endowed_accounts: Vec<AccountId>,
+	endowed_accounts: Vec<(AccountId, Balance)>,
 	council_members: Vec<AccountId>,
 	_enable_println: bool,
 ) -> GenesisConfig {
@@ -93,7 +93,7 @@ pub fn make_testnet_genesis(
 		im_online: ImOnlineConfig { keys: vec![] },
 		balances: BalancesConfig {
 			// Configure endowed accounts with initial balance of 1 << 60.
-			balances: endowed_accounts.iter().cloned().map(|k| (k, endowment)).collect(),
+			balances: endowed_accounts.clone(),
 		},
 		// network
 		// aura: AuraConfig {

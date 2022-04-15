@@ -1,0 +1,102 @@
+name: Ares Gladios
+id: gladios
+
+balances:
+  - [ '4VRX7U6AGqQjowBNreNcBo82nZAVcEcNntAoXDNZzqgQ2VtZ', 11123456789 ]
+
+boot_nodes:
+  - '/ip4/45.77.243.246/tcp/30334/ws/p2p/12D3KooWMqDofvvwRtP7AYSAyJ2udNYrj698wnYJbpjomNTHHK9E'
+
+telemetry_endpoints:
+  - [ "wss://telemetry.polkadot.io/submit/", 0 ]
+
+authorities:
+  # stash, controller, babe, grandpa, ares, imOnline
+  - [ '4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w', '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU', '4Py8XwwPLq7p3arHcnPgApz6oxY4kYFkGpNKMXBo9xjKEhsy' ]
+
+council:
+  - '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU'
+  - '4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq'
+
+root: '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU'
+
+
+symobls:
+  # price_key, request_uri, parse_version, fraction_num, request interval
+  - [ 'btc-usdt', 'btc', 2, 4, 2 ]
+  - [ 'eth-usdt', 'eth', 2, 4, 2 ]
+  - [ 'dot-usdt', 'dot', 2, 4, 2 ]
+  - [ 'link-usdt', 'link', 2, 4, 2 ]
+  - [ 'ada-usdt', 'ada', 2, 4, 4 ]
+  - [ 'xrp-usdt', 'xrp', 2, 4, 4 ]
+  - [ 'sol-usdt', 'sol', 2, 4, 4 ]
+  - [ 'uni-usdt', 'uni', 2, 4, 4 ]
+  - [ 'bnb-usdt', 'bnb', 2, 4, 4 ]
+  - [ '1inch-usdt', '1inch', 2, 4, 4 ]
+  - [ 'atom-usdt', 'atom', 2, 4, 4 ]
+  - [ 'trx-usdt', 'trx', 2, 4, 4 ]
+  - [ 'aave-usdt', 'aave', 2, 4, 4 ]
+  - [ 'snx-usdt', 'snx', 2, 4, 4 ]
+  - [ 'avax-usdt', 'avax', 2, 4, 5 ]
+  - [ 'ltc-usdt', 'ltc', 2, 4, 5 ]
+  - [ 'bch-usdt', 'bch', 2, 4, 5 ]
+  - [ 'fil-usdt', 'fil', 2, 4, 5 ]
+  - [ 'etc-usdt', 'etc', 2, 4, 5 ]
+  - [ 'eos-usdt', 'eos', 2, 4, 5 ]
+  - [ 'dash-usdt', 'dash', 2, 4, 5 ]
+  - [ 'comp-usdt', 'comp', 2, 4, 5 ]
+  - [ 'matic-usdt', 'matic', 2, 4, 5 ]
+  - [ 'doge-usdt', 'doge', 2, 4, 8 ]
+  - [ 'luna-usdt', 'luna', 2, 4, 8 ]
+  - [ 'ftt-usdt', 'ftt', 2, 4, 8 ]
+  - [ 'xlm-usdt', 'xlm', 2, 4, 8 ]
+  - [ 'vet-usdt', 'vet', 2, 4, 8 ]
+  - [ 'icp-usdt', 'icp', 2, 4, 8 ]
+  - [ 'theta-usdt', 'theta', 2, 4, 8 ]
+  - [ 'algo-usdt', 'algo', 2, 4, 8 ]
+  - [ 'xmr-usdt', 'xmr', 2, 4, 8 ]
+  - [ 'xtz-usdt', 'xtz', 2, 4, 8 ]
+  - [ 'egld-usdt', 'egld', 2, 4, 8 ]
+  - [ 'axs-usdt', 'axs', 2, 4, 8 ]
+  - [ 'iota-usdt', 'iota', 2, 4, 8 ]
+  - [ 'ftm-usdt', 'ftm', 2, 4, 8 ]
+  - [ 'ksm-usdt', 'ksm', 2, 4, 4 ]
+  - [ 'hbar-usdt', 'hbar', 2, 4, 8 ]
+  - [ 'neo-usdt', 'neo', 2, 4, 8 ]
+  - [ 'waves-usdt', 'waves', 2, 4, 8 ]
+  - [ 'mkr-usdt', 'mkr', 2, 4, 8 ]
+  - [ 'near-usdt', 'near', 2, 4, 8 ]
+  - [ 'btt-usdt', 'btt', 2, 4, 8 ]
+  - [ 'chz-usdt', 'chz', 2, 4, 8 ]
+  - [ 'stx-usdt', 'stx', 2, 4, 8 ]
+  - [ 'dcr-usdt', 'dcr', 2, 4, 8 ]
+  - [ 'xem-usdt', 'xem', 2, 4, 8 ]
+  - [ 'omg-usdt', 'omg', 2, 4, 8 ]
+  - [ 'zec-usdt', 'zec', 2, 4, 8 ]
+  - [ 'sushi-usdt', 'sushi', 2, 4, 8 ]
+  - [ 'enj-usdt', 'enj', 2, 4, 8 ]
+  - [ 'mana-usdt', 'mana', 2, 4, 8 ]
+  - [ 'yfi-usdt', 'yfi', 2, 4, 8 ]
+  - [ 'iost-usdt', 'iost', 2, 4, 8 ]
+  - [ 'qtum-usdt', 'qtum', 2, 4, 8 ]
+  - [ 'bat-usdt', 'bat', 2, 4, 8 ]
+  - [ 'zil-usdt', 'zil', 2, 4, 8 ]
+  - [ 'icx-usdt', 'icx', 2, 4, 8 ]
+  - [ 'grt-usdt', 'grt', 2, 4, 8 ]
+  - [ 'celo-usdt', 'celo', 2, 4, 8 ]
+  - [ 'zen-usdt', 'zen', 2, 4, 8 ]
+  - [ 'ren-usdt', 'ren', 2, 4, 8 ]
+  - [ 'sc-usdt', 'sc', 2, 4, 8 ]
+  - [ 'zrx-usdt', 'zrx', 2, 4, 8 ]
+  - [ 'ont-usdt', 'ont', 2, 4, 8 ]
+  - [ 'nano-usdt', 'nano', 2, 4, 8 ]
+  - [ 'crv-usdt', 'crv', 2, 4, 8 ]
+  - [ 'bnt-usdt', 'bnt', 2, 4, 8 ]
+  - [ 'fet-usdt', 'fet', 2, 4, 8 ]
+  - [ 'uma-usdt', 'uma', 2, 4, 8 ]
+  - [ 'iotx-usdt', 'iotx', 2, 4, 8 ]
+  - [ 'lrc-usdt', 'lrc', 2, 4, 8 ]
+  - [ 'sand-usdt', 'sand', 2, 4, 8 ]
+  - [ 'srm-usdt', 'srm', 2, 4, 8 ]
+  - [ 'kava-usdt', 'kava', 2, 4, 8 ]
+  - [ 'knc-usdt', 'knc', 2, 4, 8 ]

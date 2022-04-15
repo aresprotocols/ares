@@ -378,7 +378,7 @@ pub type Executive = frame_executive::Executive<
 	Block,
 	frame_system::ChainContext<Runtime>,
 	Runtime,
-	AllPallets,
+	AllPalletsReversedWithSystemFirst,
 	// (pallet_bags_list::migrations::CheckCounterPrefix<Runtime>, network::part_session::UpgradeSessionKeys),
 	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
 >;

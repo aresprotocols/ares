@@ -245,13 +245,6 @@ where
 	})
 }
 
-fn remote_keystore(_url: &String) -> Result<Arc<LocalKeystore>, &'static str> {
-	// FIXME: here would the concrete keystore be built,
-	//        must return a concrete type (NOT `LocalKeystore`) that
-	//        implements `CryptoStore` and `SyncCryptoStore`
-	Err("Remote Keystore not supported.")
-}
-
 /// Builds a new service for a full client.
 pub fn new_full<RuntimeApi, ExecutorDispatch: NativeExecutionDispatch>(
 	mut config: Configuration,

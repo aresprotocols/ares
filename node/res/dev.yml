@@ -1,0 +1,36 @@
+name: Development
+id: dev
+balances:
+  - [ '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', 11123456789 ]
+
+boot_nodes: [ ]
+telemetry_endpoints: [ ]
+
+authorities:
+  # stash, controller, babe, grandpa, ares, imOnline
+  # //Alice//stash, //Alice, //Alice, //Alice, //Alice, //Alice
+  - [ '4U52mX4kJWAYwHEn76y9NBjZMu7TU3Ve8WWKXJcq6Vrzi9fK', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd','4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd','4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd' ]
+
+council:
+  - '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd'
+
+root: '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd'
+
+symobls:
+  # price_key, request_uri, parse_version, fraction_num, request interval
+  - [ 'btc-usdt', 'btc', 2, 4, 2 ]
+  - [ 'eth-usdt', 'eth', 2, 4, 2 ]
+  - [ 'dot-usdt', 'dot', 2, 4, 2 ]
+  - [ 'link-usdt', 'link', 2, 4, 2 ]
+  - [ 'ada-usdt', 'ada', 2, 4, 4 ]
+  - [ 'xrp-usdt', 'xrp', 2, 4, 4 ]
+  - [ 'sol-usdt', 'sol', 2, 4, 4 ]
+  - [ 'uni-usdt', 'uni', 2, 4, 4 ]
+  - [ 'bnb-usdt', 'bnb', 2, 4, 4 ]
+  - [ '1inch-usdt', '1inch', 2, 4, 4 ]
+  - [ 'atom-usdt', 'atom', 2, 4, 4 ]
+  - [ 'trx-usdt', 'trx', 2, 4, 4 ]
+  - [ 'aave-usdt', 'aave', 2, 4, 4 ]
+  - [ 'snx-usdt', 'snx', 2, 4, 4 ]
+  - [ 'avax-usdt', 'avax', 2, 4, 5 ]
+  - [ 'ltc-usdt', 'ltc', 2, 4, 5 ]
