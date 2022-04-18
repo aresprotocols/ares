@@ -1,7 +1,6 @@
 
 use super::*;
 use polkadot_runtime_common::claims;
-use polkadot_runtime_common::claims::TestWeightInfo;
 use crate::governance::part_council::CouncilCollective;
 
 parameter_types! {
@@ -14,6 +13,24 @@ impl claims::Config for Runtime {
     type Prefix = Prefix;
     type MoveClaimOrigin =
     pallet_ares_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>;
-    // type WeightInfo = polkadot_runtime_common::weights::runtime_common_claims::WeightInfo<Runtime>;
-    type WeightInfo = TestWeightInfo; // No () impl
+    type WeightInfo = EmptyClaimWeightInfo;
+}
+
+pub struct EmptyClaimWeightInfo;
+impl polkadot_runtime_common::claims::WeightInfo for EmptyClaimWeightInfo {
+    fn claim() -> Weight {
+        0
+    }
+    fn mint_claim() -> Weight {
+        0
+    }
+    fn claim_attest() -> Weight {
+        0
+    }
+    fn attest() -> Weight {
+        0
+    }
+    fn move_claim() -> Weight {
+        0
+    }
 }
