@@ -1,10 +1,6 @@
-use clap::Parser;
 use jsonrpc_core::serde_json;
-use sc_cli::{CliConfiguration, GenericNumber, PruningParams, Result, RunCmd, SharedParams};
-use sc_client_api::{Backend, UsageProvider};
-use sp_runtime::traits::{Block as BlockT, Header as HeaderT, Zero};
-use std::{fmt::Debug, str::FromStr, sync::Arc};
-use structopt::StructOpt;
+use sc_cli::RunCmd;
+use std::fmt::Debug;
 
 #[derive(Debug, clap::Parser)]
 pub struct Cli {
@@ -24,6 +20,9 @@ pub struct Cli {
 	// #[clap(ares-keys)]
 	#[clap(long)]
 	pub ares_keys: Option<String>,
+
+	#[clap(long)]
+	pub spec_config: Option<String>,
 }
 
 // #[derive(Debug, clap::Subcommand)]

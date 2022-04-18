@@ -1,6 +1,6 @@
 use super::*;
 use constants::{currency::DOLLARS, time::EPOCH_DURATION_IN_BLOCKS};
-use frame_election_provider_support::onchain;
+
 use frame_support::traits::EnsureOneOf;
 use governance::part_council::CouncilCollective;
 pub use pallet_election_provider_multi_phase;
@@ -55,7 +55,7 @@ sp_npos_elections::generate_solution_type!(
 );
 
 /// on chain elect
-impl onchain::Config for Runtime {
+impl frame_election_provider_support::onchain::Config for Runtime {
 	type Accuracy = Perbill;
 	type DataProvider = staking_extend::data::DataProvider<Self>;
 }

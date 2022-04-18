@@ -15,10 +15,6 @@
   },
   "consensusEngine": null,
   "codeSubstitutes": {},
-  "forkBlocks": null,
-  "badBlocks": [
-    "0x3a9d230d15e6cd1a0472bbcd33dca6480465ea33e34136fc4746dd066b8a7a6a"
-  ],
   "genesis": {
     "raw": {
       "top": {

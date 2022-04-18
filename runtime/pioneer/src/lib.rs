@@ -395,8 +395,8 @@ pub type Executive = frame_executive::Executive<
 
 //
 impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime
-	where
-		Call: From<LocalCall>,
+where
+	Call: From<LocalCall>,
 {
 	//
 	fn create_transaction<C: frame_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
@@ -448,13 +448,12 @@ impl frame_system::offchain::SigningTypes for Runtime {
 }
 
 impl<C> frame_system::offchain::SendTransactionTypes<C> for Runtime
-	where
-		Call: From<C>,
+where
+	Call: From<C>,
 {
 	type Extrinsic = UncheckedExtrinsic;
 	type OverarchingCall = Call;
 }
-
 
 impl_runtime_apis! {
 	impl sp_api::Core<Block> for Runtime {

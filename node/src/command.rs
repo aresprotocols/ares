@@ -20,8 +20,6 @@ use crate::{
 	cli::{Cli, Subcommand},
 	service_babe,
 };
-use runtime_gladios_node::Block as GladiosNodeBlock;
-use runtime_pioneer_node::Block as PioneerNodeBlock;
 
 use sc_cli::{ChainSpec, Result, RuntimeVersion, SubstrateCli};
 use sc_service::PartialComponents;
@@ -85,15 +83,24 @@ impl SubstrateCli for Cli {
 		Ok(match id {
 			"dev" => {
 				log::info!("🚅 🚅 🚅 load spec with development_config().");
-				Box::new(chain_spec::development_config()?)
+				Box::new(chain_spec::make_pioneer_spec(
+					self.spec_config.clone(),
+					&include_bytes!("../res/test.yml")[..],
+				)?)
 			},
 			"local" => {
 				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
-				Box::new(chain_spec::local_ares_config()?)
+				Box::new(chain_spec::make_pioneer_spec(
+					self.spec_config.clone(),
+					&include_bytes!("../res/dev.yml")[..],
+				)?)
 			},
 			"test" => {
 				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
-				Box::new(chain_spec::development_config()?)
+				Box::new(chain_spec::make_pioneer_spec(
+					self.spec_config.clone(),
+					&include_bytes!("../res/dev.yml")[..],
+				)?)
 			},
 			"" | "gladios" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");

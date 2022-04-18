@@ -1,7 +1,7 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
 use sc_client_api::{Backend, BadBlocks, BlockBackend, ExecutorProvider, ForkBlocks};
-use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
+use sc_consensus_aura::SlotProportion;
 pub use sc_executor::NativeElseWasmExecutor;
 use sc_executor::NativeExecutionDispatch;
 use sc_finality_grandpa::SharedVoterState;
@@ -10,10 +10,8 @@ use sc_service::{error::Error as ServiceError, Configuration, TaskManager};
 use sc_telemetry::{Telemetry, TelemetryWorker};
 use seed_reader::{extract_content, make_author_insert_key_params, make_rpc_request};
 use sp_api::ConstructRuntimeApi;
-use sp_consensus::SlotData;
 // use sp_consensus_aura::sr25519::{AuthorityId as AuraId, AuthorityPair as AuraPair};
 use node_rpc;
-use sc_consensus_babe::{AuthorityId as BabeId, AuthorityPair as BabePair};
 use sp_core::{
 	offchain::{OffchainStorage, STORAGE_PREFIX},
 	Encode,
@@ -278,13 +276,13 @@ where
 		backend,
 		mut task_manager,
 		import_queue,
-		mut keystore_container,
+		keystore_container,
 		select_chain,
 		transaction_pool,
 		other: (import_setup, mut telemetry),
 	} = new_partial(&config)?;
 
-	let auth_disc_publish_non_global_ips = config.network.allow_non_globals_in_dht;
+	//let auth_disc_publish_non_global_ips = config.network.allow_non_globals_in_dht;
 
 	let grandpa_protocol_name = sc_finality_grandpa::protocol_standard_name(
 		&client.block_hash(0).ok().flatten().expect("Genesis block exists; qed"),
@@ -371,7 +369,7 @@ where
 	})?;
 
 	log::info!("setting ares_params: {:?}", ares_params);
-	let result: Vec<(&str, bool)> = ares_params
+	let _result: Vec<(&str, bool)> = ares_params
 		.iter()
 		.map(|(order, x)| {
 			match order {
