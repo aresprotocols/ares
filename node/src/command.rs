@@ -132,7 +132,7 @@ impl SubstrateCli for Cli {
 
 /// Parse and run command line arguments
 pub fn run() -> Result<()> {
-	let cli = Cli::from_args();
+	let mut cli = Cli::from_args();
 
 	use runtime_gladios_node::RuntimeApi as GRuntimeApi;
 	use runtime_pioneer_node::RuntimeApi as PRuntimeApi;
@@ -155,6 +155,7 @@ pub fn run() -> Result<()> {
 		Some(Subcommand::Vanity(cmd)) => cmd.run(),
 		Some(Subcommand::Key(cmd)) => cmd.run(&cli),
 		Some(Subcommand::BuildSpec(cmd)) => {
+			cli.spec_config = cmd.spec_config.clone();
 			let runner = cli.create_runner(cmd)?;
 			runner.sync_run(|config| cmd.run(config.chain_spec, config.network))
 		},

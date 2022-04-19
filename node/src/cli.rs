@@ -95,7 +95,8 @@ pub enum Subcommand {
 	Sign(sc_cli::SignCmd),
 
 	/// Build a chain specification.
-	BuildSpec(sc_cli::BuildSpecCmd),
+	// BuildSpec(sc_cli::BuildSpecCmd),
+	BuildSpec(crate::commands::build_spec_cmd::AresBuildSpecCmd),
 
 	/// Validate blocks.
 	CheckBlock(sc_cli::CheckBlockCmd),

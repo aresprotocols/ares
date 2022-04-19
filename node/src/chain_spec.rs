@@ -181,7 +181,7 @@ impl ChainSpecConfig {
 		let mut total_balance = Balance::default();
 		self.balances.iter().for_each(|(account, amount)| {
 			total_balance = total_balance.saturating_add(*amount);
-			assert!(!unique_account.contains_key(account), format!("duplicate account {:?} ", account));
+			assert!(!unique_account.contains_key(account), "duplicate account {:?} ", account);
 			unique_account.insert(account.clone(), *amount);
 		});
 		(unique_account, total_balance)

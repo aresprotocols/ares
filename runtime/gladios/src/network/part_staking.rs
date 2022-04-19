@@ -113,7 +113,7 @@ impl pallet_staking::Config for Runtime {
 	type UnixTime = Timestamp;
 	type CurrencyToVote = runtime_common::CurrencyToVote;
 	type ElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
-	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
+	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmenGenesis<Self>;
 	type MaxNominations = MaxNominations;
 	type RewardRemainder = Treasury;
 	type Event = Event;
