@@ -1,3 +1,4 @@
+use frame_election_provider_support::{ElectionDataProvider, ElectionProvider, onchain};
 use super::*;
 
 use crate::network::part_elections::NposCompactSolution16;
@@ -7,6 +8,7 @@ use governance::part_council::CouncilCollective;
 use pallet_ares_collective;
 use pallet_staking;
 pub use pallet_staking::StakerStatus;
+use sp_core::sp_std::marker::PhantomData;
 use runtime_common::prod_or_fast;
 use sp_runtime::curve::PiecewiseLinear;
 pub use sp_staking;
@@ -59,7 +61,8 @@ impl pallet_staking::Config for Runtime {
 	// type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
 	// 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
 	// >;
-	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
+	// type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
+	type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<Self>;
 	type MaxNominations = MaxNominations;
 	type RewardRemainder = Treasury;
 	type Event = Event;
@@ -86,3 +89,24 @@ impl pallet_staking::Config for Runtime {
 	type BenchmarkingConfig = runtime_common::StakingBenchmarkingConfig;
 	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
 }
+
+
+struct GenesisElectionForStakingExtend;
+
+impl<T: onchain::Config> ElectionProvider for OnChainSequentialPhragmen<T> {
+	type AccountId =<T::DataProvider as ElectionDataProvider>::AccountId;
+	type BlockNumber = <T::DataProvider as ElectionDataProvider>::BlockNumber ;
+	// type Error = <T::ElectionProvider as ElectionProvider>::Error ;
+	// type DataProvider = <T::ElectionProvider as ElectionProvider>::DataProvider;
+
+	// type AccountId = T::AccountId;
+	// type BlockNumber = T::BlockNumber ;
+	type Error = onchain::Error;
+	type DataProvider = T::DataProvider ;
+
+	fn elect() -> Result<Supports<Self::AccountId>, Self::Error> {
+		T::ElectionProvider::elect()
+	}
+}
+
+
