@@ -62,7 +62,7 @@ impl pallet_staking::Config for Runtime {
 	// 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
 	// >;
 	// type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
-	type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<Self>;
+	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmenGenesis<Self>;
 	type MaxNominations = MaxNominations;
 	type RewardRemainder = Treasury;
 	type Event = Event;
@@ -91,22 +91,22 @@ impl pallet_staking::Config for Runtime {
 }
 
 
-struct GenesisElectionForStakingExtend;
-
-impl<T: onchain::Config> ElectionProvider for OnChainSequentialPhragmen<T> {
-	type AccountId =<T::DataProvider as ElectionDataProvider>::AccountId;
-	type BlockNumber = <T::DataProvider as ElectionDataProvider>::BlockNumber ;
-	// type Error = <T::ElectionProvider as ElectionProvider>::Error ;
-	// type DataProvider = <T::ElectionProvider as ElectionProvider>::DataProvider;
-
-	// type AccountId = T::AccountId;
-	// type BlockNumber = T::BlockNumber ;
-	type Error = onchain::Error;
-	type DataProvider = T::DataProvider ;
-
-	fn elect() -> Result<Supports<Self::AccountId>, Self::Error> {
-		T::ElectionProvider::elect()
-	}
-}
+// struct GenesisElectionForStakingExtend;
+//
+// impl<T: onchain::Config> ElectionProvider for OnChainSequentialPhragmen<T> {
+// 	type AccountId =<T::DataProvider as ElectionDataProvider>::AccountId;
+// 	type BlockNumber = <T::DataProvider as ElectionDataProvider>::BlockNumber ;
+// 	// type Error = <T::ElectionProvider as ElectionProvider>::Error ;
+// 	// type DataProvider = <T::ElectionProvider as ElectionProvider>::DataProvider;
+//
+// 	// type AccountId = T::AccountId;
+// 	// type BlockNumber = T::BlockNumber ;
+// 	type Error = onchain::Error;
+// 	type DataProvider = T::DataProvider ;
+//
+// 	fn elect() -> Result<Supports<Self::AccountId>, Self::Error> {
+// 		T::ElectionProvider::elect()
+// 	}
+// }
 
 

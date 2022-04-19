@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#47f61bf9e078345cb951c715dbdc97d3d3f491fd"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -140,7 +140,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#47f61bf9e078345cb951c715dbdc97d3d3f491fd"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -3710,7 +3710,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#47f61bf9e078345cb951c715dbdc97d3d3f491fd"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4379,7 +4379,7 @@ checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#47f61bf9e078345cb951c715dbdc97d3d3f491fd"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4415,7 +4415,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#47f61bf9e078345cb951c715dbdc97d3d3f491fd"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4435,7 +4435,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#47f61bf9e078345cb951c715dbdc97d3d3f491fd"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5050,7 +5050,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#47f61bf9e078345cb951c715dbdc97d3d3f491fd"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -8840,7 +8840,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#47f61bf9e078345cb951c715dbdc97d3d3f491fd"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
