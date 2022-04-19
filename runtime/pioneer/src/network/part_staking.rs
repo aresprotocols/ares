@@ -59,7 +59,7 @@ impl pallet_staking::Config for Runtime {
 	// type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
 	// 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
 	// >;
-	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
+	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmenGenesis<Self>;
 	type MaxNominations = MaxNominations;
 	type RewardRemainder = Treasury;
 	type Event = Event;
