@@ -1,4 +1,3 @@
-use frame_election_provider_support::{ElectionDataProvider, ElectionProvider, onchain};
 use super::*;
 
 use crate::network::part_elections::NposCompactSolution16;
@@ -8,7 +7,6 @@ use governance::part_council::CouncilCollective;
 use pallet_ares_collective;
 use pallet_staking;
 pub use pallet_staking::StakerStatus;
-use sp_core::sp_std::marker::PhantomData;
 use runtime_common::prod_or_fast;
 use sp_runtime::curve::PiecewiseLinear;
 pub use sp_staking;
@@ -90,7 +88,6 @@ impl pallet_staking::Config for Runtime {
 	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
 }
 
-
 // struct GenesisElectionForStakingExtend;
 //
 // impl<T: onchain::Config> ElectionProvider for OnChainSequentialPhragmen<T> {
@@ -108,5 +105,3 @@ impl pallet_staking::Config for Runtime {
 // 		T::ElectionProvider::elect()
 // 	}
 // }
-
-

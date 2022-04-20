@@ -1,12 +1,12 @@
 [package]
-authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']
+authors = ['Ares Protocal <https://github.com/aresprotocols/ares>']
 edition = '2018'
-homepage = 'https://substrate.dev'
+homepage = 'https://www.aresprotocol.io/'
 license = 'Unlicense'
-name = 'runtime-gladios-node'
+name = 'gladios-runtime'
 publish = false
-repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'
-version = '3.0.0'
+repository = 'https://github.com/aresprotocols/ares'
+version = '1.0.0'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
