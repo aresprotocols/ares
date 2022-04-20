@@ -1,33 +1,67 @@
-use hex_literal::hex;
-use std::{borrow::Borrow, collections::BTreeMap, fs::File};
+use std::{collections::BTreeMap, fs::File};
 
 use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
-use log::log;
 use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
+use sc_chain_spec::ChainSpecExtension;
 use sc_service::{config::MultiaddrWithPeerId, ChainType};
 use sc_telemetry::{serde_json, TelemetryEndpoints};
+use serde::{Deserialize, Serialize};
 use sp_consensus_babe::AuthorityId as BabeId;
-use sp_core::{crypto::UncheckedInto, sr25519, Pair, Public, H256};
+use sp_core::{
+	crypto::{Ss58AddressFormat, Ss58Codec},
+	sr25519, Pair, Public,
+};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::{
-	app_crypto::sp_core::crypto::UncheckedFrom,
 	traits::{IdentifyAccount, Verify},
 	Perbill,
 };
 
-mod ares_genesis;
-mod testnet_genesis;
+use runtime_common::{AccountId, Balance, Signature};
 
-use runtime_common::{AccountId, Balance};
-use serde::Deserialize;
-use sp_core::crypto::{Ss58AddressFormat, Ss58Codec};
+use crate::service::Block;
 
-const DEFAULT_PROTOCOL_ID: &str = "ares";
+pub mod gladios;
+pub mod pioneer;
 
-// use ares_genesis::make_ares_genesis;
-pub use ares_genesis::{GladiosAccountId, GladiosNodeChainSpec, GladiosSS58Prefix, GladiosWASM_BINARY};
-use testnet_genesis::{get_account_id_from_seed, make_testnet_genesis};
-pub use testnet_genesis::{PioneerAccountId, PioneerNodeChainSpec, PioneerSS58Prefix, PioneerWASM_BINARY};
+#[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
+#[serde(rename_all = "camelCase")]
+pub struct Extensions {
+	/// Block numbers with known hashes.
+	pub fork_blocks: sc_client_api::ForkBlocks<Block>,
+	/// Known bad block hashes.
+	pub bad_blocks: sc_client_api::BadBlocks<Block>,
+	/// The light sync state extension used by the sync-state rpc.
+	pub light_sync_state: sc_sync_state_rpc::LightSyncStateExtension,
+}
+
+/// Generate a crypto pair from seed.
+pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
+	TPublic::Pair::from_string(&format!("//{}", seed), None)
+		.expect("static values are valid; qed")
+		.public()
+}
+
+type AccountPublic = <Signature as Verify>::Signer;
+
+/// Generate an account ID from seed.
+fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
+where
+	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
+{
+	AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
+}
+
+/// Generate an Aura authority key.
+pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, BabeId, GrandpaId, AresId) {
+	(
+		get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", seed)),
+		get_account_id_from_seed::<sr25519::Public>(seed),
+		get_from_seed::<BabeId>(seed),
+		get_from_seed::<GrandpaId>(seed),
+		get_from_seed::<AresId>(seed),
+	)
+}
 
 fn make_spec_config(config_path: Option<String>, default_config: &[u8], ss58: u16) -> Result<ChainSpecConfig, String> {
 	let mut chain_spec_config: ChainSpecConfig;
@@ -42,41 +76,6 @@ fn make_spec_config(config_path: Option<String>, default_config: &[u8], ss58: u1
 	chain_spec_config.ss58 = Some(ss58);
 	chain_spec_config.init();
 	Ok(chain_spec_config)
-}
-
-pub fn make_pioneer_spec(config_path: Option<String>, default_config: &[u8]) -> Result<PioneerNodeChainSpec, String> {
-	let chain_spec_config = make_spec_config(config_path, default_config, PioneerSS58Prefix::get().into())?;
-	let name = chain_spec_config.name.clone();
-	let id = chain_spec_config.id.clone();
-	let chain_type = chain_spec_config.chain_type.clone();
-	let boot_nodes = chain_spec_config.boot_nodes.clone();
-	let telemetry_endpoints = chain_spec_config.telemetry_endpoints.clone();
-	let wasm_binary = PioneerWASM_BINARY.ok_or_else(|| "Pioneer wasm not available".to_string())?;
-
-	let mut properties = serde_json::map::Map::new();
-	properties.insert("tokenDecimals".into(), (12 as u32).into());
-	properties.insert("tokenSymbol".into(), "ARES".into());
-	properties.insert("SS58Prefix".into(), PioneerSS58Prefix::get().into());
-
-	// let chain_balance = &include_bytes!("./chain_spec/gladios-balance.json")[..];
-	// let immigration: Vec<(AccountId, Balance)> = serde_json::from_slice(chain_balance).unwrap();
-	Ok(PioneerNodeChainSpec::from_genesis(
-		// Name
-		name.as_ref(),
-		// ID
-		id.as_ref(),
-		chain_type,
-		move || make_testnet_genesis(wasm_binary, &chain_spec_config),
-		boot_nodes.unwrap_or(vec![]),
-		telemetry_endpoints,
-		// Protocol ID
-		None,
-		// Properties
-		None,
-		Some(properties),
-		// Extensions
-		Default::default(),
-	))
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -109,12 +108,9 @@ pub struct ChainSpecConfig {
 impl ChainSpecConfig {
 	pub fn init(&mut self) {
 		let total_issuance: Balance = self.total_issuance.clone();
-		let validator_minimum_deposit: Balance = self.validator_minimum_deposit.clone(); // Stake balance per validator.s
-		let total_authorities_issuance: Balance =
-			validator_minimum_deposit.saturating_mul((self.authorities.len() as u32).into());
 
 		let mut minimum_balance = BTreeMap::<AccountId, Balance>::new();
-		self.authorities.clone().iter().for_each(|(stash, controller, ..)| {
+		self.authorities.clone().iter().for_each(|(stash, _controller, ..)| {
 			minimum_balance.insert(stash.clone(), self.validator_minimum_deposit.clone());
 		});
 		self.council.clone().iter().for_each(|account| {
@@ -129,13 +125,13 @@ impl ChainSpecConfig {
 		});
 
 		let (mut account_balance_map, total_balances) = self.get_total_balance();
-		minimum_balance.iter().for_each(|(accountId, minimum_amount)| {
-			if account_balance_map.contains_key(accountId) {
-				let bal = account_balance_map.get(accountId).unwrap();
+		minimum_balance.iter().for_each(|(account_id, minimum_amount)| {
+			if account_balance_map.contains_key(account_id) {
+				let bal = account_balance_map.get(account_id).unwrap();
 				assert!(
 					bal > minimum_amount,
 					"account:{:?} balance is too low, pls reset. minimum:{}, current balance:{}",
-					accountId.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
+					account_id.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
 					minimum_amount,
 					bal,
 				);
@@ -143,7 +139,7 @@ impl ChainSpecConfig {
 				assert!(
 					false,
 					"account:{:?} balance is empty, pls reset",
-					accountId.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap()))
+					account_id.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap()))
 				);
 			}
 		});
@@ -190,10 +186,11 @@ impl ChainSpecConfig {
 
 #[cfg(test)]
 pub(crate) mod tests {
-	use super::*;
-	// use crate::gladios_service::{new_full, new_light, new_partial};
-
 	use sp_runtime::BuildStorage;
+
+	use super::*;
+
+	// use crate::gladios_service::{new_full, new_light, new_partial};
 
 	#[test]
 	fn test_staging_test_net_chain_spec() {

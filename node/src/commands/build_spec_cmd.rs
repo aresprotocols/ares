@@ -30,6 +30,7 @@ pub struct AresBuildSpecCmd {
 	build_spec_cmd: BuildSpecCmd,
 }
 
+#[allow(unused_mut)]
 impl AresBuildSpecCmd {
 	/// Run the build-spec command
 	pub fn run(&self, mut spec: Box<dyn ChainSpec>, network_config: NetworkConfiguration) -> sc_cli::Result<()> {

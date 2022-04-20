@@ -1,17 +1,14 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
-use sc_client_api::{Backend, BadBlocks, BlockBackend, ExecutorProvider, ForkBlocks};
+use sc_client_api::{Backend, BlockBackend, ExecutorProvider};
 use sc_consensus_aura::SlotProportion;
 pub use sc_executor::NativeElseWasmExecutor;
 use sc_executor::NativeExecutionDispatch;
-use sc_finality_grandpa::SharedVoterState;
-use sc_keystore::LocalKeystore;
 use sc_service::{error::Error as ServiceError, Configuration, TaskManager};
 use sc_telemetry::{Telemetry, TelemetryWorker};
 use seed_reader::{extract_content, make_author_insert_key_params, make_rpc_request};
 use sp_api::ConstructRuntimeApi;
 // use sp_consensus_aura::sr25519::{AuthorityId as AuraId, AuthorityPair as AuraPair};
-use node_rpc;
 use sp_core::{
 	offchain::{OffchainStorage, STORAGE_PREFIX},
 	Encode,
@@ -24,28 +21,6 @@ use sp_runtime::{
 use std::{io::Read, sync::Arc, time::Duration};
 pub mod gladios;
 pub mod pioneer;
-// use futures::{prelude::*, StreamExt};
-// use futures::future::ok;
-// use log::log;
-// // Our native executor instance.
-// pub struct ExecutorDispatch;
-//
-// impl sc_executor::NativeExecutionDispatch for ExecutorDispatch {
-// 	/// Only enable the benchmarking host functions when we actually want to benchmark.
-// 	#[cfg(feature = "runtime-benchmarks")]
-// 	type ExtendHostFunctions = frame_benchmarking::benchmarking::HostFunctions;
-// 	/// Otherwise we only use the default Substrate host functions.
-// 	#[cfg(not(feature = "runtime-benchmarks"))]
-// 	type ExtendHostFunctions = ();
-//
-// 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-// 		node_template_runtime::api::dispatch(method, data)
-// 	}
-//
-// 	fn native_version() -> sc_executor::NativeVersion {
-// 		node_template_runtime::native_version()
-// 	}
-// }
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;

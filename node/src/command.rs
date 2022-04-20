@@ -18,7 +18,7 @@
 use crate::{
 	chain_spec,
 	cli::{Cli, Subcommand},
-	service_babe,
+	service,
 };
 
 use sc_cli::{ChainSpec, Result, RuntimeVersion, SubstrateCli};
@@ -83,37 +83,36 @@ impl SubstrateCli for Cli {
 		Ok(match id {
 			"dev" => {
 				log::info!("🚅 🚅 🚅 load spec with development_config().");
-				Box::new(chain_spec::make_pioneer_spec(
+				Box::new(chain_spec::pioneer::make_spec(
 					self.spec_config.clone(),
 					&include_bytes!("../res/test.yml")[..],
 				)?)
 			},
-			"local" => {
+			"test" => {
 				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
-				Box::new(chain_spec::make_pioneer_spec(
+				Box::new(chain_spec::pioneer::make_spec(
 					self.spec_config.clone(),
 					&include_bytes!("../res/dev.yml")[..],
 				)?)
 			},
-			"test" => {
+			"local" => {
 				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
-				Box::new(chain_spec::make_pioneer_spec(
+				Box::new(chain_spec::gladios::make_spec(
 					self.spec_config.clone(),
-					&include_bytes!("../res/dev.yml")[..],
+					&include_bytes!("../res/local.yml")[..],
 				)?)
 			},
 			"" | "gladios" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");
-				Box::new(chain_spec::GladiosNodeChainSpec::from_json_bytes(
+				Box::new(chain_spec::gladios::ChainSpec::from_json_bytes(
 					&include_bytes!("../res/chain-data-ares-aura-raw.json")[..],
 				)?)
 			},
 			path => {
 				log::info!("🚅 🚅 🚅 load spec with json file.");
-				// Box::new(chain_spec::ChainSpec::from_json_file(std::path::PathBuf::from(path))?)
-				let chain_spec = chain_spec::PioneerNodeChainSpec::from_json_file(std::path::PathBuf::from(path))?;
+				let chain_spec = chain_spec::pioneer::ChainSpec::from_json_file(std::path::PathBuf::from(path))?;
 				if chain_spec.is_gladios() {
-					Box::new(chain_spec::GladiosNodeChainSpec::from_json_file(std::path::PathBuf::from(path))?)
+					Box::new(chain_spec::gladios::ChainSpec::from_json_file(std::path::PathBuf::from(path))?)
 				} else {
 					Box::new(chain_spec)
 				}
@@ -123,9 +122,9 @@ impl SubstrateCli for Cli {
 
 	fn native_runtime_version(chain_spec: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
 		if chain_spec.is_gladios() {
-			&runtime_gladios_node::VERSION
+			&gladios_runtime::VERSION
 		} else {
-			&runtime_pioneer_node::VERSION
+			&pioneer_runtime::VERSION
 		}
 	}
 }
@@ -134,21 +133,19 @@ impl SubstrateCli for Cli {
 pub fn run() -> Result<()> {
 	let mut cli = Cli::from_args();
 
-	use runtime_gladios_node::RuntimeApi as GRuntimeApi;
-	use runtime_pioneer_node::RuntimeApi as PRuntimeApi;
+	use gladios_runtime::RuntimeApi as GRuntimeApi;
+	use pioneer_runtime::RuntimeApi as PRuntimeApi;
 
-	use service_babe::{
-		gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch,
-	};
+	use service::{gladios::ExecutorDispatch as GExecutorDispatch, pioneer::ExecutorDispatch as PExecutorDispatch};
 
 	match &cli.subcommand {
 		Some(Subcommand::Inspect(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
 			if runner.config().chain_spec.is_pioneer() {
 				return runner
-					.sync_run(|config| cmd.run::<runtime_pioneer_node::Block, PRuntimeApi, PExecutorDispatch>(config))
+					.sync_run(|config| cmd.run::<pioneer_runtime::Block, PRuntimeApi, PExecutorDispatch>(config))
 			}
-			runner.sync_run(|config| cmd.run::<runtime_gladios_node::Block, GRuntimeApi, GExecutorDispatch>(config))
+			runner.sync_run(|config| cmd.run::<gladios_runtime::Block, GRuntimeApi, GExecutorDispatch>(config))
 		},
 		Some(Subcommand::Sign(cmd)) => cmd.run(),
 		Some(Subcommand::Verify(cmd)) => cmd.run(),
@@ -164,13 +161,13 @@ pub fn run() -> Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, import_queue, .. } =
-						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, import_queue), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, import_queue, .. } =
-					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
@@ -179,13 +176,13 @@ pub fn run() -> Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, .. } =
-						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, config.database), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, .. } =
-					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, config.database), task_manager))
 			})
 		},
@@ -194,13 +191,13 @@ pub fn run() -> Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, .. } =
-						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, config.chain_spec), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, .. } =
-					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, config.chain_spec), task_manager))
 			})
 		},
@@ -209,13 +206,13 @@ pub fn run() -> Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, import_queue, .. } =
-						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, import_queue), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, import_queue, .. } =
-					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
@@ -228,13 +225,13 @@ pub fn run() -> Result<()> {
 			if runner.config().chain_spec.is_pioneer() {
 				return runner.async_run(|config| {
 					let PartialComponents { client, task_manager, backend, .. } =
-						service_babe::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
+						service::new_partial::<PRuntimeApi, PExecutorDispatch>(&config)?;
 					Ok((cmd.run(client, backend), task_manager))
 				})
 			}
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, backend, .. } =
-					service_babe::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
+					service::new_partial::<GRuntimeApi, GExecutorDispatch>(&config)?;
 				Ok((cmd.run(client, backend), task_manager))
 			})
 		},
@@ -248,7 +245,7 @@ pub fn run() -> Result<()> {
 				let task_manager = sc_service::TaskManager::new(config.tokio_handle.clone(), registry)
 					.map_err(|e| sc_cli::Error::Service(sc_service::Error::Prometheus(e)))?;
 
-				Ok((cmd.run::<crate::service_babe::Block, GExecutorDispatch>(config), task_manager))
+				Ok((cmd.run::<crate::service::Block, GExecutorDispatch>(config), task_manager))
 			})
 		},
 		#[cfg(not(feature = "try-runtime"))]
@@ -259,9 +256,9 @@ pub fn run() -> Result<()> {
 			if cfg!(feature = "runtime-benchmarks") {
 				let runner = cli.create_runner(cmd)?;
 				if runner.config().chain_spec.is_pioneer() {
-					runner.sync_run(|config| cmd.run::<service_babe::Block, PExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<service::Block, PExecutorDispatch>(config))
 				} else {
-					runner.sync_run(|config| cmd.run::<service_babe::Block, GExecutorDispatch>(config))
+					runner.sync_run(|config| cmd.run::<service::Block, GExecutorDispatch>(config))
 				}
 			} else {
 				Err("Benchmarking wasn't enabled when building the node. You can enable it with \
@@ -299,10 +296,10 @@ pub fn run() -> Result<()> {
 				}
 
 				if is_pioneer || is_dev {
-					service_babe::new_full::<PRuntimeApi, PExecutorDispatch>(config, ares_params)
+					service::new_full::<PRuntimeApi, PExecutorDispatch>(config, ares_params)
 						.map_err(sc_cli::Error::Service)
 				} else {
-					service_babe::new_full::<GRuntimeApi, GExecutorDispatch>(config, ares_params)
+					service::new_full::<GRuntimeApi, GExecutorDispatch>(config, ares_params)
 						.map_err(sc_cli::Error::Service)
 				}
 			})

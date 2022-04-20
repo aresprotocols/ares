@@ -617,7 +617,7 @@ authorities:
   # stash, controller, babe, grandpa, ares, imOnline
   # //Alice//stash, //Alice, //Alice, //Alice, //Alice, //Alice
   - [ '4U52mX4kJWAYwHEn76y9NBjZMu7TU3Ve8WWKXJcq6Vrzi9fK', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd','4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd','4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd' ]
-  #- [ '4VWz5zo171eGGjctNjnkosL3N3WHJP96hRQuPYZzQziyBmjR', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv','4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv','4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv' ]
+  - [ '4VWz5zo171eGGjctNjnkosL3N3WHJP96hRQuPYZzQziyBmjR', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv','4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv','4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv' ]
 
 # 2000Ares
 validator_minimum_deposit: 2000000000000000

@@ -1,72 +1,58 @@
-use super::*;
-
-use runtime_common::{AccountId, Signature};
-pub use runtime_pioneer_node::{
-	constants::currency::{Balance, CENTS},
-	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
-	AresOracleConfig, BabeConfig, BalancesConfig, Block, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
-	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY as PioneerWASM_BINARY,
-};
-
-use sc_chain_spec::ChainSpecExtension;
-use serde::{Deserialize, Serialize};
-
-#[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
-#[serde(rename_all = "camelCase")]
-pub struct Extensions {
-	/// Block numbers with known hashes.
-	pub fork_blocks: sc_client_api::ForkBlocks<Block>,
-	/// Known bad block hashes.
-	pub bad_blocks: sc_client_api::BadBlocks<Block>,
-	/// The light sync state extension used by the sync-state rpc.
-	pub light_sync_state: sc_sync_state_rpc::LightSyncStateExtension,
-}
-
 use sc_consensus_babe::AuthorityId as BabeId;
 
+pub use gladios_runtime::{
+	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
+	AresOracleConfig, BabeConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, GenesisConfig,
+	GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
+	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
+};
+
+use super::*;
+
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
-pub type PioneerNodeChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
-pub type PioneerSS58Prefix = SS58Prefix;
-pub type PioneerAccountId = AccountId;
-
-/// Generate a crypto pair from seed.
-pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
-	TPublic::Pair::from_string(&format!("//{}", seed), None)
-		.expect("static values are valid; qed")
-		.public()
-}
-
-type AccountPublic = <Signature as Verify>::Signer;
-
-/// Generate an account ID from seed.
-pub fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> PioneerAccountId
-where
-	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
-{
-	AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
-}
-
-/// Generate an Aura authority key.
-pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, BabeId, GrandpaId, AresId, ImOnlineId) {
-	(
-		get_account_id_from_seed::<sr25519::Public>(&format!("{}//stash", seed)),
-		get_account_id_from_seed::<sr25519::Public>(seed),
-		get_from_seed::<BabeId>(seed),
-		get_from_seed::<GrandpaId>(seed),
-		get_from_seed::<AresId>(seed),
-		get_from_seed::<ImOnlineId>(seed),
-	)
-}
+pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig, crate::chain_spec::Extensions>;
 
 fn session_keys(babe: BabeId, grandpa: GrandpaId, ares: AresId, im_online: ImOnlineId) -> SessionKeys {
 	SessionKeys { babe, grandpa, ares, im_online }
-	// SessionKeys { aura, grandpa, ares }
 }
 
-/// Configure initial storage state for FRAME modules.
-pub fn make_testnet_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConfig {
-	let mut rng = rand::thread_rng();
+pub fn make_spec(config_path: Option<String>, default_config: &[u8]) -> Result<ChainSpec, String> {
+	let chain_spec_config = make_spec_config(config_path, default_config, SS58Prefix::get().into())?;
+	let name = chain_spec_config.name.clone();
+	let id = chain_spec_config.id.clone();
+	let chain_type = chain_spec_config.chain_type.clone();
+	let boot_nodes = chain_spec_config.boot_nodes.clone();
+	let telemetry_endpoints = chain_spec_config.telemetry_endpoints.clone();
+	let wasm_binary = WASM_BINARY.ok_or_else(|| "Gladios wasm not available".to_string())?;
+
+	let mut properties = serde_json::map::Map::new();
+	properties.insert("tokenDecimals".into(), (12 as u32).into());
+	properties.insert("tokenSymbol".into(), "ARES".into());
+	properties.insert("SS58Prefix".into(), SS58Prefix::get().into());
+
+	// let chain_balance = &include_bytes!("./chain_spec/gladios-balance.json")[..];
+	// let immigration: Vec<(AccountId, Balance)> = serde_json::from_slice(chain_balance).unwrap();
+	Ok(ChainSpec::from_genesis(
+		// Name
+		name.as_ref(),
+		// ID
+		id.as_ref(),
+		chain_type,
+		move || make_genesis(wasm_binary, &chain_spec_config),
+		boot_nodes.unwrap_or(vec![]),
+		telemetry_endpoints,
+		// Protocol ID
+		None,
+		// Properties
+		None,
+		Some(properties),
+		// Extensions
+		Default::default(),
+	))
+}
+
+pub fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConfig {
+	// let mut rng = rand::thread_rng();
 	let stakers = config
 		.authorities
 		.iter()
@@ -135,7 +121,6 @@ pub fn make_testnet_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> Gen
 			phantom: Default::default(),
 			members: config.technical.clone(),
 		},
-		claims: ClaimsConfig { claims: vec![], vesting: vec![] },
 		vesting: VestingConfig { vesting: vec![] },
 		treasury: Default::default(),
 		democracy: DemocracyConfig::default(),

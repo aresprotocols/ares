@@ -7,33 +7,27 @@
 
 use std::sync::Arc;
 
-use frame_support::sp_runtime::traits::{Hash, Header};
-use jsonrpc_core::{futures::future::Future, Error as RpcError, ErrorCode};
+use futures::FutureExt;
+use jsonrpc_core::{Error as RpcError, ErrorCode};
 use jsonrpc_derive::rpc;
-use runtime_gladios_node::{opaque::Block, Balance, Index};
-use sc_client_api::{blockchain::Backend, client::ProvideUncles};
-use sc_consensus::{BlockCheckParams, BlockImport, ImportResult};
-use sc_rpc::chain::new_full;
+use sc_client_api::{blockchain::Backend, client::ProvideUncles, BlockBackend};
+use sc_consensus::BlockImport;
+use sc_finality_grandpa::{FinalityProofProvider, GrandpaJustificationStream, SharedAuthoritySet, SharedVoterState};
+use sc_finality_grandpa_rpc::GrandpaRpcHandler;
+use sc_rpc::SubscriptionTaskExecutor;
 pub use sc_rpc_api::DenyUnsafe;
 use sc_transaction_pool_api::TransactionPool;
 use sp_api::{HeaderT, ProvideRuntimeApi};
 use sp_block_builder::BlockBuilder;
 use sp_blockchain::{Error as BlockChainError, HeaderBackend, HeaderMetadata};
-use sp_runtime::traits::{Block as BlockT, NumberFor};
-// use sc_service::TaskExecutor;
-use crate::service_babe::BlockNumber;
-use frame_support::sp_runtime::generic::BlockId;
-use futures::FutureExt;
-use jsonrpc_pubsub::manager::SubscriptionManager;
-use runtime_common::AccountId;
-use sc_block_builder::BlockBuilderProvider;
-use sc_client_api::BlockBackend;
-use sc_finality_grandpa::{FinalityProofProvider, GrandpaJustificationStream, SharedAuthoritySet, SharedVoterState};
-use sc_finality_grandpa_rpc::GrandpaRpcHandler;
-use sc_rpc::SubscriptionTaskExecutor;
-use sp_consensus::BlockOrigin;
 use sp_core::H256;
-use sp_rpc::{list::ListOrValue, number::NumberOrHex};
+use sp_runtime::traits::Block as BlockT;
+
+use runtime_common::AccountId;
+use gladios_runtime::{opaque::Block, Balance, Index};
+
+// use sc_service::TaskExecutor;
+use crate::service::BlockNumber;
 
 /// Extra dependencies for GRANDPA
 pub struct GrandpaDeps<B> {
@@ -112,24 +106,27 @@ where
 }
 
 type FutureResult<T> = jsonrpc_core::BoxFuture<Result<T, RpcError>>;
+
+
 #[rpc]
 pub trait AresApi<Block, BlockHash, BlockNum> {
 	#[rpc(name = "system_children", alias("system_childrenAt"))]
 	fn children(&self, parent_hash: BlockHash) -> FutureResult<Vec<BlockHash>>;
 
-	#[rpc(name = "system_forkBlocks", alias("system_forkBlocksAt"))]
-	fn check_block(&self, number: BlockNum, parent_hash: BlockHash);
+	// #[rpc(name = "system_forkBlocks", alias("system_forkBlocksAt"))]
+	// fn check_block(&self, number: BlockNum, parent_hash: BlockHash);
 }
 
+///A struct that implements the [`AresApi`].
 pub struct Ares<C, B> {
-	client: Arc<C>,
+	_client: Arc<C>,
 	backend: Arc<B>,
 }
 
 impl<C, B> Ares<C, B> {
 	/// Create new `FullSystem` given client and transaction pool.
 	pub fn new(client: Arc<C>, backend: Arc<B>) -> Self {
-		Ares { client, backend }
+		Ares { _client: client, backend }
 	}
 }
 
@@ -156,27 +153,28 @@ where
 		async move { res }.boxed()
 	}
 
-	fn check_block(&self, number: <<Block as BlockT>::Header as HeaderT>::Number, hash: <Block as BlockT>::Hash) {
+	// fn check_block(&self, number: <<Block as BlockT>::Header as HeaderT>::Number, hash: <Block as
+	// BlockT>::Hash) {
 
-		// let match hash.into() {
-		// 	None => self.client().info().best_hash,
-		// 	Some(hash) => hash,
-		// }
+	// let match hash.into() {
+	// 	None => self.client().info().best_hash,
+	// 	Some(hash) => hash,
+	// }
 
-		// self.client.block(&BlockId::Hash(self.unwrap_or_best(hash))).unwrap().unwrap().block;
-		// let params = BlockCheckParams {
-		// 	hash: hash.clone(),
-		// 	number: number,
-		// 	parent_hash: hash.clone(), // block_ok.header().parent_hash().clone(),
-		// 	allow_missing_state: false,
-		// 	allow_missing_parent: false,
-		// 	import_existing: false,
-		// };
+	// self.client.block(&BlockId::Hash(self.unwrap_or_best(hash))).unwrap().unwrap().block;
+	// let params = BlockCheckParams {
+	// 	hash: hash.clone(),
+	// 	number: number,
+	// 	parent_hash: hash.clone(), // block_ok.header().parent_hash().clone(),
+	// 	allow_missing_state: false,
+	// 	allow_missing_parent: false,
+	// 	import_existing: false,
+	// };
 
-		// let res = self.client.check_block(params);
-		// res
-		// async move { res }.boxed()
-	}
+	// let res = self.client.check_block(params);
+	// res
+	// async move { res }.boxed()
+	// }
 }
 
 #[test]
@@ -186,11 +184,11 @@ fn should_return_a_block() {
 		runtime::{Block as TestBlock, Header as TestHeader, H256},
 	};
 
-	let mut client = Arc::new(substrate_test_runtime_client::new());
+	// let mut client = Arc::new(substrate_test_runtime_client::new());
 	// let api = new_full(client.clone(), SubscriptionManager::new(Arc::new(TaskExecutor)));
 
-	let block = client.new_block(Default::default()).unwrap().build().unwrap().block;
-	let block_hash = block.hash();
+	// let block = client.new_block(Default::default()).unwrap().build().unwrap().block;
+	// let block_hash = block.hash();
 	// executor::block_on(client.import(BlockOrigin::Own, block)).unwrap();
 
 	// // Genesis block is not justified

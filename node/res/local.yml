@@ -1,5 +1,8 @@
 name: Ares Gladios
 id: gladios
+# Development | Local | Live | Custom
+chain_type: Development
+
 # one billion
 total_issuance: 1000000000000000000000
 
