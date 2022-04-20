@@ -1,12 +1,31 @@
 name: Ares Gladios
-id: gladios
+id: pioneer
 # Development | Local | Live | Custom
 chain_type: Development
 
 # one billion
 total_issuance: 1000000000000000000000
 
+collection:
+  - "4U52mX4kJWAYwHEn76y9NBjZMu7TU3Ve8WWKXJcq6Vrzi9fK"
+  - "4VWz5zo171eGGjctNjnkosL3N3WHJP96hRQuPYZzQziyBmjR"
+
+authorities:
+  # stash, controller, babe, grandpa, ares, imOnline
+  - [ '5Ebj7Z9DUSUjHUaqQGsH15iFe83GWbznJgWKbyLCWPoVMbWK', '5FvqX8XdznMZajt4oiGqmm87p1tW48yksTU6mPwtDFdcviQh', '5CGQbtGcRA7dJ45zs3RsC37VyqgRC1HunLoNGzLCroVDVC2i','5DQevdMyhfto9mME5BQoWTFySM21KsViJeTS21hSLjkqMMv7', '5CGQbtGcRA7dJ45zs3RsC37VyqgRC1HunLoNGzLCroVDVC2i','5CGQbtGcRA7dJ45zs3RsC37VyqgRC1HunLoNGzLCroVDVC2i' ]
+  - [ '5GbAZyAiXR9xPWjRRV9txrCCh9CpxUBmGm5grXAGdReCzShY', '5EhdNat32kdbSSfgwwyHMfMX27sFeDdmgSh665LdhisxugB2', '5DfTPwpFoj4rvHNkh6bx2wREfgEE97JxAb9dUPWx9pB1Ak4x','5FiMnGQ7soNQe6kCh8LhoD6Za4eEMLbxKXDB5MDCsYixcpHG', '5DfTPwpFoj4rvHNkh6bx2wREfgEE97JxAb9dUPWx9pB1Ak4x','5DfTPwpFoj4rvHNkh6bx2wREfgEE97JxAb9dUPWx9pB1Ak4x' ]
+  - [ '5Fy7d56q8apQciKoex9EfBrGQGguQGaFHJYR9UGkYMn56PuX', '5FeJxhZhmfED6PqRge9SpMzsJi33JxnZWoBNeg6aEPx3jC2d', '5Ejis6uZtn7DVvyHquaEBeuVt9HSXgt9H2gt7aiccUNyVzdb','5D5ae1KVDr3U8X5fFwKzGkzNJKW4dmC2iSAHQ9ZTfMer5EbM', '5Ejis6uZtn7DVvyHquaEBeuVt9HSXgt9H2gt7aiccUNyVzdb','5Ejis6uZtn7DVvyHquaEBeuVt9HSXgt9H2gt7aiccUNyVzdb' ]
+  - [ '5DkaySbFDzQ8RwNa6JnMdEFFdB8LpMuGCQGYfmUGZbZuPGW6', '5E4ip35pxFHj3JSYhaLcDZNnFYdqserEg9imnwL5ssM1WzHy', '5FnQpEPVvAVkBgmnFAxAu4yX2QvSsyQerLUy48WBWvdiEAkd','5G66d3SAkfaBfDz7h5vRTMpsHMiNirNFkt1HrmQcCDJWehDk', '5FnQpEPVvAVkBgmnFAxAu4yX2QvSsyQerLUy48WBWvdiEAkd','5FnQpEPVvAVkBgmnFAxAu4yX2QvSsyQerLUy48WBWvdiEAkd' ]
+
 balances:
+  - [ "5Ebj7Z9DUSUjHUaqQGsH15iFe83GWbznJgWKbyLCWPoVMbWK",1000000000000000000  ]
+  - [ "5GbAZyAiXR9xPWjRRV9txrCCh9CpxUBmGm5grXAGdReCzShY",1000000000000000000  ]
+  - [ "5Fy7d56q8apQciKoex9EfBrGQGguQGaFHJYR9UGkYMn56PuX",1000000000000000000  ]
+  - [ "5DkaySbFDzQ8RwNa6JnMdEFFdB8LpMuGCQGYfmUGZbZuPGW6",1000000000000000000  ]
+  - [ "5FvqX8XdznMZajt4oiGqmm87p1tW48yksTU6mPwtDFdcviQh",5000000000000000 ]
+  - [ "5EhdNat32kdbSSfgwwyHMfMX27sFeDdmgSh665LdhisxugB2",5000000000000000 ]
+  - [ "5FeJxhZhmfED6PqRge9SpMzsJi33JxnZWoBNeg6aEPx3jC2d",5000000000000000 ]
+  - [ "5E4ip35pxFHj3JSYhaLcDZNnFYdqserEg9imnwL5ssM1WzHy",5000000000000000 ]
   - [ "4UDEDDmha7ceHD9cebB6zX5LovoB7jqL5FvZqzfVHB2bPhrL",28882883603796704 ]
   - [ "4T7zpvjhVUf9uMiU4dHSTMv3px2KfZ4hXd8AdYFFzhJ6vdLE",13070999499999408 ]
   - [ "4UvzK5jUrTNfLondaurwBkJs1duUUvx9Fy7JwnwsMAZnMdmt",2014999499999430 ]
@@ -606,10 +625,6 @@ boot_nodes:
 telemetry_endpoints:
   - [ "wss://telemetry.polkadot.io/submit/", 0 ]
 
-authorities:
-  # stash, controller, babe, grandpa, ares, imOnline
-  - [ '4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w', '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU', '4Py8XwwPLq7p3arHcnPgApz6oxY4kYFkGpNKMXBo9xjKEhsy' ]
-
 # 2000Ares
 validator_minimum_deposit: 2000000000000000
 
@@ -626,8 +641,7 @@ technical:
 
 root: '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU'
 
-
-symobls:
+symbols:
   # price_key, request_uri, parse_version, fraction_num, request interval
   - [ 'btc-usdt', 'btc', 2, 4, 2 ]
   - [ 'eth-usdt', 'eth', 2, 4, 2 ]

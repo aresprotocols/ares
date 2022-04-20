@@ -2,7 +2,7 @@ use sc_consensus_babe::AuthorityId as BabeId;
 
 pub use gladios_runtime::{
 	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
-	AresOracleConfig, BabeConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, GenesisConfig,
+	AresOracleConfig, BabeConfig, BalancesConfig, CouncilConfig, ClaimsConfig, DemocracyConfig, ElectionsConfig, GenesisConfig,
 	GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
@@ -121,6 +121,7 @@ pub fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConf
 			phantom: Default::default(),
 			members: config.technical.clone(),
 		},
+		claims: ClaimsConfig { claims: vec![], vesting: vec![] },
 		vesting: VestingConfig { vesting: vec![] },
 		treasury: Default::default(),
 		democracy: DemocracyConfig::default(),

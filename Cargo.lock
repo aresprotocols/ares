@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#716a379e71d0d6af54d94b6569ee51d73a2ebacb"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -140,7 +140,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#716a379e71d0d6af54d94b6569ee51d73a2ebacb"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -859,9 +859,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "3.1.9"
+version = "3.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6aad2534fad53df1cc12519c5cda696dd3e20e6118a027e24054aea14a0bdcbe"
+checksum = "3124f3f75ce09e22d1410043e1e24f2ecc44fad3afe4f08408f1f7663d68da2b"
 dependencies = [
  "atty",
  "bitflags",
@@ -876,11 +876,11 @@ dependencies = [
 
 [[package]]
 name = "clap_complete"
-version = "3.1.1"
+version = "3.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df6f3613c0a3cddfd78b41b10203eb322cb29b600cbdf808a7d3db95691b8e25"
+checksum = "1506b87ee866f7a53a5131f7b31fba656170d797e873d0609884cfd56b8bbda8"
 dependencies = [
- "clap 3.1.9",
+ "clap 3.1.10",
 ]
 
 [[package]]
@@ -1648,7 +1648,7 @@ source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22
 dependencies = [
  "Inflector",
  "chrono",
- "clap 3.1.9",
+ "clap 3.1.10",
  "frame-benchmarking",
  "frame-support",
  "handlebars",
@@ -2067,13 +2067,14 @@ name = "gladios-node"
 version = "1.0.0"
 dependencies = [
  "ares-oracle-provider-support",
- "clap 3.1.9",
+ "clap 3.1.10",
  "clap_complete",
  "frame-benchmarking",
  "frame-benchmarking-cli",
  "frame-support",
  "frame-system-rpc-runtime-api",
  "futures 0.3.21",
+ "gladios-runtime",
  "hex-literal",
  "jsonrpc-core",
  "jsonrpc-core-client",
@@ -2087,10 +2088,9 @@ dependencies = [
  "pallet-im-online",
  "pallet-transaction-payment-rpc",
  "pallet-transaction-payment-rpc-runtime-api",
+ "pioneer-runtime",
  "rand 0.8.5",
  "runtime-common",
- "runtime-gladios-node",
- "runtime-pioneer-node",
  "sc-basic-authorship",
  "sc-block-builder",
  "sc-chain-spec",
@@ -2142,6 +2142,82 @@ dependencies = [
  "substrate-frame-rpc-system",
  "substrate-test-runtime-client",
  "try-runtime-cli",
+]
+
+[[package]]
+name = "gladios-runtime"
+version = "1.0.0"
+dependencies = [
+ "ares-oracle",
+ "ares-oracle-provider-support",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "hex-literal",
+ "log",
+ "member-extend",
+ "oracle-finance",
+ "pallet-ares-challenge",
+ "pallet-ares-collective",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-bags-list",
+ "pallet-balances",
+ "pallet-bounties",
+ "pallet-collective",
+ "pallet-democracy",
+ "pallet-election-provider-multi-phase",
+ "pallet-elections-phragmen",
+ "pallet-gilt",
+ "pallet-grandpa",
+ "pallet-identity",
+ "pallet-im-online",
+ "pallet-indices",
+ "pallet-multisig",
+ "pallet-offences",
+ "pallet-preimage",
+ "pallet-price-estimates",
+ "pallet-proxy",
+ "pallet-randomness-collective-flip",
+ "pallet-scheduler",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-staking-reward-curve",
+ "pallet-staking-reward-fn",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-treasury",
+ "pallet-vesting",
+ "parity-scale-codec",
+ "polkadot-runtime-common",
+ "runtime-common",
+ "scale-info",
+ "smallvec",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-block-builder",
+ "sp-consensus-babe",
+ "sp-core",
+ "sp-inherents",
+ "sp-io",
+ "sp-npos-elections",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-std 4.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "staking-extend",
+ "static_assertions",
+ "substrate-wasm-builder",
 ]
 
 [[package]]
@@ -3710,7 +3786,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#716a379e71d0d6af54d94b6569ee51d73a2ebacb"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4055,7 +4131,7 @@ name = "node-inspect"
 version = "0.9.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.9",
+ "clap 3.1.10",
  "parity-scale-codec",
  "sc-cli",
  "sc-client-api",
@@ -4379,7 +4455,7 @@ checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#716a379e71d0d6af54d94b6569ee51d73a2ebacb"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4415,7 +4491,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#716a379e71d0d6af54d94b6569ee51d73a2ebacb"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4435,7 +4511,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#716a379e71d0d6af54d94b6569ee51d73a2ebacb"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5050,7 +5126,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#716a379e71d0d6af54d94b6569ee51d73a2ebacb"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -5715,6 +5791,82 @@ name = "pin-utils"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
+
+[[package]]
+name = "pioneer-runtime"
+version = "1.0.0"
+dependencies = [
+ "ares-oracle",
+ "ares-oracle-provider-support",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "hex-literal",
+ "log",
+ "member-extend",
+ "oracle-finance",
+ "pallet-ares-challenge",
+ "pallet-ares-collective",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-bags-list",
+ "pallet-balances",
+ "pallet-bounties",
+ "pallet-collective",
+ "pallet-democracy",
+ "pallet-election-provider-multi-phase",
+ "pallet-elections-phragmen",
+ "pallet-gilt",
+ "pallet-grandpa",
+ "pallet-identity",
+ "pallet-im-online",
+ "pallet-indices",
+ "pallet-multisig",
+ "pallet-offences",
+ "pallet-preimage",
+ "pallet-price-estimates",
+ "pallet-proxy",
+ "pallet-randomness-collective-flip",
+ "pallet-scheduler",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-staking-reward-curve",
+ "pallet-staking-reward-fn",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-treasury",
+ "pallet-vesting",
+ "parity-scale-codec",
+ "polkadot-runtime-common",
+ "runtime-common",
+ "scale-info",
+ "smallvec",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-block-builder",
+ "sp-consensus-babe",
+ "sp-core",
+ "sp-inherents",
+ "sp-io",
+ "sp-npos-elections",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-std 4.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "staking-extend",
+ "static_assertions",
+ "substrate-wasm-builder",
+]
 
 [[package]]
 name = "pkg-config"
@@ -6431,157 +6583,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "runtime-gladios-node"
-version = "3.0.0"
-dependencies = [
- "ares-oracle",
- "ares-oracle-provider-support",
- "frame-benchmarking",
- "frame-election-provider-support",
- "frame-executive",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "hex-literal",
- "log",
- "member-extend",
- "oracle-finance",
- "pallet-ares-challenge",
- "pallet-ares-collective",
- "pallet-authorship",
- "pallet-babe",
- "pallet-bags-list",
- "pallet-balances",
- "pallet-bounties",
- "pallet-collective",
- "pallet-democracy",
- "pallet-election-provider-multi-phase",
- "pallet-elections-phragmen",
- "pallet-gilt",
- "pallet-grandpa",
- "pallet-identity",
- "pallet-im-online",
- "pallet-indices",
- "pallet-multisig",
- "pallet-offences",
- "pallet-preimage",
- "pallet-price-estimates",
- "pallet-proxy",
- "pallet-randomness-collective-flip",
- "pallet-scheduler",
- "pallet-session",
- "pallet-staking",
- "pallet-staking-reward-curve",
- "pallet-staking-reward-fn",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-treasury",
- "pallet-vesting",
- "parity-scale-codec",
- "runtime-common",
- "scale-info",
- "smallvec",
- "sp-api",
- "sp-arithmetic",
- "sp-block-builder",
- "sp-consensus-babe",
- "sp-core",
- "sp-inherents",
- "sp-io",
- "sp-npos-elections",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-std 4.0.0",
- "sp-transaction-pool",
- "sp-version",
- "staking-extend",
- "static_assertions",
- "substrate-wasm-builder",
-]
-
-[[package]]
-name = "runtime-pioneer-node"
-version = "3.0.0"
-dependencies = [
- "ares-oracle",
- "ares-oracle-provider-support",
- "frame-benchmarking",
- "frame-election-provider-support",
- "frame-executive",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "hex-literal",
- "log",
- "member-extend",
- "oracle-finance",
- "pallet-ares-challenge",
- "pallet-ares-collective",
- "pallet-authorship",
- "pallet-babe",
- "pallet-bags-list",
- "pallet-balances",
- "pallet-bounties",
- "pallet-collective",
- "pallet-democracy",
- "pallet-election-provider-multi-phase",
- "pallet-elections-phragmen",
- "pallet-gilt",
- "pallet-grandpa",
- "pallet-identity",
- "pallet-im-online",
- "pallet-indices",
- "pallet-multisig",
- "pallet-offences",
- "pallet-preimage",
- "pallet-price-estimates",
- "pallet-proxy",
- "pallet-randomness-collective-flip",
- "pallet-scheduler",
- "pallet-session",
- "pallet-staking",
- "pallet-staking-reward-curve",
- "pallet-staking-reward-fn",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-treasury",
- "pallet-vesting",
- "parity-scale-codec",
- "polkadot-runtime-common",
- "runtime-common",
- "scale-info",
- "smallvec",
- "sp-api",
- "sp-arithmetic",
- "sp-block-builder",
- "sp-consensus-babe",
- "sp-core",
- "sp-inherents",
- "sp-io",
- "sp-npos-elections",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-std 4.0.0",
- "sp-transaction-pool",
- "sp-version",
- "staking-extend",
- "static_assertions",
- "substrate-wasm-builder",
-]
-
-[[package]]
 name = "rustc-demangle"
 version = "0.1.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6832,7 +6833,7 @@ version = "0.10.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
  "chrono",
- "clap 3.1.9",
+ "clap 3.1.10",
  "fdlimit",
  "futures 0.3.21",
  "hex",
@@ -8840,7 +8841,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#716a379e71d0d6af54d94b6569ee51d73a2ebacb"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -8973,7 +8974,7 @@ name = "substrate-frame-cli"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.9",
+ "clap 3.1.10",
  "frame-support",
  "frame-system",
  "sc-cli",
@@ -9561,7 +9562,7 @@ name = "try-runtime-cli"
 version = "0.10.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.9",
+ "clap 3.1.10",
  "jsonrpsee 0.4.1",
  "log",
  "parity-scale-codec",
