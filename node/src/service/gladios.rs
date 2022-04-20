@@ -9,10 +9,10 @@ impl sc_executor::NativeExecutionDispatch for ExecutorDispatch {
 	type ExtendHostFunctions = ();
 
 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-		runtime_gladios_node::api::dispatch(method, data)
+		gladios_runtime::api::dispatch(method, data)
 	}
 
 	fn native_version() -> sc_executor::NativeVersion {
-		runtime_gladios_node::native_version()
+		gladios_runtime::native_version()
 	}
 }
