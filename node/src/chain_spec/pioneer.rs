@@ -1,7 +1,11 @@
 use sc_consensus_babe::AuthorityId as BabeId;
 
 use pioneer_runtime::{
+	governance::{part_elections::PhragmenElectionPalletId, part_treasury::TreasuryPalletId},
 	network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus},
+	part_challenge::ChallengePalletId,
+	part_estimates::EstimatesPalletId,
+	part_ocw_finance::AresFinancePalletId,
 	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
 	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
@@ -17,7 +21,14 @@ fn session_keys(babe: BabeId, grandpa: GrandpaId, ares: AresId, im_online: ImOnl
 }
 
 pub fn make_spec(config_path: Option<String>, default_config: &[u8]) -> Result<ChainSpec, String> {
-	let chain_spec_config = make_spec_config(config_path, default_config, SS58Prefix::get().into())?;
+	let pallets = vec![
+		EstimatesPalletId::get(),
+		TreasuryPalletId::get(),
+		PalletId(PhragmenElectionPalletId::get()),
+		AresFinancePalletId::get(),
+		ChallengePalletId::get(),
+	];
+	let chain_spec_config = make_spec_config(config_path, default_config, SS58Prefix::get().into(), pallets)?;
 	let name = chain_spec_config.name.clone();
 	let id = chain_spec_config.id.clone();
 	let chain_type = chain_spec_config.chain_type.clone();

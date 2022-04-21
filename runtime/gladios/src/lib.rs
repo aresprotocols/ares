@@ -52,9 +52,9 @@ pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
 pub mod constants;
-mod governance;
+pub mod governance;
 pub mod network;
-mod part_challenge;
+pub mod part_challenge;
 // pub mod part_member_extend;
 pub mod part_estimates;
 pub mod part_ocw;

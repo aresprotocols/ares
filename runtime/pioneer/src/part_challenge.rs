@@ -6,13 +6,13 @@ pub use pallet_ares_collective;
 parameter_types! {
 	pub const MinimumDeposit: Balance = 100 * DOLLARS * ARES_AMOUNT_MULT;
 	pub const BidderMinimumDeposit: Balance = 1000 * DOLLARS * ARES_AMOUNT_MULT;
-	pub const DemoPalletId: PalletId = PalletId(*b"py/ardem");
+	pub const ChallengePalletId: PalletId = PalletId(*b"py/ardem");
 }
 
 impl pallet_ares_challenge::Config for Runtime {
 	type Event = Event;
 	type MinimumDeposit = MinimumDeposit;
-	type PalletId = DemoPalletId;
+	type PalletId = ChallengePalletId;
 	type CouncilMajorityOrigin =
 		pallet_ares_collective::EnsureProportionAtLeast<_3, _4, AccountId, governance::part_council::CouncilCollective>;
 	type Currency = Balances;

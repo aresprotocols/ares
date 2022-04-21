@@ -603,6 +603,10 @@ balances:
   - [ "4RzxhcbCXQ41ijSC5hYVT1DAk2Q27AtKVhzcogsMHctoxTSN",1599999249999112 ]
   - [ "4UUpxQ9TFsb7AuVToYJHUdfPhnMaT2dueACSBSekCwH1yyEm",150690998499998309 ]
 
+ban: [ ]
+#ban:
+#  - 4S8YmKiSUzF3BzvavhkBUsiZU9uQzjaxwzHrWUgPkkJgem9f
+
 # collection remain balance(total_issuance - total_balances)
 collection:
   - "4U52mX4kJWAYwHEn76y9NBjZMu7TU3Ve8WWKXJcq6Vrzi9fK"
@@ -611,13 +615,21 @@ collection:
 boot_nodes: [ ]
 telemetry_endpoints: [ ]
 
-# ./target/release/gladios-node key inspect "//Alice" --network ares
-# ./target/release/gladios-node key inspect "//Alice//stash" --network ares
+# generate stash key: ./target/release/gladios-node key inspect -n ares "//Alice//stash"
+# generate controller key: ./target/release/gladios-node key inspect -n ares "//Alice"
+# generate grandpa key: ./target/release/gladios-node key inspect --scheme Ed25519 -n ares "//Alice"
 authorities:
   # stash, controller, babe, grandpa, ares, imOnline
   # //Alice//stash, //Alice, //Alice, //Alice, //Alice, //Alice
-  - [ '4U52mX4kJWAYwHEn76y9NBjZMu7TU3Ve8WWKXJcq6Vrzi9fK', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd','4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd','4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd' ]
-  - [ '4VWz5zo171eGGjctNjnkosL3N3WHJP96hRQuPYZzQziyBmjR', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv','4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv','4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv' ]
+  - [
+      '4U52mX4kJWAYwHEn76y9NBjZMu7TU3Ve8WWKXJcq6Vrzi9fK', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd',
+      '4SrsiTtGbh6HxmPRWkXnoKCnd3DkznvPRxgjiNJ8ZscFD22P', '4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd','4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd'
+  ]
+#  - [
+#      '4VWz5zo171eGGjctNjnkosL3N3WHJP96hRQuPYZzQziyBmjR', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv',
+#      '4UW6gimHZGxP1K9uvXWMPm5KzSExEsLo2Qxh1zYgWRvCRyUp', '4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv','4SzWaZisswXsccXmUfcH3fU4oP3eLQrKNJ89DZLJ2TbBtMvv'
+#  ]
+
 
 # 2000Ares
 validator_minimum_deposit: 2000000000000000
