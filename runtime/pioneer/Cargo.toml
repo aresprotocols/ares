@@ -107,8 +107,6 @@ staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-fe
 #pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
 #staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
 
-#reqwest = {default-feature = false, version = '0.11.8'}
-
 [features]
 default = ['std']
 runtime-benchmarks = [

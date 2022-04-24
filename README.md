@@ -118,3 +118,31 @@ docker run -d --name ares_gladios -p 9944:9944/tcp -v your-host-path:/data aresp
 ```
 > Note! 
 > **your-host-path** must exist
+
+## RPC Tools
+
+* Get the parameter setting value of the node warehouse.
+```shell
+curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "ares_getWarehouse"}' http://localhost:9933
+```
+
+* Set the warehouse parameter of the current node.
+```shell
+curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "ares_setWarehouse", "params": ["https://api.aresprotocol.io"]}' http://localhost:9933
+```
+
+* Get the current local XRay parameter value.
+```shell
+curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "ares_getXray"}' http://localhost:9933
+```
+
+* Try to return off-chain data through the http service.
+```shell
+curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "ares_tryRequest"}' http://localhost:9933
+```
+
+* Returns the complete debugging information of the node, including the role of the node, the status returned by the request and JSON format, etc.
+* In most cases, run this command to understand the node situation.
+```shell
+curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "ares_getInfos"}' http://localhost:9933
+```

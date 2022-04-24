@@ -7,7 +7,7 @@ members = [
     'seed-reader',
     'runtime/gladios',
     'runtime/pioneer',
-    'runtime/common'
+    'runtime/common',
 ]
 
 # https://github.com/paritytech/substrate.git.git

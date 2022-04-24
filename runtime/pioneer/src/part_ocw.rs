@@ -1,7 +1,7 @@
 use super::*;
 use crate::governance::part_technical::TechnicalCollective;
 use ares_oracle;
-pub use ares_oracle::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
+// pub use ares_oracle::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 
 // An index to a block.
 pub type BlockNumber = u32;
