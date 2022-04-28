@@ -1,6 +1,7 @@
 use std::{collections::BTreeMap, fs::File};
 
 use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
+use frame_support::PalletId;
 use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 use sc_chain_spec::ChainSpecExtension;
 use sc_service::{config::MultiaddrWithPeerId, ChainType};
@@ -13,7 +14,7 @@ use sp_core::{
 };
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::{
-	traits::{IdentifyAccount, Verify},
+	traits::{AccountIdConversion, IdentifyAccount, Verify},
 	Perbill,
 };
 
@@ -63,7 +64,12 @@ pub fn authority_keys_from_seed(seed: &str) -> (AccountId, AccountId, BabeId, Gr
 	)
 }
 
-fn make_spec_config(config_path: Option<String>, default_config: &[u8], ss58: u16) -> Result<ChainSpecConfig, String> {
+fn make_spec_config(
+	config_path: Option<String>,
+	default_config: &[u8],
+	ss58: u16,
+	pallet_accounts: Vec<PalletId>,
+) -> Result<ChainSpecConfig, String> {
 	let mut chain_spec_config: ChainSpecConfig;
 	if let Some(path) = config_path {
 		let path: &str = path.as_ref();
@@ -73,6 +79,8 @@ fn make_spec_config(config_path: Option<String>, default_config: &[u8], ss58: u1
 		chain_spec_config =
 			serde_yaml::from_slice(default_config).map_err(|e| format!("Error parsing config file: {}", e))?;
 	}
+	let pallet_accounts: Vec<AccountId> = pallet_accounts.iter().map(|pallet| pallet.into_account()).collect();
+	chain_spec_config.ban = [chain_spec_config.ban, pallet_accounts].concat();
 	chain_spec_config.ss58 = Some(ss58);
 	chain_spec_config.init();
 	Ok(chain_spec_config)
@@ -85,6 +93,7 @@ pub struct ChainSpecConfig {
 	chain_type: ChainType,
 	total_issuance: Balance,
 	balances: Vec<(AccountId, Balance)>,
+	ban: Vec<AccountId>,
 	collection: Vec<AccountId>,
 	authorities: Vec<(
 		AccountId, // stash
@@ -147,7 +156,7 @@ impl ChainSpecConfig {
 		assert!(total_issuance > total_balances, "total_issuance can not greater than total_balances");
 		let remaining = total_issuance - total_balances;
 		if self.collection.len() > 0 {
-			let collection_avg_balance = remaining.saturating_div((self.collection.len() as u32).into());
+			let collection_avg_balance = remaining.wrapping_div((self.collection.len() as u32).into());
 			for account in self.collection.iter() {
 				if account_balance_map.contains_key(account) {
 					let new_balance = account_balance_map.get(account).unwrap() + collection_avg_balance;
@@ -176,9 +185,16 @@ impl ChainSpecConfig {
 		let mut unique_account = std::collections::BTreeMap::<AccountId, Balance>::new();
 		let mut total_balance = Balance::default();
 		self.balances.iter().for_each(|(account, amount)| {
-			total_balance = total_balance.saturating_add(*amount);
-			assert!(!unique_account.contains_key(account), "duplicate account {:?} ", account);
-			unique_account.insert(account.clone(), *amount);
+			if self.ban.contains(account) {
+				println!(
+					"account:{} banned from list",
+					account.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
+				);
+			} else {
+				total_balance = total_balance.saturating_add(*amount);
+				assert!(!unique_account.contains_key(account), "duplicate account {:?} ", account);
+				unique_account.insert(account.clone(), *amount);
+			}
 		});
 		(unique_account, total_balance)
 	}

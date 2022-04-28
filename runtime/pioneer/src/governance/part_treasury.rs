@@ -30,11 +30,11 @@ impl pallet_treasury::Config for Runtime {
 	type Currency = Balances;
 	type ApproveOrigin = EnsureOneOf<
 		EnsureRoot<AccountId>,
-		pallet_ares_collective::EnsureProportionAtLeast<_3, _5, AccountId, CouncilCollective>,
+		pallet_collective::EnsureProportionAtLeast<_3, _5, AccountId, CouncilCollective>,
 	>;
 	type RejectOrigin = EnsureOneOf<
 		EnsureRoot<AccountId>,
-		pallet_ares_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
+		pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
 	>;
 	type Event = Event;
 	//type OnSlash = ();

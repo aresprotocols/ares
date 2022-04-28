@@ -95,7 +95,7 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	>;
 	type ForceOrigin = EnsureOneOf<
 		EnsureRoot<AccountId>,
-		pallet_ares_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
+		pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
 	>;
 	type BenchmarkingConfig = runtime_common::BenchmarkConfig;
 	type WeightInfo = pallet_election_provider_multi_phase::weights::SubstrateWeight<Runtime>;

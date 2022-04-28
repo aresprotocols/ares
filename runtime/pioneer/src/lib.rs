@@ -67,9 +67,9 @@ pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
 pub mod constants;
-mod governance;
+pub mod governance;
 pub mod network;
-mod part_challenge;
+pub mod part_challenge;
 // pub mod part_member_extend;
 pub mod part_estimates;
 pub mod part_ocw;
@@ -337,7 +337,7 @@ construct_runtime!(
 		//
 		// MemberExtend: member_extend::{Pallet},
 		//
-		AresChallenge: pallet_ares_challenge::{Pallet, Call, Storage, Event<T>},
+		AresChallenge: pallet_ares_challenge::<Instance1>::{Pallet, Call, Storage, Event<T>},
 
 		AresOracle: ares_oracle::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>},
@@ -348,7 +348,7 @@ construct_runtime!(
 		Multisig: pallet_multisig::{Pallet, Call, Storage, Event<T>},
 		Proxy: pallet_proxy::{Pallet, Call, Storage, Event<T>},
 		Vesting: pallet_vesting::{Pallet, Call, Storage, Event<T>, Config<T>},
-		Council: pallet_ares_collective::<Instance1>::{Pallet, Call, Storage, Event<T>, Origin<T>, Config<T>},
+		Council: pallet_collective::<Instance1>::{Pallet, Call, Storage, Event<T>, Origin<T>, Config<T>},
 		TechnicalCommittee: pallet_collective::<Instance2>::{Pallet, Call, Storage, Origin<T>, Event<T>, Config<T>},
 		Treasury: pallet_treasury::{Pallet, Call, Storage, Config, Event<T>},
 		Bounties: pallet_bounties::{Pallet, Call, Storage, Event<T>},
