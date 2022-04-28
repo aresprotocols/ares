@@ -93,9 +93,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.56"
+version = "1.0.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4361135be9122e0870de935d7c439aef945b9f9ddd4199a553b5270b49c82a27"
+checksum = "08f9b8508dccb7687a1d6c4ce66b2b0ecef467c94667de27d8d7fe1f8d2a9cdc"
 
 [[package]]
 name = "approx"
@@ -109,7 +109,6 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -119,6 +118,7 @@ dependencies = [
  "log",
  "oracle-finance",
  "pallet-aura",
+ "pallet-authorship",
  "pallet-babe",
  "pallet-balances",
  "pallet-session",
@@ -140,7 +140,6 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -154,7 +153,6 @@ dependencies = [
 [[package]]
 name = "ares-rpc"
 version = "1.0.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "ares-oracle-provider-support",
  "chrono",
@@ -454,9 +452,9 @@ dependencies = [
 
 [[package]]
 name = "base-x"
-version = "0.2.8"
+version = "0.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4521f3e3d031370679b3b140beb36dfe4801b09ac77e30c61941f97df3ef28b"
+checksum = "dc19a4937b4fbd3fe3379793130e42060d10627a360f2127802b10b87e7baf74"
 
 [[package]]
 name = "base58"
@@ -900,9 +898,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "3.1.10"
+version = "3.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3124f3f75ce09e22d1410043e1e24f2ecc44fad3afe4f08408f1f7663d68da2b"
+checksum = "7c167e37342afc5f33fd87bbc870cedd020d2a6dffa05d45ccd9241fbdd146db"
 dependencies = [
  "atty",
  "bitflags",
@@ -921,7 +919,7 @@ version = "3.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1506b87ee866f7a53a5131f7b31fba656170d797e873d0609884cfd56b8bbda8"
 dependencies = [
- "clap 3.1.10",
+ "clap 3.1.12",
 ]
 
 [[package]]
@@ -1713,7 +1711,7 @@ source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22
 dependencies = [
  "Inflector",
  "chrono",
- "clap 3.1.10",
+ "clap 3.1.12",
  "frame-benchmarking",
  "frame-support",
  "handlebars",
@@ -2133,7 +2131,7 @@ version = "1.0.0"
 dependencies = [
  "ares-oracle-provider-support",
  "ares-rpc",
- "clap 3.1.10",
+ "clap 3.1.12",
  "clap_complete",
  "frame-benchmarking",
  "frame-benchmarking-cli",
@@ -3868,7 +3866,6 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4260,7 +4257,7 @@ name = "node-inspect"
 version = "0.9.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.10",
+ "clap 3.1.12",
  "parity-scale-codec",
  "sc-cli",
  "sc-client-api",
@@ -4611,7 +4608,6 @@ dependencies = [
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4647,7 +4643,6 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4667,7 +4662,6 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5282,7 +5276,6 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -6563,18 +6556,18 @@ dependencies = [
 
 [[package]]
 name = "ref-cast"
-version = "1.0.6"
+version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "300f2a835d808734ee295d45007adacb9ebb29dd3ae2424acfa17930cae541da"
+checksum = "685d58625b6c2b83e4cc88a27c4bf65adb7b6b16dbdc413e515c9405b47432ab"
 dependencies = [
  "ref-cast-impl",
 ]
 
 [[package]]
 name = "ref-cast-impl"
-version = "1.0.6"
+version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4c38e3aecd2b21cb3959637b883bb3714bc7e43f0268b9a29d3743ee3e55cdd2"
+checksum = "a043824e29c94169374ac5183ac0ed43f5724dc4556b19568007486bd840fa1f"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -7025,7 +7018,7 @@ version = "0.10.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
  "chrono",
- "clap 3.1.10",
+ "clap 3.1.12",
  "fdlimit",
  "futures 0.3.21",
  "hex",
@@ -9045,7 +9038,6 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -9178,7 +9170,7 @@ name = "substrate-frame-cli"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.10",
+ "clap 3.1.12",
  "frame-support",
  "frame-system",
  "sc-cli",
@@ -9693,9 +9685,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-log"
-version = "0.1.2"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a6923477a48e41c1951f1999ef8bb5a3023eb723ceadafe78ffb65dc366761e3"
+checksum = "78ddad33d2d10b1ed7eb9d1f518a5674713876e97e5bb9b7345a7984fbb4f922"
 dependencies = [
  "lazy_static",
  "log",
@@ -9811,7 +9803,7 @@ name = "try-runtime-cli"
 version = "0.10.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.10",
+ "clap 3.1.12",
  "jsonrpsee 0.4.1",
  "log",
  "parity-scale-codec",
