@@ -6,9 +6,8 @@ pub use gladios_runtime::{
 	part_challenge::ChallengePalletId,
 	part_estimates::EstimatesPalletId,
 	part_ocw_finance::AresFinancePalletId,
-	AresOracleConfig, BabeConfig, BalancesConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, GenesisConfig,
-	AresOracleConfig, BabeConfig, BalancesConfig, CouncilConfig, ClaimsConfig, DemocracyConfig, ElectionsConfig, GenesisConfig,
-	GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
+	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
+	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
 
