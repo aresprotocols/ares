@@ -10,18 +10,22 @@ use std::sync::Arc;
 use futures::FutureExt;
 use jsonrpc_core::{Error as RpcError, ErrorCode};
 use jsonrpc_derive::rpc;
+use jsonrpc_pubsub::manager::SubscriptionManager;
 use sc_client_api::{blockchain::Backend, client::ProvideUncles, BlockBackend};
 use sc_consensus::BlockImport;
 use sc_finality_grandpa::{FinalityProofProvider, GrandpaJustificationStream, SharedAuthoritySet, SharedVoterState};
 use sc_finality_grandpa_rpc::GrandpaRpcHandler;
 use sc_rpc::SubscriptionTaskExecutor;
 pub use sc_rpc_api::DenyUnsafe;
+use sc_service::{Configuration, Role, SpawnTaskHandle};
 use sc_transaction_pool_api::TransactionPool;
 use sp_api::{HeaderT, ProvideRuntimeApi};
 use sp_block_builder::BlockBuilder;
 use sp_blockchain::{Error as BlockChainError, HeaderBackend, HeaderMetadata};
 use sp_core::H256;
+use sp_keystore::{SyncCryptoStore, SyncCryptoStorePtr};
 use sp_runtime::traits::Block as BlockT;
+use ares_rpc::ares::{ AresToolsApi, AresToolsStruct };
 
 use runtime_common::AccountId;
 use gladios_runtime::{opaque::Block, Balance, Index};
@@ -52,9 +56,9 @@ pub struct FullDeps<C, P, B> {
 	pub deny_unsafe: DenyUnsafe,
 
 	pub backend: Arc<B>,
-
 	/// GRANDPA specific dependencies.
 	pub grandpa: GrandpaDeps<B>,
+	pub role: Role,
 }
 
 /// Instantiate all full RPC extensions.
@@ -78,7 +82,14 @@ where
 	use substrate_frame_rpc_system::{FullSystem, SystemApi};
 
 	let mut io = jsonrpc_core::IoHandler::default();
-	let FullDeps { client, pool, deny_unsafe, backend, grandpa } = deps;
+	let FullDeps {
+		client,
+		pool,
+		deny_unsafe,
+		backend,
+		grandpa,
+		role,
+	} = deps;
 	let GrandpaDeps {
 		shared_voter_state,
 		shared_authority_set,
@@ -86,15 +97,10 @@ where
 		subscription_executor,
 		finality_provider,
 	} = grandpa;
-	io.extend_with(SystemApi::to_delegate(FullSystem::new(client.clone(), pool, deny_unsafe)));
+	io.extend_with(SystemApi::to_delegate(FullSystem::new(client.clone(), pool.clone(), deny_unsafe.clone())));
 
 	io.extend_with(TransactionPaymentApi::to_delegate(TransactionPayment::new(client.clone())));
 	io.extend_with(AresApi::to_delegate(Ares::new(client.clone(), backend.clone())));
-	// client.block_number_from_id()
-	// Extend this RPC with a custom API by using the following syntax.
-	// `YourRpcStruct` should have a reference to a client, which is needed
-	// to call into the runtime.
-	// `io.extend_with(YourRpcTrait::to_delegate(YourRpcStruct::new(ReferenceToClient, ...)));`
 	io.extend_with(sc_finality_grandpa_rpc::GrandpaApi::to_delegate(GrandpaRpcHandler::new(
 		shared_authority_set.clone(),
 		shared_voter_state,
@@ -102,11 +108,15 @@ where
 		subscription_executor,
 		finality_provider,
 	)));
+
+	if let Some(offchain_storage) = backend.clone().offchain_storage() {
+		io.extend_with(AresToolsApi::to_delegate(AresToolsStruct::new(offchain_storage, deny_unsafe.clone(), role)));
+	}
+
 	io
 }
 
 type FutureResult<T> = jsonrpc_core::BoxFuture<Result<T, RpcError>>;
-
 
 #[rpc]
 pub trait AresApi<Block, BlockHash, BlockNum> {

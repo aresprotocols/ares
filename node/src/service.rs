@@ -4,7 +4,7 @@ use sc_client_api::{Backend, BlockBackend, ExecutorProvider};
 use sc_consensus_aura::SlotProportion;
 pub use sc_executor::NativeElseWasmExecutor;
 use sc_executor::NativeExecutionDispatch;
-use sc_service::{error::Error as ServiceError, Configuration, TaskManager};
+use sc_service::{error::Error as ServiceError, Configuration, TaskManager, KeystoreContainer};
 use sc_telemetry::{Telemetry, TelemetryWorker};
 use seed_reader::{extract_content, make_author_insert_key_params, make_rpc_request};
 use sp_api::ConstructRuntimeApi;
@@ -19,6 +19,9 @@ use sp_runtime::{
 	MultiSignature,
 };
 use std::{io::Read, sync::Arc, time::Duration};
+use ares_oracle_provider_support::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
+use jsonrpc_pubsub::manager::SubscriptionManager;
+
 pub mod gladios;
 pub mod pioneer;
 
@@ -36,6 +39,7 @@ pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::Account
 // use gladios_node::services;
 /// Opaque, encoded, unchecked extrinsic.
 pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
+
 
 /// Block header type as expected by this runtime.
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
@@ -309,6 +313,7 @@ where
 		let pool = transaction_pool.clone();
 		let backend = backend.clone();
 		let shared_voter_state = shared_voter_state.clone();
+		let role = config.role.clone();
 		Box::new(move |deny_unsafe, subscription_executor| {
 			let deps = crate::rpc::FullDeps {
 				client: client.clone(),
@@ -322,15 +327,15 @@ where
 					subscription_executor,
 					finality_provider: finality_proof_provider.clone(),
 				},
+				role: role.clone(),
 			};
-
 			Ok(crate::rpc::create_full(deps))
 		})
 	};
 
 	let backend_clone = backend.clone();
 
-	let _rpc_handlers = sc_service::spawn_tasks(sc_service::SpawnTasksParams {
+	let rpc_handlers = sc_service::spawn_tasks(sc_service::SpawnTasksParams {
 		network: network.clone(),
 		client: client.clone(),
 		keystore: keystore_container.sync_keystore(),
@@ -347,23 +352,28 @@ where
 	let _result: Vec<(&str, bool)> = ares_params
 		.iter()
 		.map(|(order, x)| {
+			log::info!("order = {:?}", order);
 			match order {
 				&"warehouse" => {
 					match x {
 						None => (*order, false),
 						Some(exe_vecu8) => {
 							let request_base_str = sp_std::str::from_utf8(exe_vecu8).unwrap();
-							let store_request_u8 = request_base_str.encode();
+
 							// let store_request_u8 = request_base_str.as_bytes();
-							log::info!("setting request_domain: {:?}", request_base_str);
+							let store_request_u8 = request_base_str.encode();
+
 							if let Some(mut offchain_db) = backend_clone.offchain_storage() {
-								log::debug!("after setting request_domain: {:?}", request_base_str);
+								// log::debug!("after setting request_domain: {:?}", request_base_str);
+								log::info!("setting request_domain: {:?}", request_base_str);
 								offchain_db.set(
 									STORAGE_PREFIX,
-									//LOCAL_STORAGE_PRICE_REQUEST_DOMAIN, // copy from ocw-suit
-									b"are-ocw::price_request_domain",
+									// b"are-ocw::price_request_domain",
+									LOCAL_STORAGE_PRICE_REQUEST_DOMAIN,
 									store_request_u8.as_slice(),
 								);
+							}else{
+								log::warn!("request_domain not setting.");
 							}
 							(*order, true)
 						},
@@ -387,7 +397,7 @@ where
 							rpc_list.iter().any(|x| {
 								if let Some(rpc_str) = x {
 									// send rpc request.
-									_rpc_handlers
+									rpc_handlers
 										.io_handler()
 										.handle_request_sync(rpc_str, sc_rpc::Metadata::default());
 								}

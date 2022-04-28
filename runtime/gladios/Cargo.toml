@@ -63,6 +63,8 @@ pallet-identity = { git = "https://github.com/paritytech/substrate", default-fea
 pallet-bags-list = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-gilt = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-staking-reward-fn = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+polkadot-runtime-common = { git = "https://github.com/paritytech/polkadot.git", default-features = false, branch = "release-v0.9.17" }
+
 
 # Network
 #pallet-session = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.10" }
@@ -85,6 +87,7 @@ pallet-im-online = { git = "https://github.com/paritytech/substrate", default-fe
 pallet-offences = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-preimage = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-session = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+runtime-common = { package = "runtime-common", path = "../common", default-features = false }
 
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
@@ -103,8 +106,6 @@ staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-fe
 #pallet-ares-collective = { default-features = false, path = '../../../ares-ocw-suit/pallets/collective' }
 #pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
 #staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
-#pallet-session = { default-features = false, path = '../../../ares-ocw-suit/pallets/session' }
-runtime-common = { package = "runtime-common", path = "../common", default-features = false }
 
 [features]
 default = ['std']
@@ -185,6 +186,7 @@ std = [
     "runtime-common/std",
     "pallet-gilt/std",
     "pallet-staking-reward-fn/std",
+    "polkadot-runtime-common/std",
 ]
 fast-runtime = []
 #[patch."https://github.com/paritytech/substrate"]

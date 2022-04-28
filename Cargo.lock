@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -140,7 +140,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -149,6 +149,41 @@ dependencies = [
  "sp-application-crypto",
  "sp-io",
  "sp-std 4.0.0",
+]
+
+[[package]]
+name = "ares-rpc"
+version = "1.0.0"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
+dependencies = [
+ "ares-oracle-provider-support",
+ "chrono",
+ "frame-support",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "jsonrpc-pubsub",
+ "parity-scale-codec",
+ "parking_lot",
+ "reqwest",
+ "sc-keystore",
+ "sc-rpc",
+ "sc-rpc-api",
+ "sc-service",
+ "sc-transaction-pool",
+ "sc-transaction-pool-api",
+ "serde",
+ "serde_json",
+ "sp-api",
+ "sp-blockchain",
+ "sp-core",
+ "sp-io",
+ "sp-keystore",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "thiserror",
+ "tokio 0.2.25",
 ]
 
 [[package]]
@@ -693,6 +728,12 @@ dependencies = [
 
 [[package]]
 name = "bytes"
+version = "0.5.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0e4cec68f03f32e44924783795810fa50a7035d8c8ebe78580ad7e6c703fba38"
+
+[[package]]
+name = "bytes"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c4872d67bab6358e59559027aa3b9157c53d9358c51423c17554809a8858e0f8"
@@ -859,9 +900,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "3.1.9"
+version = "3.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6aad2534fad53df1cc12519c5cda696dd3e20e6118a027e24054aea14a0bdcbe"
+checksum = "3124f3f75ce09e22d1410043e1e24f2ecc44fad3afe4f08408f1f7663d68da2b"
 dependencies = [
  "atty",
  "bitflags",
@@ -876,11 +917,11 @@ dependencies = [
 
 [[package]]
 name = "clap_complete"
-version = "3.1.1"
+version = "3.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df6f3613c0a3cddfd78b41b10203eb322cb29b600cbdf808a7d3db95691b8e25"
+checksum = "1506b87ee866f7a53a5131f7b31fba656170d797e873d0609884cfd56b8bbda8"
 dependencies = [
- "clap 3.1.9",
+ "clap 3.1.10",
 ]
 
 [[package]]
@@ -1411,6 +1452,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 
 [[package]]
+name = "encoding_rs"
+version = "0.8.31"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9852635589dc9f9ea1b6fe9f05b50ef208c85c834a562f0c6abb1c475736ec2b"
+dependencies = [
+ "cfg-if 1.0.0",
+]
+
+[[package]]
 name = "enum-as-inner"
 version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1602,6 +1652,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
+name = "foreign-types"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f6f339eb8adc052cd2ca78910fda869aefa38d22d5cb648e6485e4d3fc06f3b1"
+dependencies = [
+ "foreign-types-shared",
+]
+
+[[package]]
+name = "foreign-types-shared"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b"
+
+[[package]]
 name = "fork-tree"
 version = "3.0.0"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
@@ -1648,7 +1713,7 @@ source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22
 dependencies = [
  "Inflector",
  "chrono",
- "clap 3.1.9",
+ "clap 3.1.10",
  "frame-benchmarking",
  "frame-support",
  "handlebars",
@@ -2067,13 +2132,15 @@ name = "gladios-node"
 version = "1.0.0"
 dependencies = [
  "ares-oracle-provider-support",
- "clap 3.1.9",
+ "ares-rpc",
+ "clap 3.1.10",
  "clap_complete",
  "frame-benchmarking",
  "frame-benchmarking-cli",
  "frame-support",
  "frame-system-rpc-runtime-api",
  "futures 0.3.21",
+ "gladios-runtime",
  "hex-literal",
  "jsonrpc-core",
  "jsonrpc-core-client",
@@ -2087,10 +2154,10 @@ dependencies = [
  "pallet-im-online",
  "pallet-transaction-payment-rpc",
  "pallet-transaction-payment-rpc-runtime-api",
+ "parity-scale-codec",
+ "pioneer-runtime",
  "rand 0.8.5",
  "runtime-common",
- "runtime-gladios-node",
- "runtime-pioneer-node",
  "sc-basic-authorship",
  "sc-block-builder",
  "sc-chain-spec",
@@ -2127,6 +2194,7 @@ dependencies = [
  "sp-consensus-babe",
  "sp-core",
  "sp-finality-grandpa",
+ "sp-keystore",
  "sp-offchain",
  "sp-rpc",
  "sp-runtime",
@@ -2141,7 +2209,84 @@ dependencies = [
  "substrate-frame-cli",
  "substrate-frame-rpc-system",
  "substrate-test-runtime-client",
+ "thiserror",
  "try-runtime-cli",
+]
+
+[[package]]
+name = "gladios-runtime"
+version = "1.0.0"
+dependencies = [
+ "ares-oracle",
+ "ares-oracle-provider-support",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "hex-literal",
+ "log",
+ "member-extend",
+ "oracle-finance",
+ "pallet-ares-challenge",
+ "pallet-ares-collective",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-bags-list",
+ "pallet-balances",
+ "pallet-bounties",
+ "pallet-collective",
+ "pallet-democracy",
+ "pallet-election-provider-multi-phase",
+ "pallet-elections-phragmen",
+ "pallet-gilt",
+ "pallet-grandpa",
+ "pallet-identity",
+ "pallet-im-online",
+ "pallet-indices",
+ "pallet-multisig",
+ "pallet-offences",
+ "pallet-preimage",
+ "pallet-price-estimates",
+ "pallet-proxy",
+ "pallet-randomness-collective-flip",
+ "pallet-scheduler",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-staking-reward-curve",
+ "pallet-staking-reward-fn",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-treasury",
+ "pallet-vesting",
+ "parity-scale-codec",
+ "polkadot-runtime-common",
+ "runtime-common",
+ "scale-info",
+ "smallvec",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-block-builder",
+ "sp-consensus-babe",
+ "sp-core",
+ "sp-inherents",
+ "sp-io",
+ "sp-npos-elections",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-std 4.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "staking-extend",
+ "static_assertions",
+ "substrate-wasm-builder",
 ]
 
 [[package]]
@@ -2189,7 +2334,7 @@ dependencies = [
  "http",
  "indexmap",
  "slab",
- "tokio",
+ "tokio 1.17.0",
  "tokio-util 0.7.1",
  "tracing",
 ]
@@ -2383,7 +2528,7 @@ dependencies = [
  "itoa 1.0.1",
  "pin-project-lite 0.2.8",
  "socket2 0.4.4",
- "tokio",
+ "tokio 1.17.0",
  "tower-service",
  "tracing",
  "want",
@@ -2401,9 +2546,22 @@ dependencies = [
  "log",
  "rustls 0.19.1",
  "rustls-native-certs 0.5.0",
- "tokio",
+ "tokio 1.17.0",
  "tokio-rustls 0.22.0",
  "webpki 0.21.4",
+]
+
+[[package]]
+name = "hyper-tls"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d6183ddfa99b85da61a140bea0efc93fdf56ceaa041b37d553518030827f9905"
+dependencies = [
+ "bytes 1.1.0",
+ "hyper",
+ "native-tls",
+ "tokio 1.17.0",
+ "tokio-native-tls",
 ]
 
 [[package]]
@@ -2556,7 +2714,7 @@ dependencies = [
  "socket2 0.3.19",
  "widestring",
  "winapi 0.3.9",
- "winreg",
+ "winreg 0.6.2",
 ]
 
 [[package]]
@@ -2715,7 +2873,7 @@ dependencies = [
  "jsonrpc-core",
  "lazy_static",
  "log",
- "tokio",
+ "tokio 1.17.0",
  "tokio-stream",
  "tokio-util 0.6.9",
  "unicase",
@@ -2773,7 +2931,7 @@ dependencies = [
  "rustls-native-certs 0.6.2",
  "soketto",
  "thiserror",
- "tokio",
+ "tokio 1.17.0",
  "tokio-rustls 0.23.3",
  "tokio-util 0.6.9",
  "tracing",
@@ -2799,7 +2957,7 @@ dependencies = [
  "serde_json",
  "soketto",
  "thiserror",
- "tokio",
+ "tokio 1.17.0",
  "tracing",
 ]
 
@@ -2878,7 +3036,7 @@ dependencies = [
  "serde_json",
  "soketto",
  "thiserror",
- "tokio",
+ "tokio 1.17.0",
  "tokio-rustls 0.22.0",
  "tokio-util 0.6.9",
 ]
@@ -3710,7 +3868,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3804,6 +3962,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "mime"
+version = "0.3.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a60c7ce501c71e03a9c9c0d35b861413ae925bd979cc7a4e30d060069aaac8d"
+
+[[package]]
 name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3861,6 +4025,29 @@ dependencies = [
  "log",
  "mio 0.6.23",
  "slab",
+]
+
+[[package]]
+name = "mio-named-pipes"
+version = "0.1.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0840c1c50fd55e521b247f949c241c9997709f23bd7f023b9762cd561e935656"
+dependencies = [
+ "log",
+ "mio 0.6.23",
+ "miow 0.3.7",
+ "winapi 0.3.9",
+]
+
+[[package]]
+name = "mio-uds"
+version = "0.6.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "afcb699eb26d4332647cc848492bbc15eafb26f08d0304550d5aa1f612e066f0"
+dependencies = [
+ "iovec",
+ "libc",
+ "mio 0.6.23",
 ]
 
 [[package]]
@@ -4022,6 +4209,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "native-tls"
+version = "0.2.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fd7e2f3618557f980e0b17e8856252eee3c97fa12c54dff0ca290fb6266ca4a9"
+dependencies = [
+ "lazy_static",
+ "libc",
+ "log",
+ "openssl",
+ "openssl-probe",
+ "openssl-sys",
+ "schannel",
+ "security-framework",
+ "security-framework-sys",
+ "tempfile",
+]
+
+[[package]]
 name = "net2"
 version = "0.2.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4055,7 +4260,7 @@ name = "node-inspect"
 version = "0.9.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.9",
+ "clap 3.1.10",
  "parity-scale-codec",
  "sc-cli",
  "sc-client-api",
@@ -4371,15 +4576,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "openssl"
+version = "0.10.38"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0c7ae222234c30df141154f159066c5093ff73b63204dcda7121eb082fc56a95"
+dependencies = [
+ "bitflags",
+ "cfg-if 1.0.0",
+ "foreign-types",
+ "libc",
+ "once_cell",
+ "openssl-sys",
+]
+
+[[package]]
 name = "openssl-probe"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 
 [[package]]
+name = "openssl-sys"
+version = "0.9.72"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7e46109c383602735fa0a2e48dd2b7c892b048e1bf69e5c3b1d804b7d9c203cb"
+dependencies = [
+ "autocfg",
+ "cc",
+ "libc",
+ "pkg-config",
+ "vcpkg",
+]
+
+[[package]]
 name = "oracle-finance"
 version = "3.1.2"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4415,7 +4647,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4435,7 +4667,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5050,7 +5282,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -5449,7 +5681,7 @@ dependencies = [
  "libc",
  "log",
  "rand 0.7.3",
- "tokio",
+ "tokio 1.17.0",
  "winapi 0.3.9",
 ]
 
@@ -5715,6 +5947,82 @@ name = "pin-utils"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
+
+[[package]]
+name = "pioneer-runtime"
+version = "1.0.0"
+dependencies = [
+ "ares-oracle",
+ "ares-oracle-provider-support",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "hex-literal",
+ "log",
+ "member-extend",
+ "oracle-finance",
+ "pallet-ares-challenge",
+ "pallet-ares-collective",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-bags-list",
+ "pallet-balances",
+ "pallet-bounties",
+ "pallet-collective",
+ "pallet-democracy",
+ "pallet-election-provider-multi-phase",
+ "pallet-elections-phragmen",
+ "pallet-gilt",
+ "pallet-grandpa",
+ "pallet-identity",
+ "pallet-im-online",
+ "pallet-indices",
+ "pallet-multisig",
+ "pallet-offences",
+ "pallet-preimage",
+ "pallet-price-estimates",
+ "pallet-proxy",
+ "pallet-randomness-collective-flip",
+ "pallet-scheduler",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-staking-reward-curve",
+ "pallet-staking-reward-fn",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-treasury",
+ "pallet-vesting",
+ "parity-scale-codec",
+ "polkadot-runtime-common",
+ "runtime-common",
+ "scale-info",
+ "smallvec",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-block-builder",
+ "sp-consensus-babe",
+ "sp-core",
+ "sp-inherents",
+ "sp-io",
+ "sp-npos-elections",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-std 4.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "staking-extend",
+ "static_assertions",
+ "substrate-wasm-builder",
+]
 
 [[package]]
 name = "pkg-config"
@@ -6349,6 +6657,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "reqwest"
+version = "0.11.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "46a1f7aa4f35e5e8b4160449f51afc758f0ce6454315a9fa7d0d113e958c41eb"
+dependencies = [
+ "base64",
+ "bytes 1.1.0",
+ "encoding_rs",
+ "futures-core",
+ "futures-util",
+ "h2",
+ "http",
+ "http-body",
+ "hyper",
+ "hyper-tls",
+ "ipnet",
+ "js-sys",
+ "lazy_static",
+ "log",
+ "mime",
+ "native-tls",
+ "percent-encoding 2.1.0",
+ "pin-project-lite 0.2.8",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "tokio 1.17.0",
+ "tokio-native-tls",
+ "url 2.2.2",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "winreg 0.10.1",
+]
+
+[[package]]
 name = "resolv-conf"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6428,157 +6772,6 @@ dependencies = [
  "sp-runtime",
  "static_assertions",
  "trie-db",
-]
-
-[[package]]
-name = "runtime-gladios-node"
-version = "3.0.0"
-dependencies = [
- "ares-oracle",
- "ares-oracle-provider-support",
- "frame-benchmarking",
- "frame-election-provider-support",
- "frame-executive",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "hex-literal",
- "log",
- "member-extend",
- "oracle-finance",
- "pallet-ares-challenge",
- "pallet-ares-collective",
- "pallet-authorship",
- "pallet-babe",
- "pallet-bags-list",
- "pallet-balances",
- "pallet-bounties",
- "pallet-collective",
- "pallet-democracy",
- "pallet-election-provider-multi-phase",
- "pallet-elections-phragmen",
- "pallet-gilt",
- "pallet-grandpa",
- "pallet-identity",
- "pallet-im-online",
- "pallet-indices",
- "pallet-multisig",
- "pallet-offences",
- "pallet-preimage",
- "pallet-price-estimates",
- "pallet-proxy",
- "pallet-randomness-collective-flip",
- "pallet-scheduler",
- "pallet-session",
- "pallet-staking",
- "pallet-staking-reward-curve",
- "pallet-staking-reward-fn",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-treasury",
- "pallet-vesting",
- "parity-scale-codec",
- "runtime-common",
- "scale-info",
- "smallvec",
- "sp-api",
- "sp-arithmetic",
- "sp-block-builder",
- "sp-consensus-babe",
- "sp-core",
- "sp-inherents",
- "sp-io",
- "sp-npos-elections",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-std 4.0.0",
- "sp-transaction-pool",
- "sp-version",
- "staking-extend",
- "static_assertions",
- "substrate-wasm-builder",
-]
-
-[[package]]
-name = "runtime-pioneer-node"
-version = "3.0.0"
-dependencies = [
- "ares-oracle",
- "ares-oracle-provider-support",
- "frame-benchmarking",
- "frame-election-provider-support",
- "frame-executive",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "hex-literal",
- "log",
- "member-extend",
- "oracle-finance",
- "pallet-ares-challenge",
- "pallet-ares-collective",
- "pallet-authorship",
- "pallet-babe",
- "pallet-bags-list",
- "pallet-balances",
- "pallet-bounties",
- "pallet-collective",
- "pallet-democracy",
- "pallet-election-provider-multi-phase",
- "pallet-elections-phragmen",
- "pallet-gilt",
- "pallet-grandpa",
- "pallet-identity",
- "pallet-im-online",
- "pallet-indices",
- "pallet-multisig",
- "pallet-offences",
- "pallet-preimage",
- "pallet-price-estimates",
- "pallet-proxy",
- "pallet-randomness-collective-flip",
- "pallet-scheduler",
- "pallet-session",
- "pallet-staking",
- "pallet-staking-reward-curve",
- "pallet-staking-reward-fn",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-treasury",
- "pallet-vesting",
- "parity-scale-codec",
- "polkadot-runtime-common",
- "runtime-common",
- "scale-info",
- "smallvec",
- "sp-api",
- "sp-arithmetic",
- "sp-block-builder",
- "sp-consensus-babe",
- "sp-core",
- "sp-inherents",
- "sp-io",
- "sp-npos-elections",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-std 4.0.0",
- "sp-transaction-pool",
- "sp-version",
- "staking-extend",
- "static_assertions",
- "substrate-wasm-builder",
 ]
 
 [[package]]
@@ -6832,7 +7025,7 @@ version = "0.10.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
  "chrono",
- "clap 3.1.9",
+ "clap 3.1.10",
  "fdlimit",
  "futures 0.3.21",
  "hex",
@@ -6861,7 +7054,7 @@ dependencies = [
  "sp-version",
  "thiserror",
  "tiny-bip39",
- "tokio",
+ "tokio 1.17.0",
 ]
 
 [[package]]
@@ -7445,7 +7638,7 @@ dependencies = [
  "log",
  "serde_json",
  "substrate-prometheus-endpoint",
- "tokio",
+ "tokio 1.17.0",
 ]
 
 [[package]]
@@ -7507,7 +7700,7 @@ dependencies = [
  "substrate-prometheus-endpoint",
  "tempfile",
  "thiserror",
- "tokio",
+ "tokio 1.17.0",
  "tracing",
  "tracing-futures",
 ]
@@ -7868,6 +8061,18 @@ version = "1.0.79"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8e8d9fa5c3b304765ce1fd9c4c8a3de2c8db365a5b91be52f186efc675681d95"
 dependencies = [
+ "itoa 1.0.1",
+ "ryu",
+ "serde",
+]
+
+[[package]]
+name = "serde_urlencoded"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d3491c14715ca2294c4d6a88f15e84739788c1d030eed8c110436aafdaa2f3fd"
+dependencies = [
+ "form_urlencoded",
  "itoa 1.0.1",
  "ryu",
  "serde",
@@ -8840,7 +9045,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#18548f620f4160fda77ed1c6dbc23d64bc1fe8c8"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#3bdaeedb124f6d2d5dacc7feed5bc28198d086ab"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -8973,7 +9178,7 @@ name = "substrate-frame-cli"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.9",
+ "clap 3.1.10",
  "frame-support",
  "frame-system",
  "sc-cli",
@@ -9014,7 +9219,7 @@ dependencies = [
  "log",
  "prometheus",
  "thiserror",
- "tokio",
+ "tokio 1.17.0",
 ]
 
 [[package]]
@@ -9293,6 +9498,30 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "tokio"
+version = "0.2.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6703a273949a90131b290be1fe7b039d0fc884aa1935860dfcbe056f28cd8092"
+dependencies = [
+ "bytes 0.5.6",
+ "fnv",
+ "futures-core",
+ "iovec",
+ "lazy_static",
+ "libc",
+ "memchr",
+ "mio 0.6.23",
+ "mio-named-pipes",
+ "mio-uds",
+ "num_cpus",
+ "pin-project-lite 0.1.12",
+ "signal-hook-registry",
+ "slab",
+ "tokio-macros 0.2.6",
+ "winapi 0.3.9",
+]
+
+[[package]]
+name = "tokio"
 version = "1.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2af73ac49756f3f7c01172e34a23e5d0216f6c32333757c2c61feb2bbff5a5ee"
@@ -9306,8 +9535,19 @@ dependencies = [
  "pin-project-lite 0.2.8",
  "signal-hook-registry",
  "socket2 0.4.4",
- "tokio-macros",
+ "tokio-macros 1.7.0",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "tokio-macros"
+version = "0.2.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e44da00bfc73a25f814cd8d7e57a68a5c31b74b3152a0a1d1f590c97ed06265a"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -9322,13 +9562,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "tokio-native-tls"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f7d995660bd2b7f8c1568414c1126076c13fbb725c40112dc0120b78eb9b717b"
+dependencies = [
+ "native-tls",
+ "tokio 1.17.0",
+]
+
+[[package]]
 name = "tokio-rustls"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bc6844de72e57df1980054b38be3a9f4702aba4858be64dd700181a8a6d0e1b6"
 dependencies = [
  "rustls 0.19.1",
- "tokio",
+ "tokio 1.17.0",
  "webpki 0.21.4",
 ]
 
@@ -9339,7 +9589,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4151fda0cf2798550ad0b34bcfc9b9dcc2a9d2471c895c68f3a8818e54f2389e"
 dependencies = [
  "rustls 0.20.4",
- "tokio",
+ "tokio 1.17.0",
  "webpki 0.22.0",
 ]
 
@@ -9351,7 +9601,7 @@ checksum = "50145484efff8818b5ccd256697f36863f587da82cf8b409c53adf1e840798e3"
 dependencies = [
  "futures-core",
  "pin-project-lite 0.2.8",
- "tokio",
+ "tokio 1.17.0",
 ]
 
 [[package]]
@@ -9366,7 +9616,7 @@ dependencies = [
  "futures-sink",
  "log",
  "pin-project-lite 0.2.8",
- "tokio",
+ "tokio 1.17.0",
 ]
 
 [[package]]
@@ -9379,7 +9629,7 @@ dependencies = [
  "futures-core",
  "futures-sink",
  "pin-project-lite 0.2.8",
- "tokio",
+ "tokio 1.17.0",
  "tracing",
 ]
 
@@ -9561,7 +9811,7 @@ name = "try-runtime-cli"
 version = "0.10.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.1.9",
+ "clap 3.1.10",
  "jsonrpsee 0.4.1",
  "log",
  "parity-scale-codec",
@@ -10226,6 +10476,15 @@ name = "winreg"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b2986deb581c4fe11b621998a5e53361efe6b48a151178d0cd9eeffa4dc6acc9"
+dependencies = [
+ "winapi 0.3.9",
+]
+
+[[package]]
+name = "winreg"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "80d0f4e272c85def139476380b12f9ac60926689dd2e01d4923222f40580869d"
 dependencies = [
  "winapi 0.3.9",
 ]

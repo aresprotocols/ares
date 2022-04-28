@@ -85,14 +85,14 @@ impl SubstrateCli for Cli {
 				log::info!("🚅 🚅 🚅 load spec with development_config().");
 				Box::new(chain_spec::pioneer::make_spec(
 					self.spec_config.clone(),
-					&include_bytes!("../res/test.yml")[..],
+					&include_bytes!("../res/dev.yml")[..],
 				)?)
 			},
 			"test" => {
 				log::info!("🚅 🚅 🚅 load spec with local_testnet_config().");
 				Box::new(chain_spec::pioneer::make_spec(
 					self.spec_config.clone(),
-					&include_bytes!("../res/dev.yml")[..],
+					&include_bytes!("../res/test.yml")[..],
 				)?)
 			},
 			"local" => {
