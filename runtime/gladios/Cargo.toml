@@ -94,7 +94,6 @@ ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-
 oracle-finance = { version = '3.1.2', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 member-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
-pallet-ares-collective = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 
@@ -164,7 +163,6 @@ std = [
     'ares-oracle-provider-support/std',
     'ares-oracle/std',
     'pallet-ares-challenge/std',
-    'pallet-ares-collective/std',
     'pallet-collective/std',
     'pallet-democracy/std',
     'pallet-treasury/std',
