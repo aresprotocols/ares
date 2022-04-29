@@ -104,9 +104,16 @@ impl SubstrateCli for Cli {
 			},
 			"" | "gladios" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");
-				Box::new(chain_spec::gladios::ChainSpec::from_json_bytes(
-					&include_bytes!("../res/chain-data-ares-aura-raw.json")[..],
-				)?)
+				if self.spec_config.is_some() {
+					Box::new(chain_spec::gladios::make_spec(
+						self.spec_config.clone(),
+						&include_bytes!("../res/gladios.yml")[..],
+					)?)
+				} else {
+					Box::new(chain_spec::gladios::ChainSpec::from_json_bytes(
+						&include_bytes!("../res/chain-data-ares-aura-raw.json")[..],
+					)?)
+				}
 			},
 			path => {
 				log::info!("🚅 🚅 🚅 load spec with json file.");
