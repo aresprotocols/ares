@@ -210,7 +210,7 @@ pub(crate) mod tests {
 
 	#[test]
 	fn test_staging_test_net_chain_spec() {
-		let other_allocation_json = &include_bytes!("../res/ares.yml")[..];
+		let other_allocation_json = &include_bytes!("../res/gladios.yml")[..];
 
 		let other_allocation: ChainSpecConfig = serde_yaml::from_slice(other_allocation_json).unwrap();
 		println!("{:?}", other_allocation);
