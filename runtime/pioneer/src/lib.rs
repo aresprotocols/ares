@@ -7,6 +7,7 @@
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 use ares_oracle::AuthorTraceData;
+use ares_oracle::traits::IsAresOracleCall;
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, GrandpaEquivocationOffence,
 };
@@ -263,7 +264,7 @@ impl pallet_timestamp::Config for Runtime {
 }
 
 parameter_types! {
-	pub const ExistentialDeposit: u128 = DOLLARS;
+	pub const ExistentialDeposit: u128 = 500;//DOLLARS;
 	pub const MaxLocks: u32 = 50;
 	pub const MaxReserves: u32 = 100;
 }
@@ -340,7 +341,7 @@ construct_runtime!(
 		AresChallenge: pallet_ares_challenge::<Instance1>::{Pallet, Call, Storage, Event<T>},
 
 		AresOracle: ares_oracle::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>},
+		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>, Config<T>},
 		// StakingExtend: staking_extend::{Pallet},
 
 		// Governance
@@ -396,53 +397,62 @@ pub type Executive = frame_executive::Executive<
 	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
 >;
 
-struct AresOracleFilter;
-impl AresOracleFilter {
-	pub fn is_author_call(extrinsic :&UncheckedExtrinsic) -> bool {
-		let in_call = extrinsic.call();
-		if let Call::AresOracle(
+impl IsAresOracleCall<Runtime, Call> for Call {
+	fn try_get_pallet_call(in_call: &Call) -> Option<&ares_oracle::pallet::Call<Runtime>> {
+		if let Self::AresOracle(
 			x_call
 		) = in_call {
-			if let ares_oracle::pallet::Call::submit_price_unsigned_with_signed_payload {
-				price_payload: ref payload,
-				signature: ref signature,
-			} = x_call {
-				// ares_oracle::pallet::block_author(); //::<Runtime>::get();
-				// let block_auth = ares_oracle::pallet::BlockAuthor::<Runtime>::get();
-				let block_auth = ares_oracle::pallet::Pallet::<Runtime>::block_author();
-				// let mut block_trace = ares_oracle::pallet::BlockAuthorTrace::<Runtime>::get().unwrap_or(AuthorTraceData::<Runtime>::default());
-				let mut block_trace = ares_oracle::pallet::Pallet::<Runtime>::block_author_trace().unwrap_or(AuthorTraceData::<Runtime>::default());
-
-				let trace_pop1 = block_trace.pop();
-				let trace_pop2 = block_trace.pop();
-				let releation_stash_opt = ares_oracle::pallet::Pallet::<Runtime>::get_stash_id(&payload.auth);
-				log::info!("@@@@3 price_payload.stash = {:?} price_payload.block_number =  {:?} trace_pop1 = {:?}, trace_pop2 = {:?}",
-					&releation_stash_opt,
-					payload.block_number,
-					trace_pop1,
-					trace_pop2,
-				);
-
-				if let Some(stash_trace) = trace_pop2 {
-					if let Some(rel_stash) = releation_stash_opt {
-						return &stash_trace.0 == &rel_stash;
-					}
-				}
-
-				return false
-			}
+			return Some(x_call);
 		}
-
-		return true;
-		// if let ares_oracle::pallet::Call {
-		// 	price_payload: ref payload,
-		// 	signature: ref signature,
-		// } = in_call
-		// {
-		//
-		// }
+		None
 	}
 }
+
+// struct AresOracleFilter;
+// impl AresOracleFilter {
+// 	pub fn is_author_call(extrinsic :&UncheckedExtrinsic) -> bool {
+//
+		// let in_call = extrinsic.call();
+		// if let Call::AresOracle(
+		// 	x_call
+		// ) = in_call {
+		// 	if let ares_oracle::pallet::Call::submit_price_unsigned_with_signed_payload {
+		// 		price_payload: ref payload,
+		// 		signature: ref signature,
+		// 	} = x_call {
+		// 		// ares_oracle::pallet::block_author(); //::<Runtime>::get();
+		// 		// let block_auth = ares_oracle::pallet::BlockAuthor::<Runtime>::get();
+		// 		// let block_auth = ares_oracle::pallet::Pallet::<Runtime>::block_author();
+		// 		// let mut block_trace = ares_oracle::pallet::BlockAuthorTrace::<Runtime>::get().unwrap_or(AuthorTraceData::<Runtime>::default());
+		// 		let mut block_trace = ares_oracle::pallet::Pallet::<Runtime>::block_author_trace().unwrap_or(AuthorTraceData::<Runtime>::default());
+		// 		let mut block_trace_author = None;
+		// 		block_trace.iter().any(|(acc, bn)|{
+		// 			if &payload.block_number == bn {
+		// 				block_trace_author = Some(acc.clone());
+		// 				return true;
+		// 			}
+		// 			false
+		// 		});
+		//
+		// 		let trace_pop1 = block_trace.pop(); //
+		// 		let trace_pop2 = block_trace.pop(); //
+		// 		let releation_stash_opt = ares_oracle::pallet::Pallet::<Runtime>::get_stash_id(&payload.auth);
+		// 		log::info!("@@@@3 price_payload.stash = {:?} price_payload.block_number =  {:?} block_trace_author = {:?},",
+		// 			&releation_stash_opt,
+		// 			payload.block_number,
+		// 			block_trace_author,
+		// 		);
+		// 		if let Some(stash_trace) = block_trace_author {
+		// 			if let Some(rel_stash) = releation_stash_opt {
+		// 				return &stash_trace == &rel_stash;
+		// 			}
+		// 		}
+		// 		return false
+		// 	}
+		// }
+		// return true;
+// 	}
+// }
 
 //
 impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime
@@ -513,12 +523,12 @@ impl_runtime_apis! {
 		}
 
 		fn execute_block(block: Block) {
-			log::info!("@@@@ execute_block :: block.hash = {:?}, current_bn = {:?}", block.hash(), block.header().number);
+			// log::info!("@@@@ execute_block :: block.hash = {:?}, current_bn = {:?}", block.header().hash(), block.header().number);
 			Executive::execute_block(block);
 		}
 
 		fn initialize_block(header: &<Block as BlockT>::Header) {
-			log::info!("@@@@ initialize_block :: parent_hash = {:?},  current_bn = {:?}", header.parent_hash, header.number);
+			// log::info!("@@@@ initialize_block :: parent_hash = {:?},  current_bn = {:?}", header.parent_hash, header.number);
 			Executive::initialize_block(header)
 		}
 	}
@@ -531,9 +541,12 @@ impl_runtime_apis! {
 
 	impl sp_block_builder::BlockBuilder<Block> for Runtime {
 		fn apply_extrinsic(extrinsic: <Block as BlockT>::Extrinsic) -> ApplyExtrinsicResult {
-			// log::info!("@@@@ apply_extrinsic :: extrinsic = {:?} ", &extrinsic);
-			let filter_result = AresOracleFilter::is_author_call(&extrinsic);
-			log::info!("@@@@# filter_result = {:?} ", &filter_result);
+			// log::info!("@@@@ apply_extrinsic. extrinsic={:?}", extrinsic);
+			// let filter_result = AresOracleFilter::is_author_call(&extrinsic);
+			// log::info!("@@@@# filter_result = {:?} ", &filter_result);
+
+			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&extrinsic);
+			log::info!("Oracle filter_result = {:?} on apply_extrinsic", &filter_result);
 			if filter_result {
 				return Executive::apply_extrinsic(extrinsic);
 			}
@@ -541,9 +554,7 @@ impl_runtime_apis! {
 		}
 
 		fn finalize_block() -> <Block as BlockT>::Header {
-			let res = Executive::finalize_block();
-			log::info!("@@@@ finalize_block :: parent_hash = {:?},  current_bn = {:?}", &res.parent_hash, &res.number);
-			res
+			Executive::finalize_block()
 		}
 
 		fn inherent_extrinsics(data: sp_inherents::InherentData) -> Vec<<Block as BlockT>::Extrinsic> {
@@ -564,25 +575,25 @@ impl_runtime_apis! {
 			tx: <Block as BlockT>::Extrinsic,
 			block_hash: <Block as BlockT>::Hash,
 		) -> TransactionValidity {
-			Executive::validate_transaction(source, tx, block_hash)
+
+			// log::info!("#### sp_transaction_pool. block_hash = {:?}, tx = {:?}", block_hash.clone(), &tx);
+			// let filter_result = AresOracleFilter::is_author_call(&tx);
+			// log::info!("####@ filter_result = {:?} ", &filter_result);
+			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&tx);
+			log::info!("Oracle filter_result = {:?} on validate_transaction", &filter_result);
+			if filter_result {
+				return Executive::validate_transaction(source, tx, block_hash)
+			}
+			TransactionValidity::Err(frame_support::pallet_prelude::TransactionValidityError::Invalid(InvalidTransaction::Call))
 		}
 	}
 
 	impl sp_offchain::OffchainWorkerApi<Block> for Runtime {
 		fn offchain_worker(header: &<Block as BlockT>::Header) {
+			// log::info!("@@@@ sp_offchain. parent_hash={:?}, current_number={:?}", &header.parent_hash, &header.number);
 			Executive::offchain_worker(header)
 		}
 	}
-
-	// impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
-	// 	fn slot_duration() -> sp_consensus_aura::SlotDuration {
-	// 		sp_consensus_aura::SlotDuration::from_millis(Aura::slot_duration())
-	// 	}
-	//
-	// 	fn authorities() -> Vec<AuraId> {
-	// 		Aura::authorities().to_vec()
-	// 	}
-	// }
 
 	impl sp_consensus_babe::BabeApi<Block> for Runtime {
 		fn configuration() -> sp_consensus_babe::BabeGenesisConfiguration {

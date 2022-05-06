@@ -7,6 +7,9 @@
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
+use ares_oracle::AuthorTraceData;
+use ares_oracle::traits::IsAresOracleCall;
+
 use codec::Encode;
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, GrandpaEquivocationOffence,
@@ -76,6 +79,9 @@ pub use constants::currency::{deposit, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICE
 use constants::time::{DAYS, HOURS, MINUTES, SLOT_DURATION};
 pub use runtime_common::*;
 use runtime_common::{AccountId, DealWithFees, Signature, SlowAdjustingFeeUpdate};
+
+use frame_support::pallet_prelude::InvalidTransaction;
+use frame_support::traits::ExtrinsicCall;
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 // pub type Signature = Signature ;// MultiSignature;
@@ -255,7 +261,7 @@ impl pallet_timestamp::Config for Runtime {
 }
 
 parameter_types! {
-	pub const ExistentialDeposit: u128 = DOLLARS;
+	pub const ExistentialDeposit: u128 = 500;//DOLLARS;
 	pub const MaxLocks: u32 = 50;
 	pub const MaxReserves: u32 = 100;
 }
@@ -340,7 +346,7 @@ construct_runtime!(
 		AresChallenge: pallet_ares_challenge::<Instance1>::{Pallet, Call, Storage, Event<T>},
 
 		AresOracle: ares_oracle::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>},
+		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>, Config<T>},
 		// StakingExtend: staking_extend::{Pallet},
 
 		// Governance
@@ -460,6 +466,17 @@ impl<C> frame_system::offchain::SendTransactionTypes<C> for Runtime
 	type OverarchingCall = Call;
 }
 
+impl IsAresOracleCall<Runtime, Call> for Call {
+	fn try_get_pallet_call(in_call: &Call) -> Option<&ares_oracle::pallet::Call<Runtime>> {
+		if let Self::AresOracle(
+			x_call
+		) = in_call {
+			return Some(x_call);
+		}
+		None
+	}
+}
+
 impl_runtime_apis! {
 	impl sp_api::Core<Block> for Runtime {
 		fn version() -> RuntimeVersion {
@@ -483,7 +500,12 @@ impl_runtime_apis! {
 
 	impl sp_block_builder::BlockBuilder<Block> for Runtime {
 		fn apply_extrinsic(extrinsic: <Block as BlockT>::Extrinsic) -> ApplyExtrinsicResult {
-			Executive::apply_extrinsic(extrinsic)
+			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&extrinsic);
+			log::info!("Oracle filter_result = {:?} on apply_extrinsic", &filter_result);
+			if filter_result {
+				return Executive::apply_extrinsic(extrinsic);
+			}
+			ApplyExtrinsicResult::Err(frame_support::pallet_prelude::TransactionValidityError::Invalid(InvalidTransaction::Call))
 		}
 
 		fn finalize_block() -> <Block as BlockT>::Header {
@@ -508,7 +530,13 @@ impl_runtime_apis! {
 			tx: <Block as BlockT>::Extrinsic,
 			block_hash: <Block as BlockT>::Hash,
 		) -> TransactionValidity {
-			Executive::validate_transaction(source, tx, block_hash)
+			// Executive::validate_transaction(source, tx, block_hash)
+			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&tx);
+			log::info!("Oracle filter_result = {:?} on validate_transaction", &filter_result);
+			if filter_result {
+				return Executive::validate_transaction(source, tx, block_hash)
+			}
+			TransactionValidity::Err(frame_support::pallet_prelude::TransactionValidityError::Invalid(InvalidTransaction::Call))
 		}
 	}
 
@@ -517,25 +545,6 @@ impl_runtime_apis! {
 			Executive::offchain_worker(header)
 		}
 	}
-
-	// impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
-	// 	fn slot_duration() -> sp_consensus_aura::SlotDuration {
-	// 		sp_consensus_aura::SlotDuration::from_millis(Aura::slot_duration())
-	// 	}
-	//
-	// 	fn authorities() -> Vec<AuraId> {
-	// 		Aura::authorities().to_vec()
-	// 	}
-	// }
-	// impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
-	// 	fn slot_duration() -> sp_consensus_aura::SlotDuration {
-	// 		sp_consensus_aura::SlotDuration::from_millis(Aura::slot_duration())
-	// 	}
-	//
-	// 	fn authorities() -> Vec<AuraId> {
-	// 		Aura::authorities().to_vec()
-	// 	}
-	// }
 
 	impl sp_consensus_babe::BabeApi<Block> for Runtime {
 		fn configuration() -> sp_consensus_babe::BabeGenesisConfiguration {

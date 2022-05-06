@@ -16,6 +16,6 @@ impl pallet_price_estimates::Config for Runtime {
 	type Currency = Balances;
 	type Call = Call;
 	type PriceProvider = AresOracle;
-	type AuthorityId = ares_oracle::AresCrypto<AresId>;
+	type AuthorityId = ares_oracle::ares_crypto::AresCrypto<AresId>;
 	type UnsignedPriority = UnsignedPriority;
 }

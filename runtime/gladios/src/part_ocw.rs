@@ -38,10 +38,10 @@ impl staking_extend::Config for Runtime {
 impl ares_oracle::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
-	type OffchainAppCrypto = ares_oracle::AresCrypto<AresId>;
+	type OffchainAppCrypto = ares_oracle::ares_crypto::AresCrypto<AresId>;
 	type AuthorityAres = AresId;
 	type UnsignedPriority = UnsignedPriority;
-	type FindAuthor = Babe;
+	// type FindAuthor = Babe;
 	type CalculationKind = CalculationKind;
 	type RequestOrigin = EnsureRootOrHalfTechnicalCollective;
 	type AuthorityCount = AresOracle; // ares_oracle::aura_handler::Pallet<Runtime>;

@@ -1,4 +1,5 @@
 use sc_consensus_babe::AuthorityId as BabeId;
+use sp_runtime::Percent;
 
 use pioneer_runtime::{
 	governance::{part_elections::PhragmenElectionPalletId, part_treasury::TreasuryPalletId},
@@ -7,7 +8,7 @@ use pioneer_runtime::{
 	part_estimates::EstimatesPalletId,
 	part_ocw_finance::AresFinancePalletId,
 	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
+	GenesisConfig, GrandpaConfig, ImOnlineConfig, OracleFinanceConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
 
@@ -81,6 +82,7 @@ fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConfig {
 		im_online: ImOnlineConfig { keys: vec![] },
 		balances: BalancesConfig { balances: config.balances.clone() },
 		babe: BabeConfig { authorities: vec![], epoch_config: Some(BABE_GENESIS_EPOCH_CONFIG) },
+		oracle_finance: Default::default(),
 		staking: StakingConfig {
 			validator_count: config.authorities.len() as u32,
 			minimum_validator_count: config.authorities.len() as u32,
@@ -111,7 +113,7 @@ fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConfig {
 			_phantom: Default::default(),
 			request_base: Vec::new(),
 			price_pool_depth: 5u32,
-			price_allowable_offset: 1u8,
+			price_allowable_offset: Percent::from_percent(1),
 			authorities: vec![],
 			price_requests: config
 				.symbols

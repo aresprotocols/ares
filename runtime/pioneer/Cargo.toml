@@ -102,7 +102,6 @@ staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-fe
 #oracle-finance = { default-features = false, path = '../../../ares-ocw-suit/pallets/oracle-finance' }
 #member-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/member-extend' }
 #pallet-ares-challenge = { default-features = false, path = '../../../ares-ocw-suit/pallets/challenge' }
-#pallet-ares-collective = { default-features = false, path = '../../../ares-ocw-suit/pallets/collective' }
 #pallet-price-estimates = { default-features = false, path = '../../../ares-ocw-suit/pallets/price-estimates' }
 #staking-extend = { default-features = false, path = '../../../ares-ocw-suit/pallets/staking-extend' }
 

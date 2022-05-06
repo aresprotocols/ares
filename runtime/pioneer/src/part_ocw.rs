@@ -1,7 +1,6 @@
 use super::*;
 use crate::governance::part_technical::TechnicalCollective;
 use ares_oracle;
-// pub use ares_oracle::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 
 // An index to a block.
 pub type BlockNumber = u32;
@@ -17,11 +16,6 @@ parameter_types! {
 	pub const ErrLogPoolDepth: u32 = 1000;
 }
 
-// impl ares_oracle::aura_handler::Config for Runtime {}
-// impl ares_oracle::babe_handler::Config for Runtime {
-// 	type AuthorityId = pallet_babe::AuthorityId;
-// }
-
 impl staking_extend::Config for Runtime {
 	type AuthorityId = AresId;
 }
@@ -29,10 +23,10 @@ impl staking_extend::Config for Runtime {
 impl ares_oracle::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
-	type OffchainAppCrypto = ares_oracle::AresCrypto<AresId>;
+	type OffchainAppCrypto = ares_oracle::ares_crypto::AresCrypto<AresId>;
 	type AuthorityAres = AresId;
 	type UnsignedPriority = UnsignedPriority;
-	type FindAuthor = Babe;
+	// type FindAuthor = Babe;
 	type CalculationKind = CalculationKind;
 	type RequestOrigin = EnsureRootOrHalfTechnicalCollective;
 	type AuthorityCount = AresOracle; // ares_oracle::aura_handler::Pallet<Runtime>;

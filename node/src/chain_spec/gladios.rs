@@ -1,4 +1,5 @@
 use sc_consensus_babe::AuthorityId as BabeId;
+use sp_runtime::Percent;
 
 pub use gladios_runtime::{
 	governance::{part_elections::PhragmenElectionPalletId, part_treasury::TreasuryPalletId},
@@ -7,7 +8,7 @@ pub use gladios_runtime::{
 	part_estimates::EstimatesPalletId,
 	part_ocw_finance::AresFinancePalletId,
 	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
-	GenesisConfig, GrandpaConfig, ImOnlineConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
+	GenesisConfig, GrandpaConfig, ImOnlineConfig, OracleFinanceConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
 
@@ -102,6 +103,7 @@ pub fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConf
 				.collect::<Vec<_>>(),
 		},
 		grandpa: GrandpaConfig { authorities: vec![] },
+		oracle_finance: Default::default(),
 		sudo: SudoConfig {
 			// Assign network admin rights.
 			key: Some(config.root.clone()),
@@ -110,7 +112,7 @@ pub fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConf
 			_phantom: Default::default(),
 			request_base: Vec::new(),
 			price_pool_depth: 5u32,
-			price_allowable_offset: 1u8,
+			price_allowable_offset: Percent::from_percent(1),
 			authorities: vec![],
 			price_requests: config
 				.symbols
