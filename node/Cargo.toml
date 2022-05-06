@@ -23,12 +23,8 @@ clap_complete = { version = "3.0", optional = true }
 substrate-frame-cli = { git = "https://github.com/paritytech/substrate", optional = true, branch = "polkadot-v0.9.17" }
 
 [dependencies]
-
-ares-oracle-provider-support = { path = "../../ares-ocw-suit/pallets/ares-oracle-provider-support" }
-ares-rpc = { path = "../../ares-ocw-suit/rpc/ares-rpc" }
-
-#ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.17" }
-#ares-rpc = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.17" }
+ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.17" }
+ares-rpc = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.17" }
 
 clap = { version = "3.0", features = ["derive"], optional = true }
 codec = { package = "parity-scale-codec", version = "2.0.0" }
@@ -139,5 +135,5 @@ try-runtime = [
 ]
 fast-runtime = [
     "pioneer-runtime/fast-runtime",
-    "gladios-runtime/fast-runtime"
+    "gladios-runtime/fast-runtime",
 ]
