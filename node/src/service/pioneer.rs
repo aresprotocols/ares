@@ -1,4 +1,5 @@
 pub struct ExecutorDispatch;
+pub use pioneer_runtime::RuntimeApi;
 
 impl sc_executor::NativeExecutionDispatch for ExecutorDispatch {
 	/// Only enable the benchmarking host functions when we actually want to benchmark.

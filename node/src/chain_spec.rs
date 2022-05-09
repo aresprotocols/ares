@@ -21,8 +21,9 @@ use sp_runtime::{
 use runtime_common::{AccountId, Balance, Signature};
 
 use crate::service::Block;
-
+#[cfg(feature = "with-gladios-runtime")]
 pub mod gladios;
+#[cfg(feature = "with-pioneer-runtime")]
 pub mod pioneer;
 
 #[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]

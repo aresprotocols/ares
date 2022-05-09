@@ -44,8 +44,8 @@ num-traits = { version = "0.2.8", default-features = false }
 thiserror = "1.0"
 
 runtime-common = { path = "../runtime/common" }
-gladios-runtime = { path = "../runtime/gladios" }
-pioneer-runtime = { path = "../runtime/pioneer" }
+gladios-runtime = { path = "../runtime/gladios", optional = true }
+pioneer-runtime = { path = "../runtime/pioneer", optional = true }
 seed-reader = { path = "../seed-reader" }
 
 
@@ -136,4 +136,25 @@ try-runtime = [
 fast-runtime = [
     "pioneer-runtime/fast-runtime",
     "gladios-runtime/fast-runtime",
+]
+
+with-gladios-runtime = [
+    "gladios-runtime",
+]
+
+with-gladios-fast-runtime = [
+    "gladios-runtime/fast-runtime",
+]
+
+with-pioneer-runtime = [
+    "pioneer-runtime",
+]
+
+with-pioneer-fast-runtime = [
+    "pioneer-runtime/fast-runtime",
+]
+
+with-all-runtime = [
+    "with-gladios-runtime",
+    "with-pioneer-runtime",
 ]

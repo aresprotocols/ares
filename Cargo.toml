@@ -10,12 +10,19 @@ members = [
     'runtime/common',
 ]
 
-# https://github.com/paritytech/substrate.git.git
-#[patch."https://github.com/paritytech/substrate.git"]
+[profile.production]
+inherits = "release"
+#lto = true
+# More code generation units allows more of a crate to be processed in parallel possibly reducing compile time, but may produce slower code.
+# https://github.com/paritytech/polkadot/issues/4311
+#codegen-units = 1
 
-#pallet-session = { git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'polkadot-v0.9.17' }
-#pallet-session-benchmarking ={ git = 'https://github.com/aresprotocols/ocw-suit.git', branch = 'polkadot-v0.9.17' }
-
-#pallet-session = {path = "../ares-ocw-suit/pallets/session" }
-#pallet-session-benchmarking ={path = "../ares-ocw-suit/pallets/session/benchmarking" }
-
+[patch."https://github.com/aresprotocols/ocw-suit"]
+ares-oracle-provider-support = { path = "../ocw-suit/pallets/ares-oracle-provider-support" }
+ares-oracle = { path = "../ocw-suit/pallets/ares-oracle" }
+oracle-finance = { path = "../ocw-suit/pallets/oracle-finance" }
+member-extend = { path = "../ocw-suit/pallets/member-extend" }
+pallet-ares-challenge = { path = "../ocw-suit/pallets/challenge" }
+pallet-price-estimates = { path = "../ocw-suit/pallets/price-estimates" }
+staking-extend = { path = "../ocw-suit/pallets/staking-extend" }
+ares-rpc = { path = "../ocw-suit/rpc/ares-rpc" }

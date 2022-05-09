@@ -6,6 +6,7 @@ parameter_types! {
 	pub const MinimumDeposit: Balance = 100 * DOLLARS * ARES_AMOUNT_MULT;
 	pub const BidderMinimumDeposit: Balance = 1000 * DOLLARS * ARES_AMOUNT_MULT;
 	pub const ChallengePalletId: PalletId = PalletId(*b"py/ardem");
+	pub const MinimumThreshold: u32 = governance::part_elections::DesiredMembers::get() / 3 * 2;
 }
 
 pub type Challenge = pallet_ares_challenge::Instance1;
@@ -21,4 +22,5 @@ impl pallet_ares_challenge::Config<Challenge> for Runtime {
 	type AuthorityId = pallet_babe::AuthorityId;
 	type Proposal = Call;
 	// type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
+	type MinimumThreshold = MinimumThreshold;
 }

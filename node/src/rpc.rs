@@ -7,6 +7,7 @@
 
 use std::sync::Arc;
 
+use ares_rpc::ares::{AresToolsApi, AresToolsStruct};
 use futures::FutureExt;
 use jsonrpc_core::{Error as RpcError, ErrorCode};
 use jsonrpc_derive::rpc;
@@ -25,13 +26,13 @@ use sp_blockchain::{Error as BlockChainError, HeaderBackend, HeaderMetadata};
 use sp_core::H256;
 use sp_keystore::{SyncCryptoStore, SyncCryptoStorePtr};
 use sp_runtime::traits::Block as BlockT;
-use ares_rpc::ares::{ AresToolsApi, AresToolsStruct };
 
-use runtime_common::AccountId;
-use gladios_runtime::{opaque::Block, Balance, Index};
+use runtime_common::{AccountId, Balance};
+
+pub type Index = u32;
 
 // use sc_service::TaskExecutor;
-use crate::service::BlockNumber;
+use crate::service::{Block, BlockNumber};
 
 /// Extra dependencies for GRANDPA
 pub struct GrandpaDeps<B> {
@@ -82,14 +83,7 @@ where
 	use substrate_frame_rpc_system::{FullSystem, SystemApi};
 
 	let mut io = jsonrpc_core::IoHandler::default();
-	let FullDeps {
-		client,
-		pool,
-		deny_unsafe,
-		backend,
-		grandpa,
-		role,
-	} = deps;
+	let FullDeps { client, pool, deny_unsafe, backend, grandpa, role } = deps;
 	let GrandpaDeps {
 		shared_voter_state,
 		shared_authority_set,

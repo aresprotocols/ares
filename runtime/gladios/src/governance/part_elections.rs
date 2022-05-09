@@ -15,8 +15,8 @@ parameter_types! {
 	/// Weekly council elections; scaling up to monthly eventually.
 	pub TermDuration: BlockNumber = prod_or_fast!(24 * HOURS, 2 * MINUTES, "ARES_TERM_DURATION");
 	/// 13 members initially, to be increased to 23 eventually.
-	pub const DesiredMembers: u32 = 19;
-	pub const DesiredRunnersUp: u32 = 19;
+	pub const DesiredMembers: u32 = 13;
+	pub const DesiredRunnersUp: u32 = 7;
 	pub const PhragmenElectionPalletId: LockIdentifier = *b"phrelect";
 }
 

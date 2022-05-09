@@ -21,8 +21,9 @@ use sp_runtime::{
 use std::{io::Read, sync::Arc, time::Duration};
 use ares_oracle_provider_support::LOCAL_STORAGE_PRICE_REQUEST_DOMAIN;
 use jsonrpc_pubsub::manager::SubscriptionManager;
-
+#[cfg(feature = "with-gladios-runtime")]
 pub mod gladios;
+#[cfg(feature = "with-pioneer-runtime")]
 pub mod pioneer;
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
