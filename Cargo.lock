@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#040457686c4f05d840fd029346423ba1cf4ebdea"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.1#040457686c4f05d840fd029346423ba1cf4ebdea"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -141,7 +141,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#040457686c4f05d840fd029346423ba1cf4ebdea"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.1#040457686c4f05d840fd029346423ba1cf4ebdea"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -155,7 +155,7 @@ dependencies = [
 [[package]]
 name = "ares-rpc"
 version = "1.0.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#040457686c4f05d840fd029346423ba1cf4ebdea"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.1#040457686c4f05d840fd029346423ba1cf4ebdea"
 dependencies = [
  "ares-oracle-provider-support",
  "chrono",
@@ -281,7 +281,7 @@ dependencies = [
  "parking",
  "polling",
  "slab",
- "socket2 0.4.5",
+ "socket2 0.4.4",
  "waker-fn",
  "winapi 0.3.9",
 ]
@@ -2526,7 +2526,7 @@ dependencies = [
  "httpdate",
  "itoa 1.0.1",
  "pin-project-lite 0.2.9",
- "socket2 0.4.5",
+ "socket2 0.4.4",
  "tokio 1.18.2",
  "tower-service",
  "tracing",
@@ -3364,7 +3364,7 @@ dependencies = [
  "log",
  "rand 0.8.5",
  "smallvec",
- "socket2 0.4.5",
+ "socket2 0.4.4",
  "void",
 ]
 
@@ -3572,7 +3572,7 @@ dependencies = [
  "libc",
  "libp2p-core",
  "log",
- "socket2 0.4.5",
+ "socket2 0.4.4",
 ]
 
 [[package]]
@@ -4588,7 +4588,7 @@ dependencies = [
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#040457686c4f05d840fd029346423ba1cf4ebdea"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.1#040457686c4f05d840fd029346423ba1cf4ebdea"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4624,7 +4624,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#040457686c4f05d840fd029346423ba1cf4ebdea"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.1#040457686c4f05d840fd029346423ba1cf4ebdea"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5243,7 +5243,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#040457686c4f05d840fd029346423ba1cf4ebdea"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.1#040457686c4f05d840fd029346423ba1cf4ebdea"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -8236,12 +8236,12 @@ dependencies = [
 
 [[package]]
 name = "socket2"
-version = "0.4.5"
+version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca642ba17f8b2995138b1d7711829c92e98c0a25ea019de790f4f09279c4e296"
+checksum = "66d72b759436ae32898a2af0a14218dbf55efde3feeb170eb623637db85ee1e0"
 dependencies = [
  "libc",
- "windows-sys",
+ "winapi 0.3.9",
 ]
 
 [[package]]
@@ -9005,7 +9005,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#040457686c4f05d840fd029346423ba1cf4ebdea"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.1#040457686c4f05d840fd029346423ba1cf4ebdea"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -9494,7 +9494,7 @@ dependencies = [
  "once_cell",
  "pin-project-lite 0.2.9",
  "signal-hook-registry",
- "socket2 0.4.5",
+ "socket2 0.4.4",
  "tokio-macros 1.7.0",
  "winapi 0.3.9",
 ]
