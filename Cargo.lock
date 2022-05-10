@@ -109,6 +109,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#7fee9cf714bdaf377b6d2964863738eed7f0ffaf"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -140,6 +141,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#7fee9cf714bdaf377b6d2964863738eed7f0ffaf"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -153,6 +155,7 @@ dependencies = [
 [[package]]
 name = "ares-rpc"
 version = "1.0.0"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#7fee9cf714bdaf377b6d2964863738eed7f0ffaf"
 dependencies = [
  "ares-oracle-provider-support",
  "chrono",
@@ -446,7 +449,7 @@ dependencies = [
  "cfg-if 1.0.0",
  "libc",
  "miniz_oxide",
- "object 0.28.3",
+ "object 0.28.4",
  "rustc-demangle",
 ]
 
@@ -744,9 +747,9 @@ checksum = "c1db59621ec70f09c5e9b597b220c7a2b43611f4710dc03ceb8748637775692c"
 
 [[package]]
 name = "camino"
-version = "1.0.7"
+version = "1.0.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f3132262930b0522068049f5870a856ab8affc80c70d08b6ecb785771a6fc23"
+checksum = "07fd178c5af4d59e83498ef15cf3f154e1a6f9d091270cb86283c65ef44e9ef0"
 dependencies = [
  "serde",
 ]
@@ -1422,9 +1425,9 @@ checksum = "21e50f3adc76d6a43f5ed73b698a87d0760ca74617f60f7c3b879003536fdd28"
 
 [[package]]
 name = "ed25519"
-version = "1.4.1"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3d5c4b5e5959dc2c2b89918d8e2cc40fcdd623cef026ed09d2f0ee05199dc8e4"
+checksum = "d916019f70ae3a1faa1195685e290287f39207d38e6dfee727197cffcc002214"
 dependencies = [
  "signature",
 ]
@@ -3865,6 +3868,7 @@ dependencies = [
 [[package]]
 name = "member-extend"
 version = "3.1.0"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#7fee9cf714bdaf377b6d2964863738eed7f0ffaf"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4512,9 +4516,9 @@ dependencies = [
 
 [[package]]
 name = "object"
-version = "0.28.3"
+version = "0.28.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40bec70ba014595f99f7aa110b84331ffe1ee9aece7fe6f387cc7e3ecda4d456"
+checksum = "e42c982f2d955fac81dd7e1d0e1426a7d702acd9c98d19ab01083a6a0328c424"
 dependencies = [
  "memchr",
 ]
@@ -4608,6 +4612,7 @@ dependencies = [
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#7fee9cf714bdaf377b6d2964863738eed7f0ffaf"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4643,6 +4648,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#7fee9cf714bdaf377b6d2964863738eed7f0ffaf"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5261,6 +5267,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#7fee9cf714bdaf377b6d2964863738eed7f0ffaf"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -9000,9 +9007,9 @@ checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
 
 [[package]]
 name = "ss58-registry"
-version = "1.17.0"
+version = "1.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b84a70894df7a73666e0694f44b41a9571625e9546fb58a0818a565d2c7e084"
+checksum = "ceb8b72a924ccfe7882d0e26144c114503760a4d1248bb5cd06c8ab2d55404cc"
 dependencies = [
  "Inflector",
  "num-format",
@@ -9022,6 +9029,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.4"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#7fee9cf714bdaf377b6d2964863738eed7f0ffaf"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -9309,9 +9317,9 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "syn"
-version = "1.0.92"
+version = "1.0.93"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7ff7c592601f11445996a06f8ad0c27f094a58857c2f89e97974ab9235b92c52"
+checksum = "04066589568b72ec65f42d65a1a52436e954b168773148893c020269563decf2"
 dependencies = [
  "proc-macro2",
  "quote",
