@@ -636,14 +636,18 @@ validator_minimum_deposit: 2000000000000000
 council_minimum_deposit: 2000000000000000
 
 council:
-  - '4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w'
-  - '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU'
-  - '4UHtW2qVT6A993ViBE7hwe4oXG4UX19bmEedw41rvatJjeWC'
-  - '4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq'
-  - '4TfqZ8mc4FpbNF66Qh73dyisEPYYxoY5mn7NE18LqX2AqgLT'
-  - '4TM2tmEUhLEPqvbiSP7Fo9sU8ptgsVkQ1GkKjCxAXZC9UTmn'
-  - '4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb'
-  - '4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC'
+  - 4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w
+  - 4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU
+  - 4UHtW2qVT6A993ViBE7hwe4oXG4UX19bmEedw41rvatJjeWC
+  - 4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq
+  - 4TfqZ8mc4FpbNF66Qh73dyisEPYYxoY5mn7NE18LqX2AqgLT
+  - 4TM2tmEUhLEPqvbiSP7Fo9sU8ptgsVkQ1GkKjCxAXZC9UTmn
+  - 4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb
+  - 4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC
+  - 4V7ZeXpV3cc6SKBPeN1TVCZkzoReSajS5YkA4rcyrmxLSrB3
+  - 4ULgKPuffAw9d2Sew6TbJeMyuSNsLyhP8zYKfiSuPcWhd7N9
+  - 4SdCp3LUnHVoHMhTJ8MHTyArByFy8xmFWPWwR7zAgN6uCC8r
+  - 4UkxdTgyVVjtsCaZF27Umd7RTCtNSxmycfte7McereRBsT71
 
 # technical members
 technical:

@@ -121,7 +121,7 @@ impl SubstrateCli for Cli {
 					)?)
 				} else {
 					Box::new(chain_spec::gladios::ChainSpec::from_json_bytes(
-						&include_bytes!("../res/chain-data-ares-aura-raw.json")[..],
+						&include_bytes!("../res/gladios.json")[..],
 					)?)
 				}
 			},
