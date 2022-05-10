@@ -49,8 +49,8 @@ thiserror = "1.0"
 runtime-common = { path = "../runtime/common" }
 gladios-runtime = { path = "../runtime/gladios", optional = true }
 pioneer-runtime = { path = "../runtime/pioneer", optional = true }
-seed-reader = { path = "../seed-reader" }
 
+seed-reader = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.17" }
 
 ## For fork extends
 sc-sync-state-rpc = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.17" }
