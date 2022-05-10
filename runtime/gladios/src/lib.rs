@@ -439,7 +439,6 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 			claims::PrevalidateAttests::<Runtime>::new(),
 		);
 
-		// TODO::Sign one of your own data, the signed data is called raw_payload
 		let raw_payload = SignedPayload::new(call, extra)
 			.map_err(|e| {
 				log::warn!("Unable to create signed payload: {:?}", e);
@@ -500,8 +499,8 @@ impl_runtime_apis! {
 
 	impl sp_block_builder::BlockBuilder<Block> for Runtime {
 		fn apply_extrinsic(extrinsic: <Block as BlockT>::Extrinsic) -> ApplyExtrinsicResult {
-			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&extrinsic);
-			log::info!("Oracle filter_result = {:?} on apply_extrinsic", &filter_result);
+			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&extrinsic, false);
+			// log::info!("Oracle filter_result = {:?} on apply_extrinsic", &filter_result);
 			if filter_result {
 				return Executive::apply_extrinsic(extrinsic);
 			}
@@ -531,8 +530,7 @@ impl_runtime_apis! {
 			block_hash: <Block as BlockT>::Hash,
 		) -> TransactionValidity {
 			// Executive::validate_transaction(source, tx, block_hash)
-			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&tx);
-			log::info!("Oracle filter_result = {:?} on validate_transaction", &filter_result);
+			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&tx, false);
 			if filter_result {
 				return Executive::validate_transaction(source, tx, block_hash)
 			}

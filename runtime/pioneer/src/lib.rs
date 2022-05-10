@@ -408,53 +408,6 @@ impl IsAresOracleCall<Runtime, Call> for Call {
 	}
 }
 
-// struct AresOracleFilter;
-// impl AresOracleFilter {
-// 	pub fn is_author_call(extrinsic :&UncheckedExtrinsic) -> bool {
-//
-		// let in_call = extrinsic.call();
-		// if let Call::AresOracle(
-		// 	x_call
-		// ) = in_call {
-		// 	if let ares_oracle::pallet::Call::submit_price_unsigned_with_signed_payload {
-		// 		price_payload: ref payload,
-		// 		signature: ref signature,
-		// 	} = x_call {
-		// 		// ares_oracle::pallet::block_author(); //::<Runtime>::get();
-		// 		// let block_auth = ares_oracle::pallet::BlockAuthor::<Runtime>::get();
-		// 		// let block_auth = ares_oracle::pallet::Pallet::<Runtime>::block_author();
-		// 		// let mut block_trace = ares_oracle::pallet::BlockAuthorTrace::<Runtime>::get().unwrap_or(AuthorTraceData::<Runtime>::default());
-		// 		let mut block_trace = ares_oracle::pallet::Pallet::<Runtime>::block_author_trace().unwrap_or(AuthorTraceData::<Runtime>::default());
-		// 		let mut block_trace_author = None;
-		// 		block_trace.iter().any(|(acc, bn)|{
-		// 			if &payload.block_number == bn {
-		// 				block_trace_author = Some(acc.clone());
-		// 				return true;
-		// 			}
-		// 			false
-		// 		});
-		//
-		// 		let trace_pop1 = block_trace.pop(); //
-		// 		let trace_pop2 = block_trace.pop(); //
-		// 		let releation_stash_opt = ares_oracle::pallet::Pallet::<Runtime>::get_stash_id(&payload.auth);
-		// 		log::info!("@@@@3 price_payload.stash = {:?} price_payload.block_number =  {:?} block_trace_author = {:?},",
-		// 			&releation_stash_opt,
-		// 			payload.block_number,
-		// 			block_trace_author,
-		// 		);
-		// 		if let Some(stash_trace) = block_trace_author {
-		// 			if let Some(rel_stash) = releation_stash_opt {
-		// 				return &stash_trace == &rel_stash;
-		// 			}
-		// 		}
-		// 		return false
-		// 	}
-		// }
-		// return true;
-// 	}
-// }
-
-//
 impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime
 where
 	Call: From<LocalCall>,
@@ -541,12 +494,8 @@ impl_runtime_apis! {
 
 	impl sp_block_builder::BlockBuilder<Block> for Runtime {
 		fn apply_extrinsic(extrinsic: <Block as BlockT>::Extrinsic) -> ApplyExtrinsicResult {
-			// log::info!("@@@@ apply_extrinsic. extrinsic={:?}", extrinsic);
-			// let filter_result = AresOracleFilter::is_author_call(&extrinsic);
-			// log::info!("@@@@# filter_result = {:?} ", &filter_result);
-
-			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&extrinsic);
-			log::info!("Oracle filter_result = {:?} on apply_extrinsic", &filter_result);
+			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&extrinsic, false);
+			// log::info!("Oracle filter_result = {:?} on apply_extrinsic", &filter_result);
 			if filter_result {
 				return Executive::apply_extrinsic(extrinsic);
 			}
@@ -576,11 +525,8 @@ impl_runtime_apis! {
 			block_hash: <Block as BlockT>::Hash,
 		) -> TransactionValidity {
 
-			// log::info!("#### sp_transaction_pool. block_hash = {:?}, tx = {:?}", block_hash.clone(), &tx);
-			// let filter_result = AresOracleFilter::is_author_call(&tx);
-			// log::info!("####@ filter_result = {:?} ", &filter_result);
-			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&tx);
-			log::info!("Oracle filter_result = {:?} on validate_transaction", &filter_result);
+			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&tx, false);
+			// log::info!("Oracle filter_result = {:?} on validate_transaction", &filter_result);
 			if filter_result {
 				return Executive::validate_transaction(source, tx, block_hash)
 			}

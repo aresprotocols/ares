@@ -17,12 +17,12 @@ inherits = "release"
 # https://github.com/paritytech/polkadot/issues/4311
 #codegen-units = 1
 
-[patch."https://github.com/aresprotocols/ocw-suit"]
-ares-oracle-provider-support = { path = "../ocw-suit/pallets/ares-oracle-provider-support" }
-ares-oracle = { path = "../ocw-suit/pallets/ares-oracle" }
-oracle-finance = { path = "../ocw-suit/pallets/oracle-finance" }
-member-extend = { path = "../ocw-suit/pallets/member-extend" }
-pallet-ares-challenge = { path = "../ocw-suit/pallets/challenge" }
-pallet-price-estimates = { path = "../ocw-suit/pallets/price-estimates" }
-staking-extend = { path = "../ocw-suit/pallets/staking-extend" }
-ares-rpc = { path = "../ocw-suit/rpc/ares-rpc" }
+#[patch."https://github.com/aresprotocols/ocw-suit"]
+#ares-oracle-provider-support = { path = "../ocw-suit/pallets/ares-oracle-provider-support" }
+#ares-oracle = { path = "../ocw-suit/pallets/ares-oracle" }
+#oracle-finance = { path = "../ocw-suit/pallets/oracle-finance" }
+#member-extend = { path = "../ocw-suit/pallets/member-extend" }
+#pallet-ares-challenge = { path = "../ocw-suit/pallets/challenge" }
+#pallet-price-estimates = { path = "../ocw-suit/pallets/price-estimates" }
+#staking-extend = { path = "../ocw-suit/pallets/staking-extend" }
+#ares-rpc = { path = "../ocw-suit/rpc/ares-rpc" }

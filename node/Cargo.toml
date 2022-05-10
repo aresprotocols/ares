@@ -26,6 +26,9 @@ substrate-frame-cli = { git = "https://github.com/paritytech/substrate", optiona
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.17" }
 ares-rpc = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.17" }
 
+#ares-oracle-provider-support = { default-features = false, path = '../../ares-ocw-suit/pallets/ares-oracle-provider-support' }
+#ares-rpc = { default-features = false, path = '../../ares-ocw-suit/rpc/ares-rpc' }
+
 clap = { version = "3.0", features = ["derive"], optional = true }
 codec = { package = "parity-scale-codec", version = "2.0.0" }
 jsonrpc-core = "18.0.0"
