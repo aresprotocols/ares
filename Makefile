@@ -30,10 +30,12 @@ run-gladios:
 
 .PHONY: build-release
 build-release:
+	cargo update
 	cargo build --locked --features with-all-runtime --profile production --workspace
 
 .PHONY: build-gladios
 build-gladios:
+	cargo update
 	cargo build --locked --features with-gladios-runtime --bin gladios-node --profile production --workspace
 
 .PHONY: build-gladios-fast
@@ -46,4 +48,5 @@ build-pioneer:
 
 .PHONY: build-pioneer-fast
 build-pioneer-fast:
+	cargo update
 	cargo build --locked --features with-pioneer-runtime,with-pioneer-fast-runtime --bin gladios-node --profile production --workspace

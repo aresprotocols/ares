@@ -317,8 +317,9 @@ pub fn run() -> Result<()> {
 							panic!("⛔ Start parameter `--warehouse` is required!");
 						},
 						Some(request_url) => {
-							if !request_url.starts_with("http") {
-								panic!("⛔ `--warehouse` only supports http requests.");
+							if !request_url.starts_with("http://") &&
+								!request_url.starts_with("https://") {
+								panic!("⛔ `--warehouse` only supports http:// or https:// requests.");
 							}
 							request_url.as_str().as_bytes().to_vec()
 						},
