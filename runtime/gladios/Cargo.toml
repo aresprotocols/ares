@@ -88,12 +88,12 @@ pallet-preimage = { git = "https://github.com/paritytech/substrate", default-fea
 pallet-session = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 runtime-common = { package = "runtime-common", path = "../common", default-features = false }
 
-ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "release-1.3.2" }
-ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "release-1.3.2" }
-oracle-finance = { version = '3.1.2', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "release-1.3.2" }
-pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "release-1.3.2" }
-pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "release-1.3.2" }
-staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "release-1.3.2" }
+ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
+ares-oracle = { version = '3.10.1', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
+oracle-finance = { version = '3.1.2', git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
+staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.17" }
 
 [features]
 default = ['std']
