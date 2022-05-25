@@ -599,7 +599,8 @@ collection:
   - '4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb'
   - '4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC'
 
-boot_nodes: []
+boot_nodes:
+  - /ip4/158.247.224.166/tcp/30333/p2p/12D3KooWA5HNAEsHPnRJuvVgS2bZVYqaetjECce3MkKfACJQ8upi
 
 telemetry_endpoints:
   - [ "wss://telemetry.polkadot.io/submit/", 0 ]
