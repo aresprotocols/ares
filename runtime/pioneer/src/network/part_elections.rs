@@ -86,7 +86,7 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	type DataProvider = staking_extend::data::DataProvider<Self>;
 	// problem
 	type Solution = NposCompactSolution16;
-	type Fallback = pallet_election_provider_multi_phase::NoFallback<Self>;
+	type Fallback = frame_election_provider_support::onchain::OnChainSequentialPhragmen<Self>; // pallet_election_provider_multi_phase::NoFallback<Self>;
 	type GovernanceFallback = frame_election_provider_support::onchain::OnChainSequentialPhragmen<Self>;
 	type Solver = frame_election_provider_support::SequentialPhragmen<
 		AccountId,
