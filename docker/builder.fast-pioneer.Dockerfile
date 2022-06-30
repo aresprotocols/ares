@@ -1,6 +1,8 @@
 FROM docker.io/paritytech/ci-linux:production as builder
 WORKDIR /substrate
 COPY . /substrate
+RUN pwd
+RUN ls ./
 RUN cargo update
 RUN cargo update -p syn:1.0.98 --precise 1.0.96
 RUN pwd
