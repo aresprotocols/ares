@@ -1,0 +1,28 @@
+version: "3.2"
+
+services:
+  chain:
+    build:
+      context: .
+      dockerfile: ./docker/builder.Dockerfile
+    container_name: ares-chain
+    image: aresprotocollab/ares_gladios
+    ports:
+      - "9944:9944"
+      - "9933:9933"
+      - "30333:30333"
+      - "9615:9615"
+    volumes:
+      - ./data/ares-manual-bridge:/data
+    command: >
+      gladios-node --chain gladios --name AresTestManualBridgeDev --execution Native --pruning archive
+      --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+      --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+      --port 30333
+      --warehouse 'http://api.aresprotocol.io'
+      --log aura=debug --log peerset=debug
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "10"
