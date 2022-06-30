@@ -1,10 +1,9 @@
 use super::*;
 use constants::{currency::DOLLARS, time::EPOCH_DURATION_IN_BLOCKS};
+
+use frame_support::traits::EnsureOneOf;
 use governance::part_council::CouncilCollective;
 pub use pallet_election_provider_multi_phase;
-// use pallet_election_provider_multi_phase::FallbackStrategy;
-use frame_election_provider_support::onchain;
-use frame_support::traits::EnsureOneOf;
 use part_babe::EpochDuration;
 use runtime_common::prod_or_fast;
 use sp_runtime::{transaction_validity::TransactionPriority, SaturatedConversion};
@@ -14,12 +13,12 @@ parameter_types! {
 	// in testing: 1min or half of the session for each
 	pub SignedPhase: u32 = prod_or_fast!(
 		EPOCH_DURATION_IN_BLOCKS / 4,
-		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 2),
+		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 4),
 		"ARES_SIGNED_PHASE"
 	);
 	pub UnsignedPhase: u32 = prod_or_fast!(
 		EPOCH_DURATION_IN_BLOCKS / 4,
-		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 2),
+		(1 * MINUTES).min(EpochDuration::get().saturated_into::<u32>() / 4),
 		"ARES_UNSIGNED_PHASE"
 	);
 
@@ -30,17 +29,16 @@ parameter_types! {
 	// 0.005 Ares per KB of solution data.
 	pub const SignedDepositByte: Balance = deposit(0, 10) / 1024 * ARES_AMOUNT_MULT;
 	// Each good submission will get 1 DOT as reward
-	pub SignedRewardBase: Balance = DOLLARS / 10 * ARES_AMOUNT_MULT;
+	pub SignedRewardBase: Balance = 1 * DOLLARS * ARES_AMOUNT_MULT;
 	pub SolutionImprovementThreshold: Perbill = Perbill::from_rational(5u32, 10_000);
 
-	// 2 hour session, 0.5 hour unsigned phase, 8 offchain executions.
-	pub OffchainRepeat: BlockNumber = UnsignedPhase::get() / 8;
+	// 2 hour session, 0.5 hour unsigned phase, 16 offchain executions.
+	pub OffchainRepeat: BlockNumber = UnsignedPhase::get() / 32;
 
 	/// Whilst `UseNominatorsAndUpdateBagsList` or `UseNominatorsMap` is in use, this can still be a
 	/// very large value. Once the `BagsList` is in full motion, staking might open its door to many
 	/// more nominators, and this value should instead be what is a "safe" number (e.g. 22500).
 	pub const VoterSnapshotPerBlock: u32 = 22_500;
-
 
 	// miner configs
 	pub NposSolutionPriority: TransactionPriority = Perbill::from_percent(90) * TransactionPriority::max_value();
@@ -49,15 +47,15 @@ parameter_types! {
 
 sp_npos_elections::generate_solution_type!(
 	#[compact]
-	pub struct NposCompactSolution24::<
+	pub struct NposCompactSolution16::<
 		VoterIndex = u32,
 		TargetIndex = u16,
 		Accuracy = sp_runtime::PerU16,
-	>(24)
+	>(16)
 );
 
 /// on chain elect
-impl onchain::Config for Runtime {
+impl frame_election_provider_support::onchain::Config for Runtime {
 	type Accuracy = Perbill;
 	type DataProvider = staking_extend::data::DataProvider<Self>;
 }
@@ -87,9 +85,8 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 	// nothing to do upon rewards
 	type DataProvider = staking_extend::data::DataProvider<Self>;
 	// problem
-	type Solution = NposCompactSolution24;
-	// type Fallback = pallet_election_provider_multi_phase::NoFallback<Self>;
-	type Fallback = frame_election_provider_support::onchain::OnChainSequentialPhragmen<Self>;
+	type Solution = NposCompactSolution16;
+	type Fallback = frame_election_provider_support::onchain::OnChainSequentialPhragmen<Self>; // pallet_election_provider_multi_phase::NoFallback<Self>;
 	type GovernanceFallback = frame_election_provider_support::onchain::OnChainSequentialPhragmen<Self>;
 	type Solver = frame_election_provider_support::SequentialPhragmen<
 		AccountId,

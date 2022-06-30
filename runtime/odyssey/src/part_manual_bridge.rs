@@ -2,7 +2,7 @@ use super::*;
 use manual_bridge;
 
 // parameter_types! {
-// 	pub const MinimumBalanceThreshold: Balance = 1000000000000000;
+// 	pub const MinimumBalanceThreshold: Balance = 1_000_000_000_000_000;
 // }
 
 impl manual_bridge::Config for Runtime {

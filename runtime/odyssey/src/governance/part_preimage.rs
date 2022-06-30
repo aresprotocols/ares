@@ -1,6 +1,4 @@
 use super::*;
-use runtime_common::*;
-
 parameter_types! {
 	pub const PreimageMaxSize: u32 = 4096 * 1024;
 	pub const PreimageBaseDeposit: Balance = deposit(2, 64) * ARES_AMOUNT_MULT;

@@ -6,18 +6,17 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
 use ares_oracle::AuthorTraceData;
 use ares_oracle::traits::IsAresOracleCall;
-
-use codec::Encode;
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, GrandpaEquivocationOffence,
 };
-use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
-use runtime_common::*;
 use sp_api::impl_runtime_apis;
 // use sp_consensus_aura::sr25519::AuthorityId as AuraId;
+use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
+use codec::Encode;
+use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
+
 use sp_core::{
 	crypto::KeyTypeId,
 	u32_trait::{_1, _2, _3, _4},
@@ -25,9 +24,9 @@ use sp_core::{
 };
 use sp_runtime::{
 	create_runtime_str, generic,
-	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, NumberFor},
+	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
 	transaction_validity::{TransactionSource, TransactionValidity},
-	ApplyExtrinsicResult,
+	ApplyExtrinsicResult, MultiSignature,
 };
 
 use frame_support::{
@@ -50,10 +49,12 @@ pub use frame_support::{
 	traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
 	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
-		DispatchClass, Weight,
+		DispatchClass, IdentityFee, Weight,
 	},
 	PalletId, RuntimeDebug, StorageValue,
 };
+use frame_support::pallet_prelude::InvalidTransaction;
+use frame_support::traits::ExtrinsicCall;
 
 use frame_system::EnsureRoot;
 
@@ -76,21 +77,17 @@ pub mod part_ocw;
 pub mod part_ocw_finance;
 pub mod part_manual_bridge;
 
-use crate::constants::fee::WeightToFee;
-pub use constants::currency::{deposit, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
-use constants::time::{DAYS, HOURS, MINUTES, SLOT_DURATION};
-pub use runtime_common::*;
-use runtime_common::{AccountId, DealWithFees, Signature, SlowAdjustingFeeUpdate};
+use network::part_staking::{BondingDuration, SessionsPerEra};
 
-use frame_support::pallet_prelude::InvalidTransaction;
-use frame_support::traits::ExtrinsicCall;
+pub use constants::currency::{deposit, Balance, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
+use constants::time::{BlockNumber, DAYS, HOURS, MINUTES, SLOT_DURATION};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
-// pub type Signature = Signature ;// MultiSignature;
+pub type Signature = MultiSignature;
 
 /// Some way of identifying an account on the chain. We intentionally make it equivalent
 /// to the public key of our transaction signing scheme.
-// pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
+pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
 
 /// Index of a transaction in the chain.
 pub type Index = u32;
@@ -123,8 +120,8 @@ pub mod opaque {
 //   https://substrate.dev/docs/en/knowledgebase/runtime/upgrades#runtime-versioning
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("ares-odyssey"),
-	impl_name: create_runtime_str!("ares-odyssey"),
+	spec_name: create_runtime_str!("ares-pioneer"),
+	impl_name: create_runtime_str!("ares-pioneer"),
 	authoring_version: 1,
 	// The version of the runtime specification. A full node will not attempt to use its native
 	//   runtime in substitute for the on-chain Wasm runtime unless all of `spec_name`,
@@ -137,7 +134,6 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	transaction_version: 1,
 	state_version: 1,
 };
-
 /// This determines the average expected block time that we are targeting.
 /// Blocks will be produced at a minimum duration defined by `SLOT_DURATION`.
 /// `SLOT_DURATION` is picked up by `pallet_timestamp` which is in turn picked
@@ -228,6 +224,12 @@ impl pallet_randomness_collective_flip::Config for Runtime {}
 // 	type DisabledValidators = ();
 // }
 
+parameter_types! {
+	pub const EpochDuration: u64 = constants::time::EPOCH_DURATION_IN_BLOCKS as u64;
+	pub ReportLongevity: u64 =
+		BondingDuration::get() as u64 * SessionsPerEra::get() as u64 * EpochDuration::get();
+}
+
 impl pallet_grandpa::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
@@ -242,7 +244,7 @@ impl pallet_grandpa::Config for Runtime {
 	type HandleEquivocation = pallet_grandpa::EquivocationHandler<
 		Self::KeyOwnerIdentification,
 		Offences, // ReportOffence<T::AccountId, Self::KeyOwnerIdentification, ReportLongevity>
-		network::part_babe::ReportLongevity,
+		ReportLongevity,
 		GrandpaEquivocationOffence<Self::KeyOwnerIdentification>,
 	>;
 
@@ -287,20 +289,12 @@ parameter_types! {
 	pub const OperationalFeeMultiplier: u8 = 5;
 }
 
-// impl pallet_transaction_payment::Config for Runtime {
-// 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
-// 	type TransactionByteFee = TransactionByteFee;
-// 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
-// 	type WeightToFee = IdentityFee<Balance>;
-// 	type FeeMultiplierUpdate = ();
-// }
-
 impl pallet_transaction_payment::Config for Runtime {
-	type OnChargeTransaction = CurrencyAdapter<Balances, DealWithFees<Self>>;
+	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
 	type TransactionByteFee = TransactionByteFee;
 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
-	type WeightToFee = WeightToFee;
-	type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
+	type WeightToFee = IdentityFee<Balance>;
+	type FeeMultiplierUpdate = ();
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -328,7 +322,7 @@ construct_runtime!(
 		Preimage: pallet_preimage::{Pallet, Call, Storage, Event<T>},
 
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
-		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
+		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event, ValidateUnsigned},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
@@ -366,10 +360,8 @@ construct_runtime!(
 		Offences: pallet_offences::{Pallet, Storage, Event},
 		Claims: claims::{Pallet, Call, Storage, Event<T>, Config<T>, ValidateUnsigned},
 
-		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
+		Estimates: pallet_price_estimates,
 		ManualBridge: manual_bridge::{Pallet, Call, Storage, Event<T>},
-		// Gilts pallet.
-		// Gilt: pallet_gilt::{Pallet, Call, Storage, Event<T>, Config} ,
 	}
 );
 
@@ -410,10 +402,20 @@ pub type Executive = frame_executive::Executive<
 	// ),
 >;
 
-//
+impl IsAresOracleCall<Runtime, Call> for Call {
+	fn try_get_pallet_call(in_call: &Call) -> Option<&ares_oracle::pallet::Call<Runtime>> {
+		if let Self::AresOracle(
+			x_call
+		) = in_call {
+			return Some(x_call);
+		}
+		None
+	}
+}
+
 impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime
-	where
-		Call: From<LocalCall>,
+where
+	Call: From<LocalCall>,
 {
 	//
 	fn create_transaction<C: frame_system::offchain::AppCrypto<Self::Public, Self::Signature>>(
@@ -445,6 +447,7 @@ impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for R
 			claims::PrevalidateAttests::<Runtime>::new(),
 		);
 
+		// TODO::Sign one of your own data, the signed data is called raw_payload
 		let raw_payload = SignedPayload::new(call, extra)
 			.map_err(|e| {
 				log::warn!("Unable to create signed payload: {:?}", e);
@@ -464,22 +467,11 @@ impl frame_system::offchain::SigningTypes for Runtime {
 }
 
 impl<C> frame_system::offchain::SendTransactionTypes<C> for Runtime
-	where
-		Call: From<C>,
+where
+	Call: From<C>,
 {
 	type Extrinsic = UncheckedExtrinsic;
 	type OverarchingCall = Call;
-}
-
-impl IsAresOracleCall<Runtime, Call> for Call {
-	fn try_get_pallet_call(in_call: &Call) -> Option<&ares_oracle::pallet::Call<Runtime>> {
-		if let Self::AresOracle(
-			x_call
-		) = in_call {
-			return Some(x_call);
-		}
-		None
-	}
 }
 
 impl_runtime_apis! {
@@ -489,10 +481,12 @@ impl_runtime_apis! {
 		}
 
 		fn execute_block(block: Block) {
+			// log::info!("@@@@ execute_block :: block.hash = {:?}, current_bn = {:?}", block.header().hash(), block.header().number);
 			Executive::execute_block(block);
 		}
 
 		fn initialize_block(header: &<Block as BlockT>::Header) {
+			// log::info!("@@@@ initialize_block :: parent_hash = {:?},  current_bn = {:?}", header.parent_hash, header.number);
 			Executive::initialize_block(header)
 		}
 	}
@@ -535,8 +529,9 @@ impl_runtime_apis! {
 			tx: <Block as BlockT>::Extrinsic,
 			block_hash: <Block as BlockT>::Hash,
 		) -> TransactionValidity {
-			// Executive::validate_transaction(source, tx, block_hash)
+
 			let filter_result = ares_oracle::offchain_filter::AresOracleFilter::<Runtime, Address, Call, Signature, SignedExtra>::is_author_call(&tx, false);
+			// log::info!("Oracle filter_result = {:?} on validate_transaction", &filter_result);
 			if filter_result {
 				return Executive::validate_transaction(source, tx, block_hash)
 			}
@@ -546,6 +541,7 @@ impl_runtime_apis! {
 
 	impl sp_offchain::OffchainWorkerApi<Block> for Runtime {
 		fn offchain_worker(header: &<Block as BlockT>::Header) {
+			// log::info!("@@@@ sp_offchain. parent_hash={:?}, current_number={:?}", &header.parent_hash, &header.number);
 			Executive::offchain_worker(header)
 		}
 	}

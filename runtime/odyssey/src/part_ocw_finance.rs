@@ -14,9 +14,6 @@ impl oracle_finance::Config for Runtime {
 	type PalletId = AresFinancePalletId;
 	type Currency = pallet_balances::Pallet<Self>;
 	type BasicDollars = BasicDollars;
-	// type AskPeriod = AskPeriod;
-	// type RewardPeriodCycle = RewardPeriodCycle;
-	// type RewardSlot = RewardSlot;
 	type OnSlash = Treasury;
 	type HistoryDepth = HistoryDepth;
 	type SessionManager = pallet_session::historical::NoteHistoricalRoot<Self, Staking>;

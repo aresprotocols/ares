@@ -17,10 +17,10 @@ impl pallet_ares_challenge::Config<Challenge> for Runtime {
 	type CouncilMajorityOrigin = pallet_collective::EnsureProportionAtLeast<_3, _4, AccountId, governance::part_council::CouncilCollective>;
 	type Currency = Balances;
 	type SlashProposer = AresChallenge;
+	// type BidderMinimumDeposit = BidderMinimumDeposit;
 	type IsAuthority = Babe; //Aura Or Babe
-						 // type AuthorityId = AuraId; // (Aura or Babe) AuthorityId
 	type AuthorityId = pallet_babe::AuthorityId;
-	type Proposal = Call;
-	// type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
+	type Proposal = Call; // (Aura or Babe) AuthorityId
+ 	// type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
 	type MinimumThreshold = MinimumThreshold;
 }
