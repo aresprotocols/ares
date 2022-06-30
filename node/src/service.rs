@@ -25,6 +25,8 @@ use jsonrpc_pubsub::manager::SubscriptionManager;
 pub mod gladios;
 #[cfg(feature = "with-pioneer-runtime")]
 pub mod pioneer;
+#[cfg(feature = "with-odyssey-runtime")]
+pub mod odyssey;
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;

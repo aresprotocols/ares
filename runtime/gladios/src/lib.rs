@@ -74,6 +74,8 @@ pub mod part_challenge;
 pub mod part_estimates;
 pub mod part_ocw;
 pub mod part_ocw_finance;
+pub mod part_manual_bridge;
+
 use crate::constants::fee::WeightToFee;
 pub use constants::currency::{deposit, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{DAYS, HOURS, MINUTES, SLOT_DURATION};
@@ -365,6 +367,7 @@ construct_runtime!(
 		Claims: claims::{Pallet, Call, Storage, Event<T>, Config<T>, ValidateUnsigned},
 
 		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
+		ManualBridge: manual_bridge::{Pallet, Call, Storage, Event<T>},
 		// Gilts pallet.
 		// Gilt: pallet_gilt::{Pallet, Call, Storage, Event<T>, Config} ,
 	}

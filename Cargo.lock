@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#1b862465642a4913f6dda1bedccf7f37ee6764c2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#6486d73d20e2dd2a04798e13c1dd672c2b90aeb3"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -141,7 +141,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#1b862465642a4913f6dda1bedccf7f37ee6764c2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#6486d73d20e2dd2a04798e13c1dd672c2b90aeb3"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -155,7 +155,7 @@ dependencies = [
 [[package]]
 name = "ares-rpc"
 version = "1.0.0"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#1b862465642a4913f6dda1bedccf7f37ee6764c2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#6486d73d20e2dd2a04798e13c1dd672c2b90aeb3"
 dependencies = [
  "ares-oracle-provider-support",
  "chrono",
@@ -2140,6 +2140,7 @@ dependencies = [
  "node-inspect",
  "node-rpc",
  "num-traits",
+ "odyssey-runtime",
  "pallet-im-online",
  "pallet-transaction-payment-rpc",
  "pallet-transaction-payment-rpc-runtime-api",
@@ -2218,6 +2219,7 @@ dependencies = [
  "frame-try-runtime",
  "hex-literal",
  "log",
+ "manual-bridge",
  "oracle-finance",
  "pallet-ares-challenge",
  "pallet-authorship",
@@ -3817,6 +3819,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "manual-bridge"
+version = "1.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#6486d73d20e2dd2a04798e13c1dd672c2b90aeb3"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "rustc-hex",
+ "scale-info",
+ "serde",
+ "sp-runtime",
+ "sp-std 4.0.0",
+]
+
+[[package]]
 name = "maplit"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4488,6 +4506,81 @@ dependencies = [
 ]
 
 [[package]]
+name = "odyssey-runtime"
+version = "1.0.0"
+dependencies = [
+ "ares-oracle",
+ "ares-oracle-provider-support",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "hex-literal",
+ "log",
+ "manual-bridge",
+ "oracle-finance",
+ "pallet-ares-challenge",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-bags-list",
+ "pallet-balances",
+ "pallet-bounties",
+ "pallet-collective",
+ "pallet-democracy",
+ "pallet-election-provider-multi-phase",
+ "pallet-elections-phragmen",
+ "pallet-gilt",
+ "pallet-grandpa",
+ "pallet-identity",
+ "pallet-im-online",
+ "pallet-indices",
+ "pallet-multisig",
+ "pallet-offences",
+ "pallet-preimage",
+ "pallet-price-estimates",
+ "pallet-proxy",
+ "pallet-randomness-collective-flip",
+ "pallet-scheduler",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-staking-reward-curve",
+ "pallet-staking-reward-fn",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-treasury",
+ "pallet-vesting",
+ "parity-scale-codec",
+ "polkadot-runtime-common",
+ "runtime-common",
+ "scale-info",
+ "smallvec",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-block-builder",
+ "sp-consensus-babe",
+ "sp-core",
+ "sp-inherents",
+ "sp-io",
+ "sp-npos-elections",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-std 4.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "staking-extend",
+ "static_assertions",
+ "substrate-wasm-builder",
+]
+
+[[package]]
 name = "once_cell"
 version = "1.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4576,7 +4669,7 @@ dependencies = [
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#1b862465642a4913f6dda1bedccf7f37ee6764c2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#6486d73d20e2dd2a04798e13c1dd672c2b90aeb3"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4612,7 +4705,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#1b862465642a4913f6dda1bedccf7f37ee6764c2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#6486d73d20e2dd2a04798e13c1dd672c2b90aeb3"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5231,7 +5324,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#1b862465642a4913f6dda1bedccf7f37ee6764c2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#6486d73d20e2dd2a04798e13c1dd672c2b90aeb3"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -5936,6 +6029,7 @@ dependencies = [
  "frame-try-runtime",
  "hex-literal",
  "log",
+ "manual-bridge",
  "oracle-finance",
  "pallet-ares-challenge",
  "pallet-authorship",
@@ -7938,7 +8032,7 @@ dependencies = [
 [[package]]
 name = "seed-reader"
 version = "1.0.1"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#1b862465642a4913f6dda1bedccf7f37ee6764c2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#82e6eed1782e2fd555f381772ea60911aa6ab14e"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -9009,8 +9103,8 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
 name = "staking-extend"
-version = "3.0.4"
-source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#1b862465642a4913f6dda1bedccf7f37ee6764c2"
+version = "3.0.5"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#6486d73d20e2dd2a04798e13c1dd672c2b90aeb3"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -9808,7 +9902,7 @@ version = "1.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
- "cfg-if 1.0.0",
+ "cfg-if 0.1.10",
  "rand 0.8.5",
  "static_assertions",
 ]

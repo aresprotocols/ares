@@ -3,7 +3,7 @@ authors = ['Ares Protocal <https://github.com/aresprotocols/ares>']
 edition = '2018'
 homepage = 'https://www.aresprotocol.io/'
 license = 'Unlicense'
-name = 'gladios-runtime'
+name = 'odyssey-runtime'
 publish = false
 repository = 'https://github.com/aresprotocols/ares'
 version = '1.0.0'
@@ -178,6 +178,6 @@ std = [
 ]
 fast-runtime = []
 #[patch."https://github.com/paritytech/substrate"]
-#gladios-node ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/node" }
-#runtime-gladios-node ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/runtime" }
+#odyssey-node ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/node" }
+#runtime-odyssey-node ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/runtime" }
 #seed-reader ={path = "/Users/mac/work-files/coding/git-files/ke-fan/ares-chain/seed-reader" }

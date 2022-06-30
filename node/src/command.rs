@@ -29,11 +29,15 @@ pub const GLADIOS_RUNTIME_NOT_AVAILABLE: &str =
 	"Gladios runtime is not available. Please compile the node with `--features with-gladios-runtime` to enable it.";
 pub const PIONEER_RUNTIME_NOT_AVAILABLE: &str =
 	"Pioneer runtime is not available. Please compile the node with `--features with-pioneer-runtime` to enable it.";
+pub const ODYSSEY_RUNTIME_NOT_AVAILABLE: &str =
+	"Odyssey runtime is not available. Please compile the node with `--features with-pioneer-runtime` to enable it.";
+
 
 trait IdentifyChain {
 	fn is_dev(&self) -> bool;
 	fn is_gladios(&self) -> bool;
 	fn is_pioneer(&self) -> bool;
+	fn is_odyssey(&self) -> bool;
 }
 
 impl IdentifyChain for dyn sc_service::ChainSpec {
@@ -46,6 +50,9 @@ impl IdentifyChain for dyn sc_service::ChainSpec {
 	fn is_pioneer(&self) -> bool {
 		self.id().starts_with("pioneer")
 	}
+	fn is_odyssey(&self) -> bool {
+		self.id().starts_with("odyssey")
+	}
 }
 
 impl<T: sc_service::ChainSpec + 'static> IdentifyChain for T {
@@ -57,6 +64,9 @@ impl<T: sc_service::ChainSpec + 'static> IdentifyChain for T {
 	}
 	fn is_pioneer(&self) -> bool {
 		<dyn sc_service::ChainSpec>::is_pioneer(self)
+	}
+	fn is_odyssey(&self) -> bool {
+		<dyn sc_service::ChainSpec>::is_odyssey(self)
 	}
 }
 
@@ -111,17 +121,25 @@ impl SubstrateCli for Cli {
 					&include_bytes!("../res/local.yml")[..],
 				)?)
 			},
-			#[cfg(feature = "with-gladios-runtime")]
-			"" | "gladios" | "live" => {
+			#[cfg(feature = "with-pioneer-runtime")]
+			"gladios" => {
+				log::info!("🚅 🚅 🚅 load spec with local_gladios_config().");
+				Box::new(chain_spec::pioneer::make_spec(
+					self.spec_config.clone(),
+					&include_bytes!("../res/gladios.yml")[..],
+				)?)
+			},
+			#[cfg(feature = "with-odyssey-runtime")]
+			"" | "odyssey" | "live" => {
 				log::info!("🚅 🚅 🚅 load spec with bytes.");
 				if self.spec_config.is_some() {
-					Box::new(chain_spec::gladios::make_spec(
+					Box::new(chain_spec::odyssey::make_spec(
 						self.spec_config.clone(),
-						&include_bytes!("../res/gladios.yml")[..],
+						&include_bytes!("../res/odyssey.yml")[..],
 					)?)
 				} else {
-					Box::new(chain_spec::gladios::ChainSpec::from_json_bytes(
-						&include_bytes!("../res/gladios.json")[..],
+					Box::new(chain_spec::odyssey::ChainSpec::from_json_bytes(
+						&include_bytes!("../res/odyssey.json")[..],
 					)?)
 				}
 			},
@@ -139,6 +157,13 @@ impl SubstrateCli for Cli {
 					}
 					#[cfg(not(feature = "with-gladios-runtime"))]
 					return Err(GLADIOS_RUNTIME_NOT_AVAILABLE.into())
+				} else if chain_spec.is_odyssey() {
+					#[cfg(feature = "with-odyssey-runtime")]
+						{
+							Box::new(chain_spec::odyssey::ChainSpec::from_json_file(path)?)
+						}
+					#[cfg(not(feature = "with-odyssey-runtime"))]
+					return Err(ODYSSEY_RUNTIME_NOT_AVAILABLE.into())
 				} else {
 					#[cfg(feature = "with-pioneer-runtime")]
 					{
@@ -157,6 +182,11 @@ impl SubstrateCli for Cli {
 			return &gladios_runtime::VERSION;
 			#[cfg(not(feature = "with-gladios-runtime"))]
 			panic!("{}", GLADIOS_RUNTIME_NOT_AVAILABLE);
+		} else if chain_spec.is_odyssey() {
+			#[cfg(feature = "with-odyssey-runtime")]
+			return &odyssey_runtime::VERSION;
+			#[cfg(not(feature = "with-odyssey-runtime"))]
+			panic!("{}", ODYSSEY_RUNTIME_NOT_AVAILABLE);
 		} else {
 			#[cfg(feature = "with-pioneer-runtime")]
 			return &pioneer_runtime::VERSION;
@@ -176,6 +206,15 @@ macro_rules! with_runtime_or_err {
 			$( $code )*
 
 			#[cfg(not(feature = "with-gladios-runtime"))]
+			return Err(GLADIOS_RUNTIME_NOT_AVAILABLE.into());
+		} else if $chain_spec.is_odyssey() {
+			#[cfg(feature = "with-odyssey-runtime")]
+			#[allow(unused_imports)]
+			use service::odyssey::{RuntimeApi,ExecutorDispatch};
+			#[cfg(feature = "with-odyssey-runtime")]
+			$( $code )*
+
+			#[cfg(not(feature = "with-odyssey-runtime"))]
 			return Err(GLADIOS_RUNTIME_NOT_AVAILABLE.into());
 		} else {
 			#[cfg(feature = "with-pioneer-runtime")]

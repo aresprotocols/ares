@@ -25,6 +25,8 @@ use crate::service::Block;
 pub mod gladios;
 #[cfg(feature = "with-pioneer-runtime")]
 pub mod pioneer;
+#[cfg(feature = "with-odyssey-runtime")]
+pub mod odyssey;
 
 #[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension)]
 #[serde(rename_all = "camelCase")]

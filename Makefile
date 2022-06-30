@@ -28,25 +28,33 @@ run:
 run-gladios:
 	cargo run -- --chain=gladios
 
+run-odyssey:
+	cargo run -- --chain=odyssey
+
 .PHONY: build-release
 build-release:
-	cargo update
 	cargo build --locked --features with-all-runtime --profile production --workspace
 
 .PHONY: build-gladios
 build-gladios:
-	cargo update
 	cargo build --locked --features with-gladios-runtime --bin gladios-node --profile production --workspace
 
-.PHONY: build-gladios-fast
-build-gladios-fast:
-	cargo build --locked --features with-gladios-runtime,with-gladios-fast-runtime --bin gladios-node --profile production --workspace
+.PHONY: build-odyssey
+build-odyssey:
+	cargo build --locked --features with-odyssey-runtime --bin odyssey-node --profile production --workspace
 
 .PHONY: build-pioneer
 build-pioneer:
 	cargo build --locked --features with-pioneer-runtime --bin gladios-node --profile production --workspace
 
+.PHONY: build-gladios-fast
+build-gladios-fast:
+	cargo build --locked --features with-gladios-runtime,with-gladios-fast-runtime --bin gladios-node --profile production --workspace
+
+.PHONY: build-odyssey-fast
+build-odyssey-fast:
+	cargo build --locked --features with-odyssey-runtime,with-odyssey-fast-runtime --bin gladios-node --profile production --workspace
+
 .PHONY: build-pioneer-fast
 build-pioneer-fast:
-	cargo update
 	cargo build --locked --features with-pioneer-runtime,with-pioneer-fast-runtime --bin gladios-node --profile production --workspace

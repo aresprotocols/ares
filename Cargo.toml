@@ -4,6 +4,7 @@ panic = 'unwind'
 [workspace]
 members = [
     'node',
+    'runtime/odyssey',
     'runtime/gladios',
     'runtime/pioneer',
     'runtime/common',
@@ -35,3 +36,4 @@ inherits = "release"
 #pallet-price-estimates = { path = "../ares-ocw-suit/pallets/price-estimates" }
 #staking-extend = { path = "../ares-ocw-suit/pallets/staking-extend" }
 #ares-rpc = { path = "../ares-ocw-suit/rpc/ares-rpc" }
+#manual-bridge = { path = "../ares-ocw-suit/pallets/manual-bridge" }
