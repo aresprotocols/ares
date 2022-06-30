@@ -9,6 +9,8 @@ RUN pwd
 RUN ls ./
 RUN cargo build --features with-pioneer-runtime,with-pioneer-fast-runtime --bin gladios-node --profile production --workspace
 RUN ls /
+RUN ls /target
+RUN ls /target/production
 RUN ls ./
 RUN ls ./target
 RUN ls ./target/production
