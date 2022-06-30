@@ -4,7 +4,7 @@ services:
   chain:
     build:
       context: .
-      dockerfile: ./docker/builder.Dockerfile
+      dockerfile: ./docker/builder.fast-pioneer.Dockerfile
     container_name: ares-chain
     image: aresprotocollab/ares_manual_bridge
     ports:
