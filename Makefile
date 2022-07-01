@@ -41,7 +41,7 @@ build-gladios:
 
 .PHONY: build-odyssey
 build-odyssey:
-	cargo build --locked --features with-odyssey-runtime --bin odyssey-node --profile production --workspace
+	cargo build --locked --features with-odyssey-runtime --bin gladios-node --profile production --workspace
 
 .PHONY: build-pioneer
 build-pioneer:

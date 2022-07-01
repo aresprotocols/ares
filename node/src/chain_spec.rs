@@ -156,7 +156,7 @@ impl ChainSpecConfig {
 			}
 		});
 		println!("total_issuance:{}, total_balances:{}", total_issuance, total_balances);
-		assert!(total_issuance > total_balances, "total_issuance can not greater than total_balances");
+		assert!(total_issuance >= total_balances, "total_issuance can not greater than total_balances");
 		let remaining = total_issuance - total_balances;
 		if self.collection.len() > 0 {
 			let collection_avg_balance = remaining.wrapping_div((self.collection.len() as u32).into());
