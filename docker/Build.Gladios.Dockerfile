@@ -3,6 +3,7 @@ WORKDIR /substrate
 COPY . /substrate
 RUN cargo update
 RUN cargo update -p syn:1.0.98 --precise 1.0.96
+RUN cargo update -p getrandom:0.2.6 --precise 0.2.3
 RUN cargo build --features with-gladios-runtime --bin gladios-node --profile production --workspace
 RUN pwd
 RUN ls /substrate
