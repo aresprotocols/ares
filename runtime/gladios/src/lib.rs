@@ -76,7 +76,7 @@ pub mod part_ocw;
 pub mod part_ocw_finance;
 pub mod part_manual_bridge;
 
-use crate::constants::fee::WeightToFee;
+// use crate::constants::fee::WeightToFee;
 pub use constants::currency::{deposit, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{DAYS, HOURS, MINUTES, SLOT_DURATION};
 pub use runtime_common::*;
@@ -84,6 +84,7 @@ use runtime_common::{AccountId, DealWithFees, Signature, SlowAdjustingFeeUpdate}
 
 use frame_support::pallet_prelude::InvalidTransaction;
 use frame_support::traits::ExtrinsicCall;
+use frame_support::weights::IdentityFee;
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 // pub type Signature = Signature ;// MultiSignature;
@@ -295,12 +296,20 @@ parameter_types! {
 // 	type FeeMultiplierUpdate = ();
 // }
 
+// impl pallet_transaction_payment::Config for Runtime {
+// 	type OnChargeTransaction = CurrencyAdapter<Balances, DealWithFees<Self>>;
+// 	type TransactionByteFee = TransactionByteFee;
+// 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
+// 	type WeightToFee = WeightToFee;
+// 	type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
+// }
+
 impl pallet_transaction_payment::Config for Runtime {
-	type OnChargeTransaction = CurrencyAdapter<Balances, DealWithFees<Self>>;
+	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
 	type TransactionByteFee = TransactionByteFee;
 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
-	type WeightToFee = WeightToFee;
-	type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
+	type WeightToFee = IdentityFee<Balance>;
+	type FeeMultiplierUpdate = ();
 }
 
 impl pallet_sudo::Config for Runtime {

@@ -38,19 +38,19 @@ authorities:
   # stash, controller, babe, grandpa, ares, imOnline
   - [
       '4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w', '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU', '4QTTTZTRfFsoW4Kgb7XEmTj5nBc5uPXY6TsFgzv9nTL9F4kA',
-      '4R7Nrh2kdLtyuJ7WpvNcVF8aGTsetQTYo82P6YZ2dtzw6gAs', '4QGrSqrwowvzFYVHxgh721aGZnt5ZjhKgLRaTG9DbsNszxwn','4QGrSqrwowvzFYVHxgh721aGZnt5ZjhKgLRaTG9DbsNszxwn'
+      '4R7Nrh2kdLtyuJ7WpvNcVF8aGTsetQTYo82P6YZ2dtzw6gAs', '4QTTTZTRfFsoW4Kgb7XEmTj5nBc5uPXY6TsFgzv9nTL9F4kA','4QTTTZTRfFsoW4Kgb7XEmTj5nBc5uPXY6TsFgzv9nTL9F4kA'
   ]
   - [
       '4UHtW2qVT6A993ViBE7hwe4oXG4UX19bmEedw41rvatJjeWC', '4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq', '4UXEHQsEfNZoJuzeSPfrQKHE1SDScs6TtGuyGBPSfn3Vfskh',
-      '4TR5iL4toUNbPdWVSsJWmzyAQBVsusZnozn89t4oAhy4NXsL', '4R6XGZaH5fRiDvWGk67L3BrDCDKUt3bb28EuWKb8Nzkpi6nb','4R6XGZaH5fRiDvWGk67L3BrDCDKUt3bb28EuWKb8Nzkpi6nb'
+      '4TR5iL4toUNbPdWVSsJWmzyAQBVsusZnozn89t4oAhy4NXsL', '4UXEHQsEfNZoJuzeSPfrQKHE1SDScs6TtGuyGBPSfn3Vfskh','4UXEHQsEfNZoJuzeSPfrQKHE1SDScs6TtGuyGBPSfn3Vfskh'
   ]
   - [
       '4TfqZ8mc4FpbNF66Qh73dyisEPYYxoY5mn7NE18LqX2AqgLT', '4TM2tmEUhLEPqvbiSP7Fo9sU8ptgsVkQ1GkKjCxAXZC9UTmn', '4Tr8gxdLwKeDAjGw3JVphgAAQaDEEjFUry5EsqZX3wYHMARf',
-      '4QnJa4zG9X3et3qx1gHoFYry8SMiCJ9sCujEUgR3xWtwpe8u', '4QKCBspWgdugsKqUyuLKpMoujXH6C3RHsoLctNhptSbpt5Tz', '4QKCBspWgdugsKqUyuLKpMoujXH6C3RHsoLctNhptSbpt5Tz'
+      '4QnJa4zG9X3et3qx1gHoFYry8SMiCJ9sCujEUgR3xWtwpe8u', '4Tr8gxdLwKeDAjGw3JVphgAAQaDEEjFUry5EsqZX3wYHMARf', '4Tr8gxdLwKeDAjGw3JVphgAAQaDEEjFUry5EsqZX3wYHMARf'
   ]
   - [
       '4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb', '4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC', '4QBae1yut7wuizwadvb3EznSXVVnjR3tbBCmUiTSvRFhB5gn',
-      '4TnpZ76wgLaNQkkQSptES9hU7Ua2HPL6FMaEwJGCVNYcPzVv', '4TvjYpKD9WT9AjMPgLSfhVFPqaEzrSnHJuKS8kEHfvFVGtnS', '4TvjYpKD9WT9AjMPgLSfhVFPqaEzrSnHJuKS8kEHfvFVGtnS'
+      '4TnpZ76wgLaNQkkQSptES9hU7Ua2HPL6FMaEwJGCVNYcPzVv', '4QBae1yut7wuizwadvb3EznSXVVnjR3tbBCmUiTSvRFhB5gn', '4QBae1yut7wuizwadvb3EznSXVVnjR3tbBCmUiTSvRFhB5gn'
   ]
 
 # 2000Ares
@@ -108,7 +108,7 @@ symbols:
   - [ 'dash-usdt', 'dash', 2, 4, 12 ]
   - [ 'comp-usdt', 'comp', 2, 4, 12 ]
   - [ 'matic-usdt', 'matic', 2, 4, 12 ]
-  - [ 'doge-usdt', 'doge', 2, 4, 5 ]
+  - [ 'doge-usdt', 'doge', 2, 4, 12 ]
   - [ 'luna-usdt', 'luna', 2, 4, 12 ]
   - [ 'ftt-usdt', 'ftt', 2, 4, 16 ]
   - [ 'xlm-usdt', 'xlm', 2, 4, 16 ]
