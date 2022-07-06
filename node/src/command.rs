@@ -124,7 +124,7 @@ impl SubstrateCli for Cli {
 			#[cfg(feature = "with-gladios-runtime")]
 			"gladios" => {
 				log::info!("🚅 🚅 🚅 load spec with local_gladios_config().");
-				Box::new(chain_spec::pioneer::make_spec(
+				Box::new(chain_spec::gladios::make_spec(
 					self.spec_config.clone(),
 					&include_bytes!("../res/gladios.yml")[..],
 				)?)
