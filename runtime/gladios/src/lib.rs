@@ -375,7 +375,7 @@ construct_runtime!(
 		Offences: pallet_offences::{Pallet, Storage, Event},
 		Claims: claims::{Pallet, Call, Storage, Event<T>, Config<T>, ValidateUnsigned},
 
-		Estimates: pallet_price_estimates::{Pallet, Call, Storage, ValidateUnsigned, Event<T>},
+		Estimates: pallet_price_estimates::{Pallet, Call, Storage, Event<T>},
 		ManualBridge: manual_bridge::{Pallet, Call, Storage, Event<T>},
 		// Gilts pallet.
 		// Gilt: pallet_gilt::{Pallet, Call, Storage, Event<T>, Config} ,
