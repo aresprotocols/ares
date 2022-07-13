@@ -29,7 +29,7 @@ collection:
   - '4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC'
 
 boot_nodes:
-  - /dns/gladios.btnode.aresprotocol.io/tcp/30333/p2p/12D3KooWA5HNAEsHPnRJuvVgS2bZVYqaetjECce3MkKfACJQ8upi
+  - /dns/gladios.btnode.aresprotocol.io/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
 
 telemetry_endpoints:
   - [ "wss://telemetry.polkadot.io/submit/", 0 ]

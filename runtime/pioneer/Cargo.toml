@@ -48,6 +48,7 @@ sp-version = { git = "https://github.com/paritytech/substrate", default-features
 sp-staking = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sp-io = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 sp-npos-elections = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
+pallet-utility = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 pallet-randomness-collective-flip = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-sudo = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
@@ -123,6 +124,7 @@ std = [
     'frame-try-runtime/std',
     'frame-election-provider-support/std',
     'pallet-babe/std',
+    "pallet-bags-list/std",
     'pallet-balances/std',
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
@@ -134,7 +136,7 @@ std = [
     'pallet-im-online/std',
     'pallet-offences/std',
     "pallet-preimage/std",
-    "pallet-bags-list/std",
+    "pallet-utility/std",
     'sp-api/std',
     'sp-block-builder/std',
     #    'sp-consensus-aura/std',

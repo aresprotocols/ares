@@ -54,7 +54,7 @@ pub fn make_spec(config_path: Option<String>, default_config: &[u8]) -> Result<C
 		boot_nodes.unwrap_or(vec![]),
 		telemetry_endpoints,
 		// Protocol ID
-		None,
+		Some("ares-pioneer"),
 		// Properties
 		None,
 		Some(properties),

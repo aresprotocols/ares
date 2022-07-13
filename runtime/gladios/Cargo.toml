@@ -64,7 +64,7 @@ pallet-bags-list = { git = "https://github.com/paritytech/substrate", default-fe
 pallet-gilt = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 pallet-staking-reward-fn = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 polkadot-runtime-common = { git = "https://github.com/paritytech/polkadot.git", default-features = false, branch = "release-v0.9.17" }
-
+pallet-utility = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
 
 # Network
 pallet-staking-reward-curve = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.17" }
@@ -124,6 +124,7 @@ std = [
     #    'pallet-aura/std',
     'pallet-babe/std',
     'pallet-balances/std',
+    "pallet-bags-list/std",
     'pallet-grandpa/std',
     'pallet-randomness-collective-flip/std',
     'pallet-sudo/std',
@@ -134,7 +135,7 @@ std = [
     'pallet-im-online/std',
     "pallet-offences/std",
     "pallet-preimage/std",
-    "pallet-bags-list/std",
+    'pallet-utility/std',
     'sp-api/std',
     'sp-block-builder/std',
     #    'sp-consensus-aura/std',

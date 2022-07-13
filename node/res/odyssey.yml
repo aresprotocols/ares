@@ -6,30 +6,30 @@ chain_type: Live
 total_issuance: 1000000000000000000000
 
 balances:
-  - ['4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w', 125000000000000000000]
-  - ['4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU', 125000000000000000000]
-  - ['4UHtW2qVT6A993ViBE7hwe4oXG4UX19bmEedw41rvatJjeWC', 125000000000000000000]
-  - ['4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq', 125000000000000000000]
-  - ['4TfqZ8mc4FpbNF66Qh73dyisEPYYxoY5mn7NE18LqX2AqgLT', 125000000000000000000]
-  - ['4TM2tmEUhLEPqvbiSP7Fo9sU8ptgsVkQ1GkKjCxAXZC9UTmn', 125000000000000000000]
-  - ['4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb', 125000000000000000000]
-  - ['4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC', 125000000000000000000]
+  - ['4USEukpUiCMsp7QgEBoBtd17f9P376RupG1YpZRoVcTtowL5', 125000000000000000000]
+  - ['4QQaokvpS8f6fWjQJjP9yv38674aSEGFCw5Tppkm8scEowTW', 125000000000000000000]
+  - ['4UaewssoTRkgaYFJV26zQuGaN4GoGg1zPnMYYb6zWFiQpo49', 125000000000000000000]
+  - ['4TyTnqrJJCTjS8gPPbiBusU612xnK6DaUhViMzw25oCo8sEs', 125000000000000000000]
+  - ['4Qbk2qKYB7yyH2Hvm9sVzWtYMBZ2Uf7Lx3mxytH6gzpKUyXJ', 125000000000000000000]
+  - ['4UMMNLJobjPdXL2apWPtpNKZ5GDsUyjKx1zwELvmk6BQpLYp', 125000000000000000000]
+  - ['4UMCPmsToxmMjgNPNSd5hA2ARig5Eagbp4BzxDVFTiyEq9F6', 125000000000000000000]
+  - ['4QQpppFst6vfBFA61ReT2SqrX1P9ucMD6EiBBRuu7jritvGA', 125000000000000000000]
 
 ban: [ ]
 
 # collection remain balance(total_issuance - total_balances)
 collection:
-  - '4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w'
-  - '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU'
-  - '4UHtW2qVT6A993ViBE7hwe4oXG4UX19bmEedw41rvatJjeWC'
-  - '4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq'
-  - '4TfqZ8mc4FpbNF66Qh73dyisEPYYxoY5mn7NE18LqX2AqgLT'
-  - '4TM2tmEUhLEPqvbiSP7Fo9sU8ptgsVkQ1GkKjCxAXZC9UTmn'
-  - '4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb'
-  - '4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC'
+  - '4USEukpUiCMsp7QgEBoBtd17f9P376RupG1YpZRoVcTtowL5'
+  - '4QQaokvpS8f6fWjQJjP9yv38674aSEGFCw5Tppkm8scEowTW'
+  - '4UaewssoTRkgaYFJV26zQuGaN4GoGg1zPnMYYb6zWFiQpo49'
+  - '4TyTnqrJJCTjS8gPPbiBusU612xnK6DaUhViMzw25oCo8sEs'
+  - '4Qbk2qKYB7yyH2Hvm9sVzWtYMBZ2Uf7Lx3mxytH6gzpKUyXJ'
+  - '4UMMNLJobjPdXL2apWPtpNKZ5GDsUyjKx1zwELvmk6BQpLYp'
+  - '4UMCPmsToxmMjgNPNSd5hA2ARig5Eagbp4BzxDVFTiyEq9F6'
+  - '4QQpppFst6vfBFA61ReT2SqrX1P9ucMD6EiBBRuu7jritvGA'
 
 boot_nodes:
-  - /dns/odyssey.btnode.aresprotocol.io/tcp/30333/p2p/12D3KooWA5HNAEsHPnRJuvVgS2bZVYqaetjECce3MkKfACJQ8upi
+  - /dns/odyssey.btnode.aresprotocol.io/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
 
 telemetry_endpoints:
   - [ "wss://telemetry.polkadot.io/submit/", 0 ]
@@ -37,19 +37,19 @@ telemetry_endpoints:
 authorities:
   # stash, controller, babe, grandpa, ares, imOnline
   - [
-      '4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w', '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU', '4QTTTZTRfFsoW4Kgb7XEmTj5nBc5uPXY6TsFgzv9nTL9F4kA',
+      '4USEukpUiCMsp7QgEBoBtd17f9P376RupG1YpZRoVcTtowL5', '4QQaokvpS8f6fWjQJjP9yv38674aSEGFCw5Tppkm8scEowTW', '4QTTTZTRfFsoW4Kgb7XEmTj5nBc5uPXY6TsFgzv9nTL9F4kA',
       '4R7Nrh2kdLtyuJ7WpvNcVF8aGTsetQTYo82P6YZ2dtzw6gAs', '4QTTTZTRfFsoW4Kgb7XEmTj5nBc5uPXY6TsFgzv9nTL9F4kA','4QTTTZTRfFsoW4Kgb7XEmTj5nBc5uPXY6TsFgzv9nTL9F4kA'
   ]
   - [
-      '4UHtW2qVT6A993ViBE7hwe4oXG4UX19bmEedw41rvatJjeWC', '4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq', '4UXEHQsEfNZoJuzeSPfrQKHE1SDScs6TtGuyGBPSfn3Vfskh',
+      '4UaewssoTRkgaYFJV26zQuGaN4GoGg1zPnMYYb6zWFiQpo49', '4TyTnqrJJCTjS8gPPbiBusU612xnK6DaUhViMzw25oCo8sEs', '4UXEHQsEfNZoJuzeSPfrQKHE1SDScs6TtGuyGBPSfn3Vfskh',
       '4TR5iL4toUNbPdWVSsJWmzyAQBVsusZnozn89t4oAhy4NXsL', '4UXEHQsEfNZoJuzeSPfrQKHE1SDScs6TtGuyGBPSfn3Vfskh','4UXEHQsEfNZoJuzeSPfrQKHE1SDScs6TtGuyGBPSfn3Vfskh'
   ]
   - [
-      '4TfqZ8mc4FpbNF66Qh73dyisEPYYxoY5mn7NE18LqX2AqgLT', '4TM2tmEUhLEPqvbiSP7Fo9sU8ptgsVkQ1GkKjCxAXZC9UTmn', '4Tr8gxdLwKeDAjGw3JVphgAAQaDEEjFUry5EsqZX3wYHMARf',
+      '4Qbk2qKYB7yyH2Hvm9sVzWtYMBZ2Uf7Lx3mxytH6gzpKUyXJ', '4UMMNLJobjPdXL2apWPtpNKZ5GDsUyjKx1zwELvmk6BQpLYp', '4Tr8gxdLwKeDAjGw3JVphgAAQaDEEjFUry5EsqZX3wYHMARf',
       '4QnJa4zG9X3et3qx1gHoFYry8SMiCJ9sCujEUgR3xWtwpe8u', '4Tr8gxdLwKeDAjGw3JVphgAAQaDEEjFUry5EsqZX3wYHMARf', '4Tr8gxdLwKeDAjGw3JVphgAAQaDEEjFUry5EsqZX3wYHMARf'
   ]
   - [
-      '4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb', '4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC', '4QBae1yut7wuizwadvb3EznSXVVnjR3tbBCmUiTSvRFhB5gn',
+      '4UMCPmsToxmMjgNPNSd5hA2ARig5Eagbp4BzxDVFTiyEq9F6', '4QQpppFst6vfBFA61ReT2SqrX1P9ucMD6EiBBRuu7jritvGA', '4QBae1yut7wuizwadvb3EznSXVVnjR3tbBCmUiTSvRFhB5gn',
       '4TnpZ76wgLaNQkkQSptES9hU7Ua2HPL6FMaEwJGCVNYcPzVv', '4QBae1yut7wuizwadvb3EznSXVVnjR3tbBCmUiTSvRFhB5gn', '4QBae1yut7wuizwadvb3EznSXVVnjR3tbBCmUiTSvRFhB5gn'
   ]
 
@@ -60,27 +60,22 @@ validator_minimum_deposit: 2000000000000000
 council_minimum_deposit: 2000000000000000
 
 council:
-  - 4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w
-  - 4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU
-  - 4UHtW2qVT6A993ViBE7hwe4oXG4UX19bmEedw41rvatJjeWC
-  - 4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq
-  - 4TfqZ8mc4FpbNF66Qh73dyisEPYYxoY5mn7NE18LqX2AqgLT
-  - 4TM2tmEUhLEPqvbiSP7Fo9sU8ptgsVkQ1GkKjCxAXZC9UTmn
-  - 4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb
-  - 4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC
+  - 4USEukpUiCMsp7QgEBoBtd17f9P376RupG1YpZRoVcTtowL5
+  - 4QQaokvpS8f6fWjQJjP9yv38674aSEGFCw5Tppkm8scEowTW
+  - 4UaewssoTRkgaYFJV26zQuGaN4GoGg1zPnMYYb6zWFiQpo49
+  - 4TyTnqrJJCTjS8gPPbiBusU612xnK6DaUhViMzw25oCo8sEs
+  - 4Qbk2qKYB7yyH2Hvm9sVzWtYMBZ2Uf7Lx3mxytH6gzpKUyXJ
+  - 4UMMNLJobjPdXL2apWPtpNKZ5GDsUyjKx1zwELvmk6BQpLYp
+  - 4UMCPmsToxmMjgNPNSd5hA2ARig5Eagbp4BzxDVFTiyEq9F6
+  - 4QQpppFst6vfBFA61ReT2SqrX1P9ucMD6EiBBRuu7jritvGA
 
 # technical members
 technical:
-  - '4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w'
-  - '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU'
-  - '4UHtW2qVT6A993ViBE7hwe4oXG4UX19bmEedw41rvatJjeWC'
-  - '4SQMJeYoxRdnByRyhgw6LTE7rEiuCkbcAvG3AcCDzt84f9Qq'
-  - '4TfqZ8mc4FpbNF66Qh73dyisEPYYxoY5mn7NE18LqX2AqgLT'
-  - '4TM2tmEUhLEPqvbiSP7Fo9sU8ptgsVkQ1GkKjCxAXZC9UTmn'
-  - '4RTJuWG29fQKBU8rr3kAc27rTHyzNts6gsqVkJKrrkp18cfb'
-  - '4RmSk6kbsvHunqCqTKJRCMFP5fVVSBp5AdHisUBgB2b7GZtC'
+  - '4SaqfpkVNvdEstHNWW1C2BmCDJETaKmEAd26KSXDADvLfrjn'
+  - '4USEukpUiCMsp7QgEBoBtd17f9P376RupG1YpZRoVcTtowL5'
+  - '4QQaokvpS8f6fWjQJjP9yv38674aSEGFCw5Tppkm8scEowTW'
 
-root: '4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU'
+root: '4SaqfpkVNvdEstHNWW1C2BmCDJETaKmEAd26KSXDADvLfrjn'
 
 
 symbols:
