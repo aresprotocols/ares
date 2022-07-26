@@ -109,6 +109,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#37a5cf295d1ab8f58328f7df792f3fc2196b5be1"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-support",
@@ -140,6 +141,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#37a5cf295d1ab8f58328f7df792f3fc2196b5be1"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -153,6 +155,7 @@ dependencies = [
 [[package]]
 name = "ares-rpc"
 version = "1.0.0"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#37a5cf295d1ab8f58328f7df792f3fc2196b5be1"
 dependencies = [
  "ares-oracle-provider-support",
  "chrono",
@@ -888,9 +891,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "3.2.13"
+version = "3.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ac2bd7a1eb07da9ac757c923f69373deb7bc2ba5efc951b873bcb5e693992dca"
+checksum = "44bbe24bbd31a185bc2c4f7c2abe80bea13a20d57ee4e55be70ac512bdc76417"
 dependencies = [
  "atty",
  "bitflags",
@@ -909,14 +912,14 @@ version = "3.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ead064480dfc4880a10764488415a97fdd36a4cf1bb022d372f02e8faf8386e1"
 dependencies = [
- "clap 3.2.13",
+ "clap 3.2.15",
 ]
 
 [[package]]
 name = "clap_derive"
-version = "3.2.7"
+version = "3.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "759bf187376e1afa7b85b959e6a664a3e7a95203415dba952ad19139e798f902"
+checksum = "9ba52acd3b0a5c33aeada5cdaa3267cdc7c594a98731d4268cdc1532f4264cb4"
 dependencies = [
  "heck 0.4.0",
  "proc-macro-error",
@@ -1098,9 +1101,9 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-channel"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4c02a4d71819009c192cf4872265391563fd6a84c81ff2c0f2a7026ca4c1d85c"
+checksum = "c2dd04ddaf88237dc3b8d8f9a3c1004b506b54b3313403944054d23c0870c521"
 dependencies = [
  "cfg-if 1.0.0",
  "crossbeam-utils",
@@ -1108,9 +1111,9 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-deque"
-version = "0.8.1"
+version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6455c0ca19f0d2fbf751b908d5c55c1f5cbc65e03c4225427254b46890bdde1e"
+checksum = "715e8152b692bba2d374b53d4875445368fdf21a94751410af607a5ac677d1fc"
 dependencies = [
  "cfg-if 1.0.0",
  "crossbeam-epoch",
@@ -1119,9 +1122,9 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-epoch"
-version = "0.9.9"
+version = "0.9.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "07db9d94cbd326813772c968ccd25999e5f8ae22f4f8d1b11effa37ef6ce281d"
+checksum = "045ebe27666471bb549370b4b0b3e51b07f56325befa4284db65fc89c02511b1"
 dependencies = [
  "autocfg",
  "cfg-if 1.0.0",
@@ -1133,9 +1136,9 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-utils"
-version = "0.8.10"
+version = "0.8.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d82ee10ce34d7bc12c2122495e7593a9c41347ecdd64185af4ecf72cb1a7f83"
+checksum = "51887d4adc7b564537b15adcfb307936f8075dfcd5f00dde9a9f1d29383682bc"
 dependencies = [
  "cfg-if 1.0.0",
  "once_cell",
@@ -1560,9 +1563,9 @@ checksum = "4443176a9f2c162692bd3d352d745ef9413eec5782a80d8fd6f8a1ac692a07f7"
 
 [[package]]
 name = "fastrand"
-version = "1.7.0"
+version = "1.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3fcf0cee53519c866c09b5de1f6c56ff9d647101f81c1964fa632e148896cdf"
+checksum = "a7a407cfaa3385c4ae6b23e84623d48c2798d06e3e6a1878f7f59f17b3f86499"
 dependencies = [
  "instant",
 ]
@@ -1699,7 +1702,7 @@ source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22
 dependencies = [
  "Inflector",
  "chrono",
- "clap 3.2.13",
+ "clap 3.2.15",
  "frame-benchmarking",
  "frame-support",
  "handlebars",
@@ -2119,7 +2122,7 @@ version = "1.0.0"
 dependencies = [
  "ares-oracle-provider-support",
  "ares-rpc",
- "clap 3.2.13",
+ "clap 3.2.15",
  "clap_complete",
  "frame-benchmarking",
  "frame-benchmarking-cli",
@@ -2321,16 +2324,16 @@ dependencies = [
  "http",
  "indexmap",
  "slab",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tokio-util 0.7.3",
  "tracing",
 ]
 
 [[package]]
 name = "handlebars"
-version = "4.3.2"
+version = "4.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "36641a8b9deb60e23fb9bb47ac631d664a780b088909b89179a4eab5618b076b"
+checksum = "360d9740069b2f6cbb63ce2dbaa71a20d3185350cbb990d7bebeb9318415eb17"
 dependencies = [
  "log",
  "pest",
@@ -2515,7 +2518,7 @@ dependencies = [
  "itoa 1.0.2",
  "pin-project-lite 0.2.9",
  "socket2 0.4.4",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tower-service",
  "tracing",
  "want",
@@ -2533,7 +2536,7 @@ dependencies = [
  "log",
  "rustls 0.19.1",
  "rustls-native-certs 0.5.0",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tokio-rustls 0.22.0",
  "webpki 0.21.4",
 ]
@@ -2547,7 +2550,7 @@ dependencies = [
  "bytes 1.2.0",
  "hyper",
  "native-tls",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tokio-native-tls",
 ]
 
@@ -2742,9 +2745,9 @@ dependencies = [
 
 [[package]]
 name = "js-sys"
-version = "0.3.58"
+version = "0.3.59"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3fac17f7123a73ca62df411b1bf727ccc805daa070338fda671c86dac1bdc27"
+checksum = "258451ab10b34f8af53416d1fdab72c22e805f0c92a1136d59470ec0b11138b2"
 dependencies = [
  "wasm-bindgen",
 ]
@@ -2860,7 +2863,7 @@ dependencies = [
  "jsonrpc-core",
  "lazy_static",
  "log",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tokio-stream",
  "tokio-util 0.6.10",
  "unicase",
@@ -2918,7 +2921,7 @@ dependencies = [
  "rustls-native-certs 0.6.2",
  "soketto",
  "thiserror",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tokio-rustls 0.23.4",
  "tokio-util 0.6.10",
  "tracing",
@@ -2944,7 +2947,7 @@ dependencies = [
  "serde_json",
  "soketto",
  "thiserror",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tracing",
 ]
 
@@ -3023,7 +3026,7 @@ dependencies = [
  "serde_json",
  "soketto",
  "thiserror",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tokio-rustls 0.22.0",
  "tokio-util 0.6.10",
 ]
@@ -3819,6 +3822,7 @@ dependencies = [
 [[package]]
 name = "manual-bridge"
 version = "1.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#37a5cf295d1ab8f58328f7df792f3fc2196b5be1"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4238,7 +4242,7 @@ name = "node-inspect"
 version = "0.9.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.2.13",
+ "clap 3.2.15",
  "parity-scale-codec",
  "sc-cli",
  "sc-client-api",
@@ -4668,6 +4672,7 @@ dependencies = [
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#37a5cf295d1ab8f58328f7df792f3fc2196b5be1"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4703,6 +4708,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#37a5cf295d1ab8f58328f7df792f3fc2196b5be1"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5321,6 +5327,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#37a5cf295d1ab8f58328f7df792f3fc2196b5be1"
 dependencies = [
  "ares-oracle",
  "frame-support",
@@ -5719,7 +5726,7 @@ dependencies = [
  "libc",
  "log",
  "rand 0.7.3",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "winapi 0.3.9",
 ]
 
@@ -6360,9 +6367,9 @@ checksum = "dbf0c48bc1d91375ae5c3cd81e3722dff1abcf81a30960240640d223f59fe0e5"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.40"
+version = "1.0.42"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd96a1e8ed2596c337f8eae5f24924ec83f5ad5ab21ea8e455d3566c69fbcaf7"
+checksum = "c278e965f1d8cf32d6e0e96de3d3e79712178ae67986d9cf9151f51e95aac89b"
 dependencies = [
  "unicode-ident",
 ]
@@ -6436,9 +6443,9 @@ dependencies = [
 
 [[package]]
 name = "psm"
-version = "0.1.19"
+version = "0.1.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "accd89aa18fbf9533a581355a22438101fe9c2ed8c9e2f0dcf520552a3afddf2"
+checksum = "f446d0a6efba22928558c4fb4ce0b3fd6c89b0061343e390bf01a703742b8125"
 dependencies = [
  "cc",
 ]
@@ -6598,9 +6605,9 @@ dependencies = [
 
 [[package]]
 name = "redox_syscall"
-version = "0.2.13"
+version = "0.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62f25bc4c7e55e0b0b7a1d43fb893f4fa1361d0abe38b9ce4f323c2adfe6ef42"
+checksum = "534cfe58d6a18cc17120fbf4635d53d14691c1fe4d951064df9bd326178d7d5a"
 dependencies = [
  "bitflags",
 ]
@@ -6738,7 +6745,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_urlencoded",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tokio-native-tls",
  "tower-service",
  "url 2.2.2",
@@ -7081,7 +7088,7 @@ version = "0.10.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
  "chrono",
- "clap 3.2.13",
+ "clap 3.2.15",
  "fdlimit",
  "futures 0.3.21",
  "hex",
@@ -7110,7 +7117,7 @@ dependencies = [
  "sp-version",
  "thiserror",
  "tiny-bip39",
- "tokio 1.20.0",
+ "tokio 1.20.1",
 ]
 
 [[package]]
@@ -7694,7 +7701,7 @@ dependencies = [
  "log",
  "serde_json",
  "substrate-prometheus-endpoint",
- "tokio 1.20.0",
+ "tokio 1.20.1",
 ]
 
 [[package]]
@@ -7756,7 +7763,7 @@ dependencies = [
  "substrate-prometheus-endpoint",
  "tempfile",
  "thiserror",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tracing",
  "tracing-futures",
 ]
@@ -8030,6 +8037,7 @@ dependencies = [
 [[package]]
 name = "seed-reader"
 version = "1.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=release-1.3.3#82e6eed1782e2fd555f381772ea60911aa6ab14e"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -8093,18 +8101,18 @@ dependencies = [
 
 [[package]]
 name = "serde"
-version = "1.0.139"
+version = "1.0.140"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0171ebb889e45aa68b44aee0859b3eede84c6f5f5c228e6f140c0b2a0a46cad6"
+checksum = "fc855a42c7967b7c369eb5860f7164ef1f6f81c20c7cc1141f2a604e18723b03"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.139"
+version = "1.0.140"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc1d3230c1de7932af58ad8ffbe1d784bd55efd5a9d84ac24f69c72d83543dfb"
+checksum = "6f2122636b9fe3b81f1cb25099fcf2d3f542cdb1d45940d56c713158884a05da"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -9104,6 +9112,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.5"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.17#37a5cf295d1ab8f58328f7df792f3fc2196b5be1"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",
@@ -9236,7 +9245,7 @@ name = "substrate-frame-cli"
 version = "4.0.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.2.13",
+ "clap 3.2.15",
  "frame-support",
  "frame-system",
  "sc-cli",
@@ -9277,7 +9286,7 @@ dependencies = [
  "log",
  "prometheus",
  "thiserror",
- "tokio 1.20.0",
+ "tokio 1.20.1",
 ]
 
 [[package]]
@@ -9580,9 +9589,9 @@ dependencies = [
 
 [[package]]
 name = "tokio"
-version = "1.20.0"
+version = "1.20.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "57aec3cfa4c296db7255446efb4928a6be304b431a806216105542a67b6ca82e"
+checksum = "7a8325f63a7d4774dd041e363b2409ed1c5cbbd0f867795e661df066b2b0a581"
 dependencies = [
  "autocfg",
  "bytes 1.2.0",
@@ -9627,7 +9636,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f7d995660bd2b7f8c1568414c1126076c13fbb725c40112dc0120b78eb9b717b"
 dependencies = [
  "native-tls",
- "tokio 1.20.0",
+ "tokio 1.20.1",
 ]
 
 [[package]]
@@ -9637,7 +9646,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bc6844de72e57df1980054b38be3a9f4702aba4858be64dd700181a8a6d0e1b6"
 dependencies = [
  "rustls 0.19.1",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "webpki 0.21.4",
 ]
 
@@ -9648,7 +9657,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c43ee83903113e03984cb9e5cebe6c04a5116269e900e3ddba8f068a62adda59"
 dependencies = [
  "rustls 0.20.6",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "webpki 0.22.0",
 ]
 
@@ -9660,7 +9669,7 @@ checksum = "df54d54117d6fdc4e4fea40fe1e4e566b3505700e148a6827e59b34b0d2600d9"
 dependencies = [
  "futures-core",
  "pin-project-lite 0.2.9",
- "tokio 1.20.0",
+ "tokio 1.20.1",
 ]
 
 [[package]]
@@ -9675,7 +9684,7 @@ dependencies = [
  "futures-sink",
  "log",
  "pin-project-lite 0.2.9",
- "tokio 1.20.0",
+ "tokio 1.20.1",
 ]
 
 [[package]]
@@ -9688,7 +9697,7 @@ dependencies = [
  "futures-core",
  "futures-sink",
  "pin-project-lite 0.2.9",
- "tokio 1.20.0",
+ "tokio 1.20.1",
  "tracing",
 ]
 
@@ -9870,7 +9879,7 @@ name = "try-runtime-cli"
 version = "0.10.0-dev"
 source = "git+https://github.com/paritytech/substrate?branch=polkadot-v0.9.17#22d40c761a985482f93bbbea5ba4199bdba74f8e"
 dependencies = [
- "clap 3.2.13",
+ "clap 3.2.15",
  "jsonrpsee 0.4.1",
  "log",
  "parity-scale-codec",
@@ -9902,8 +9911,8 @@ version = "1.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
- "cfg-if 1.0.0",
- "rand 0.8.5",
+ "cfg-if 0.1.10",
+ "rand 0.7.3",
  "static_assertions",
 ]
 
@@ -10135,9 +10144,9 @@ checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
 
 [[package]]
 name = "wasm-bindgen"
-version = "0.2.81"
+version = "0.2.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c53b543413a17a202f4be280a7e5c62a1c69345f5de525ee64f8cfdbc954994"
+checksum = "fc7652e3f6c4706c8d9cd54832c4a4ccb9b5336e2c3bd154d5cccfbf1c1f5f7d"
 dependencies = [
  "cfg-if 1.0.0",
  "wasm-bindgen-macro",
@@ -10145,13 +10154,13 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-backend"
-version = "0.2.81"
+version = "0.2.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5491a68ab4500fa6b4d726bd67408630c3dbe9c4fe7bda16d5c82a1fd8c7340a"
+checksum = "662cd44805586bd52971b9586b1df85cdbbd9112e4ef4d8f41559c334dc6ac3f"
 dependencies = [
  "bumpalo",
- "lazy_static",
  "log",
+ "once_cell",
  "proc-macro2",
  "quote",
  "syn",
@@ -10160,9 +10169,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-futures"
-version = "0.4.31"
+version = "0.4.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de9a9cec1733468a8c657e57fa2413d2ae2c0129b95e87c5b72b8ace4d13f31f"
+checksum = "fa76fb221a1f8acddf5b54ace85912606980ad661ac7a503b4570ffd3a624dad"
 dependencies = [
  "cfg-if 1.0.0",
  "js-sys",
@@ -10172,9 +10181,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro"
-version = "0.2.81"
+version = "0.2.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c441e177922bc58f1e12c022624b6216378e5febc2f0533e41ba443d505b80aa"
+checksum = "b260f13d3012071dfb1512849c033b1925038373aea48ced3012c09df952c602"
 dependencies = [
  "quote",
  "wasm-bindgen-macro-support",
@@ -10182,9 +10191,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro-support"
-version = "0.2.81"
+version = "0.2.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d94ac45fcf608c1f45ef53e748d35660f168490c10b23704c7779ab8f5c3048"
+checksum = "5be8e654bdd9b79216c2929ab90721aa82faf65c48cdf08bdc4e7f51357b80da"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -10195,9 +10204,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-shared"
-version = "0.2.81"
+version = "0.2.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a89911bd99e5f3659ec4acf9c4d93b0a90fe4a2a11f15328472058edc5261be"
+checksum = "6598dd0bd3c7d51095ff6531a5b23e02acdc81804e30d8f07afb77b7215a140a"
 
 [[package]]
 name = "wasm-gc-api"
@@ -10421,9 +10430,9 @@ dependencies = [
 
 [[package]]
 name = "web-sys"
-version = "0.3.58"
+version = "0.3.59"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2fed94beee57daf8dd7d51f2b15dc2bcde92d7a72304cdf662a4371008b71b90"
+checksum = "ed055ab27f941423197eb86b2035720b1a3ce40504df082cac2ecc6ed73335a1"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
@@ -10690,9 +10699,9 @@ dependencies = [
 
 [[package]]
 name = "zeroize"
-version = "1.5.6"
+version = "1.5.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "20b578acffd8516a6c3f2a1bdefc1ec37e547bb4e0fb8b6b01a4cafc886b4442"
+checksum = "c394b5bd0c6f669e7275d9c20aa90ae064cb22e75a1cad54e1b34088034b149f"
 dependencies = [
  "zeroize_derive",
 ]
