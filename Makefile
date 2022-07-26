@@ -34,6 +34,7 @@ run-odyssey:
 .PHONY: build-release
 build-release:
 	cargo build --locked --features with-all-runtime --profile production --workspace
+	# cargo build --features with-all-runtime --profile production --workspace
 
 .PHONY: build-gladios
 build-gladios:

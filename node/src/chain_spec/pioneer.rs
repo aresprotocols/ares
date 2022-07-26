@@ -115,6 +115,7 @@ fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConfig {
 			price_pool_depth: 5u32,
 			price_allowable_offset: Percent::from_percent(1),
 			authorities: vec![],
+			data_submission_interval: 100u32,
 			price_requests: config
 				.symbols
 				.iter()
