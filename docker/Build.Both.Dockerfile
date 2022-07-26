@@ -4,6 +4,7 @@ COPY . /substrate
 RUN cargo update
 RUN cargo update -p syn:1.0.98 --precise 1.0.96
 RUN cargo update -p getrandom:0.2.7 --precise 0.2.6
+RUN cargo update -p parity-db:0.3.16 --precise 0.3.14
 RUN cargo build --features with-all-runtime --profile production --workspace
 RUN pwd
 RUN ls /substrate
