@@ -38,24 +38,24 @@ build-release:
 
 .PHONY: build-gladios
 build-gladios:
-	cargo build --locked --features with-gladios-runtime --bin gladios-node --profile production --workspace
+	cargo build --locked --features with-gladios-runtime --bin ares-node --profile production --workspace
 
 .PHONY: build-odyssey
 build-odyssey:
-	cargo build --locked --features with-odyssey-runtime --bin gladios-node --profile production --workspace
+	cargo build --locked --features with-odyssey-runtime --bin ares-node --profile production --workspace
 
 .PHONY: build-pioneer
 build-pioneer:
-	cargo build --locked --features with-pioneer-runtime --bin gladios-node --profile production --workspace
+	cargo build --locked --features with-pioneer-runtime --bin ares-node --profile production --workspace
 
 .PHONY: build-gladios-fast
 build-gladios-fast:
-	cargo build --locked --features with-gladios-runtime,with-gladios-fast-runtime --bin gladios-node --profile production --workspace
+	cargo build --locked --features with-gladios-runtime,with-gladios-fast-runtime --bin ares-node --profile production --workspace
 
 .PHONY: build-odyssey-fast
 build-odyssey-fast:
-	cargo build --locked --features with-odyssey-runtime,with-odyssey-fast-runtime --bin gladios-node --profile production --workspace
+	cargo build --locked --features with-odyssey-runtime,with-odyssey-fast-runtime --bin ares-node --profile production --workspace
 
 .PHONY: build-pioneer-fast
 build-pioneer-fast:
-	cargo build --locked --features with-pioneer-runtime,with-pioneer-fast-runtime --bin gladios-node --profile production --workspace
+	cargo build --locked --features with-pioneer-runtime,with-pioneer-fast-runtime --bin ares-node --profile production --workspace
