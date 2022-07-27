@@ -5,7 +5,7 @@ description = 'A fresh FRAME-based Substrate node, ready for hacking.'
 edition = '2018'
 homepage = 'https://www.aresprotocol.io/'
 license = 'Unlicense'
-name = 'gladios-node'
+name = 'ares-node'
 publish = false
 repository = 'https://github.com/aresprotocols/ares'
 version = '1.0.0'
@@ -14,7 +14,7 @@ version = '1.0.0'
 targets = ['x86_64-unknown-linux-gnu']
 
 [[bin]]
-name = 'gladios-node'
+name = 'ares-node'
 
 [build-dependencies]
 substrate-build-script-utils = { git = "https://github.com/paritytech/substrate", optional = true, branch = "polkadot-v0.9.17" }
