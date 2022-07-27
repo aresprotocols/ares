@@ -18,7 +18,7 @@ RUN ls /substrate/target/production
 
 
 FROM docker.io/library/ubuntu:20.04
-COPY --from=builder /substrate/target/production/gladios-node /usr/local/bin
+COPY --from=builder /substrate/target/production/ares-node /usr/local/bin
 # COPY ./ares/target/release/gladios-node  /usr/local/bin
 
 RUN apt-get update && \

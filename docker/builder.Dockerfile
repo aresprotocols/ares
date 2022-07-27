@@ -5,7 +5,7 @@ COPY . /substrate
 RUN cargo update && cargo build --release --bin gladios-node --features with-all-runtime
 
 FROM docker.io/library/ubuntu:20.04
-COPY --from=builder ./target/production/gladios-node /usr/local/bin
+COPY --from=builder ./target/production/ares-node /usr/local/bin
 # COPY ./ares/target/release/gladios-node  /usr/local/bin
 
 RUN apt-get update && \

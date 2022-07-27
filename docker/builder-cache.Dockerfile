@@ -5,8 +5,7 @@ COPY . /substrate
 RUN cargo update && cargo build --release --bin gladios-node
 
 FROM docker.io/library/ubuntu:20.04
-COPY --from=builder /substrate/target/release/gladios-node /usr/local/bin
-# COPY ./ares/target/release/gladios-node  /usr/local/bin
+COPY --from=builder /substrate/target/release/ares-node /usr/local/bin
 
 RUN apt-get update && \
 	apt-get install ca-certificates -y && \
