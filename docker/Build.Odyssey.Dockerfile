@@ -4,7 +4,7 @@ COPY . /substrate
 RUN cargo update
 RUN cargo update -p syn:1.0.98 --precise 1.0.96
 # RUN cargo update -p getrandom:0.2.7 --precise 0.2.3
-RUN cargo build --features with-odyssey-runtime --bin gladios-node --profile production --workspace
+RUN cargo build --features with-odyssey-runtime --bin ares-node --profile production --workspace
 RUN pwd
 RUN ls /substrate
 RUN ls /substrate/target
@@ -21,9 +21,9 @@ WORKDIR /usr/local/bin
 RUN apt-get update && \
 apt-get install ca-certificates -y && \
 update-ca-certificates && \
-mkdir -p /root/.local/share/gladios-node  && \
-ln -s /root/.local/share/gladios-node /data && \
-/usr/local/bin/gladios-node --version
+mkdir -p /root/.local/share/ares-node  && \
+ln -s /root/.local/share/ares-node /data && \
+/usr/local/bin/ares-node --version
 
 EXPOSE 30333 9933 9944 9615
 VOLUME ["/data"]
