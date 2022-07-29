@@ -285,7 +285,7 @@ impl pallet_balances::Config for Runtime {
 }
 
 parameter_types! {
-	pub const TransactionByteFee: Balance = 1;
+	pub const TransactionByteFee: Balance = 6_527_000_0;// 00 ; //1 ;
 	pub const OperationalFeeMultiplier: u8 = 5;
 }
 
