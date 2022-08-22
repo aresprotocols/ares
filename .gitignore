@@ -21,3 +21,4 @@
 **/*.curl
 **/*.private.*
 data/*
+/wasms/
