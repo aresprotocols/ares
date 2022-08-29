@@ -604,8 +604,12 @@ balances:
   - [ "4UUpxQ9TFsb7AuVToYJHUdfPhnMaT2dueACSBSekCwH1yyEm",150690998499998309 ]
 
 ban: [ ]
-#ban:
-#  - 4S8YmKiSUzF3BzvavhkBUsiZU9uQzjaxwzHrWUgPkkJgem9f
+
+# admin-account(Account),locked_estimates(Bn),minimum_ticket_price(Bn),minimum_init_reward(Bn)
+estimates: ['4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', 10, 100, 100]
+
+# waiter, stash, min_balance_threshold
+manual_bridge: ['4UZfrdu21fXmmd2GubaDo1P2uE4XnxFes8GUGvTy6SWRfKhd', '4U52mX4kJWAYwHEn76y9NBjZMu7TU3Ve8WWKXJcq6Vrzi9fK', 100]
 
 # collection remain balance(total_issuance - total_balances)
 collection:

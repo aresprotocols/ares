@@ -18,7 +18,7 @@ use sp_runtime::{
 	Perbill,
 };
 
-use runtime_common::{AccountId, Balance, Signature};
+use runtime_common::{AccountId, Balance, BlockNumber, Signature};
 
 use crate::service::Block;
 #[cfg(feature = "with-gladios-runtime")]
@@ -109,12 +109,14 @@ pub struct ChainSpecConfig {
 	validator_minimum_deposit: Balance,
 	council_minimum_deposit: Balance,
 	root: AccountId,
+	estimates: (AccountId, BlockNumber, BlockNumber, BlockNumber),
 	council: Vec<AccountId>,
 	technical: Vec<AccountId>,
 	boot_nodes: Option<Vec<MultiaddrWithPeerId>>,
 	telemetry_endpoints: Option<TelemetryEndpoints>,
 	symbols: Vec<(Box<str>, Box<str>, u32, u32, u8)>,
 	ss58: Option<u16>,
+	manual_bridge: (AccountId, AccountId, Balance),
 }
 
 impl ChainSpecConfig {

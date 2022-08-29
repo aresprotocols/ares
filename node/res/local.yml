@@ -603,6 +603,14 @@ balances:
 boot_nodes:
   - '/ip4/45.77.243.246/tcp/30334/ws/p2p/12D3KooWMqDofvvwRtP7AYSAyJ2udNYrj698wnYJbpjomNTHHK9E'
 
+ban: [ ]
+
+# admin-account(Account),locked_estimates(Bn),minimum_ticket_price(Bn),minimum_init_reward(Bn)
+estimates: ['4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU', 10, 100, 100]
+
+# waiter, stash, min_balance_threshold
+manual_bridge: ['4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU', '4SJT3cozQ7Uv31M8A1q5ysarUEtv58xcoA5GgWBnoZ3b7G5w', 100]
+
 telemetry_endpoints:
   - [ "wss://telemetry.polkadot.io/submit/", 0 ]
 

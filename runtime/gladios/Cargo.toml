@@ -135,6 +135,7 @@ std = [
     'pallet-im-online/std',
     "pallet-offences/std",
     "pallet-preimage/std",
+    'pallet-price-estimates/std',
     'pallet-utility/std',
     'sp-api/std',
     'sp-block-builder/std',

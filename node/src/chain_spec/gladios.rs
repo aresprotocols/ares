@@ -8,6 +8,8 @@ pub use gladios_runtime::{
 	part_estimates::EstimatesPalletId,
 	part_ocw_finance::AresFinancePalletId,
 	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
+	ManualBridgeConfig,
+	EstimatesConfig,
 	GenesisConfig, GrandpaConfig, ImOnlineConfig, OracleFinanceConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
@@ -128,6 +130,17 @@ pub fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConf
 					)
 				})
 				.collect(),
+		},
+		manual_bridge: ManualBridgeConfig{
+			waiter_acc: Some(config.manual_bridge.clone().0),
+			stash_acc: Some(config.manual_bridge.clone().1),
+			min_balance_threshold: Some(config.manual_bridge.clone().2)
+		},
+		estimates: EstimatesConfig{
+			admins: vec![config.estimates.clone().0],
+			locked_estimates: config.estimates.clone().1.into(),
+			minimum_ticket_price: config.estimates.clone().2.into(),
+			minimum_init_reward: config.estimates.clone().3.into(),
 		},
 		// council: CouncilConfig { phantom: Default::default(), members: council_members.clone() },
 		council: CouncilConfig::default(),
