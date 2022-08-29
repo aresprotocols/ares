@@ -6,6 +6,14 @@ chain_type: Development
 # one billion
 total_issuance: 1000000000000000000000
 
+ban: [ ]
+
+# admin-account(Account),locked_estimates(Bn),minimum_ticket_price(Bn),minimum_init_reward(Bn)
+estimates: ['4TdZTCCQvTMkLGeMZTEekYzie8k9cfwbMw33qvoUWQsigAnU', 10, 100, 100]
+
+# waiter, stash, min_balance_threshold
+manual_bridge: ['5FvqX8XdznMZajt4oiGqmm87p1tW48yksTU6mPwtDFdcviQh', '5Ebj7Z9DUSUjHUaqQGsH15iFe83GWbznJgWKbyLCWPoVMbWK', 100]
+
 collection:
   - "4U52mX4kJWAYwHEn76y9NBjZMu7TU3Ve8WWKXJcq6Vrzi9fK"
   - "4VWz5zo171eGGjctNjnkosL3N3WHJP96hRQuPYZzQziyBmjR"
@@ -16,8 +24,6 @@ authorities:
   - [ '5GbAZyAiXR9xPWjRRV9txrCCh9CpxUBmGm5grXAGdReCzShY', '5EhdNat32kdbSSfgwwyHMfMX27sFeDdmgSh665LdhisxugB2', '5DfTPwpFoj4rvHNkh6bx2wREfgEE97JxAb9dUPWx9pB1Ak4x','5FiMnGQ7soNQe6kCh8LhoD6Za4eEMLbxKXDB5MDCsYixcpHG', '5DfTPwpFoj4rvHNkh6bx2wREfgEE97JxAb9dUPWx9pB1Ak4x','5DfTPwpFoj4rvHNkh6bx2wREfgEE97JxAb9dUPWx9pB1Ak4x' ]
   - [ '5Fy7d56q8apQciKoex9EfBrGQGguQGaFHJYR9UGkYMn56PuX', '5FeJxhZhmfED6PqRge9SpMzsJi33JxnZWoBNeg6aEPx3jC2d', '5Ejis6uZtn7DVvyHquaEBeuVt9HSXgt9H2gt7aiccUNyVzdb','5D5ae1KVDr3U8X5fFwKzGkzNJKW4dmC2iSAHQ9ZTfMer5EbM', '5Ejis6uZtn7DVvyHquaEBeuVt9HSXgt9H2gt7aiccUNyVzdb','5Ejis6uZtn7DVvyHquaEBeuVt9HSXgt9H2gt7aiccUNyVzdb' ]
   - [ '5DkaySbFDzQ8RwNa6JnMdEFFdB8LpMuGCQGYfmUGZbZuPGW6', '5E4ip35pxFHj3JSYhaLcDZNnFYdqserEg9imnwL5ssM1WzHy', '5FnQpEPVvAVkBgmnFAxAu4yX2QvSsyQerLUy48WBWvdiEAkd','5G66d3SAkfaBfDz7h5vRTMpsHMiNirNFkt1HrmQcCDJWehDk', '5FnQpEPVvAVkBgmnFAxAu4yX2QvSsyQerLUy48WBWvdiEAkd','5FnQpEPVvAVkBgmnFAxAu4yX2QvSsyQerLUy48WBWvdiEAkd' ]
-
-ban: [ ]
 
 balances:
   - [ "5Ebj7Z9DUSUjHUaqQGsH15iFe83GWbznJgWKbyLCWPoVMbWK",1000000000000000000  ]

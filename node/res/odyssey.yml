@@ -18,6 +18,12 @@ balances:
 
 ban: [ ]
 
+# admin-account(Account),locked_estimates(Bn),minimum_ticket_price(Bn),minimum_init_reward(Bn)
+estimates: ['4SaqfpkVNvdEstHNWW1C2BmCDJETaKmEAd26KSXDADvLfrjn', 10, 100, 100]
+
+# waiter, stash, min_balance_threshold
+manual_bridge: ['4QQaokvpS8f6fWjQJjP9yv38674aSEGFCw5Tppkm8scEowTW', '4USEukpUiCMsp7QgEBoBtd17f9P376RupG1YpZRoVcTtowL5', 100]
+
 # collection remain balance(total_issuance - total_balances)
 collection:
   - '4USEukpUiCMsp7QgEBoBtd17f9P376RupG1YpZRoVcTtowL5'
@@ -77,7 +83,6 @@ technical:
   - '4QQaokvpS8f6fWjQJjP9yv38674aSEGFCw5Tppkm8scEowTW'
 
 root: '4SaqfpkVNvdEstHNWW1C2BmCDJETaKmEAd26KSXDADvLfrjn'
-
 
 symbols:
   # price_key, request_uri, parse_version, fraction_num, request interval

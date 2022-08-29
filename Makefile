@@ -47,6 +47,7 @@ build-odyssey:
 .PHONY: build-pioneer
 build-pioneer:
 	cargo build --locked --features with-pioneer-runtime --bin ares-node --profile production --workspace
+	# cargo build --features with-pioneer-runtime --bin ares-node --profile production --workspace
 
 .PHONY: build-gladios-fast
 build-gladios-fast:

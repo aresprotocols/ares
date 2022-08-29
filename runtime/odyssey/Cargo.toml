@@ -162,6 +162,7 @@ std = [
     'pallet-scheduler/std',
     'pallet-multisig/std',
     'pallet-proxy/std',
+    'pallet-price-estimates/std',
     'pallet-vesting/std',
     'pallet-elections-phragmen/std',
 #    "member-extend/std",
