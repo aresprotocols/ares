@@ -221,6 +221,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle"
 version = "3.10.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "ares-oracle-provider-support",
  "bound-vec-helper",
@@ -253,6 +254,7 @@ dependencies = [
 [[package]]
 name = "ares-oracle-provider-support"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "frame-support",
  "lite-json",
@@ -266,6 +268,7 @@ dependencies = [
 [[package]]
 name = "ares-rpc"
 version = "1.0.0"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "ares-oracle-provider-support",
  "chrono",
@@ -770,6 +773,7 @@ dependencies = [
 [[package]]
 name = "bound-vec-helper"
 version = "1.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "frame-support",
  "sp-std 4.0.0",
@@ -4124,6 +4128,7 @@ dependencies = [
 [[package]]
 name = "manual-bridge"
 version = "1.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "bound-vec-helper",
  "frame-benchmarking",
@@ -4918,6 +4923,7 @@ dependencies = [
 [[package]]
 name = "oracle-finance"
 version = "3.1.2"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4970,6 +4976,7 @@ dependencies = [
 [[package]]
 name = "pallet-ares-challenge"
 version = "3.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5593,6 +5600,7 @@ dependencies = [
 [[package]]
 name = "pallet-price-estimates"
 version = "4.0.0-dev"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "ares-oracle",
  "ares-oracle-provider-support",
@@ -8488,6 +8496,7 @@ dependencies = [
 [[package]]
 name = "seed-reader"
 version = "1.0.1"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "frame-support",
  "sp-core",
@@ -9564,6 +9573,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "staking-extend"
 version = "3.0.5"
+source = "git+https://github.com/aresprotocols/ocw-suit?branch=polkadot-v0.9.28#a47498b86bae40fb06fb1508c822b09a0d34b2b0"
 dependencies = [
  "ares-oracle-provider-support",
  "frame-election-provider-support",

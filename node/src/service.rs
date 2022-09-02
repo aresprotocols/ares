@@ -666,7 +666,6 @@ where
 								.iter()
 								.map(|x| make_rpc_request("author_insertKey", (x.0, x.1, x.2.as_str())))
 								.collect();
-							// TODO:: Add ares rpc storage write
 							rpc_list.iter().any(|x| {
 								if let Some(rpc_str) = x {
 									// send rpc request.
