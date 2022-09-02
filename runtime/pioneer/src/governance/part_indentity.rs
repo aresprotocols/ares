@@ -1,11 +1,11 @@
 use super::*;
 use crate::governance::part_council::CouncilCollective;
-use constants::currency::{deposit, Balance};
-use frame_support::traits::EnsureOneOf;
+use constants::currency::CENTS;
+use frame_support::traits::{EitherOfDiverse};
 
-type EnsureRootOrHalfCouncil = EnsureOneOf<
+type EnsureRootOrHalfCouncil = EitherOfDiverse<
 	EnsureRoot<AccountId>,
-	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
 >;
 
 parameter_types! {

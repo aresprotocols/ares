@@ -82,7 +82,7 @@ fn make_spec_config(
 		chain_spec_config =
 			serde_yaml::from_slice(default_config).map_err(|e| format!("Error parsing config file: {}", e))?;
 	}
-	let pallet_accounts: Vec<AccountId> = pallet_accounts.iter().map(|pallet| pallet.into_account()).collect();
+	let pallet_accounts: Vec<AccountId> = pallet_accounts.iter().map(|pallet| pallet.into_account_truncating()).collect();
 	chain_spec_config.ban = [chain_spec_config.ban, pallet_accounts].concat();
 	chain_spec_config.ss58 = Some(ss58);
 	chain_spec_config.init();

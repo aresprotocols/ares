@@ -14,7 +14,7 @@ impl pallet_ares_challenge::Config<Challenge> for Runtime {
 	type Event = Event;
 	type MinimumDeposit = MinimumDeposit;
 	type PalletId = ChallengePalletId;
-	type CouncilMajorityOrigin = pallet_collective::EnsureProportionAtLeast<_3, _4, AccountId, governance::part_council::CouncilCollective>;
+	type CouncilMajorityOrigin = pallet_collective::EnsureProportionAtLeast<AccountId, governance::part_council::CouncilCollective,3,4>;
 	type Currency = Balances;
 	type SlashProposer = AresChallenge;
 	// type BidderMinimumDeposit = BidderMinimumDeposit;

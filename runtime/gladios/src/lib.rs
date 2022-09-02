@@ -17,10 +17,12 @@ use pallet_grandpa::{
 use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 use runtime_common::*;
 use sp_api::impl_runtime_apis;
+use sp_std::convert::TryInto;
+use sp_std::convert::TryFrom;
 // use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::{
 	crypto::KeyTypeId,
-	u32_trait::{_1, _2, _3, _4},
+	// u32_trait::{_1, _2, _3, _4},
 	OpaqueMetadata,
 };
 use sp_runtime::{
@@ -60,7 +62,7 @@ use frame_system::EnsureRoot;
 pub use pallet_balances::Call as BalancesCall;
 use pallet_collective;
 pub use pallet_timestamp::Call as TimestampCall;
-use pallet_transaction_payment::CurrencyAdapter;
+use pallet_transaction_payment::{CurrencyAdapter, TargetedFeeAdjustment};
 use polkadot_runtime_common::claims;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
@@ -80,11 +82,12 @@ pub mod part_manual_bridge;
 pub use constants::currency::{deposit, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{DAYS, HOURS, MINUTES, SLOT_DURATION};
 pub use runtime_common::*;
+use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use runtime_common::{AccountId, DealWithFees, Signature, SlowAdjustingFeeUpdate};
 
 use frame_support::pallet_prelude::InvalidTransaction;
 use frame_support::traits::ExtrinsicCall;
-use frame_support::weights::IdentityFee;
+use frame_support::weights::{ConstantMultiplier, IdentityFee};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 // pub type Signature = Signature ;// MultiSignature;
@@ -132,7 +135,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	//   `spec_version`, and `authoring_version` are the same between Wasm and native.
 	// This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
 	//   the compatible custom types.
-	spec_version: 153,
+	spec_version: 154,
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -156,7 +159,6 @@ parameter_types! {
 }
 
 // Configure FRAME pallets to include in runtime.
-
 impl frame_system::Config for Runtime {
 	/// The basic call filter to use in dispatchable.
 	type BaseCallFilter = frame_support::traits::Everything;
@@ -304,12 +306,22 @@ parameter_types! {
 // 	type FeeMultiplierUpdate = SlowAdjustingFeeUpdate<Self>;
 // }
 
+// impl pallet_transaction_payment::Config for Runtime {
+// 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
+// 	type TransactionByteFee = TransactionByteFee;
+// 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
+// 	type WeightToFee = IdentityFee<Balance>;
+// 	type FeeMultiplierUpdate = ();
+// }
+
 impl pallet_transaction_payment::Config for Runtime {
-	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
-	type TransactionByteFee = TransactionByteFee;
+	type Event = Event;
+	type OnChargeTransaction = CurrencyAdapter<Balances, DealWithFees<Self>>;
 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
 	type WeightToFee = IdentityFee<Balance>;
-	type FeeMultiplierUpdate = ();
+	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
+	type FeeMultiplierUpdate =
+	TargetedFeeAdjustment<Self, TargetBlockFullness, AdjustmentVariable, MinimumMultiplier>;
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -340,7 +352,7 @@ construct_runtime!(
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
-		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
+		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
 
 		// network
@@ -377,7 +389,10 @@ construct_runtime!(
 		Claims: claims::{Pallet, Call, Storage, Event<T>, Config<T>, ValidateUnsigned},
 
 		Estimates: pallet_price_estimates,
-		ManualBridge: manual_bridge::{Pallet, Call, Storage, Event<T>, Config<T>},
+		ManualBridge: manual_bridge,
+		ChildBounties: pallet_child_bounties,
+		NominationPools: pallet_nomination_pools,
+		AuthorityDiscovery: pallet_authority_discovery,
 		// Gilts pallet.
 		// Gilt: pallet_gilt::{Pallet, Call, Storage, Event<T>, Config} ,
 	}
@@ -660,6 +675,58 @@ impl_runtime_apis! {
 			System::account_nonce(account)
 		}
 	}
+
+	impl sp_authority_discovery::AuthorityDiscoveryApi<Block> for Runtime {
+		fn authorities() -> Vec<AuthorityDiscoveryId> {
+			AuthorityDiscovery::authorities()
+		}
+	}
+
+	// impl pallet_contracts_rpc_runtime_api::ContractsApi<
+	// 	Block, AccountId, Balance, BlockNumber, Hash,
+	// >
+	// 	for Runtime
+	// {
+	// 	fn call(
+	// 		origin: AccountId,
+	// 		dest: AccountId,
+	// 		value: Balance,
+	// 		gas_limit: u64,
+	// 		storage_deposit_limit: Option<Balance>,
+	// 		input_data: Vec<u8>,
+	// 	) -> pallet_contracts_primitives::ContractExecResult<Balance> {
+	// 		Contracts::bare_call(origin, dest, value, gas_limit, storage_deposit_limit, input_data, true)
+	// 	}
+	//
+	// 	fn instantiate(
+	// 		origin: AccountId,
+	// 		value: Balance,
+	// 		gas_limit: u64,
+	// 		storage_deposit_limit: Option<Balance>,
+	// 		code: pallet_contracts_primitives::Code<Hash>,
+	// 		data: Vec<u8>,
+	// 		salt: Vec<u8>,
+	// 	) -> pallet_contracts_primitives::ContractInstantiateResult<AccountId, Balance>
+	// 	{
+	// 		Contracts::bare_instantiate(origin, value, gas_limit, storage_deposit_limit, code, data, salt, true)
+	// 	}
+	//
+	// 	fn upload_code(
+	// 		origin: AccountId,
+	// 		code: Vec<u8>,
+	// 		storage_deposit_limit: Option<Balance>,
+	// 	) -> pallet_contracts_primitives::CodeUploadResult<Hash, Balance>
+	// 	{
+	// 		Contracts::bare_upload_code(origin, code, storage_deposit_limit)
+	// 	}
+	//
+	// 	fn get_storage(
+	// 		address: AccountId,
+	// 		key: Vec<u8>,
+	// 	) -> pallet_contracts_primitives::GetStorageResult {
+	// 		Contracts::get_storage(address, key)
+	// 	}
+	// }
 
 	impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance> for Runtime {
 		fn query_info(

@@ -11,22 +11,25 @@ use ares_oracle::traits::IsAresOracleCall;
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList, GrandpaEquivocationOffence,
 };
+use runtime_common::*;
+use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use sp_api::impl_runtime_apis;
-// use sp_consensus_aura::sr25519::AuthorityId as AuraId;
+use sp_std::convert::TryInto;
+use sp_std::convert::TryFrom;
 use ares_oracle_provider_support::crypto::sr25519::AuthorityId as AresId;
 use codec::Encode;
 use pallet_im_online::sr25519::AuthorityId as ImOnlineId;
 
 use sp_core::{
 	crypto::KeyTypeId,
-	u32_trait::{_1, _2, _3, _4},
+	// u32_trait::{_1, _2, _3, _4},
 	OpaqueMetadata,
 };
 use sp_runtime::{
 	create_runtime_str, generic,
 	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, NumberFor, Verify},
 	transaction_validity::{TransactionSource, TransactionValidity},
-	ApplyExtrinsicResult, MultiSignature,
+	ApplyExtrinsicResult,
 };
 
 use frame_support::{
@@ -49,7 +52,7 @@ pub use frame_support::{
 	traits::{KeyOwnerProofSystem, Randomness, StorageInfo},
 	weights::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
-		DispatchClass, IdentityFee, Weight,
+		DispatchClass, Weight,
 	},
 	PalletId, RuntimeDebug, StorageValue,
 };
@@ -61,7 +64,7 @@ use frame_system::EnsureRoot;
 pub use pallet_balances::Call as BalancesCall;
 use pallet_collective;
 pub use pallet_timestamp::Call as TimestampCall;
-use pallet_transaction_payment::CurrencyAdapter;
+use pallet_transaction_payment::{CurrencyAdapter, TargetedFeeAdjustment};
 use polkadot_runtime_common::claims;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
@@ -79,15 +82,18 @@ pub mod part_manual_bridge;
 
 use network::part_staking::{BondingDuration, SessionsPerEra};
 
-pub use constants::currency::{deposit, Balance, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
-use constants::time::{BlockNumber, DAYS, HOURS, MINUTES, SLOT_DURATION};
+// pub use constants::currency::{deposit, Balance, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
+pub use constants::currency::{deposit, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
+use constants::time::{DAYS, HOURS, MINUTES, SLOT_DURATION};
+use runtime_common::{AccountId, DealWithFees, Signature, SlowAdjustingFeeUpdate};
+use frame_support::weights::{ConstantMultiplier, IdentityFee};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
-pub type Signature = MultiSignature;
+// pub type Signature = MultiSignature;
 
 /// Some way of identifying an account on the chain. We intentionally make it equivalent
 /// to the public key of our transaction signing scheme.
-pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
+// pub type AccountId = <<Signature as Verify>::Signer as IdentifyAccount>::AccountId;
 
 /// Index of a transaction in the chain.
 pub type Index = u32;
@@ -128,7 +134,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	//   `spec_version`, and `authoring_version` are the same between Wasm and native.
 	// This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
 	//   the compatible custom types.
-	spec_version: 153,
+	spec_version: 154,
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 1,
@@ -289,12 +295,21 @@ parameter_types! {
 	pub const OperationalFeeMultiplier: u8 = 5;
 }
 
+// impl pallet_transaction_payment::Config for Runtime {
+// 	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
+// 	type TransactionByteFee = TransactionByteFee;
+// 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
+// 	type WeightToFee = IdentityFee<Balance>;
+// 	type FeeMultiplierUpdate = ();
+// }
 impl pallet_transaction_payment::Config for Runtime {
-	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
-	type TransactionByteFee = TransactionByteFee;
+	type Event = Event;
+	type OnChargeTransaction = CurrencyAdapter<Balances, DealWithFees<Self>>;
 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
 	type WeightToFee = IdentityFee<Balance>;
-	type FeeMultiplierUpdate = ();
+	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
+	type FeeMultiplierUpdate =
+	TargetedFeeAdjustment<Self, TargetBlockFullness, AdjustmentVariable, MinimumMultiplier>;
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -325,7 +340,7 @@ construct_runtime!(
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Grandpa: pallet_grandpa::{Pallet, Call, Storage, Config, Event, ValidateUnsigned},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
-		TransactionPayment: pallet_transaction_payment::{Pallet, Storage},
+		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo::{Pallet, Call, Config<T>, Storage, Event<T>},
 
 		// network
@@ -366,7 +381,10 @@ construct_runtime!(
 		// Estimates: pallet_price_estimates::{Pallet, Call, Storage, Event<T>, Config<T>},
 		// Estimates: pallet_price_estimates::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		Estimates: pallet_price_estimates,
-		ManualBridge: manual_bridge::{Pallet, Call, Storage, Event<T>, Config<T>},
+		ManualBridge: manual_bridge,
+		ChildBounties: pallet_child_bounties,
+		NominationPools: pallet_nomination_pools,
+		AuthorityDiscovery: pallet_authority_discovery,
 	}
 );
 
@@ -651,6 +669,58 @@ impl_runtime_apis! {
 			System::account_nonce(account)
 		}
 	}
+
+	impl sp_authority_discovery::AuthorityDiscoveryApi<Block> for Runtime {
+		fn authorities() -> Vec<AuthorityDiscoveryId> {
+			AuthorityDiscovery::authorities()
+		}
+	}
+
+	// impl pallet_contracts_rpc_runtime_api::ContractsApi<
+	// 	Block, AccountId, Balance, BlockNumber, Hash,
+	// >
+	// 	for Runtime
+	// {
+	// 	fn call(
+	// 		origin: AccountId,
+	// 		dest: AccountId,
+	// 		value: Balance,
+	// 		gas_limit: u64,
+	// 		storage_deposit_limit: Option<Balance>,
+	// 		input_data: Vec<u8>,
+	// 	) -> pallet_contracts_primitives::ContractExecResult<Balance> {
+	// 		Contracts::bare_call(origin, dest, value, gas_limit, storage_deposit_limit, input_data, true)
+	// 	}
+	//
+	// 	fn instantiate(
+	// 		origin: AccountId,
+	// 		value: Balance,
+	// 		gas_limit: u64,
+	// 		storage_deposit_limit: Option<Balance>,
+	// 		code: pallet_contracts_primitives::Code<Hash>,
+	// 		data: Vec<u8>,
+	// 		salt: Vec<u8>,
+	// 	) -> pallet_contracts_primitives::ContractInstantiateResult<AccountId, Balance>
+	// 	{
+	// 		Contracts::bare_instantiate(origin, value, gas_limit, storage_deposit_limit, code, data, salt, true)
+	// 	}
+	//
+	// 	fn upload_code(
+	// 		origin: AccountId,
+	// 		code: Vec<u8>,
+	// 		storage_deposit_limit: Option<Balance>,
+	// 	) -> pallet_contracts_primitives::CodeUploadResult<Hash, Balance>
+	// 	{
+	// 		Contracts::bare_upload_code(origin, code, storage_deposit_limit)
+	// 	}
+	//
+	// 	fn get_storage(
+	// 		address: AccountId,
+	// 		key: Vec<u8>,
+	// 	) -> pallet_contracts_primitives::GetStorageResult {
+	// 		Contracts::get_storage(address, key)
+	// 	}
+	// }
 
 	impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance> for Runtime {
 		fn query_info(

@@ -10,7 +10,7 @@ impl claims::Config for Runtime {
 	type Event = Event;
 	type VestingSchedule = Vesting;
 	type Prefix = Prefix;
-	type MoveClaimOrigin = pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>;
+	type MoveClaimOrigin = pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>;
 	type WeightInfo = EmptyClaimWeightInfo;
 }
 

@@ -15,12 +15,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// use ares_node::benchmarking::{inherent_benchmark_data, RemarkBuilder, TransferKeepAliveBuilder};
+use frame_benchmarking_cli::{BenchmarkCmd, ExtrinsicFactory};
 use crate::{
 	chain_spec,
 	cli::{Cli, Subcommand},
+	service::FullClient,
 	service,
+	benchmarking::{
+		// inherent_benchmark_data,
+		RemarkBuilder,
+		// TransferKeepAliveBuilder
+	},
 };
 
+// use crate::{
+// 	chain_spec, service,
+// 	service::{new_partial, FullClient},
+// 	Cli, Subcommand,
+// };
+
+use std::sync::Arc;
 use crate::service::Block;
 use sc_cli::{ChainSpec, Result, RuntimeVersion, SubstrateCli};
 use sc_service::PartialComponents;
@@ -303,17 +318,34 @@ pub fn run() -> Result<()> {
 			let runner = cli.create_runner(cmd)?;
 			runner.sync_run(|config| cmd.run(config.database))
 		},
+		// Some(Subcommand::Revert(cmd)) => {
+		// 	let runner = cli.create_runner(cmd)?;
+		// 	let chain_spec = &runner.config().chain_spec;
+		//
+		// 	with_runtime_or_err!(chain_spec, {
+		// 		return runner.async_run(|config| {
+		// 			let PartialComponents { client, task_manager, backend, .. } =
+		// 				service::new_partial::<RuntimeApi, ExecutorDispatch>(&config)?;
+		// 			Ok((cmd.run(client, backend), task_manager))
+		// 		});
+		// 	})
+		// },
 		Some(Subcommand::Revert(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
 			let chain_spec = &runner.config().chain_spec;
-
 			with_runtime_or_err!(chain_spec, {
 				return runner.async_run(|config| {
-					let PartialComponents { client, task_manager, backend, .. } =
-						service::new_partial::<RuntimeApi, ExecutorDispatch>(&config)?;
-					Ok((cmd.run(client, backend), task_manager))
+					let PartialComponents { client, task_manager, backend, .. } = service::new_partial::<RuntimeApi, ExecutorDispatch>(&config)?;
+					let aux_revert = Box::new(|client: Arc<FullClient<RuntimeApi, ExecutorDispatch>>, backend, blocks| {
+						sc_consensus_babe::revert(client.clone(), backend, blocks)?;
+						sc_finality_grandpa::revert(client, blocks)?;
+						Ok(())
+					});
+					Ok((cmd.run(client, backend, Some(aux_revert)), task_manager))
 				});
 			})
+
+
 		},
 		#[cfg(feature = "try-runtime")]
 		Some(Subcommand::TryRuntime(cmd)) => {
@@ -332,18 +364,74 @@ pub fn run() -> Result<()> {
 		Some(Subcommand::TryRuntime) => Err("TryRuntime wasn't enabled when building the node. \
 				You can enable it with `--features try-runtime`."
 			.into()),
-		Some(Subcommand::Benchmark(cmd)) =>
-			if cfg!(feature = "runtime-benchmarks") {
-				let runner = cli.create_runner(cmd)?;
-				let chain_spec = &runner.config().chain_spec;
-				with_runtime_or_err!(chain_spec, {
-					return runner.sync_run(|config| cmd.run::<service::Block, ExecutorDispatch>(config));
-				})
-			} else {
-				Err("Benchmarking wasn't enabled when building the node. You can enable it with \
-				     `--features runtime-benchmarks`."
-					.into())
-			},
+		Some(Subcommand::Benchmark(cmd)) => Err("Not implement".into()),
+			//TODO::Add benchmark command.
+
+			// if cfg!(feature = "runtime-benchmarks") {
+			// 	let runner = cli.create_runner(cmd)?;
+			// 	let chain_spec = &runner.config().chain_spec;
+			// 	with_runtime_or_err!(chain_spec, {
+			// 		return runner.sync_run(|config| cmd.run::<service::Block, ExecutorDispatch>(config));
+			// 	})
+			// } else {
+			// 	Err("Benchmarking wasn't enabled when building the node. You can enable it with \
+			// 	     `--features runtime-benchmarks`."
+			// 		.into())
+			// },
+		// Some(Subcommand::Benchmark(cmd)) => {
+		// 	let runner = cli.create_runner(cmd)?;
+		// 	let chain_spec = &runner.config().chain_spec;
+		// 	with_runtime_or_err!(chain_spec, {
+		// 		return runner.sync_run(|config| {
+		// 			// This switch needs to be in the client, since the client decides
+		// 			// which sub-commands it wants to support.
+		// 			match cmd {
+		// 				BenchmarkCmd::Pallet(cmd) => {
+		// 					if !cfg!(feature = "runtime-benchmarks") {
+		// 						return Err(
+		// 							"Runtime benchmarking wasn't enabled when building the node. \
+		// 						You can enable it with `--features runtime-benchmarks`."
+		// 								.into(),
+		// 						)
+		// 					}
+		// 					cmd.run::<Block, ExecutorDispatch>(config)
+		// 				},
+		// 				BenchmarkCmd::Block(cmd) => {
+		// 					let PartialComponents { client, .. } = new_partial(&config)?;
+		// 					cmd.run(client)
+		// 				},
+		// 				BenchmarkCmd::Storage(cmd) => {
+		// 					let PartialComponents { client, backend, .. } = new_partial(&config)?;
+		// 					let db = backend.expose_db();
+		// 					let storage = backend.expose_storage();
+		//
+		// 					cmd.run(config, client, db, storage)
+		// 				},
+		// 				BenchmarkCmd::Overhead(cmd) => {
+		// 					let PartialComponents { client, .. } = new_partial(&config)?;
+		// 					let ext_builder = RemarkBuilder::new(client.clone());
+		//
+		// 					cmd.run(config, client, inherent_benchmark_data()?, &ext_builder)
+		// 				},
+		// 				BenchmarkCmd::Extrinsic(cmd) => {
+		// 					let PartialComponents { client, .. } = service::new_partial(&config)?;
+		// 					// Register the *Remark* and *TKA* builders.
+		// 					let ext_factory = ExtrinsicFactory(vec![
+		// 						Box::new(RemarkBuilder::new(client.clone())),
+		// 						Box::new(TransferKeepAliveBuilder::new(
+		// 							client.clone(),
+		// 							Sr25519Keyring::Alice.to_account_id(),
+		// 							ExistentialDeposit::get(),
+		// 						)),
+		// 					]);
+		// 					cmd.run(client, inherent_benchmark_data()?, &ext_factory)
+		// 				},
+		// 				BenchmarkCmd::Machine(cmd) =>
+		// 					cmd.run(&config, SUBSTRATE_REFERENCE_HARDWARE.clone()),
+		// 			}
+		// 		});
+		// 	})
+		// },
 		None => {
 			let runner = cli.create_runner(&cli.run)?;
 			runner.run_node_until_exit(|config| async move {
@@ -373,9 +461,15 @@ pub fn run() -> Result<()> {
 					}
 				}
 
+
 				with_runtime_or_err!(config.chain_spec, {
-					return service::new_full::<RuntimeApi, ExecutorDispatch>(config, ares_params)
-						.map_err(sc_cli::Error::Service);
+					return service::new_full(
+						Option::<(RuntimeApi, ExecutorDispatch)>::None,
+						config,
+						false, //TODO:: Use cli.no_hardware_benchmarks
+						|_, _| (),
+						ares_params,
+					).map_err(sc_cli::Error::Service);
 				})
 			})
 		},

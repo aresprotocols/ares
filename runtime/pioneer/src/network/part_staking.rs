@@ -1,15 +1,17 @@
 use super::*;
 
-use crate::network::part_elections::NposCompactSolution16;
-use frame_support::traits::EnsureOneOf;
+// use crate::network::part_elections::NposCompactSolution24;
+use frame_support::traits::{EitherOfDiverse, U128CurrencyToVote};
 use frame_system::EnsureRoot;
 use governance::part_council::CouncilCollective;
 use pallet_collective;
 use pallet_staking;
 pub use pallet_staking::StakerStatus;
-use runtime_common::prod_or_fast;
 use sp_runtime::curve::PiecewiseLinear;
+use sp_runtime::traits::ConstU32;
 pub use sp_staking;
+use part_elections::MaxNominations;
+use sp_npos_elections::VoteWeight;
 
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
@@ -35,7 +37,7 @@ parameter_types! {
 	pub const MaxNominatorRewardedPerValidator: u32 = 256;
 	pub const OffendingValidatorsThreshold: Perbill = Perbill::from_percent(17);
 	// 16
-	pub const MaxNominations: u32 = <NposCompactSolution16 as sp_npos_elections::NposSolution>::LIMIT as u32;
+	// pub const MaxNominations: u32 = <NposCompactSolution16 as sp_npos_elections::NposSolution>::LIMIT as u32;
 }
 
 parameter_types! {
@@ -44,64 +46,51 @@ parameter_types! {
 
 impl pallet_bags_list::Config for Runtime {
 	type Event = Event;
-	type VoteWeightProvider = Staking;
+	type ScoreProvider = Staking;
 	type WeightInfo = pallet_bags_list::weights::SubstrateWeight<Runtime>;
 	type BagThresholds = BagThresholds;
+	type Score = VoteWeight;
 }
 
 impl pallet_staking::Config for Runtime {
-	type Currency = Balances;
-	type UnixTime = Timestamp;
-	type CurrencyToVote = runtime_common::CurrencyToVote;
-	// type ElectionProvider =  ElectionProviderMultiPhase;
-	type ElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
-	// // ElectionProviderMultiPhase;
-	// type GenesisElectionProvider = onchain::OnChainSequentialPhragmen<
-	// 	pallet_election_provider_multi_phase::OnChainConfig<Self>,
-	// >;
-	// type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
-	type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmenGenesis<Self>;
-	type MaxNominations = MaxNominations;
-	type RewardRemainder = Treasury;
-	type Event = Event;
-	type Slash = Treasury;
-	// send the slashed funds to the treasury.
-	type Reward = ();
-	// rewards are minted from the void
-	type SessionsPerEra = SessionsPerEra;
-	type BondingDuration = BondingDuration;
-	type SlashDeferDuration = SlashDeferDuration;
-	/// A super-majority of the council can cancel the slash.
-	type SlashCancelOrigin = EnsureOneOf<
-		EnsureRoot<AccountId>,
-		pallet_collective::EnsureProportionAtLeast<_3, _4, AccountId, CouncilCollective>,
-	>;
-	type SessionInterface = Self;
-	type EraPayout = pallet_staking::ConvertCurve<RewardCurve>;
-	type NextNewSession = Session;
-	type MaxNominatorRewardedPerValidator = MaxNominatorRewardedPerValidator;
-	type OffendingValidatorsThreshold = OffendingValidatorsThreshold;
-	// Alternatively, use pallet_staking::UseNominatorsMap<Runtime> to just use the nominators map.
-	// Note that the aforementioned does not scale to a very large number of nominators.
-	type SortedListProvider = BagsList;
-	type BenchmarkingConfig = runtime_common::StakingBenchmarkingConfig;
-	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
+    type Currency = Balances;
+    type CurrencyBalance = Balance;
+    type UnixTime = Timestamp;
+    // type CurrencyToVote = runtime_common::CurrencyToVote;
+    type CurrencyToVote = U128CurrencyToVote;
+    type ElectionProvider = staking_extend::elect::OnChainSequentialPhragmen<Self>;
+    // TODO:: please check why not use : type GenesisElectionProvider = onchain::UnboundedExecution<OnChainSeqPhragmen>;
+    type GenesisElectionProvider = staking_extend::elect::OnChainSequentialPhragmenGenesis<Self>;
+    type MaxNominations = MaxNominations;
+    type RewardRemainder = Treasury;
+    type Event = Event;
+    type Slash = Treasury;
+    // send the slashed funds to the treasury.
+    type Reward = ();
+    // rewards are minted from the void
+    type SessionsPerEra = SessionsPerEra;
+    type BondingDuration = BondingDuration;
+    type SlashDeferDuration = SlashDeferDuration;
+    /// A super-majority of the council can cancel the slash.
+    // type SlashCancelOrigin = EnsureOneOf<
+    // 	EnsureRoot<AccountId>,
+    // 	pallet_collective::EnsureProportionAtLeast<AccountId, CouncilCollective, 3, 4>,
+    // >;
+    type SlashCancelOrigin = EitherOfDiverse<
+        EnsureRoot<AccountId>,
+        pallet_collective::EnsureProportionAtLeast<AccountId, CouncilCollective, 3, 4>,
+    >;
+    type SessionInterface = Self;
+    type EraPayout = pallet_staking::ConvertCurve<RewardCurve>;
+    type NextNewSession = Session;
+    type MaxNominatorRewardedPerValidator = MaxNominatorRewardedPerValidator;
+    type OffendingValidatorsThreshold = OffendingValidatorsThreshold;
+    // Alternatively, use pallet_staking::UseNominatorsMap<Runtime> to just use the nominators map.
+    // Note that the aforementioned does not scale to a very large number of nominators.
+    // type SortedListProvider = BagsList;
+    type VoterList = BagsList;
+    type MaxUnlockingChunks = ConstU32<32>;
+    type OnStakerSlash = NominationPools;
+    type BenchmarkingConfig = runtime_common::StakingBenchmarkingConfig;
+    type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
 }
-
-// struct GenesisElectionForStakingExtend;
-//
-// impl<T: onchain::Config> ElectionProvider for OnChainSequentialPhragmen<T> {
-// 	type AccountId =<T::DataProvider as ElectionDataProvider>::AccountId;
-// 	type BlockNumber = <T::DataProvider as ElectionDataProvider>::BlockNumber ;
-// 	// type Error = <T::ElectionProvider as ElectionProvider>::Error ;
-// 	// type DataProvider = <T::ElectionProvider as ElectionProvider>::DataProvider;
-//
-// 	// type AccountId = T::AccountId;
-// 	// type BlockNumber = T::BlockNumber ;
-// 	type Error = onchain::Error;
-// 	type DataProvider = T::DataProvider ;
-//
-// 	fn elect() -> Result<Supports<Self::AccountId>, Self::Error> {
-// 		T::ElectionProvider::elect()
-// 	}
-// }

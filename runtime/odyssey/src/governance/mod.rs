@@ -16,3 +16,4 @@ pub mod part_technical;
 pub mod part_treasury;
 pub mod part_vesting;
 pub mod part_utility;
+pub mod part_child_bounties;

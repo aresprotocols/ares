@@ -12,6 +12,8 @@ pub mod part_session;
 pub mod part_staking;
 pub mod part_staking_extend;
 pub mod voter_bags;
+pub mod part_nomination_pools;
+pub mod part_authority_discovery;
 
 // ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 

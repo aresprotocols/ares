@@ -1,11 +1,16 @@
 use super::*;
 use crate::governance::part_council::CouncilCollective;
 use constants::currency::CENTS;
-use frame_support::traits::EnsureOneOf;
+use frame_support::traits::{EitherOfDiverse};
 
-type EnsureRootOrHalfCouncil = EnsureOneOf<
+// type EnsureRootOrHalfCouncil = EnsureOneOf<
+// 	EnsureRoot<AccountId>,
+// 	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
+// >;
+
+type EnsureRootOrHalfCouncil = EitherOfDiverse<
 	EnsureRoot<AccountId>,
-	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
 >;
 
 parameter_types! {
@@ -32,3 +37,18 @@ impl pallet_identity::Config for Runtime {
 	type RegistrarOrigin = EnsureRootOrHalfCouncil;
 	type WeightInfo = pallet_identity::weights::SubstrateWeight<Runtime>;
 }
+
+// impl pallet_identity::Config for Runtime {
+// 	// type Event = Event;
+// 	// type Currency = Balances;
+// 	// type BasicDeposit = BasicDeposit;
+// 	// type FieldDeposit = FieldDeposit;
+// 	// type SubAccountDeposit = SubAccountDeposit;
+// 	// type MaxSubAccounts = MaxSubAccounts;
+// 	// type MaxAdditionalFields = MaxAdditionalFields;
+// 	// type MaxRegistrars = MaxRegistrars;
+// 	// type Slashed = Treasury;
+// 	type ForceOrigin = EnsureRootOrHalfCouncil;
+// 	type RegistrarOrigin = EnsureRootOrHalfCouncil;
+// 	type WeightInfo = pallet_identity::weights::SubstrateWeight<Runtime>;
+// }

@@ -9,6 +9,7 @@ mod rpc;
 // mod services;
 mod commands;
 mod service;
+mod benchmarking;
 fn main() -> sc_cli::Result<()> {
 	command::run()
 }

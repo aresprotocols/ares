@@ -2,12 +2,21 @@ use super::*;
 use crate::governance::part_technical::TechnicalCollective;
 use ares_oracle;
 
+use codec::Encode;
+use frame_support::{
+	sp_runtime::{
+		generic::{Era, SignedPayload},
+		traits,
+	}
+};
+use frame_support::traits::EitherOfDiverse;
+
 // An index to a block.
 pub type BlockNumber = u32;
 
-pub type EnsureRootOrHalfTechnicalCollective = EnsureOneOf<
+pub type EnsureRootOrHalfTechnicalCollective = EitherOfDiverse<
 	EnsureRoot<AccountId>,
-	pallet_collective::EnsureProportionAtLeast<_1, _2, AccountId, TechnicalCollective>,
+	pallet_collective::EnsureProportionAtLeast<AccountId, TechnicalCollective, 1, 2>,
 >;
 
 parameter_types! {

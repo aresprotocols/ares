@@ -1,5 +1,6 @@
 use sc_consensus_babe::AuthorityId as BabeId;
 use sp_runtime::Percent;
+use gladios_runtime::DOLLARS;
 
 pub use gladios_runtime::{
 	governance::{part_elections::PhragmenElectionPalletId, part_treasury::TreasuryPalletId},
@@ -7,7 +8,7 @@ pub use gladios_runtime::{
 	part_challenge::ChallengePalletId,
 	part_estimates::EstimatesPalletId,
 	part_ocw_finance::AresFinancePalletId,
-	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
+	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, NominationPoolsConfig, AuthorityDiscoveryConfig,
 	ManualBridgeConfig,
 	EstimatesConfig,
 	GenesisConfig, GrandpaConfig, ImOnlineConfig, OracleFinanceConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
@@ -160,5 +161,12 @@ pub fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConf
 				.map(|member| (member.clone(), config.council_minimum_deposit))
 				.collect(),
 		},
+		nomination_pools: NominationPoolsConfig {
+			min_create_bond: 1000 * DOLLARS,
+			min_join_bond: 100 * DOLLARS,
+			..Default::default()
+		},
+		transaction_payment: Default::default(),
+		authority_discovery: AuthorityDiscoveryConfig { keys: vec![] },
 	}
 }

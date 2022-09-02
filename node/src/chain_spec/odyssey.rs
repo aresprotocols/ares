@@ -7,12 +7,13 @@ pub use odyssey_runtime::{
 	part_challenge::ChallengePalletId,
 	part_estimates::EstimatesPalletId,
 	part_ocw_finance::AresFinancePalletId,
-	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,
+	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,AuthorityDiscoveryConfig,NominationPoolsConfig,
 	ManualBridgeConfig,
 	EstimatesConfig,
 	GenesisConfig, GrandpaConfig, ImOnlineConfig, OracleFinanceConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
 	TechnicalCommitteeConfig, VestingConfig, WASM_BINARY,
 };
+use odyssey_runtime::DOLLARS;
 
 use super::*;
 
@@ -160,5 +161,12 @@ pub fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConf
 				.map(|member| (member.clone(), config.council_minimum_deposit))
 				.collect(),
 		},
+		nomination_pools: NominationPoolsConfig {
+			min_create_bond: 1000 * DOLLARS,
+			min_join_bond: 100 * DOLLARS,
+			..Default::default()
+		},
+		transaction_payment: Default::default(),
+		authority_discovery: AuthorityDiscoveryConfig { keys: vec![] },
 	}
 }

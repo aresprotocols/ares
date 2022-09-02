@@ -11,11 +11,20 @@ use frame_support::{
 use frame_system::limits;
 use pallet_balances::NegativeImbalance;
 use pallet_transaction_payment::{Multiplier, TargetedFeeAdjustment};
+use parity_scale_codec::Decode;
+use sp_npos_elections::BalancingConfig;
 use sp_runtime::{
 	traits::{IdentifyAccount, Verify},
 	FixedPointNumber, MultiSignature, Perbill, Perquintill,
 };
+use sp_runtime::traits::{Get, Saturating};
 use static_assertions::const_assert;
+
+/// Index of a transaction in the chain.
+pub type Index = u32;
+
+/// A hash of some data used by the chain.
+pub type Hash = sp_core::H256;
 
 pub type Balance = u128;
 
@@ -134,18 +143,37 @@ impl pallet_election_provider_multi_phase::BenchmarkingConfig for BenchmarkConfi
 /// pallet-election-provider-multi-phase.
 pub const MINER_MAX_ITERATIONS: u32 = 10;
 
+
+// pub struct OffchainRandomBalancing;
+// impl frame_support::pallet_prelude::Get<Option<(usize, sp_npos_elections::ExtendedBalance)>>
+// 	for OffchainRandomBalancing
+// {
+// 	fn get() -> Option<(usize, sp_npos_elections::ExtendedBalance)> {
+// 		use sp_runtime::{codec::Decode, traits::TrailingZeroInput};
+// 		let iters = match MINER_MAX_ITERATIONS {
+// 			0 => 0,
+// 			max @ _ => {
+// 				let seed = sp_io::offchain::random_seed();
+// 				let random = <u32>::decode(&mut TrailingZeroInput::new(&seed))
+// 					.expect("input is padded with zeroes; qed") %
+// 					max.saturating_add(1);
+// 				random as usize
+// 			},
+// 		};
+//
+// 		Some((iters, 0))
+// 	}
+// }
+
 /// A source of random balance for the NPoS Solver, which is meant to be run by the off-chain worker
 /// election miner.
 pub struct OffchainRandomBalancing;
-
-impl frame_support::pallet_prelude::Get<Option<(usize, sp_npos_elections::ExtendedBalance)>>
-	for OffchainRandomBalancing
-{
-	fn get() -> Option<(usize, sp_npos_elections::ExtendedBalance)> {
-		use sp_runtime::{codec::Decode, traits::TrailingZeroInput};
-		let iters = match MINER_MAX_ITERATIONS {
+impl Get<Option<BalancingConfig>> for OffchainRandomBalancing {
+	fn get() -> Option<BalancingConfig> {
+		use sp_runtime::traits::TrailingZeroInput;
+		let iterations = match MINER_MAX_ITERATIONS {
 			0 => 0,
-			max @ _ => {
+			max => {
 				let seed = sp_io::offchain::random_seed();
 				let random = <u32>::decode(&mut TrailingZeroInput::new(&seed))
 					.expect("input is padded with zeroes; qed") %
@@ -154,7 +182,8 @@ impl frame_support::pallet_prelude::Get<Option<(usize, sp_npos_elections::Extend
 			},
 		};
 
-		Some((iters, 0))
+		let config = BalancingConfig { iterations, tolerance: 0 };
+		Some(config)
 	}
 }
 
@@ -226,3 +255,19 @@ where
 		}
 	}
 }
+
+// pub struct DealWithFees;
+// impl OnUnbalanced<NegativeImbalance> for DealWithFees {
+// 	fn on_unbalanceds<B>(mut fees_then_tips: impl Iterator<Item = NegativeImbalance>) {
+// 		if let Some(fees) = fees_then_tips.next() {
+// 			// for fees, 80% to treasury, 20% to author
+// 			let mut split = fees.ration(80, 20);
+// 			if let Some(tips) = fees_then_tips.next() {
+// 				// for tips, if any, 80% to treasury, 20% to author (though this can be anything)
+// 				tips.ration_merge_into(80, 20, &mut split);
+// 			}
+// 			Treasury::on_unbalanced(split.0);
+// 			Author::on_unbalanced(split.1);
+// 		}
+// 	}
+// }

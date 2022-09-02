@@ -69,7 +69,9 @@ pub enum Subcommand {
 	Inspect(node_inspect::cli::InspectCmd),
 
 	/// The custom benchmark subcommmand benchmarking runtime pallets.
-	#[clap(name = "benchmark", about = "Benchmark runtime pallets.")]
+	// #[clap(name = "benchmark", about = "Benchmark runtime pallets.")]
+	// Benchmark(frame_benchmarking_cli::BenchmarkCmd),
+	#[clap(subcommand)]
 	Benchmark(frame_benchmarking_cli::BenchmarkCmd),
 
 	/// Try some command against runtime state.
