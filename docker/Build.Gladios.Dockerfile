@@ -1,9 +1,12 @@
 FROM docker.io/paritytech/ci-linux:production as builder
 WORKDIR /substrate
 COPY . /substrate
-RUN cargo update
-RUN cargo update -p syn:1.0.98 --precise 1.0.96
-RUN cargo update -p getrandom:0.2.7 --precise 0.2.6
+# RUN cargo update
+# RUN cargo update -p syn:1.0.98 --precise 1.0.96
+# RUN cargo update -p getrandom:0.2.7 --precise 0.2.6
+RUN rustup install 1.62.1
+RUN rustup default 1.62.1
+RUN rustup update nightly
 RUN cargo build --features with-gladios-runtime --bin ares-node --profile production --workspace
 RUN pwd
 RUN ls /substrate
