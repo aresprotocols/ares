@@ -6,7 +6,7 @@ license = 'Unlicense'
 name = 'gladios-runtime'
 publish = false
 repository = 'https://github.com/aresprotocols/ares'
-version = '1.0.0'
+version = '1.1.0'
 
 [package.metadata.docs.rs]
 targets = ['x86_64-unknown-linux-gnu']
