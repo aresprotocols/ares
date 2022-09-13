@@ -86,7 +86,8 @@ use network::part_staking::{BondingDuration, SessionsPerEra};
 pub use constants::currency::{deposit, ARES_AMOUNT_MULT, CENTS, DOLLARS, MILLICENTS};
 use constants::time::{DAYS, HOURS, MINUTES, SLOT_DURATION};
 use runtime_common::{AccountId, DealWithFees, Signature, SlowAdjustingFeeUpdate};
-use frame_support::weights::{ConstantMultiplier, IdentityFee};
+use frame_support::weights::{ConstantMultiplier, IdentityFee, WeightToFee};
+use sp_arithmetic::traits::{BaseArithmetic, Unsigned};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 // pub type Signature = MultiSignature;
@@ -134,10 +135,10 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	//   `spec_version`, and `authoring_version` are the same between Wasm and native.
 	// This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
 	//   the compatible custom types.
-	spec_version: 154,
+	spec_version: 157,
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
-	transaction_version: 1,
+	transaction_version: 2,
 	state_version: 1,
 };
 /// This determines the average expected block time that we are targeting.
@@ -306,10 +307,24 @@ impl pallet_transaction_payment::Config for Runtime {
 	type Event = Event;
 	type OnChargeTransaction = CurrencyAdapter<Balances, DealWithFees<Self>>;
 	type OperationalFeeMultiplier = OperationalFeeMultiplier;
-	type WeightToFee = IdentityFee<Balance>;
+	type WeightToFee = IdentityAresFee<Balance>;
 	type LengthToFee = ConstantMultiplier<Balance, TransactionByteFee>;
 	type FeeMultiplierUpdate =
 	TargetedFeeAdjustment<Self, TargetBlockFullness, AdjustmentVariable, MinimumMultiplier>;
+}
+
+/// Implementor of `WeightToFee` that maps one unit of weight to one unit of fee.
+pub struct IdentityAresFee<T>(sp_std::marker::PhantomData<T>);
+
+impl<T> WeightToFee for IdentityAresFee<T>
+	where
+		T: BaseArithmetic + From<u32> + Copy + Unsigned,
+{
+	type Balance = T;
+
+	fn weight_to_fee(weight: &Weight) -> Self::Balance {
+		Self::Balance::saturated_from(*weight*1200)
+	}
 }
 
 impl pallet_sudo::Config for Runtime {
@@ -375,11 +390,6 @@ construct_runtime!(
 		ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		Offences: pallet_offences::{Pallet, Storage, Event},
 		Claims: claims::{Pallet, Call, Storage, Event<T>, Config<T>, ValidateUnsigned},
-
-		// Estimates: pallet_price_estimates::<Instance1>,
-		// Estimates: pallet_price_estimates::{Pallet, Call, Storage, Event<T>, Config<T>},
-		// Estimates: pallet_price_estimates::{Pallet, Call, Storage, Event<T>, Config<T>},
-		// Estimates: pallet_price_estimates::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		Estimates: pallet_price_estimates,
 		ManualBridge: manual_bridge,
 		ChildBounties: pallet_child_bounties,
@@ -423,6 +433,7 @@ pub type Executive = frame_executive::Executive<
 	// 	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
 	// 	ares_oracle::migrations::UpgradeStorage<Runtime>,
 	// ),
+	pallet_price_estimates::migrations::UpdateOfV1<Runtime>,
 >;
 
 impl IsAresOracleCall<Runtime, Call> for Call {

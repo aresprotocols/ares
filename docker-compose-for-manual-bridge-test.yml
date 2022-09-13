@@ -5,8 +5,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/builder.fast-pioneer.Dockerfile
-    container_name: ares-chain
-    image: aresprotocollab/ares_manual_bridge
+    container_name: ares-chain-0928
+    image: aresprotocollab/ares_node_0928:latest
     ports:
       - "9944:9944"
       - "9933:9933"
@@ -15,12 +15,7 @@ services:
     volumes:
       - ./data/ares-manual-bridge:/data
     command: >
-      gladios-node --chain gladios --name AresTestManualBridgeDev --execution Native --pruning archive
-      --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
-      --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
-      --port 30333
-      --warehouse 'http://api.aresprotocol.io'
-      --log aura=debug --log peerset=debug
+      ares-node --dev --tmp --chain pioneer --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe --name test-babe-node --warehouse http://api.aresprotocol.io -lares::price-estimates=debug -ltxpool=debug
     logging:
       driver: json-file
       options:
