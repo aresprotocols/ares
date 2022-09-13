@@ -13,7 +13,7 @@ RUN ls /substrate/target
 RUN ls /substrate/target/production
 
 FROM docker.io/library/ubuntu:20.04
-COPY --from=builder /substrate/target/production/gladios-node /usr/local/bin
+COPY --from=builder /substrate/target/production/ares-node /usr/local/bin
 #COPY ares_key_01.curl /usr/local/bin
 #COPY ares_key_02.curl /usr/local/bin
 #COPY ares_key_03.curl /usr/local/bin
