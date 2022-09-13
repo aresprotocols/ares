@@ -13,6 +13,8 @@ RUN ls /substrate/target
 RUN ls /substrate/target/production
 
 FROM docker.io/library/ubuntu:20.04
+
+# ./target/production/ares-node
 COPY --from=builder /substrate/target/production/ares-node /usr/local/bin
 #COPY ares_key_01.curl /usr/local/bin
 #COPY ares_key_02.curl /usr/local/bin
@@ -23,9 +25,9 @@ WORKDIR /usr/local/bin
 RUN apt-get update && \
 apt-get install ca-certificates -y && \
 update-ca-certificates && \
-mkdir -p /root/.local/share/gladios-node  && \
-ln -s /root/.local/share/gladios-node /data && \
-/usr/local/bin/gladios-node --version
+mkdir -p /root/.local/share/ares-node  && \
+ln -s /root/.local/share/ares-node /data && \
+/usr/local/bin/ares-node --version
 
 EXPOSE 30333 9933 9944 9615
 VOLUME ["/data"]
