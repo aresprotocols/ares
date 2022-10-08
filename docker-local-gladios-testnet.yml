@@ -1,0 +1,113 @@
+version: "3.2"
+
+services:
+  chain_pioneer_one:
+    build:
+      context: .
+      dockerfile: ./build.dockerfile.yml
+    container_name: pioneer-chain-one
+    restart: always
+#    image: aresprotocollab/ares_node_0928
+    image: aresprotocollab/ares_node
+    ports:
+      - "7644:9944"
+      - "7633:9933"
+      - "32333:30333"
+    volumes:
+      - ./tmp_data/pioneer-node-one:/data
+#      - ./node/res/gladios-test.json:/chain-spec-raw.json
+      - ./ares_key_file_01_babe.curl:/ares_key_file.curl
+    command: >
+      ares-node --chain gladios --name Pioneer_OCW1 --execution Wasm --pruning archive
+            --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+            --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+            --node-key 0000000000000000000000000000000000000000000000000000000000000001
+            --port 30333
+            --warehouse 'http://api.aresprotocol.io' --validator --ares-keys /ares_key_file.curl
+#            --log afg=debug
+    networks:
+      ares_pos_network:
+        ipv4_address: 173.41.2.2
+  chain_pioneer_two:
+    container_name: pioneer-chain-two
+    restart: always
+#    image: aresprotocollab/ares_node_0928
+    image: aresprotocollab/ares_node
+    ports:
+      - "7645:9944"
+      - "7634:9933"
+      - "32334:30333"
+    volumes:
+      - ./tmp_data/pioneer-node-two:/data
+#      - ./node/res/gladios-test.json:/chain-spec-raw.json
+      - ./ares_key_file_02_babe.curl:/ares_key_file.curl
+    command: >
+      ares-node --chain gladios --name Pioneer_OCW2 --execution Wasm --pruning archive
+                  --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+                  --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+                  --bootnodes /ip4/173.41.2.2/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                  --bootnodes /ip4/173.41.2.5/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                  --port 30333
+                  --warehouse 'http://api.aresprotocol.io' --validator --ares-keys /ares_key_file.curl
+                  -lwarn
+    networks:
+      ares_pos_network:
+        ipv4_address: 173.41.2.3
+  chain_pioneer_three:
+    container_name: pioneer-chain-three
+    restart: always
+#    image: aresprotocollab/ares_node_0928
+    image: aresprotocollab/ares_node
+    ports:
+      - "7646:9944"
+      - "7635:9933"
+      - "32335:30333"
+    volumes:
+      - ./tmp_data/pioneer-node-three:/data
+#      - ./node/res/gladios-test.json:/chain-spec-raw.json
+      - ./ares_key_file_03_babe.curl:/ares_key_file.curl
+    command: >
+      ares-node --chain gladios --name Pioneer_OCW3 --execution Wasm --pruning archive
+                        --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+                        --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+                        --port 30333
+                        --bootnodes /ip4/173.41.2.2/tcp/32333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                        --bootnodes /ip4/173.41.2.3/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                        --warehouse 'http://api.aresprotocol.io' --validator --ares-keys /ares_key_file.curl
+                        -lwarn
+    networks:
+      ares_pos_network:
+        ipv4_address: 173.41.2.4
+  chain_pioneer_four:
+    container_name: pioneer-chain-four
+    restart: always
+#    image: aresprotocollab/ares_node_0928
+    image: aresprotocollab/ares_node
+    ports:
+      - "7647:9944"
+      - "7636:9933"
+      - "32336:30333"
+    volumes:
+      - ./tmp_data/pioneer-node-four:/data
+#      - ./node/res/gladios-test.json:/chain-spec-raw.json
+      - ./ares_key_file_04_babe.curl:/ares_key_file.curl
+    command: >
+      ares-node --chain gladios --name Pioneer_OCW4 --execution Wasm --pruning archive
+                        --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+                        --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+                        --bootnodes /ip4/173.41.2.2/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                        --bootnodes /ip4/173.41.2.3/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
+                        --port 30333
+                        --warehouse 'http://api.aresprotocol.io' --validator --ares-keys /ares_key_file.curl
+                        -lwarn
+    networks:
+      ares_pos_network:
+        ipv4_address: 173.41.2.5
+networks:
+  ares_pos_network:
+    ipam:
+      config:
+          - subnet: "173.41.2.0/24"
+
+# Make: ./target/release/gladios-node build-spec --disable-default-bootnode --chain test > chain-data-ares-babe-pioneer-123.json
+# Make Raw : ./target/release/gladios-node build-spec --disable-default-bootnode --chain chain-data-ares-babe-pioneer-123.json --raw > chain-data-ares-babe-pioneer-raw-123.json

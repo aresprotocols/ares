@@ -28,6 +28,7 @@ impl pallet_price_estimates::Config for Runtime {
 	type MaxQuotationDelay = MaxQuotationDelay;
 	type MaxEndDelay = MaxEndDelay;
 	type MaximumKeepLengthOfOldData = MaximumKeepLengthOfOldData;
+	type WeightInfo = pallet_price_estimates::weights::SubstrateWeight<Self>;
 }
 
 // impl pallet_price_estimates::Config for Runtime {

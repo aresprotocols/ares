@@ -43,5 +43,6 @@ impl ares_oracle::Config for Runtime {
 	type OracleFinanceHandler = OracleFinance;
 	type AresIStakingNpos = staking_extend::StakingNPOS<Self>;
 	type ErrLogPoolDepth = ErrLogPoolDepth;
+	type WeightInfo = ares_oracle::weights::SubstrateWeight<Self> ;
 }
 

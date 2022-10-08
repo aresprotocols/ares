@@ -1,3 +1,4 @@
+use frame_support::sp_std::marker::PhantomData;
 use super::*;
 use governance;
 pub use pallet_ares_challenge;
@@ -18,9 +19,23 @@ impl pallet_ares_challenge::Config<Challenge> for Runtime {
 	type Currency = Balances;
 	type SlashProposer = AresChallenge;
 	// type BidderMinimumDeposit = BidderMinimumDeposit;
+	#[cfg(not(feature = "runtime-benchmarks"))]
 	type IsAuthority = Babe; //Aura Or Babe
+	#[cfg(feature = "runtime-benchmarks")]
+	type IsAuthority = IsMemberForBenchmarks<Self>;
 	type AuthorityId = pallet_babe::AuthorityId;
 	type Proposal = Call; // (Aura or Babe) AuthorityId
- 	// type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
+	// type FindAuthor = pallet_aura::FindAccountFromAuthorIndex<Self, Aura>;
 	type MinimumThreshold = MinimumThreshold;
+	type WeightInfo = pallet_ares_challenge::weights::SubstrateWeight<Self, Challenge>;
+}
+
+#[cfg(feature = "runtime-benchmarks")]
+pub struct IsMemberForBenchmarks<T>(PhantomData<T>);
+
+#[cfg(feature = "runtime-benchmarks")]
+impl <T: pallet_ares_challenge::Config<Challenge>> sp_runtime::traits::IsMember<pallet_babe::AuthorityId> for IsMemberForBenchmarks<T> {
+	fn is_member(member_id: &pallet_babe::AuthorityId) -> bool {
+		true
+	}
 }

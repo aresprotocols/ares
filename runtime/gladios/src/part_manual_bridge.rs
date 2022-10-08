@@ -10,4 +10,5 @@ impl manual_bridge::Config for Runtime {
     type Event = Event;
     type RequestOrigin = frame_system::EnsureRoot<AccountId>;
     // type MinimumBalanceThreshold = MinimumBalanceThreshold;
+    type WeightInfo = manual_bridge::weights::SubstrateWeight<Self>;
 }

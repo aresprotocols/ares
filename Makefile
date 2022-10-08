@@ -50,6 +50,10 @@ build-pioneer:
 	cargo build --locked --features with-pioneer-runtime --bin ares-node --profile production --workspace
 	# cargo build --features with-pioneer-runtime --bin ares-node --profile production --workspace
 
+.PHONY: build-pioneer-benchmarks
+build-pioneer-benchmarks:
+	cargo build --features runtime-benchmarks,with-pioneer-runtime --profile production --workspace
+
 .PHONY: build-gladios-fast
 build-gladios-fast:
 	cargo build --locked --features with-gladios-runtime,with-gladios-fast-runtime --bin ares-node --profile production --workspace

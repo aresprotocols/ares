@@ -23,3 +23,7 @@
 data/*
 /wasms/
 /dev-gladios.private/
+/tmp_data/
+/tmp/
+/gladios-keys/
+/.maintain/

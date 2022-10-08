@@ -136,7 +136,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	//   `spec_version`, and `authoring_version` are the same between Wasm and native.
 	// This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
 	//   the compatible custom types.
-	spec_version: 157,
+	spec_version: 163,
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 2,
@@ -357,11 +357,11 @@ construct_runtime!(
 		NodeBlock = opaque::Block,
 		UncheckedExtrinsic = UncheckedExtrinsic
 	{
-		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
-		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage},
-		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		Identity: pallet_identity::{Pallet, Call, Storage, Event<T>},
-		Preimage: pallet_preimage::{Pallet, Call, Storage, Event<T>},
+		System: frame_system,
+		RandomnessCollectiveFlip: pallet_randomness_collective_flip,
+		Timestamp: pallet_timestamp,
+		Identity: pallet_identity,
+		Preimage: pallet_preimage,
 		Utility: pallet_utility,
 
 		// Indices: pallet_indices::{Pallet, Call, Storage, Config<T>, Event<T>},
@@ -774,6 +774,11 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, frame_system, SystemBench::<Runtime>);
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
+			list_benchmark!(list, extra, manual_bridge, ManualBridge);
+			list_benchmark!(list, extra, ares_oracle, AresOracle);
+			list_benchmark!(list, extra, oracle_finance, OracleFinance);
+			list_benchmark!(list, extra, pallet_ares_challenge::<Instance1>, AresChallenge);
+			list_benchmark!(list, extra, pallet_price_estimates, Estimates);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -807,6 +812,11 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
 			add_benchmark!(params, batches, pallet_balances, Balances);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
+			add_benchmark!(params, batches, manual_bridge, ManualBridge);
+			add_benchmark!(params, batches, ares_oracle, AresOracle);
+			add_benchmark!(params, batches, oracle_finance, OracleFinance);
+			add_benchmark!(params, batches, pallet_ares_challenge::<Instance1>, AresChallenge);
+			add_benchmark!(params, batches, pallet_price_estimates, Estimates);
 
 			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
 			Ok(batches)

@@ -14,6 +14,9 @@ pub mod part_staking_extend;
 pub mod voter_bags;
 pub mod part_nomination_pools;
 pub mod part_authority_discovery;
+// pub mod part_ranked_collective;
+// pub mod part_referenda;
+// pub mod part_conviction_voting;
 
 // ImOnline: pallet_im_online::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 

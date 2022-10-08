@@ -1,0 +1,125 @@
+version: "3.2"
+
+services:
+  chain_gladios_one:
+    build:
+      context: https://github.com/aresprotocols/ares.git#polkadot-v0.9.28
+      dockerfile: ./docker/Build.Both.Dockerfile
+    container_name: gladios-dev-one
+    image: aresprotocollab/ares_node_0928
+    ports:
+      - "7644:9944"
+      - "7633:9933"
+      - "32333:30333"
+    volumes:
+      - ./tmp_data/gladios-node-data-1:/data
+      - ./node/res/gladios.json:/chain_spec.json
+      - ./ares_key_01.curl:/tmp/ares_keys.curl
+    command: >
+      ares-node --chain /chain_spec.json --name Gladios_OCW1 --execution Native --pruning archive
+            --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+            --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+            --node-key 0000000000000000000000000000000000000000000000000000000000000001 --port 30333
+            --warehouse 'http://api.aresprotocol.io' --validator --ares-keys /tmp/ares_keys.curl
+            --log txpool=debug
+    networks:
+      ares_network2:
+        ipv4_address: 172.42.3.2
+  chain_gladios_two:
+    container_name: gladios-dev-two
+    image: aresprotocollab/ares_node_0928
+    ports:
+      - "7645:9944"
+      - "7634:9933"
+      - "32334:30333"
+    volumes:
+      - ./tmp_data/gladios-node-data-2:/data
+      - ./node/res/gladios.json:/chain_spec.json
+      - ./ares_key_02.curl:/tmp/ares_keys.curl
+    command: >
+      ares-node --chain /chain_spec.json --name Gladios_OCW2 --execution Native --pruning archive
+                  --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+                  --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+                  --bootnodes /ip4/172.42.2.2/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp --port 30333
+                  --warehouse 'http://api.aresprotocol.io' --validator --ares-keys /tmp/ares_keys.curl
+                  --log txpool=debug
+    networks:
+      ares_network2:
+        ipv4_address: 172.42.3.3
+  chain_gladios_three:
+    container_name: gladios-dev-three
+    image: aresprotocollab/ares_node_0928
+    ports:
+      - "7646:9944"
+      - "7635:9933"
+      - "32335:30333"
+    volumes:
+      - ./tmp_data/gladios-node-data-3:/data
+      - ./node/res/gladios.json:/chain_spec.json
+      - ./ares_key_03.curl:/tmp/ares_keys.curl
+    command: >
+      ares-node --chain /chain_spec.json --name Gladios_OCW3 --execution Native --pruning archive
+                        --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+                        --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+                        --bootnodes /ip4/172.42.2.2/tcp/32333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp --port 30333
+                        --warehouse 'http://api.aresprotocol.io' --validator --ares-keys /tmp/ares_keys.curl
+                        --log txpool=debug
+    networks:
+      ares_network2:
+        ipv4_address: 172.42.3.4
+  chain_gladios_four:
+    container_name: gladios-dev-four
+    image: aresprotocollab/ares_node_0928
+    ports:
+      - "7647:9944"
+      - "7636:9933"
+      - "32336:30333"
+    volumes:
+      - ./tmp_data/gladios-node-data-4:/data
+      - ./node/res/gladios.json:/chain_spec.json
+      - ./ares_key_04.curl:/tmp/ares_keys.curl
+    command: >
+      ares-node --chain /chain_spec.json --name Gladios_OCW4 --execution Native --pruning archive
+                        --ws-external --rpc-external --rpc-cors=all --rpc-methods=Unsafe
+                        --prometheus-external --telemetry-url 'wss://telemetry.polkadot.io/submit/ 0'
+                        --bootnodes /ip4/172.42.2.2/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp --port 30333
+                        --warehouse 'http://api.aresprotocol.io' --validator --ares-keys /tmp/ares_keys.curl
+                        --log txpool=debug
+    networks:
+      ares_network2:
+        ipv4_address: 172.42.3.5
+volumes:
+  gladios-node-data-1:
+    driver: local
+  gladios-node-data-2:
+    driver: local
+  gladios-node-data-3:
+    driver: local
+  gladios-node-data-4:
+    driver: local
+networks:
+  ares_network2:
+    ipam:
+      config:
+        - subnet: "172.42.3.0/24"
+
+
+#  curl http://localhost:7633  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/01/gladios-ares.private.curl"
+#  curl http://localhost:7633  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/01/gladios-babe.private.curl"
+#  curl http://localhost:7633  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/01/gladios-gran.private.curl"
+#  curl http://localhost:7633  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/01/gladios-imon.private.curl"
+#
+#  curl http://localhost:7634  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/02/gladios-ares.private.curl"
+#  curl http://localhost:7634  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/02/gladios-babe.private.curl"
+#  curl http://localhost:7634  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/02/gladios-gran.private.curl"
+#  curl http://localhost:7634  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/02/gladios-imon.private.curl"
+#
+#  curl http://localhost:7635  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/03/gladios-ares.private.curl"
+#  curl http://localhost:7635  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/03/gladios-babe.private.curl"
+#  curl http://localhost:7635  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/03/gladios-gran.private.curl"
+#  curl http://localhost:7635  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/03/gladios-imon.private.curl"
+#
+#  curl http://localhost:7636  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/04/gladios-ares.private.curl"
+#  curl http://localhost:7636  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/04/gladios-babe.private.curl"
+#  curl http://localhost:7636  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/04/gladios-gran.private.curl"
+#  curl http://localhost:7636  -H "Content-Type:application/json;charset=utf-8" -d "@gladios-keys/04/gladios-imon.private.curl"

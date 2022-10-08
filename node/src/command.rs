@@ -39,6 +39,10 @@ use std::sync::Arc;
 use crate::service::Block;
 use sc_cli::{ChainSpec, Result, RuntimeVersion, SubstrateCli};
 use sc_service::PartialComponents;
+use sp_keyring::Sr25519Keyring;
+use ares_node::benchmarking::{inherent_benchmark_data, TransferKeepAliveBuilder};
+use ares_node::service::new_partial;
+use frame_benchmarking_cli::SUBSTRATE_REFERENCE_HARDWARE;
 
 pub const GLADIOS_RUNTIME_NOT_AVAILABLE: &str =
 	"Gladios runtime is not available. Please compile the node with `--features with-gladios-runtime` to enable it.";
@@ -217,6 +221,10 @@ macro_rules! with_runtime_or_err {
 			#[cfg(feature = "with-gladios-runtime")]
 			#[allow(unused_imports)]
 			use service::gladios::{RuntimeApi,ExecutorDispatch};
+
+			#[cfg(feature = "with-gladios-runtime")]
+			use gladios_runtime::ExistentialDeposit;
+
 			#[cfg(feature = "with-gladios-runtime")]
 			$( $code )*
 
@@ -226,6 +234,10 @@ macro_rules! with_runtime_or_err {
 			#[cfg(feature = "with-odyssey-runtime")]
 			#[allow(unused_imports)]
 			use service::odyssey::{RuntimeApi,ExecutorDispatch};
+
+			#[cfg(feature = "with-odyssey-runtime")]
+			use odyssey_runtime::ExistentialDeposit;
+
 			#[cfg(feature = "with-odyssey-runtime")]
 			$( $code )*
 
@@ -235,6 +247,10 @@ macro_rules! with_runtime_or_err {
 			#[cfg(feature = "with-pioneer-runtime")]
 			#[allow(unused_imports)]
 			use service::pioneer::{RuntimeApi,ExecutorDispatch};
+
+			#[cfg(feature = "with-pioneer-runtime")]
+			use pioneer_runtime::ExistentialDeposit;
+
 			#[cfg(feature = "with-pioneer-runtime")]
 			$( $code )*
 
@@ -364,7 +380,62 @@ pub fn run() -> Result<()> {
 		Some(Subcommand::TryRuntime) => Err("TryRuntime wasn't enabled when building the node. \
 				You can enable it with `--features try-runtime`."
 			.into()),
-		Some(Subcommand::Benchmark(cmd)) => Err("Not implement".into()),
+		Some(Subcommand::Benchmark(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			let chain_spec = &runner.config().chain_spec;
+			with_runtime_or_err!(chain_spec, {
+				return runner.sync_run(|config| {
+					// This switch needs to be in the client, since the client decides
+					// which sub-commands it wants to support.
+					match cmd {
+						BenchmarkCmd::Pallet(cmd) => {
+							if !cfg!(feature = "runtime-benchmarks") {
+								return Err(
+									"Runtime benchmarking wasn't enabled when building the node. \
+								You can enable it with `--features runtime-benchmarks`."
+										.into(),
+								)
+							}
+
+							cmd.run::<Block, ExecutorDispatch>(config)
+						},
+						BenchmarkCmd::Block(cmd) => {
+							let PartialComponents { client, .. } = new_partial::<RuntimeApi, ExecutorDispatch>(&config)?; // TODO:: reconfig
+							cmd.run(client)
+						},
+						BenchmarkCmd::Storage(cmd) => {
+							let PartialComponents { client, backend, .. } = new_partial::<RuntimeApi, ExecutorDispatch>(&config)?;
+							let db = backend.expose_db();
+							let storage = backend.expose_storage();
+
+							cmd.run(config, client, db, storage)
+						},
+						BenchmarkCmd::Overhead(cmd) => {
+							let PartialComponents { client, .. } = new_partial::<RuntimeApi, ExecutorDispatch>(&config)?;
+							let ext_builder = RemarkBuilder::new(client.clone());
+
+							cmd.run(config, client, inherent_benchmark_data()?, &ext_builder)
+						},
+						BenchmarkCmd::Extrinsic(cmd) => {
+							let PartialComponents { client, .. } = service::new_partial::<RuntimeApi, ExecutorDispatch>(&config)?;
+							// Register the *Remark* and *TKA* builders.
+							let ext_factory = ExtrinsicFactory(vec![
+								Box::new(RemarkBuilder::new(client.clone())),
+								Box::new(TransferKeepAliveBuilder::<RuntimeApi, ExecutorDispatch>::new(
+									client.clone(),
+									Sr25519Keyring::Alice.to_account_id(),
+									ExistentialDeposit::get(),
+								)),
+							]);
+
+							cmd.run(client, inherent_benchmark_data()?, &ext_factory)
+						},
+						BenchmarkCmd::Machine(cmd) =>
+							cmd.run(&config, SUBSTRATE_REFERENCE_HARDWARE.clone()),
+					}
+				});
+			})
+		},
 			//TODO::Add benchmark command.
 
 			// if cfg!(feature = "runtime-benchmarks") {

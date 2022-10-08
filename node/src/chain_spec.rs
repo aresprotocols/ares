@@ -157,7 +157,7 @@ impl ChainSpecConfig {
 				);
 			}
 		});
-		println!("total_issuance:{}, total_balances:{}", total_issuance, total_balances);
+		// println!("total_issuance:{}, total_balances:{}", total_issuance, total_balances);
 		assert!(total_issuance >= total_balances, "total_issuance can not greater than total_balances");
 		let remaining = total_issuance - total_balances;
 		if self.collection.len() > 0 {
@@ -166,17 +166,17 @@ impl ChainSpecConfig {
 				if account_balance_map.contains_key(account) {
 					let new_balance = account_balance_map.get(account).unwrap() + collection_avg_balance;
 					account_balance_map.insert(account.clone(), new_balance);
-					println!(
-						"reset account:{}, balance:{}",
-						account.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
-						new_balance
-					);
+					// println!(
+					// 	"reset account:{}, balance:{}",
+					// 	account.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
+					// 	new_balance
+					// );
 				} else {
-					println!(
-						"new account:{}, balance:{}",
-						account.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
-						collection_avg_balance
-					);
+					// println!(
+					// 	"new account:{}, balance:{}",
+					// 	account.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
+					// 	collection_avg_balance
+					// );
 					account_balance_map.insert(account.clone(), collection_avg_balance);
 				}
 			}
@@ -191,10 +191,10 @@ impl ChainSpecConfig {
 		let mut total_balance = Balance::default();
 		self.balances.iter().for_each(|(account, amount)| {
 			if self.ban.contains(account) {
-				println!(
-					"account:{} banned from list",
-					account.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
-				);
+				// println!(
+				// 	"account:{} banned from list",
+				// 	account.to_ss58check_with_version(Ss58AddressFormat::custom(self.ss58.unwrap())),
+				// );
 			} else {
 				total_balance = total_balance.saturating_add(*amount);
 				assert!(!unique_account.contains_key(account), "duplicate account {:?} ", account);

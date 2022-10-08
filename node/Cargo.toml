@@ -26,7 +26,7 @@ substrate-frame-cli = { git = "https://github.com/paritytech/substrate", optiona
 ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.28" }
 ares-rpc = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.28" }
 clap = { version = "3.0", features = ["derive"], optional = true }
-codec = { package = "parity-scale-codec", version = "2.0.0" }
+codec = { package = "parity-scale-codec", version = "3.0.0" }
 frame-benchmarking = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.28" }
 frame-benchmarking-cli = { git = "https://github.com/paritytech/substrate", optional = true, branch = "polkadot-v0.9.28" }
 frame-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.28" }
@@ -139,6 +139,15 @@ cli = [
     "substrate-build-script-utils",
     "try-runtime-cli",
 ]
+
+#runtime-benchmarks = ["kitchensink-runtime/runtime-benchmarks", "frame-benchmarking-cli"]
+
+runtime-benchmarks = [
+    "gladios-runtime/runtime-benchmarks",
+    "pioneer-runtime/runtime-benchmarks",
+    "odyssey-runtime/runtime-benchmarks",
+    "frame-benchmarking-cli",
+]
 # in the near future.
 try-runtime = [
     "try-runtime-cli",
@@ -177,5 +186,5 @@ with-pioneer-fast-runtime = [
 with-all-runtime = [
     "with-gladios-runtime",
     "with-pioneer-runtime",
-    "with-odyssey-runtime"
+    "with-odyssey-runtime",
 ]
