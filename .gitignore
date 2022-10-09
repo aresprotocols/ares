@@ -27,3 +27,4 @@ data/*
 /tmp/
 /gladios-keys/
 /.maintain/
+/node/res/test-chain-spec/
