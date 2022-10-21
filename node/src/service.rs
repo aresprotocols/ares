@@ -582,7 +582,7 @@ where
 		})?;
 
 	if config.offchain_worker.enabled {
-		sc_service::build_offchain_workers(
+		sc_service::build_offchain_workers (
 			&config,
 			task_manager.spawn_handle(),
 			client.clone(),
