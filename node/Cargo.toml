@@ -23,8 +23,8 @@ clap_complete = { version = "3.0", optional = true }
 substrate-frame-cli = { git = "https://github.com/paritytech/substrate", optional = true, branch = "polkadot-v0.9.28" }
 
 [dependencies]
-ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.28" }
-ares-rpc = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.28" }
+ares-oracle-provider-support = { git = "https://github.com/aresprotocols/ocw-suit", branch = "release-2.0.1" }
+ares-rpc = { git = "https://github.com/aresprotocols/ocw-suit", branch = "release-2.0.1" }
 clap = { version = "3.0", features = ["derive"], optional = true }
 codec = { package = "parity-scale-codec", version = "3.0.0" }
 frame-benchmarking = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.28" }
@@ -84,7 +84,7 @@ sc-telemetry = { git = "https://github.com/paritytech/substrate", default-featur
 sc-transaction-pool = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.28" }
 sc-transaction-pool-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "polkadot-v0.9.28" }
 scale-info = { version = "2.1.1", default-features = false, features = ["derive"] }
-seed-reader = { git = "https://github.com/aresprotocols/ocw-suit", branch = "polkadot-v0.9.28" }
+seed-reader = { git = "https://github.com/aresprotocols/ocw-suit", branch = "release-2.0.1" }
 serde = { version = "1.0.136", features = ["derive"] }
 serde_yaml = "0.8"
 sp-keyring = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.28" }
