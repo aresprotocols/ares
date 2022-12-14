@@ -17,8 +17,9 @@ use sp_runtime::{
 	traits::{IdentifyAccount, Verify},
 	FixedPointNumber, MultiSignature, Perbill, Perquintill,
 };
-use sp_runtime::traits::{Get, Saturating};
+use sp_runtime::traits::{Convert, Get, PhantomData, Saturating};
 use static_assertions::const_assert;
+use frame_support::traits::OnRuntimeUpgrade;
 
 /// Index of a transaction in the chain.
 pub type Index = u32;
@@ -234,18 +235,9 @@ where
 	}
 }
 
-// pub struct DealWithFees;
-// impl OnUnbalanced<NegativeImbalance> for DealWithFees {
-// 	fn on_unbalanceds<B>(mut fees_then_tips: impl Iterator<Item = NegativeImbalance>) {
-// 		if let Some(fees) = fees_then_tips.next() {
-// 			// for fees, 80% to treasury, 20% to author
-// 			let mut split = fees.ration(80, 20);
-// 			if let Some(tips) = fees_then_tips.next() {
-// 				// for tips, if any, 80% to treasury, 20% to author (though this can be anything)
-// 				tips.ration_merge_into(80, 20, &mut split);
-// 			}
-// 			Treasury::on_unbalanced(split.0);
-// 			Author::on_unbalanced(split.1);
-// 		}
-// 	}
-// }
+pub struct UpdateStakingStorageToV8<T>(sp_std::marker::PhantomData<T>);
+impl<T: pallet_staking::Config> OnRuntimeUpgrade for UpdateStakingStorageToV8<T> {
+	fn on_runtime_upgrade() -> Weight {
+		pallet_staking::migrations::v8::migrate::<T>()
+	}
+}

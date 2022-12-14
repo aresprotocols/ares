@@ -37,7 +37,6 @@ use frame_support::{
 		generic::{Era, SignedPayload},
 		traits,
 	},
-	traits::EnsureOneOf,
 };
 use sp_runtime::{MultiAddress, SaturatedConversion};
 
@@ -79,6 +78,7 @@ pub mod part_estimates;
 pub mod part_ocw;
 pub mod part_ocw_finance;
 pub mod part_manual_bridge;
+pub mod part_ares_reminder;
 
 use network::part_staking::{BondingDuration, SessionsPerEra};
 
@@ -135,7 +135,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	//   `spec_version`, and `authoring_version` are the same between Wasm and native.
 	// This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
 	//   the compatible custom types.
-	spec_version: 165,
+	spec_version: 168,
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 2,
@@ -368,12 +368,11 @@ construct_runtime!(
 		Authorship: pallet_authorship::{Pallet, Call, Storage, Inherent},
 		BagsList: pallet_bags_list,
 		//
-		// MemberExtend: member_extend::{Pallet},
-		//
+		AresReminder: ares_reminder::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
 		AresChallenge: pallet_ares_challenge::<Instance1>::{Pallet, Call, Storage, Event<T>},
-
 		AresOracle: ares_oracle::{Pallet, Call, Storage, Event<T>, ValidateUnsigned, Config<T>},
-		OracleFinance: oracle_finance::{Pallet, Call, Storage, Event<T>, Config<T>},
+		OracleFinance: oracle_finance::<Instance1>::{Pallet, Call, Storage, Event<T>, Config<T>}, // 21
+		ReminderFinance: oracle_finance::<Instance2>::{Pallet, Call, Storage, Event<T>, Config<T>},
 		// StakingExtend: staking_extend::{Pallet},
 
 		// Governance
@@ -438,7 +437,12 @@ pub type Executive = frame_executive::Executive<
 	// 	pallet_bags_list::migrations::CheckCounterPrefix<Runtime>,
 	// 	ares_oracle::migrations::UpgradeStorage<Runtime>,
 	// ),
-	pallet_price_estimates::migrations::UpdateOfV1<Runtime>,
+	// pallet_price_estimates::migrations::UpdateOfV1<Runtime>,
+	(
+		UpdateStakingStorageToV8<Runtime>,
+		pallet_staking::migrations::v9::InjectValidatorsIntoVoterList<Runtime>,
+		pallet_staking::migrations::v10::MigrateToV10<Runtime>,
+	),
 >;
 
 impl IsAresOracleCall<Runtime, Call> for Call {

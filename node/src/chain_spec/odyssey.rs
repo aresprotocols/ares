@@ -7,7 +7,7 @@ pub use odyssey_runtime::{
 	part_challenge::ChallengePalletId,
 	part_estimates::EstimatesPalletId,
 	part_ocw_finance::AresFinancePalletId,
-	AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,AuthorityDiscoveryConfig,NominationPoolsConfig,
+	AresOracleConfig, AresReminderConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig,AuthorityDiscoveryConfig,NominationPoolsConfig,
 	ManualBridgeConfig,
 	EstimatesConfig,
 	GenesisConfig, GrandpaConfig, ImOnlineConfig, OracleFinanceConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig,
@@ -107,6 +107,12 @@ pub fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConf
 		},
 		grandpa: GrandpaConfig { authorities: vec![] },
 		oracle_finance: Default::default(),
+		reminder_finance: Default::default(),
+		ares_reminder: AresReminderConfig {
+			security_deposit: 100 * DOLLARS,
+			max_pending_keep_bn: 60u32.into(),
+			max_waiting_keep_bn: 180u32.into(),
+		},
 		sudo: SudoConfig {
 			// Assign network admin rights.
 			key: Some(config.root.clone()),

@@ -27,14 +27,15 @@ inherits = "release"
 #staking-extend = { path = "../ocw-suit/pallets/staking-extend" }
 #ares-rpc = { path = "../ocw-suit/rpc/ares-rpc" }
 
-#[patch."https://github.com/aresprotocols/ocw-suit"]
-#ares-oracle-provider-support = { path = "../ares-ocw-suit/pallets/ares-oracle-provider-support" }
-#ares-oracle = { path = "../ares-ocw-suit/pallets/ares-oracle" }
-#oracle-finance = { path = "../ares-ocw-suit/pallets/oracle-finance" }
-#seed-reader = { path = "../ares-ocw-suit/tools/seed-reader" }
-#bound-vec-helper = { path = "../ares-ocw-suit/tools/bound-vec-helper" }
-#pallet-ares-challenge = { path = "../ares-ocw-suit/pallets/challenge" }
-#pallet-price-estimates = { path = "../ares-ocw-suit/pallets/price-estimates" }
-#staking-extend = { path = "../ares-ocw-suit/pallets/staking-extend" }
-#ares-rpc = { path = "../ares-ocw-suit/rpc/ares-rpc" }
-#manual-bridge = { path = "../ares-ocw-suit/pallets/manual-bridge" }
+[patch."https://github.com/aresprotocols/ocw-suit"]
+ares-oracle-provider-support = { path = "../ares-ocw-suit/pallets/ares-oracle-provider-support" }
+ares-oracle = { path = "../ares-ocw-suit/pallets/ares-oracle" }
+oracle-finance = { path = "../ares-ocw-suit/pallets/oracle-finance" }
+ares-reminder = { path = "../ares-ocw-suit/pallets/ares-reminder" }
+seed-reader = { path = "../ares-ocw-suit/tools/seed-reader" }
+bound-vec-helper = { path = "../ares-ocw-suit/tools/bound-vec-helper" }
+pallet-ares-challenge = { path = "../ares-ocw-suit/pallets/challenge" }
+pallet-price-estimates = { path = "../ares-ocw-suit/pallets/price-estimates" }
+staking-extend = { path = "../ares-ocw-suit/pallets/staking-extend" }
+ares-rpc = { path = "../ares-ocw-suit/rpc/ares-rpc" }
+manual-bridge = { path = "../ares-ocw-suit/pallets/manual-bridge" }

@@ -105,6 +105,7 @@ pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", def
 pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
 staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
 manual-bridge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
+ares-reminder = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
 
 [features]
 default = ['std']
@@ -134,20 +135,14 @@ try-runtime = [
 ]
 std = [
     'codec/std',
+    'ares-reminder/std',
     'pallet-child-bounties/std',
     'frame-executive/std',
     'frame-support/std',
     "frame-benchmarking/std",
     'frame-system-rpc-runtime-api/std',
     'pallet-authority-discovery/std',
-#    'pallet-contracts-primitives/std',
-#    'pallet-contracts-rpc-runtime-api/std',
     'frame-system/std',
-
-#    'pallet-ranked-collective/std',
-#    'pallet-referenda/std',
-#    'pallet-conviction-voting/std',
-
     'sp-authority-discovery/std',
     'frame-try-runtime/std',
     'frame-election-provider-support/std',
@@ -170,7 +165,6 @@ std = [
     'pallet-utility/std',
     'sp-api/std',
     'sp-block-builder/std',
-    #    'sp-consensus-aura/std',
     'sp-consensus-babe/std',
     'sp-core/std',
     'sp-inherents/std',
@@ -195,7 +189,6 @@ std = [
     'pallet-proxy/std',
     'pallet-vesting/std',
     'pallet-elections-phragmen/std',
-    #    "member-extend/std",
     "staking-extend/std",
     "log/std",
     "pallet-indices/std",

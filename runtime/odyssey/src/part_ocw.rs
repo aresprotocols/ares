@@ -9,6 +9,7 @@ use frame_support::{
 		traits,
 	}
 };
+use frame_support::instances::Instance1;
 use frame_support::traits::EitherOfDiverse;
 
 // An index to a block.
@@ -39,8 +40,10 @@ impl ares_oracle::Config for Runtime {
 	type CalculationKind = CalculationKind;
 	type RequestOrigin = EnsureRootOrHalfTechnicalCollective;
 	type AuthorityCount = AresOracle; // ares_oracle::aura_handler::Pallet<Runtime>;
+	type FinanceInstance = Instance1;
 	type OracleFinanceHandler = OracleFinance;
 	type AresIStakingNpos = staking_extend::StakingNPOS<Self>;
 	type ErrLogPoolDepth = ErrLogPoolDepth;
 	type WeightInfo = ares_oracle::weights::SubstrateWeight<Self> ;
+	type IOracleAvgPriceEvents = (AresReminder);
 }

@@ -105,6 +105,7 @@ pallet-ares-challenge = { git = "https://github.com/aresprotocols/ocw-suit", def
 pallet-price-estimates = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
 staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
 manual-bridge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
+ares-reminder = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
 
 [features]
 default = ['std']
@@ -134,6 +135,7 @@ try-runtime = [
 ]
 std = [
     'codec/std',
+    'ares-reminder/std',
     'pallet-child-bounties/std',
     'frame-executive/std',
     'frame-support/std',

@@ -1,7 +1,7 @@
 use sc_consensus_babe::AuthorityId as BabeId;
 use sp_runtime::Percent;
 
-use pioneer_runtime::{governance::{part_elections::PhragmenElectionPalletId, part_treasury::TreasuryPalletId}, network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus}, part_challenge::ChallengePalletId, part_estimates::EstimatesPalletId, part_ocw_finance::AresFinancePalletId, AresOracleConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, AuthorityDiscoveryConfig, EstimatesConfig, ManualBridgeConfig, GenesisConfig, GrandpaConfig, ImOnlineConfig, OracleFinanceConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, NominationPoolsConfig, VestingConfig, WASM_BINARY, DOLLARS};
+use pioneer_runtime::{governance::{part_elections::PhragmenElectionPalletId, part_treasury::TreasuryPalletId}, network::{part_babe::BABE_GENESIS_EPOCH_CONFIG, part_session::SessionKeys, part_staking::StakerStatus}, part_challenge::ChallengePalletId, part_estimates::EstimatesPalletId, part_ocw_finance::AresFinancePalletId, AresOracleConfig, AresReminderConfig, BabeConfig, BalancesConfig, ClaimsConfig, CouncilConfig, DemocracyConfig, ElectionsConfig, AuthorityDiscoveryConfig, EstimatesConfig, ManualBridgeConfig, GenesisConfig, GrandpaConfig, ImOnlineConfig, OracleFinanceConfig, SS58Prefix, SessionConfig, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeConfig, NominationPoolsConfig, VestingConfig, WASM_BINARY, DOLLARS};
 
 use super::*;
 
@@ -74,6 +74,12 @@ fn make_genesis(wasm_binary: &[u8], config: &ChainSpecConfig) -> GenesisConfig {
 		balances: BalancesConfig { balances: config.balances.clone() },
 		babe: BabeConfig { authorities: vec![], epoch_config: Some(BABE_GENESIS_EPOCH_CONFIG) },
 		oracle_finance: Default::default(),
+		reminder_finance: Default::default(),
+		ares_reminder: AresReminderConfig {
+			security_deposit: 100 * DOLLARS,
+			max_pending_keep_bn: 60u32.into(),
+			max_waiting_keep_bn: 180u32.into(),
+		},
 		staking: StakingConfig {
 			validator_count: config.authorities.len() as u32,
 			minimum_validator_count: config.authorities.len() as u32,
