@@ -135,7 +135,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	//   `spec_version`, and `authoring_version` are the same between Wasm and native.
 	// This value is set to 100 to notify Polkadot-JS App (https://polkadot.js.org/apps) to use
 	//   the compatible custom types.
-	spec_version: 168,
+	spec_version: 169,
 	impl_version: 1,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 2,
@@ -442,6 +442,7 @@ pub type Executive = frame_executive::Executive<
 		UpdateStakingStorageToV8<Runtime>,
 		pallet_staking::migrations::v9::InjectValidatorsIntoVoterList<Runtime>,
 		pallet_staking::migrations::v10::MigrateToV10<Runtime>,
+		oracle_finance::migrations::UpdateToV1<Runtime, frame_support::instances::Instance1>,
 	),
 >;
 

@@ -107,6 +107,7 @@ staking-extend = { git = "https://github.com/aresprotocols/ocw-suit", default-fe
 manual-bridge = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
 ares-reminder = { git = "https://github.com/aresprotocols/ocw-suit", default-features = false, branch = "polkadot-v0.9.28" }
 
+
 [features]
 default = ['std']
 runtime-benchmarks = [
