@@ -13,11 +13,12 @@ pub use sp_staking;
 use part_elections::MaxNominations;
 use sp_npos_elections::VoteWeight;
 use runtime_common::prod_or_fast;
+use pallet_staking::UseNominatorsAndValidatorsMap;
 
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
-		min_inflation: 0_025_000,
-		max_inflation: 0_100_000,
+		min_inflation: 0_022_510,
+		max_inflation: 0_080_000,
 		// 3:2:1 staked : parachains : float.
 		// while there's no parachains, then this is 75% staked : 25% float.
 		ideal_stake: 0_750_000,
@@ -89,7 +90,7 @@ impl pallet_staking::Config for Runtime {
 	// Alternatively, use pallet_staking::UseNominatorsMap<Runtime> to just use the nominators map.
 	// Note that the aforementioned does not scale to a very large number of nominators.
 	// type SortedListProvider = BagsList;
-	type VoterList = BagsList;
+	type VoterList = UseNominatorsAndValidatorsMap<Self>;
 	type MaxUnlockingChunks = ConstU32<32>;
 	type OnStakerSlash = NominationPools;
 	type BenchmarkingConfig = runtime_common::StakingBenchmarkingConfig;
