@@ -16,7 +16,7 @@ use pallet_staking::UseNominatorsAndValidatorsMap;
 
 pallet_staking_reward_curve::build! {
 	const REWARD_CURVE: PiecewiseLinear<'static> = curve!(
-		min_inflation: 0_020_246,
+		min_inflation: 0_012_850,
 		max_inflation: 0_080_000,
 		// 3:2:1 staked : parachains : float.
 		// while there's no parachains, then this is 75% staked : 25% float.
